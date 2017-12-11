@@ -1,0 +1,133 @@
+
+.Jumbotron {
+  box-sizing: border-box;
+  padding-top: 16vh;
+  width: 100%;
+  height: 80vh;
+  text-align: right;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-position-y: -9vh;
+}
+
+.JumbotronHeading{
+  width: 50%;
+  text-align: right;
+  margin-left: 34%;
+  white-space: pre-line;
+}
+
+.Home .JumbotronHeading h2 {
+  color: #fefefe;
+  font-family: Montserrat;
+  font-size: 2.5em;
+  font-weight: 500;
+}
+
+.Home h2 {
+  font-size: 2.5em;
+  color: #1c2791;
+}
+
+.Home hr {
+  border-color: #0fc6a7;
+}
+
+.SectionTwo {
+  margin-top: 5%;
+  padding-top: 20px;
+  display: flex;
+  flex-flow: row;
+  justify-content: space-evenly;
+}
+
+.SectionTwo .Left {
+  width: 423px;
+  text-align: right;
+}
+
+.SectionTwo .Left h2 {
+  color: #1c2791;
+  margin-top: 0px;
+  font-size: 2.5em;
+}
+.SectionTwo .Left p {
+  color: #1c2791;
+  font-size: 2.5em;
+}
+.SectionTwo .Left hr {
+  border-color: #0fc6a7;
+}
+
+.SectionTwo .Right {
+  padding-top: 115px;
+}
+
+.SectionThree {
+  margin-top: 5%;
+  padding-left: 7%;
+  padding-right: 2px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.SectionThree .Points {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 10%;
+}
+
+.SectionThree .Container {
+  margin-top: 5%;
+  max-width: 100%;
+}
+
+.SectionThree img {
+  max-width: 100%;
+  height: 559px;
+}
+
+.SectionFour {
+  margin-top: 5%;
+  width: 100%;
+}
+
+.SectionFour h2 {
+  padding-left: 7%;
+  padding-right: 20%;
+  white-space: pre-line;
+}
+.SectionFour hr {
+  margin-right: 20%;
+}
+
+.SectionFour .Container {
+  margin-top: 5%;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.SectionFive {
+  margin-top: 10%;
+  width: 100%;
+  height: 60vh;
+  background-color: #0fc6a7;
+  padding-top: 10vh;
+  box-sizing: border-box;
+  text-align: right;
+}
+
+.SectionFive .Heading {
+  margin: auto;
+  width: 70%;
+  color: white;
+}
+
+.SectionFive h2 {
+  color: white;
+  text-align: center;
+}

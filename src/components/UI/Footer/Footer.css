@@ -1,0 +1,41 @@
+.Footer {
+  width: 100%;
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.Footer .Right {
+  width: 40%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.Footer p{
+  text-decoration: none;
+  color: #1b1b1c;
+  font-family: Montserrat;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 60px;
+  text-transform: uppercase;
+  /* Text style for "Copyright" */
+  letter-spacing: 0.7px;
+  padding-left: 2px;
+}
+
+.Footer .Right a {
+  text-decoration: none;
+  color: #1b1b1c;
+  font-family: Montserrat;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 60px;
+  text-transform: uppercase;
+  /* Text style for "Copyright" */
+  letter-spacing: 0.7px;
+  padding-left: 4%;
+  padding-right: 1%;
+}
