@@ -18,8 +18,8 @@ class Home extends Component {
           </div>
           <LRButton
             width="30%"
-            height="53px"
-            rad="27px"
+            height="6vh"
+            rad="3vh"
             style={{
               backgroundColor: "#0fc6a7",
               borderColor: "#31c5a8",
@@ -123,8 +123,8 @@ class Home extends Component {
           {
             <LRButton
               width="60%"
-              height="53px"
-              rad="27px"
+              height="6vh"
+              rad="3vh"
               style={{
                 backgroundColor: "#1c2791",
                 borderColor: "#1c2791",
