@@ -5,10 +5,15 @@ import HomeData from "./HomeData";
 import Point from "../../components/UI/Point/Point";
 import LRButton from "../../components/UI/LeftRoundButton/LeftRoundButton";
 import { Link } from "react-router-dom";
-
+import RouteModal from "../../hoc/RouteModal/RouteModal";
+import Contact from "./Contact/Contact";
+import { Route, Switch } from "react-router-dom";
 
 const home = () => (
   <div className={classes.Home}>
+    <RouteModal path="/contact" redirectPath="/">
+      <Contact />
+    </RouteModal>
     <div
       className={classes.Jumbotron}
       style={{

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Layout from "./hoc/Layout/Layout";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import Auth from "./containers/Auth/Auth";
@@ -63,7 +63,9 @@ class App extends Component {
           <Switch>
             <Route path="/auth" component={Auth} />
             <Route path="/logout" component={Logout} />
-            <Route path="/" component={Home} />
+            <Route path="/contact" component={Home} />
+            <Route exact path="/" component={Home} />
+            <Redirect from="*" to="/" />
           </Switch>
         </Layout>
       </BrowserRouter>

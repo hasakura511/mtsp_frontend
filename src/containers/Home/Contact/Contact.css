@@ -1,0 +1,41 @@
+/* .Contact form{
+  width: 100%;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 20px;
+  box-sizing: border-box;
+} */
+
+.Contact form span{
+  display: inline-flex;
+  justify-content: space-around;
+  flex-flow: row;
+  width: 100%;
+}
+
+.Contact form button{
+  padding: 9px;
+  font-weight: bold;
+  font-family: 'Montserrat';
+  color: #fefefe;
+  box-sizing: border-box;
+  background-color: #0fc6a7;
+  border: 2px solid #2fbea4;;
+  border-radius: 4px;
+  box-shadow: 1px 1px 4px #009297;
+  display: flex;
+  flex-flow: column;
+  width: 50%;
+  align-items: center;
+  cursor: pointer;
+}
+
+.Contact form button:disabled{
+  cursor: not-allowed;
+}
+
+.Contact form button:active{
+  box-shadow: none;
+}

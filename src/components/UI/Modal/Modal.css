@@ -6,6 +6,8 @@
   border: 0px solid #ccc;
   box-shadow: 1px 1px 1px black;
   padding: 0px;
+  border-radius: 4px;
+  padding: 4px;
   left: 15%;
   top: 30%;
   box-sizing: border-box;

@@ -13,13 +13,17 @@ class RouteModal extends Component {
   }
 
   toggle = () => {
-    this.props.history.goBack();
+    if(this.props.redirectPath){
+      this.props.history.replace(this.props.redirectPath);
+      return;
+    }
+    this.props.history.goBack();    
   };
 
 
   render() {
     return (
-      <Route path={this.props.path} >
+      <Route path={this.props.path} exact >
         {({ match, ...rest }) => (
         <Modal hidden={!match} toggle={this.toggle}>
           {this.props.children}
@@ -33,7 +37,8 @@ class RouteModal extends Component {
 RouteModal.propTypes = {
   history: PropTypes.object.isRequired,
   path: PropTypes.string.isRequired,
-  children: PropTypes.any
+  children: PropTypes.any,
+  redirectPath: PropTypes.string
 }
 
 export default withRouter(RouteModal);
