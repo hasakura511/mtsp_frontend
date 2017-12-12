@@ -1,9 +1,7 @@
-export const UPDATE_INGREDIENT = "UPDATE_INGREDIENT";
-export const SET_INGREDIENTS = "SET_INGREDIENTS";
+
 export const LOADING = "LOADING";
 export const LOADED = "LOADED";
 export const ERROR = "ERROR";
-export const CLEAR_BURGER = "CLEAR_BURGER";
 
 export const AUTH_START = 'AUTH_START';
 export const AUTH_SUCCESS = 'AUTH_SUCCESS';

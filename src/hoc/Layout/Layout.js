@@ -11,7 +11,7 @@ import Footer from "../../components/UI/Footer/Footer";
 const LINKS = [
   {
     id: "link1",
-    href: "/",
+    href: "/contact",
     target: "_self",
     active: false,
     text: "CONTACT",

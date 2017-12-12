@@ -63,7 +63,7 @@ class App extends Component {
           <Switch>
             <Route path="/auth" component={Auth} />
             <Route path="/logout" component={Logout} />
-            <Route exact path="/" component={Home} />
+            <Route path="/" component={Home} />
           </Switch>
         </Layout>
       </BrowserRouter>
@@ -72,12 +72,11 @@ class App extends Component {
 }
 
 App.propTypes = {
-  loading: PropTypes.bool.isRequired,
   checkAuth: PropTypes.func.isRequired
 };
 
 export default connect(
-  state => ({ loading: state.burger.loading }),
+  null,
   dispatch => ({
     checkAuth() {
       dispatch(actions.checkAuth());

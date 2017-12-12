@@ -28,6 +28,7 @@
 
 .Footer .Right a {
   text-decoration: none;
+  width: fit-content;
   color: #1b1b1c;
   font-family: Montserrat;
   font-size: 14px;
