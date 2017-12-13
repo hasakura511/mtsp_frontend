@@ -11,10 +11,10 @@
 }
 
 .JumbotronHeading {
-  width: 50%;
-  text-align: right;
-  margin-left: 34%;
-  white-space: pre-line;
+  width: 80%;
+  text-align: center;
+  margin-left: 10%;
+  /* white-space: pre-line; */
 }
 
 .Home .JumbotronHeading h2 {
@@ -170,7 +170,7 @@
 }
 
 .SectionFour .Container {
-  margin-top: 5%;
+  margin-top: 0%;
   max-width: 100%;
   display: flex;
   align-items: center;

@@ -18,35 +18,35 @@ const HomeData = {
   sectionOne: {
     backgroundFilter: backgroundFilter,
     jumbotronHeading:
-      "Trade futures contracts,\nthe reliable, easy and fun way!",
+      "Have fun trading futures contracts,\neasily and reliably using our helpful analytical tools!",
     jumbotronButtonText: "TRY DEMO BELOW >",
     background: background
   },
 
   sectionTwo: {
     LeftPara:
-      "Design your own\ntrading board,\nplace your bets\nand dominate the\nfutures markets!",
+      "Design your own\ntrading board,\nplace your bets,\nand beat the\nfutures markets.",
     Right: [
       {
         id: "sec2-card1",
         icon: faceIcon,
         title: "Make Smart Bets",
         description:
-          "Bet on the different trading systems using live market data, all from one easy to understand game board."
-      },
-      {
-        id: "sec2-card2",
-        icon: crosshairIcon,
-        title: "Create New Strategies",
-        description:
-          "You can create many different strategies by trying new board configurations. It’s easy to do and there's no advanced knowledge necessary!"
+          "Bet on different trading strategies using live market analytics, all from one easy to understand game board."
       },
       {
         id: "sec2-card3",
         icon: signalsIcon,
-        title: "Straightforward Analytics",
+        title: "Helpful Live Analytics",
         description:
-          "Bet on the different trading systems using live market data, all from one easy to understand game board."
+          "We provide easy to understand analytics such as heatmaps, performance charts and ranking charts to help you create the highest-performing strategies."
+      },
+      {
+        id: "sec2-card2",
+        icon: crosshairIcon,
+        title: "Customize Your Strategies",
+        description:
+          "You can easily customize any strategies you choose to implement, modify or polish in any way you like to improve your performance quickly."
       }
     ]
   },
@@ -79,28 +79,28 @@ const HomeData = {
 
   sectionFour: {
     title:
-      "Register to unlock professional-grade\ntools that will assist you every step of the way",
+      "Register to unlock easy to use professional-grade tools that will assist you at every step.",
     cards: [
       {
         id: "sec4-card1",
         icon: faceIcon,
         title: "Smart Customization",
         description:
-          "As an advanced user you can customize your account portfolio to create strategies that offer unlimited trading options!"
+          "You can customize your account portfolio to manage volatility and create or improve strategies which will avail unlimited trading options. This allows you test, improve, and implement your market hypothesis."
       },
       {
         id: "sec4-card2",
         icon: crosshairIcon,
-        title: "Advanced Analytics and Reporting",
+        title: "Analytics and Reporting for Advanced Players",
         description:
-          "We provide a multitude of advanced features such as accuracy maps,  market internals, system internals, and trading reports so you can see what's going on under the hood. "
+          "We provide a multitude of advanced analytics such as accuracy maps, market internals, system internals and trading reports so you can see what’s going on inside the hood."
       },
       {
         id: "sec4-card3",
         icon: signalsIcon,
         title: "Broker Integrations",
         description:
-          "COMING SOON: When you are ready to take the plunge and trade with real money, we will walk you through the simple setup process."
+          "COMING SOON: When you are ready to trade with real money, we will walk you through the simple setup process."
       }
     ],
     monitorImage: monitorImage
@@ -108,7 +108,7 @@ const HomeData = {
 
   sectionFive: {
     title:
-      "Register today for six months free\naccess to advanced customisation\nand analytics options on launch"
+      "Register today for six months free access to our new and exciting customization and analytics features on launch."
   }
 };
 
