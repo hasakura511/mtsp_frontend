@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Layout from "./hoc/Layout/Layout";
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { withRouter, Route, Switch, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import Auth from "./containers/Auth/Auth";
@@ -37,6 +37,23 @@ class App extends Component {
   componentDidMount() {
     this.props.checkAuth();
   }
+
+/**
+ * 
+ * Logs the location hash at the application level, help us capture location changes.
+ * @function componentDidUpdate Lifecycle method of App component.
+ * 
+ * @memberof App
+ * 
+ * 
+ */
+componentDidUpdate() {
+    console.log("====================================");
+    console.log("App.props", this.props.location);
+    console.log("====================================");
+  }
+  
+
   /**
    * Toggles visibility of SideDrawer component
    * @function toggleSideDrawer
@@ -55,33 +72,31 @@ class App extends Component {
    */
   render() {
     return (
-      <BrowserRouter>
-        <Layout
-          showSideDrawer={this.state.showSideDrawer}
-          toggleSideDrawer={this.toggleSideDrawer}
-        >
-          <Switch>
-            <Route path="/auth" component={Auth} />
-            <Route path="/logout" component={Logout} />
-            <Route path="/contact" component={Home} />
-            <Route exact path="/" component={Home} />
-            <Redirect from="*" to="/" />
-          </Switch>
-        </Layout>
-      </BrowserRouter>
+      <Layout
+        showSideDrawer={this.state.showSideDrawer}
+        toggleSideDrawer={this.toggleSideDrawer}
+      >
+        <Switch>
+          <Route path="/auth" component={Auth} />
+          <Route path="/logout" component={Logout} />
+          <Route path="/contact" component={Home} />
+          <Route exact path="/" component={Home} />
+          <Redirect from="*" to="/" />
+        </Switch>
+      </Layout>
     );
   }
 }
 
 App.propTypes = {
-  checkAuth: PropTypes.func.isRequired
+  checkAuth: PropTypes.func.isRequired,
+  location: PropTypes.object.isRequired
 };
 
-export default connect(
-  null,
-  dispatch => ({
+export default withRouter(
+  connect(null, dispatch => ({
     checkAuth() {
       dispatch(actions.checkAuth());
     }
-  })
-)(App);
+  }))(App)
+);
