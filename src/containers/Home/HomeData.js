@@ -6,6 +6,13 @@ import sectionThreeBg from "../../assets/images/section3-bg.png";
 import monitorImage from "../../assets/images/monitor-2.png";
 import background from "../../assets/images/home-background.png";
 import backgroundFilter from "../../assets/images/background-filter.png";
+import React from "react";
+import LRButton from "../../components/UI/LeftRoundButton/LeftRoundButton";
+import { Link } from "react-router-dom";
+import Point from "../../components/UI/Point/Point";
+import Card from "../../components/UI/Card/Card";
+import classes from "./Home.css";
+import scrollWrap from "../../hoc/scrollWrap/scrollWrap";
 
 const HomeData = {
   sectionOne: {
@@ -104,5 +111,169 @@ const HomeData = {
       "Register today for six months free\naccess to advanced customisation\nand analytics options on launch"
   }
 };
+
+export const Jumbotron = (
+  <div
+    className={classes.Jumbotron}
+    style={{
+      backgroundImage:
+        "url(" +
+        HomeData.sectionOne.background +
+        "), url(" +
+        HomeData.sectionOne.backgroundFilter +
+        ")"
+    }}
+  >
+    <div className={classes.JumbotronHeading}>
+      <h2>{HomeData.sectionOne.jumbotronHeading}</h2>
+    </div>
+    <LRButton
+      width="30%"
+      height="6vh"
+      rad="3vh"
+      style={{
+        backgroundColor: "#0fc6a7",
+        borderColor: "#31c5a8",
+        color: "white"
+      }}
+    >
+      <strong>{HomeData.sectionOne.jumbotronButtonText}</strong>
+    </LRButton>
+  </div>
+);
+
+export const SectionTwo = scrollWrap(props => {
+  let displayClass = "";
+  if (props.display) {
+    displayClass = classes.Shown;
+  }
+  return (
+    <div className={classes.SectionTwo}>
+      <div className={classes.Left}>
+        <h2>
+          <b>{"How it works:"}</b>
+        </h2>
+        <hr />
+        <p>{HomeData.sectionTwo.LeftPara}</p>
+      </div>
+      <div className={classes.Right}>
+        {HomeData.sectionTwo.Right.map((card, i) => (
+          <div
+            key={card.id}
+            style={{ animationDelay: i * 0.3 + "s" }}
+            className={classes.Card + " " + displayClass}
+          >
+            <Card
+              iconSrc={card.icon}
+              title={card.title}
+              description={card.description}
+              style={{ width: "341px" }}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+});
+
+export const SectionThree = scrollWrap(props => {
+  let displayClass = props.display ? classes.Shown : "";
+  return (
+    <div
+      className={classes.SectionThree}
+      style={{
+        backgroundImage: "url(" + HomeData.sectionThree.fullBackground + ")"
+      }}
+    >
+      <h2>
+        <b>{HomeData.sectionThree.title}</b>
+      </h2>
+      <hr />
+      <div className={classes.Points}>
+        {HomeData.sectionThree.points.map((point, i) => (
+          <div
+            className={classes.Point + " "+ displayClass}
+            key={point.id}
+            style={{ animationDelay: i * 0.5 + "s" }}
+          >
+            <Point index={i + 1} description={point.description} />
+          </div>
+        ))}
+      </div>
+      <div className={classes.Container}>
+        <img src={HomeData.sectionThree.background} alt="" useMap="mapname" />
+        <Link to={"/link"}>
+          <map name="mapname">
+            <area
+              shape="rect"
+              coords={
+                HomeData.sectionThree.startMap +
+                ",210," +
+                HomeData.sectionThree.endMap +
+                ",263"
+              }
+              alt="alttext"
+            />
+          </map>
+        </Link>
+      </div>
+    </div>
+  );
+});
+
+export const SectionFour = scrollWrap(props => {
+  let displayClass = props.display ? classes.Shown : "";
+  return (
+    <div className={classes.SectionFour}>
+      <h2>
+        <b>{HomeData.sectionFour.title}</b>
+      </h2>
+      <hr />
+      <div className={classes.Container}>
+        <div className={classes.Left}>
+          {HomeData.sectionFour.cards.map((card, i) => (
+            <div
+              key={card.id}
+              style={{ animationDelay: i * 0.3 + "s" }}
+              className={classes.Card + " " + displayClass}
+            >
+              <Card
+                iconSrc={card.icon}
+                title={card.title}
+                description={card.description}
+                style={{ width: "563px" }}
+              />
+            </div>
+          ))}
+        </div>
+        <div className={classes.Right}>
+          <img src={HomeData.sectionFour.monitorImage} alt="" />
+        </div>
+      </div>
+    </div>
+  );
+});
+
+export const SectionFive = (
+  <div className={classes.SectionFive}>
+    <div className={classes.Heading}>
+      <h2>{HomeData.sectionFive.title}</h2>
+    </div>
+    {
+      <LRButton
+        width="60%"
+        height="6vh"
+        rad="3vh"
+        style={{
+          backgroundColor: "#1c2791",
+          borderColor: "#1c2791",
+          color: "white"
+        }}
+      >
+        <strong>{"REGISTER NOW   >"}</strong>
+      </LRButton>
+    }
+  </div>
+);
 
 export default HomeData;

@@ -20,7 +20,7 @@ const LINKS = [
   },
   {
     id: "link2",
-    href: "/",
+    href: "/auth",
     target: "_self",
     active: false,
     text: "LOGIN",
@@ -28,7 +28,7 @@ const LINKS = [
   },
   {
     id: "link3",
-    href: "/",
+    href: "/auth",
     target: "_self",
     active: false,
     text: "REGISTER",

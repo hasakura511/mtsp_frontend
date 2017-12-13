@@ -1,145 +1,90 @@
 import React, { Component } from "react";
 import classes from "./Home.css";
-import Card from "../../components/UI/Card/Card";
-import HomeData from "./HomeData";
-import Point from "../../components/UI/Point/Point";
-import LRButton from "../../components/UI/LeftRoundButton/LeftRoundButton";
-import { Link } from "react-router-dom";
+import {
+  Jumbotron,
+  SectionTwo,
+  SectionThree,
+  SectionFour,
+  SectionFive
+} from "./HomeData";
 import RouteModal from "../../hoc/RouteModal/RouteModal";
 import Contact from "./Contact/Contact";
-import { Route, Switch } from "react-router-dom";
+class Home extends Component {
+  constructor(props) {
+    super(props);
 
-const home = () => (
-  <div className={classes.Home}>
-    <RouteModal path="/contact" redirectPath="/">
-      <Contact />
-    </RouteModal>
-    <div
-      className={classes.Jumbotron}
-      style={{
-        backgroundImage:
-          "url(" +
-          HomeData.sectionOne.background +
-          "), url(" +
-          HomeData.sectionOne.backgroundFilter +
-          ")"
-      }}
-    >
-      <div className={classes.JumbotronHeading}>
-        <h2>{HomeData.sectionOne.jumbotronHeading}</h2>
-      </div>
-      <LRButton
-        width="30%"
-        height="6vh"
-        rad="3vh"
-        style={{
-          backgroundColor: "#0fc6a7",
-          borderColor: "#31c5a8",
-          color: "white"
-        }}
-      >
-        <strong>{HomeData.sectionOne.jumbotronButtonText}</strong>
-      </LRButton>
-    </div>
+    this.state = {
+      showSectionTwoCards: false,
+      showSectionThreePoints: false,
+      showSectionFourCards: false
+    };
+  }
 
-    <div className={classes.SectionTwo}>
-      <div className={classes.Left}>
-        <h2>
-          <b>{"How it works:"}</b>
-        </h2>
-        <hr />
-        <p>{HomeData.sectionTwo.LeftPara}</p>
-      </div>
-      <div className={classes.Right}>
-        {HomeData.sectionTwo.Right.map(card => (
-          <Card
-            key={card.id}
-            iconSrc={card.icon}
-            title={card.title}
-            description={card.description}
-            style={{ width: "341px" }}
-          />
-        ))}
-      </div>
-    </div>
+  handleScroll = (key, top) => {
+    const stateObj = {};
+    if (
+      this.state[key] &&
+      window.visualViewport.pageTop + window.visualViewport.height < top
+    ) {
+      stateObj[key] = false;
+    } else if (
+      !this.state[key] &&
+      window.visualViewport.pageTop + window.visualViewport.height > top &&
+      window.visualViewport.pageTop < top
+    ) {
+      stateObj[key] = true;
+    } else if (this.state[key] && window.visualViewport.pageTop > top) {
+      stateObj[key] = false;
+    }
+    if (this.state[key] !== stateObj[key]) {
+      this.setState(stateObj);
+    }
+  };
 
-    <div
-      className={classes.SectionThree}
-      style={{
-        backgroundImage: "url(" + HomeData.sectionThree.fullBackground + ")"
-      }}
-    >
-      <h2>
-        <b>{HomeData.sectionThree.title}</b>
-      </h2>
-      <hr />
-      <div className={classes.Points}>
-        {HomeData.sectionThree.points.map((point, i) => (
-          <Point key={point.id} index={i + 1} description={point.description} />
-        ))}
-      </div>
-      <div className={classes.Container}>
-        <img src={HomeData.sectionThree.background} alt="" useMap="mapname" />
-        <Link to={"/link"}>
-          <map name="mapname">
-            <area
-              shape="rect"
-              coords={
-                HomeData.sectionThree.startMap +
-                ",210," +
-                HomeData.sectionThree.endMap +
-                ",263"
-              }
-              alt="alttext"
-            />
-          </map>
-        </Link>
-      </div>
-    </div>
+  handleSecondScroll = () => {
+    this.handleScroll(
+      "showSectionTwoCards",
+      489 + 0.9 * window.visualViewport.height
+    );
+  };
 
-    <div className={classes.SectionFour}>
-      <h2>
-        <b>{HomeData.sectionFour.title}</b>
-      </h2>
-      <hr />
-      <div className={classes.Container}>
-        <div className={classes.Left}>
-          {HomeData.sectionFour.cards.map(card => (
-            <Card
-              key={card.id}
-              iconSrc={card.icon}
-              title={card.title}
-              description={card.description}
-              style={{ width: "563px" }}
-            />
-          ))}
-        </div>
-        <div className={classes.Right}>
-          <img src={HomeData.sectionFour.monitorImage} alt="" />
-        </div>
-      </div>
-    </div>
+  handleThirdScroll = () => {
+    this.handleScroll(
+      "showSectionThreePoints",
+      622 + 1.7 * window.visualViewport.height
+    );
+  };
+  handleFourthScroll = () => {
+    this.handleScroll(
+      "showSectionFourCards",
+      1300 + 2.1 * window.visualViewport.height
+    );
+  };
+  componentDidMount() {}
 
-    <div className={classes.SectionFive}>
-      <div className={classes.Heading}>
-        <h2>{HomeData.sectionFive.title}</h2>
+  render() {
+    return (
+      <div className={classes.Home}>
+        <RouteModal path="/contact" redirectPath="/">
+          <Contact />
+        </RouteModal>
+        {Jumbotron}
+        <SectionTwo
+          onWindowScroll={this.handleSecondScroll}
+          display={this.state.showSectionTwoCards}
+        />
+        <SectionThree
+          onWindowScroll={this.handleThirdScroll}
+          display={this.state.showSectionThreePoints}
+        />
+        <SectionFour
+          onWindowScroll={this.handleFourthScroll}
+          display={this.state.showSectionFourCards}
+        />
+        {SectionFive}
       </div>
-      {
-        <LRButton
-          width="60%"
-          height="6vh"
-          rad="3vh"
-          style={{
-            backgroundColor: "#1c2791",
-            borderColor: "#1c2791",
-            color: "white"
-          }}
-        >
-          <strong>{"REGISTER NOW   >"}</strong>
-        </LRButton>
-      }
-    </div>
-  </div>
-);
+    );
+  }
+}
 
-export default home;
+export default Home;

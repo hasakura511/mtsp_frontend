@@ -17,13 +17,14 @@
   text-decoration: none;
   color: #1b1b1c;
   font-family: Montserrat;
-  font-size: 14px;
+  font-size: x-small;
   font-weight: 700;
   line-height: 60px;
   text-transform: uppercase;
   /* Text style for "Copyright" */
   letter-spacing: 0.7px;
   padding-left: 2px;
+  margin: 0;
 }
 
 .Footer .Right a {
@@ -31,7 +32,7 @@
   width: fit-content;
   color: #1b1b1c;
   font-family: Montserrat;
-  font-size: 14px;
+  font-size: x-small;
   font-weight: 700;
   line-height: 60px;
   text-transform: uppercase;

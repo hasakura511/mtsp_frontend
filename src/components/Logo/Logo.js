@@ -1,11 +1,14 @@
-import React from 'react';
-import logoImg from '../../assets/images/logo.png';
-import classes from './Logo.css';
+import React from "react";
+import logoImg from "../../assets/images/logo.png";
+import classes from "./Logo.css";
+import { NavLink } from "react-router-dom";
 
 const logo = () => {
   return (
     <div className={classes.Logo}>
-      <img src={logoImg} alt="GSM"/>
+      <NavLink to="/">
+        <img src={logoImg} alt="GSM" />
+      </NavLink>
     </div>
   );
 };
