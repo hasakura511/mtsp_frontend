@@ -24,16 +24,16 @@ class Home extends Component {
     const stateObj = {};
     if (
       this.state[key] &&
-      window.visualViewport.pageTop + window.visualViewport.height < top
+      scrollY + innerHeight < top
     ) {
       stateObj[key] = false;
     } else if (
       !this.state[key] &&
-      window.visualViewport.pageTop + window.visualViewport.height > top &&
-      window.visualViewport.pageTop < top
+      scrollY + innerHeight > top &&
+      scrollY < top
     ) {
       stateObj[key] = true;
-    } else if (this.state[key] && window.visualViewport.pageTop > top) {
+    } else if (this.state[key] && scrollY > top) {
       stateObj[key] = false;
     }
     if (this.state[key] !== stateObj[key]) {
@@ -44,20 +44,20 @@ class Home extends Component {
   handleSecondScroll = () => {
     this.handleScroll(
       "showSectionTwoCards",
-      489 + 0.9 * window.visualViewport.height
+      489 + 0.9 * innerHeight
     );
   };
 
   handleThirdScroll = () => {
     this.handleScroll(
       "showSectionThreePoints",
-      622 + 1.7 * window.visualViewport.height
+      622 + 1.7 * innerHeight
     );
   };
   handleFourthScroll = () => {
     this.handleScroll(
       "showSectionFourCards",
-      1300 + 2.1 * window.visualViewport.height
+      1300 + 2.15 * innerHeight
     );
   };
   componentDidMount() {}

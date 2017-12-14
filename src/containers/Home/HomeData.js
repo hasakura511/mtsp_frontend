@@ -3,7 +3,7 @@ import faceIcon from "../../assets/images/face-icon.png";
 import signalsIcon from "../../assets/images/signals-icon.png";
 import sectionThreeBkg from "../../assets/images/section3-bkg.png";
 import sectionThreeBg from "../../assets/images/section3-bg.png";
-import monitorImage from "../../assets/images/monitor-2.png";
+import monitorImage from "../../assets/images/monitor-3.png";
 import background from "../../assets/images/home-background.png";
 import backgroundFilter from "../../assets/images/background-filter.png";
 import React from "react";
@@ -18,7 +18,7 @@ const HomeData = {
   sectionOne: {
     backgroundFilter: backgroundFilter,
     jumbotronHeading:
-      "Have fun trading futures contracts,\neasily and reliably using our helpful analytical tools!",
+      "Trade futures contracts easily,\nyet fun and reliably!",
     jumbotronButtonText: "TRY DEMO BELOW >",
     background: background
   },
@@ -167,7 +167,7 @@ export const SectionTwo = scrollWrap(props => {
               iconSrc={card.icon}
               title={card.title}
               description={card.description}
-              style={{ width: "341px" }}
+              style={{ width: "290px" }}
             />
           </div>
         ))}
@@ -192,7 +192,7 @@ export const SectionThree = scrollWrap(props => {
       <div className={classes.Points}>
         {HomeData.sectionThree.points.map((point, i) => (
           <div
-            className={classes.Point + " "+ displayClass}
+            className={classes.Point + " " + displayClass}
             key={point.id}
             style={{ animationDelay: i * 0.5 + "s" }}
           >
@@ -241,7 +241,7 @@ export const SectionFour = scrollWrap(props => {
                 iconSrc={card.icon}
                 title={card.title}
                 description={card.description}
-                style={{ width: "563px" }}
+                style={{ width: "400px" }}
               />
             </div>
           ))}

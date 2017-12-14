@@ -17,6 +17,10 @@
   color: #1b1b1c;
 }
 
+.Card .Desc h3{
+  font-weight: 500;
+}
+
 .Card h3{
   color: #1c2791;
 }

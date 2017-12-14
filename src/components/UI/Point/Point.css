@@ -6,8 +6,8 @@
 
 .Point .IndexDiv{
   border-radius: 50%;
-  width: 10vh;
-  height: 10vh;
+  width: 32px;
+  height: 32px;
   border: 2px solid #45cdb7;
   display: flex;
   justify-content: center;

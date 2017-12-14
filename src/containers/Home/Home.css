@@ -12,9 +12,9 @@
 
 .JumbotronHeading {
   width: 80%;
-  text-align: center;
+  text-align: right;
   margin-left: 10%;
-  /* white-space: pre-line; */
+  white-space: pre-line;
 }
 
 .Home .JumbotronHeading h2 {
@@ -38,7 +38,7 @@
   padding-top: 20px;
   display: flex;
   flex-flow: row;
-  justify-content: space-evenly;
+  justify-content: center;
 }
 
 .SectionTwo .Left {
@@ -61,6 +61,7 @@
 
 .SectionTwo .Right {
   padding-top: 115px;
+  padding-left: 7.32vw;
 }
 
 /* .SectionTwo .Right.Shown {
@@ -170,11 +171,20 @@
 }
 
 .SectionFour .Container {
-  margin-top: 0%;
+  margin-top: 5%;
   max-width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-evenly;
+}
+
+.SectionFour .Container .Right{
+  width: calc(80% - 663px);
+  text-align: center;
+}
+
+.SectionFour .Container .Right img{
+  width: 87%;
 }
 
 .SectionFive {
@@ -196,4 +206,12 @@
 .SectionFive h2 {
   color: white;
   text-align: center;
+}
+
+
+.Home hr{
+  border: 0;
+  height: 3px;
+  background-color: #45cdb7;
+  padding: 0;
 }
