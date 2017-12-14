@@ -73,8 +73,24 @@ const HomeData = {
     ],
     background: sectionThreeBkg,
     fullBackground: sectionThreeBg,
-    startMap: 0.55125 * innerWidth,
-    endMap: 0.55125 * innerWidth + 0.229375 * innerWidth
+    map: (() => {
+      let wImg = 1256, hImg = 450;
+      if(innerWidth <= 1346){
+        wImg = (innerWidth - 2)/(1.07),
+        hImg = 450 * (innerWidth - 2) / (1256 * 1.07)
+      }
+      console.log(wImg, hImg);
+      return {
+        start: {
+          x: 750/1256 * wImg,
+          y: 17/45 * hImg
+        },
+        end: {
+          x: 1050/1256 * wImg,
+          y: 212/450 * hImg
+        }
+      }
+    })(),
   },
 
   sectionFour: {
@@ -207,10 +223,10 @@ export const SectionThree = scrollWrap(props => {
             <area
               shape="rect"
               coords={
-                HomeData.sectionThree.startMap +
-                ",210," +
-                HomeData.sectionThree.endMap +
-                ",263"
+                HomeData.sectionThree.map.start.x.toFixed(0) +
+                "," + HomeData.sectionThree.map.start.y.toFixed(0) +
+                "," + HomeData.sectionThree.map.end.x.toFixed(0) +
+                "," + HomeData.sectionThree.map.end.y.toFixed(0)
               }
               alt="alttext"
             />
