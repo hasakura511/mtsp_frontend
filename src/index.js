@@ -6,6 +6,7 @@ import registerServiceWorker from "./registerServiceWorker";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { createStore, combineReducers, applyMiddleware, compose } from "redux";
+import AppConfig from "./AppConfig";
 import * as reducers from "./store/reducers";
 // import { actionTypes } from "./store/actions";
 import thunk from "redux-thunk";
@@ -21,6 +22,8 @@ const store = createStore(
   rootReducer,
   composeEnhancers(applyMiddleware(thunk))
 );
+
+window.ga('create', AppConfig.GA_TRACKING_ID, 'auto');
 
 ReactDOM.render(
   <Provider store={store}>

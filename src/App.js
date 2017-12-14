@@ -38,21 +38,24 @@ class App extends Component {
     this.props.checkAuth();
   }
 
-/**
- * 
- * Logs the location hash at the application level, help us capture location changes.
- * @function componentDidUpdate Lifecycle method of App component.
- * 
- * @memberof App
- * 
- * 
- */
-componentDidUpdate() {
-    console.log("====================================");
-    console.log("App.props", this.props.location);
-    console.log("====================================");
+  /**
+   *
+   * Logs the location hash at the application level, help us capture location changes.
+   * @function componentDidUpdate Lifecycle method of App component.
+   *
+   * @memberof App
+   *
+   *
+   */
+  componentDidUpdate() {
+    /**
+     * Check if window google analytics object is defined
+     * And sends a PageView event when a location is reached.
+     */
+    if (window.ga) {
+      window.ga('send', 'pageview', location.pathname, location.search, location.hash);
+    }
   }
-  
 
   /**
    * Toggles visibility of SideDrawer component
