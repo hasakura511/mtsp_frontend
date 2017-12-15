@@ -5,7 +5,8 @@ import * as actionTypes from "../actions/actionTypes";
  * @example An example toaster would be toaster: {id: 'sample-id', text: 'Hello Toaster World.'}
  */
 const initialState = {
-  toasters: [{id: '1', text: 'Hello Toaster World.'}]
+  // toasters: [{id: '1', text: 'Hello Toaster World.'}]
+  toasters: []
 };
 
 const reducer = (state = initialState, action) => {

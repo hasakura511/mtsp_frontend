@@ -3,7 +3,7 @@
   bottom: 0px;
   right: 0px;
   max-height: 90vh;
-  overflow-y: scroll;
+  overflow-y: auto;
   outline: none;
   display: flex;
   flex-flow: column;

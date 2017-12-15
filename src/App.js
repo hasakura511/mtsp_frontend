@@ -35,6 +35,19 @@ class App extends Component {
    * @memberof App
    */
   componentDidMount() {
+    /**
+     * Check if window google analytics object is defined
+     * And sends a PageView event when App mounted for the first time.
+     */
+    if (window.ga) {
+      window.ga(
+        "send",
+        "pageview",
+        location.pathname,
+        location.search,
+        location.hash
+      );
+    }
     this.props.checkAuth();
   }
 
@@ -50,7 +63,7 @@ class App extends Component {
   componentDidUpdate() {
     /**
      * Check if window google analytics object is defined
-     * And sends a PageView event when a location is reached.
+     * And sends a PageView event when a location is changed.
      */
     if (window.ga) {
       window.ga(
