@@ -1,0 +1,37 @@
+.Toaster{
+  /* width: 200px; */
+  height: auto;
+  padding: 2px 10px;
+  box-sizing: border-box;
+  margin: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 2px solid #cccccc;
+  box-shadow: 2px 2px 2px #cccccc;
+  border-radius: 4px;
+  z-index: 999999;
+  background-color: #fcfcfc;
+  opacity: 0.7;
+}
+
+.Toaster .Text{
+  width: 180px;
+}
+
+.Toaster.Focused{
+  opacity: 1;
+}
+
+.Toaster button{
+  border-radius: 50%;
+  background-color: #707070;
+  border: 2px solid #cccccc;
+  width: 30px;
+  height: 30px;
+  padding: 2px;
+  box-sizing: border-box;
+  cursor: pointer;
+  box-shadow: 2px 2px 4px #707070;
+  outline: none;
+}

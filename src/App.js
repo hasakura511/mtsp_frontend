@@ -53,7 +53,13 @@ class App extends Component {
      * And sends a PageView event when a location is reached.
      */
     if (window.ga) {
-      window.ga('send', 'pageview', location.pathname, location.search, location.hash);
+      window.ga(
+        "send",
+        "pageview",
+        location.pathname,
+        location.search,
+        location.hash
+      );
     }
   }
 

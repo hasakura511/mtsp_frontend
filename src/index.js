@@ -25,12 +25,16 @@ const store = createStore(
 
 window.ga('create', AppConfig.GA_TRACKING_ID, 'auto');
 
+const elem = <Provider store={store}>
+<BrowserRouter>
+  <App />
+</BrowserRouter>
+</Provider>;
+
+console.log(elem)
+
 ReactDOM.render(
-  <Provider store={store}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </Provider>,
+  elem,
   document.getElementById("root")
 );
 registerServiceWorker();

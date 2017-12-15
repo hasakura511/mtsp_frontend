@@ -1,0 +1,14 @@
+.Toasters{
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+  max-height: 90vh;
+  overflow-y: scroll;
+  outline: none;
+  display: flex;
+  flex-flow: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 10px;
+  box-sizing: border-box;
+}

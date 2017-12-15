@@ -6,6 +6,7 @@ import Toolbar from "../../components/Navigation/Toolbar/Toolbar";
 import SideDrawer from "../../components/Navigation/SideDrawer/SideDrawer";
 import Backdrop from "../../components/UI/Backdrop/Backdrop";
 import Footer from "../../components/UI/Footer/Footer";
+import Toasters from "../../containers/UI/Toasters/Toasters";
 
 // show 0 to show always, 1 for logged out and 2 for logged in users
 const LINKS = [
@@ -49,6 +50,7 @@ const layout = props => (
     <Backdrop show={props.showSideDrawer} toggle={props.toggleSideDrawer} />
     <main className={styles.Content}>{props.children}</main>
     <Footer />
+    <Toasters />
   </Aux>
 );
 
