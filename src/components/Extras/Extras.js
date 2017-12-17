@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import classes from "./Extras.css";
 
-export const TOSText = `[Terms of Service]
+const TOSText = `[Terms of Service]
 [Last updated: December 13, 2017]
 Please read the following Terms of Service ("Terms", “TOS”) carefully before using the GSM System. GSM
 System is owned solely and exclusively by GSM and GSM will hereunder permit you to use GSM System by
@@ -64,7 +64,7 @@ Terms as amended.
 [Contact Us]
 If you have any questions about the Terms, you may contact us at any time. `;
 
-export const PrivacyPolicyText = `[Privacy Policy]
+const PrivacyPolicyText = `[Privacy Policy]
 [Last updated: December 15, 2017]
 
 GSM ("GSM System”) takes your privacy seriously. Please read the following to learn more
@@ -142,6 +142,82 @@ GSM may update this policy from time to time. We will notify you about significa
 this policy in the way we treat personal information by sending a notice to the primary email
 address specified in your GSM System Account or by placing a prominent notice on our site. `;
 
+const RiskDisclosureText = `[Amended as follows:
+Futures Market Risk Disclosure
+Last updated: December 17, 2017
+ALL RESULTS ARE HYPOTHETICAL DATA]
+All results displayed on "GSM System" (The information/data displayed on the GSM Service,
+www.globalsystemsmanagement.net, website) must be regarded as hypothetical. Hypothetical results can be
+vastly different than the real-life results you can achieve in your actual trading account, almost always for the
+worse. In addition, hypothetical trading does not involve financial risk, and no hypothetical trading record can
+completely account for the impact of financial risk in actual trading. There are numerous other factors related to
+the markets in general or to the implementation of any specific trading program, which cannot be fully
+accounted for in the preparation of hypothetical performance results and all of which can or will adversely affect
+real-money trading results. GSM System attempts to simulate as much as possible how a real-money trader
+following the exact instructions of the trading strategy, at the exact moment that trading strategy makes the
+recommendation available, would fare. For this we use real-time quote feeds and end-of-day data from various
+data sources. Our simulation software uses the bid/ask spreads provided by these data feeds, subject,
+however, to the extent they are available.
+[PAST RESULTS ARE NOT NECESSARILY INDICATIVE OF FUTURE RESULTS]
+Results shown in our analytics are based on simulated or hypothetical performance results that have certain
+inherent limitations. Unlike the results shown in an actual real-money performance record, these results DO
+NOT represent actual trading. Also, because these trades have not actually been executed, these results may
+have under-or over-compensated for the impact, if any, of certain market factors, such as lack of liquidity.
+Simulated or hypothetical trading programs in general are also subject to the fact that they are designed with
+the benefit of hindsight. No representation is being made that any actual real-money account will or is likely to
+achieve profits or losses similar to these being shown.
+[Assumptions and methods used when calculating hypothetical results:]
+1. Profits are reinvested and losses are carried forward;
+2. Starting investment size. For any trading strategy on our GSM System site, hypothetical results are based on
+the assumption that you invested the starting amount shown on the strategy’s performance chart. Margin
+requirements for futures contract change based on the exchange’s requirements. In these case, a higher
+minimum capital may have been required in the past and in such case it may not have been possible to trade
+the strategy historically at the equity levels shown on the chart; and
+3. Slippage and Broker Fees. Slippage and broker fees are not included in the calculations of the hypothetical
+results shown in our analytics. Estimated fees and slippage are accounted for in the account value charts to the
+extent only if and in cases when the data is available from our data sources.
+[REAL-MONEY FUTURES TRADING IS A HIGH-RISK INVESTMENT]
+Trading futures contracts with real-money on margin carries a high level of risk, and may not be suitable for all
+investors. Only risk capital should be used when trading futures. You must review customer account agreement
+prior to establishing a real-money trading account. Before deciding to actually trade futures contracts with realmoney
+you should carefully consider your investment objectives, level of experience, and risk appetite. Using
+and experimenting GSM System will help you better understand your risk appetite and gain paper-trading
+experience. The possibility, however, always exists that you could sustain a loss of some or all of your
+investment and therefore you should not invest money that you cannot afford to lose. You should be aware of
+all the risks associated with trading futures contracts with real-money, and seek advice from an independent
+financial advisor if you have any doubts.
+[MARKET OPINIONS]
+Any opinions, news, research, analyses, prices or other data, or other information contained on our GSM
+System website is provided as general market commentary, and does not constitute investment advice. GSM
+will not accept liability for any loss or damage, including without limitation to, any loss of profit, which may arise
+directly or indirectly from use of or reliance on such information.
+[INTERNET TRADING RISKS]
+There are risks associated with utilizing an Internet-based deal execution trading system including, but not
+limited to, the failure of hardware, software, and Internet connection. Since GSM does not control signal power,
+its reception or routing via Internet, configuration of your equipment or reliability of its connection, we cannot be
+responsible for communication failures, distortions, errors or delays when trading via the Internet.
+[ACCURACY OF INFORMATION]
+The content on the GSM System website is subject to change at any time without notice, and is provided for
+the sole purpose of assisting users of the GSM System to make independent investment decisions. GSM has
+taken reasonable measures to ensure the accuracy of the information on the GSM System website, however,
+does not guarantee its accuracy, and will not accept liability for any loss or damage which may arise directly or
+indirectly from the content, its accuracy or your inability to access the GSM System website, for any delay in or
+failure of the transmission or the receipt of any instruction or notifications sent through the GSM System
+website.
+[DISTRIBUTION]
+The GSM System website is not intended for distribution, or use by, any person in any country where such
+distribution or use would be contrary to local law or regulation. None of the services or investments referred to
+in the GSM System website are available to persons residing in any country where the provision of such
+services or investments would be contrary to local law or regulation of such country. It is the responsibility of
+visitors to the GSM System website to ascertain the terms of and comply with any local law or regulation to
+which they are subject.
+[SLIPPAGE AND BROKER FEES]
+GSM will neither redress for slippage nor it's obligation to execute market orders guarantee executions at the
+prevailing market price. Your market order may be executed at bad price spikes. Bad price spikes and broker
+fees in our unfettered discretion may be removed from the price charts of the GSM System to alleviate
+confusion.`
+
+
 const withHeaders = str =>
   str.split("[").map((substr, i) =>
     substr.split("]").map((content, j) => {
@@ -175,4 +251,13 @@ const TermsOfService = () => {
 };
 TermsOfService.propTypes = {};
 
-export default { PrivacyPolicy, TermsOfService };
+const RiskDisclosure = () => {
+  return (
+    <div  className={classes.Container}>
+      {withHeaders(RiskDisclosureText)}
+    </div>
+  );
+};
+RiskDisclosure.propTypes = {};
+
+export default { PrivacyPolicy, TermsOfService, RiskDisclosure };

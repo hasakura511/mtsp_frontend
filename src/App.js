@@ -50,6 +50,8 @@ class App extends Component {
         location.search,
         location.hash
       );
+    }else{
+      console.log("GA not defined yet");
     }
     this.props.checkAuth();
   }
@@ -107,6 +109,7 @@ class App extends Component {
           <Route path="/contact" component={Home} />
           <Route path="/terms_of_service" component={Extras.TermsOfService} />
           <Route path="/privacy_policy" component={Extras.PrivacyPolicy} />
+          <Route path="/risk_disclosure" component={Extras.RiskDisclosure} />
           <Route exact path="/" component={Home} />
           <Redirect from="*" to="/" />
         </Switch>
