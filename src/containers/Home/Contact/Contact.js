@@ -569,7 +569,7 @@ class Contact extends Component {
               ))}
               <span>
                 <button disabled={!this.state.formIsValid} type="submit">
-                  Continue
+                  Send Feedback
                 </button>
               </span>
             </form>
