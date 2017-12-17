@@ -1,0 +1,8 @@
+.Container {
+  margin: auto;
+  text-align: justify;
+  width: 70%;
+}
+
+.Container .Text {
+}

@@ -109,12 +109,20 @@ class Auth extends Component {
     );
   };
 
-  componentDidMount(){
-    if(this.props.isAuth && this.props.authRedirect !== '/'){
+  componentDidMount() {
+    if (this.props.isAuth && this.props.authRedirect !== "/") {
       //clear the authRedirect path
       this.props.clearAuthRedirect();
     }
   }
+
+  addToasterClickHandler = () => {
+    const toaster = {
+      id: (Math.random() * 10).toFixed(3),
+      text: "A new toaster component"
+    };
+    this.props.addTimedToaster(toaster);
+  };
 
   render() {
     const formArr = [];
@@ -152,6 +160,12 @@ class Auth extends Component {
               {this.state.isSignup ? `Switch to signin` : `Switch to signup`}
             </button>
           </span>
+          <br />
+          <br />
+          <br />
+          <button type="button" onClick={this.addToasterClickHandler}>
+            Test Toaster
+          </button>
         </form>
       </div>
     );
@@ -163,7 +177,8 @@ Auth.propTypes = {
   loading: PropTypes.bool.isRequired,
   isAuth: PropTypes.bool.isRequired,
   authRedirect: PropTypes.string.isRequired,
-  clearAuthRedirect: PropTypes.func.isRequired
+  clearAuthRedirect: PropTypes.func.isRequired,
+  addTimedToaster: PropTypes.func.isRequired
 };
 
 export default connect(
@@ -175,6 +190,7 @@ export default connect(
   dispatch => ({
     onAuth: (email, password, isSignup) =>
       dispatch(actions.auth(email, password, isSignup)),
-    clearAuthRedirect: () => dispatch(actions.clearAuthRedirect())
+    clearAuthRedirect: () => dispatch(actions.clearAuthRedirect()),
+    addTimedToaster: toaster => dispatch(actions.addTimedToaster(toaster, 3000))
   })
 )(withErrorHandler(Auth, axios));

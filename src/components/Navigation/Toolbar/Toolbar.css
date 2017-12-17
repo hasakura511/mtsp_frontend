@@ -47,6 +47,12 @@
   }
 }
 
+@media (max-height: 550px) {
+  .Toolbar{
+    height: 55px;
+  }
+}
+
 /* flex box:  
 all the items in the toolbar are aligned next to each other
  because the default direction of flex box is row positioning elements next to each other even if they are block elements */

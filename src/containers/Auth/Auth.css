@@ -31,7 +31,8 @@
   background-color: #79edf5;
   border: 2px solid #36f0f7;
   border-radius: 4px;
-  box-shadow: 1px 1px 4px #009297
+  box-shadow: 1px 1px 4px #009297;
+  cursor: pointer;  
 }
 
 .Auth form button:active{
