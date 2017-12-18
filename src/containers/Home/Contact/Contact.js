@@ -268,7 +268,7 @@ class Contact extends Component {
           label: "Full Name*",
           elementConfig: {
             type: "text",
-            placeholder: "Full name"
+            placeholder: "Full Name"
           },
           value: "",
           validation: {
@@ -282,7 +282,7 @@ class Contact extends Component {
           label: "Email*",
           elementConfig: {
             type: "email",
-            placeholder: "Mail Address"
+            placeholder: "Email Address"
           },
           value: "",
           validation: {
@@ -366,7 +366,7 @@ class Contact extends Component {
           },
           value: "",
           validation: {},
-          label: "Stock trading experience",
+          label: "Stock Trading Txperience",
           valid: true,
           touched: false
         },
@@ -398,7 +398,7 @@ class Contact extends Component {
           },
           value: "",
           validation: {},
-          label: "Bond trading experience",
+          label: "Bond Trading Experience",
           valid: true,
           touched: false
         },
@@ -430,7 +430,7 @@ class Contact extends Component {
           },
           value: "",
           validation: {},
-          label: "Futures trading experience",
+          label: "Futures Trading Experience",
           valid: true,
           touched: false
         },
@@ -462,7 +462,7 @@ class Contact extends Component {
           },
           value: "",
           validation: {},
-          label: "FX trading experience",
+          label: "FX Trading Experience",
           valid: true,
           touched: false
         },
@@ -470,9 +470,9 @@ class Contact extends Component {
           elementType: "textarea",
           elementConfig: {
             type: "text",
-            placeholder: "Message"
+            placeholder: "Your Feedback"
           },
-          value: "I would love to see a demo.",
+          value: "",
           validation: {},
           valid: true,
           touched: false
@@ -545,7 +545,7 @@ class Contact extends Component {
       });
     });
     return (
-      <FormatModal title="Share your feedback">
+      <FormatModal title="Try the demo and share your feedback.">
         <div className={classes.Contact}>
           {this.state.loading ? (
             <Spinner />

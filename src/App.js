@@ -43,14 +43,9 @@ class App extends Component {
      * And sends a PageView event when App mounted for the first time.
      */
     if (window.ga) {
-      window.ga(
-        "send",
-        "pageview",
-        location.pathname,
-        location.search,
-        location.hash
-      );
-    }else{
+      window.ga("set", "page", location.pathname);
+      window.ga("send", "pageview");
+    } else {
       console.log("GA not defined yet");
     }
     this.props.checkAuth();

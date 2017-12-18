@@ -17,8 +17,7 @@ import scrollWrap from "../../hoc/scrollWrap/scrollWrap";
 const HomeData = {
   sectionOne: {
     backgroundFilter: backgroundFilter,
-    jumbotronHeading:
-      "Trade futures contracts easily,\nyet fun and reliably!",
+    jumbotronHeading: "Trade futures contracts easily,\nyet fun and reliably!",
     jumbotronButtonText: "TRY DEMO BELOW >",
     background: background
   },
@@ -74,23 +73,24 @@ const HomeData = {
     background: sectionThreeBkg,
     fullBackground: sectionThreeBg,
     map: (() => {
-      let wImg = 1256, hImg = 450;
-      if(innerWidth <= 1346){
-        wImg = (innerWidth - 2)/(1.07),
-        hImg = 450 * (innerWidth - 2) / (1256 * 1.07)
+      let wImg = 1256,
+        hImg = 450;
+      if (innerWidth <= 1346) {
+        (wImg = (innerWidth - 2) / 1.07),
+          (hImg = 450 * (innerWidth - 2) / (1256 * 1.07));
       }
       console.log(wImg, hImg);
       return {
         start: {
-          x: 750/1256 * wImg,
-          y: 17/45 * hImg
+          x: 750 / 1256 * wImg,
+          y: 17 / 45 * hImg
         },
         end: {
-          x: 1050/1256 * wImg,
-          y: 212/450 * hImg
+          x: 1050 / 1256 * wImg,
+          y: 212 / 450 * hImg
         }
-      }
-    })(),
+      };
+    })()
   },
 
   sectionFour: {
@@ -166,11 +166,15 @@ export const SectionTwo = scrollWrap(props => {
   return (
     <div className={classes.SectionTwo}>
       <div className={classes.Left}>
-        <h2>
-          <b>{"How it works:"}</b>
-        </h2>
-        <hr />
-        <p>{HomeData.sectionTwo.LeftPara}</p>
+        <div style={{ width: "423px", marginLeft: "auto" }}>
+          <h2>
+            <b>{"How it works:"}</b>
+          </h2>
+        </div>
+        <hr style={{ width: "" }} />
+        <div style={{ width: "423px", marginLeft: "auto" }}>
+          <p>{HomeData.sectionTwo.LeftPara}</p>
+        </div>
       </div>
       <div className={classes.Right}>
         {HomeData.sectionTwo.Right.map((card, i) => (
@@ -224,9 +228,12 @@ export const SectionThree = scrollWrap(props => {
               shape="rect"
               coords={
                 HomeData.sectionThree.map.start.x.toFixed(0) +
-                "," + HomeData.sectionThree.map.start.y.toFixed(0) +
-                "," + HomeData.sectionThree.map.end.x.toFixed(0) +
-                "," + HomeData.sectionThree.map.end.y.toFixed(0)
+                "," +
+                HomeData.sectionThree.map.start.y.toFixed(0) +
+                "," +
+                HomeData.sectionThree.map.end.x.toFixed(0) +
+                "," +
+                HomeData.sectionThree.map.end.y.toFixed(0)
               }
               alt="alttext"
             />

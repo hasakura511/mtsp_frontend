@@ -44,20 +44,20 @@ class Home extends Component {
   handleSecondScroll = () => {
     this.handleScroll(
       "showSectionTwoCards",
-      489 + 0.9 * innerHeight
+      489 + 0.6 * innerHeight
     );
   };
 
   handleThirdScroll = () => {
     this.handleScroll(
       "showSectionThreePoints",
-      622 + 1.7 * innerHeight
+      622 + 1.4 * innerHeight
     );
   };
   handleFourthScroll = () => {
     this.handleScroll(
       "showSectionFourCards",
-      1300 + 2.15 * innerHeight
+      1300 + 1.9 * innerHeight
     );
   };
   componentDidMount() {}

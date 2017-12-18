@@ -42,24 +42,27 @@
 }
 
 .SectionTwo .Left {
-  width: 423px;
+  width: 50%;
   text-align: right;
 }
 
 .SectionTwo .Left h2 {
+  width: 423px;  
   color: #1c2791;
   margin-top: 0px;
   font-size: 2.5em;
 }
 .SectionTwo .Left p {
+  width: 423px;  
   color: #1c2791;
   font-size: 2.5em;
 }
-.SectionTwo .Left hr {
+.SectionTwo .Left .Underline {
   border-color: #0fc6a7;
 }
 
 .SectionTwo .Right {
+  width: calc(50% - 7.32vw);
   padding-top: 115px;
   padding-left: 7.32vw;
 }
