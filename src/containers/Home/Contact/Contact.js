@@ -532,16 +532,17 @@ class Contact extends Component {
     this.setState({ loading: true });
     const nameArr = this.state.controls.name.split(" ");
     //Do axios
-    // setTimeout(() => {
-    //   this.setState({ loading: false });
-    //   this.props.history.goBack();
-    // }, 2000);
-    axios
-      .post("", { first_name: nameArr[0], last_name: nameArr[1] })
-      .then(response => {
-        this.setState({ loading: false });
-        this.props.history.goBack();
-      });
+    setTimeout(() => {
+      this.setState({ loading: false });
+      this.props.history.goBack();
+    }, 2000);
+    // axios
+    //   .post("", { first_name: nameArr[0], last_name: nameArr[1] })
+    //   .then(() => {
+    //     this.setState({ loading: false });
+    //     this.props.history.goBack();
+    //     this.props.addTimedToaster({id: 'contact-us', text: 'Message successfully sent'});
+    //   }).catch();
   };
 
   render() {
@@ -589,7 +590,8 @@ class Contact extends Component {
 }
 
 Contact.propTypes = {
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
+  addTimedToaster: PropTypes.func.isRequired
 };
 export default withErrorHandler(
   withRouter(
