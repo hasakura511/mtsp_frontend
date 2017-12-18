@@ -48,6 +48,9 @@ class App extends Component {
     } else {
       console.log("GA not defined yet");
     }
+    if(this.props.location.hash){
+      document.querySelector(this.props.location.hash).scrollIntoView();
+    }
     this.props.checkAuth();
   }
 

@@ -10,7 +10,7 @@ import AppConfig from "./AppConfig";
 import * as reducers from "./store/reducers";
 // import { actionTypes } from "./store/actions";
 import thunk from "redux-thunk";
-
+import ScrollTop from "./hoc/ScrollTop/ScrollTop";
 const rootReducer = combineReducers(reducers);
 
 const composeEnhancers =
@@ -23,18 +23,16 @@ const store = createStore(
   composeEnhancers(applyMiddleware(thunk))
 );
 
-window.ga('create', AppConfig.GA_TRACKING_ID, 'auto');
-
-const elem = <Provider store={store}>
-<BrowserRouter>
-  <App />
-</BrowserRouter>
-</Provider>;
-
-console.log(elem)
+window.ga("create", AppConfig.GA_TRACKING_ID, "auto");
 
 ReactDOM.render(
-  elem,
+  <Provider store={store}>
+    <BrowserRouter>
+      <ScrollTop>
+        <App />
+      </ScrollTop>
+    </BrowserRouter>
+  </Provider>,
   document.getElementById("root")
 );
 registerServiceWorker();

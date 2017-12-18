@@ -160,7 +160,6 @@
 }
 
 .SectionFour {
-  margin-top: 5%;
   width: 100%;
 }
 
@@ -174,7 +173,7 @@
 }
 
 .SectionFour .Container {
-  margin-top: 5%;
+  margin-top: 0;
   max-width: 100%;
   display: flex;
   align-items: center;
@@ -193,11 +192,12 @@
 .SectionFive {
   margin-top: 10%;
   width: 100%;
-  height: 60vh;
+  /* height: 60vh; */
   background-color: #0fc6a7;
   padding-top: 10vh;
   box-sizing: border-box;
   text-align: right;
+  padding-bottom: 10%;
 }
 
 .SectionFive .Heading {

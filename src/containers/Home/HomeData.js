@@ -152,6 +152,7 @@ export const Jumbotron = (
         borderColor: "#31c5a8",
         color: "white"
       }}
+      onClick={() => document.getElementById('sec4').scrollIntoView()}
     >
       <strong>{HomeData.sectionOne.jumbotronButtonText}</strong>
     </LRButton>
@@ -247,7 +248,7 @@ export const SectionThree = scrollWrap(props => {
 export const SectionFour = scrollWrap(props => {
   let displayClass = props.display ? classes.Shown : "";
   return (
-    <div className={classes.SectionFour}>
+    <div className={classes.SectionFour} id="sec4">
       <h2>
         <b>{HomeData.sectionFour.title}</b>
       </h2>
@@ -283,18 +284,20 @@ export const SectionFive = (
       <h2>{HomeData.sectionFive.title}</h2>
     </div>
     {
-      <LRButton
-        width="60%"
-        height="6vh"
-        rad="3vh"
-        style={{
-          backgroundColor: "#1c2791",
-          borderColor: "#1c2791",
-          color: "white"
-        }}
-      >
-        <strong>{"REGISTER NOW   >"}</strong>
-      </LRButton>
+      <Link to="/auth">
+        <LRButton
+          width="60%"
+          height="6vh"
+          rad="3vh"
+          style={{
+            backgroundColor: "#1c2791",
+            borderColor: "#1c2791",
+            color: "white"
+          }}
+        >
+          <strong>{"REGISTER NOW   >"}</strong>
+        </LRButton>
+      </Link>
     }
   </div>
 );

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import classes from "./Home.css";
+import PropTypes from "prop-types";
 import {
   Jumbotron,
   SectionTwo,
@@ -22,10 +23,7 @@ class Home extends Component {
 
   handleScroll = (key, top) => {
     const stateObj = {};
-    if (
-      this.state[key] &&
-      scrollY + innerHeight < top
-    ) {
+    if (this.state[key] && scrollY + innerHeight < top) {
       stateObj[key] = false;
     } else if (
       !this.state[key] &&
@@ -42,25 +40,17 @@ class Home extends Component {
   };
 
   handleSecondScroll = () => {
-    this.handleScroll(
-      "showSectionTwoCards",
-      489 + 0.6 * innerHeight
-    );
+    this.handleScroll("showSectionTwoCards", 489 + 0.6 * innerHeight);
   };
 
   handleThirdScroll = () => {
-    this.handleScroll(
-      "showSectionThreePoints",
-      622 + 1.4 * innerHeight
-    );
+    this.handleScroll("showSectionThreePoints", 622 + 1.4 * innerHeight);
   };
   handleFourthScroll = () => {
-    this.handleScroll(
-      "showSectionFourCards",
-      1300 + 1.9 * innerHeight
-    );
+    this.handleScroll("showSectionFourCards", 1300 + 1.9 * innerHeight);
   };
-  componentDidMount() {}
+  componentDidMount() {
+  }
 
   render() {
     return (
@@ -87,4 +77,7 @@ class Home extends Component {
   }
 }
 
+Home.propTypes = {
+  history: PropTypes.object.isRequired
+};
 export default Home;

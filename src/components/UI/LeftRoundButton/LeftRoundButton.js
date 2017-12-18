@@ -13,6 +13,7 @@ const leftRoundButton = props => {
         height: props.height
       }}
       className={classes.LeftRoundButton}
+      onClick={props.onClick}
     >
       {props.children}
     </button>
@@ -23,6 +24,7 @@ leftRoundButton.propTypes = {
   children: PropTypes.any,
   width: PropTypes.string,
   height: PropTypes.string,
-  rad: PropTypes.string
+  rad: PropTypes.string,
+  onClick: PropTypes.func
 };
 export default leftRoundButton;
