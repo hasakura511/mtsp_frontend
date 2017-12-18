@@ -152,7 +152,9 @@ export const Jumbotron = (
         borderColor: "#31c5a8",
         color: "white"
       }}
-      onClick={() => document.getElementById('sec4').scrollIntoView()}
+      onClick={() => {
+        document.getElementById("sec3").scrollIntoView({ behavior: "smooth" });
+      }}
     >
       <strong>{HomeData.sectionOne.jumbotronButtonText}</strong>
     </LRButton>
@@ -204,7 +206,7 @@ export const SectionThree = scrollWrap(props => {
       className={classes.SectionThree}
       style={{
         backgroundImage: "url(" + HomeData.sectionThree.fullBackground + ")"
-      }}
+      }}  id="sec3"
     >
       <h2>
         <b>{HomeData.sectionThree.title}</b>
@@ -248,7 +250,7 @@ export const SectionThree = scrollWrap(props => {
 export const SectionFour = scrollWrap(props => {
   let displayClass = props.display ? classes.Shown : "";
   return (
-    <div className={classes.SectionFour} id="sec4">
+    <div className={classes.SectionFour}>
       <h2>
         <b>{HomeData.sectionFour.title}</b>
       </h2>

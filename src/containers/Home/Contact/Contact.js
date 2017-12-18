@@ -8,6 +8,8 @@ import { withRouter } from "react-router-dom";
 import axios from "axios";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
 import Spinner from "../../../components/UI/Spinner/Spinner";
+import { connect } from "react-redux";
+import * as actions from "../../../store/actions";
 
 const countries = {
   AF: "Afghanistan",
@@ -528,12 +530,18 @@ class Contact extends Component {
   onFormSubmit = event => {
     event.preventDefault();
     this.setState({ loading: true });
-
+    const nameArr = this.state.controls.name.split(" ");
     //Do axios
-    setTimeout(() => {
-      this.setState({ loading: false });
-      this.props.history.goBack();
-    }, 2000);
+    // setTimeout(() => {
+    //   this.setState({ loading: false });
+    //   this.props.history.goBack();
+    // }, 2000);
+    axios
+      .post("", { first_name: nameArr[0], last_name: nameArr[1] })
+      .then(response => {
+        this.setState({ loading: false });
+        this.props.history.goBack();
+      });
   };
 
   render() {
@@ -583,4 +591,12 @@ class Contact extends Component {
 Contact.propTypes = {
   history: PropTypes.object.isRequired
 };
-export default withErrorHandler(withRouter(Contact), axios);
+export default withErrorHandler(
+  withRouter(
+    connect(null, dispatch => ({
+      addTimedToaster: toaster =>
+        dispatch(actions.addTimedToaster(toaster, 3000))
+    }))(Contact)
+  ),
+  axios
+);
