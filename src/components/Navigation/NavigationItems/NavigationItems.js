@@ -20,7 +20,7 @@ const navigationItems = props => {
         <li key={link.id}>
           {link.isVisible ? (
             link.isButton ? (
-              <LRButton width="159px" height="60%" rad="20px" style={{
+              <LRButton width="159px" height="60%" style={{
                 background: '#0fc6a7',
                 borderColor: '#0fc6a7',
                 fontSize: '0.7em'

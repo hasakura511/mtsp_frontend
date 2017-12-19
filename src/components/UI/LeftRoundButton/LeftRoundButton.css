@@ -10,4 +10,6 @@
   padding-left: 30px;
   outline: none;
   cursor: pointer;
+  border-top-left-radius: 20vh;
+  border-bottom-left-radius: 20vh;
 }

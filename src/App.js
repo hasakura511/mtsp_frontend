@@ -100,9 +100,9 @@ class App extends Component {
           <Route path="/auth" component={Auth} />
           <Route path="/logout" component={Logout} />
           <Route path="/contact" component={Home} />
-          <Route path="/terms_of_service" component={Extras.TermsOfService} />
-          <Route path="/privacy_policy" component={Extras.PrivacyPolicy} />
-          <Route path="/risk_disclosure" component={Extras.RiskDisclosure} />
+          <Route path="/terms_of_service" component={Extras} />
+          <Route path="/privacy_policy" component={Extras} />
+          <Route path="/risk_disclosure" component={Extras} />
           <Route exact path="/" component={Home} />
           <Redirect from="*" to="/" />
         </Switch>

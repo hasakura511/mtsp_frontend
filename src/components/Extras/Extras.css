@@ -2,7 +2,8 @@
   margin: auto;
   text-align: justify;
   width: 70%;
+  min-height: 80vh;
 }
 
-.Container .Text {
-}
+/* .Container .Text {
+} */

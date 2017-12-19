@@ -47,7 +47,7 @@ class Home extends Component {
     this.handleScroll("showSectionThreePoints", 622 + 1.4 * innerHeight);
   };
   handleFourthScroll = () => {
-    this.handleScroll("showSectionFourCards", 1300 + 1.9 * innerHeight);
+    this.handleScroll("showSectionFourCards", 1300 + 1.6 * innerHeight);
   };
   componentDidMount() {
   }

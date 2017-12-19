@@ -146,7 +146,7 @@ export const Jumbotron = (
     <LRButton
       width="30%"
       height="6vh"
-      rad="3vh"
+      // rad="3vh"
       style={{
         backgroundColor: "#0fc6a7",
         borderColor: "#31c5a8",
@@ -290,7 +290,7 @@ export const SectionFive = (
         <LRButton
           width="60%"
           height="6vh"
-          rad="3vh"
+          // rad="3vh"
           style={{
             backgroundColor: "#1c2791",
             borderColor: "#1c2791",
