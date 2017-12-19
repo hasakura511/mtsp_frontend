@@ -1,9 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classes from './Footer.css'
 import { Link } from "react-router-dom";
 
-const footer = (props) => {
+const footer = () => {
   return (
     <div className={classes.Footer}>
       <div className={classes.Left}>

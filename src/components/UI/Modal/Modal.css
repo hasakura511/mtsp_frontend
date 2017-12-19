@@ -23,6 +23,6 @@
 
 .Modal.Hidden {
   /* display: none; */
-  transform: translateY(-100%);
+  transform: translateY(-100vh);
   opacity: 0;
 }

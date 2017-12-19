@@ -13,6 +13,12 @@
   justify-content: flex-end;
 }
 
+@media(max-width: 947px){
+  .Footer .Right{
+    width: 373px;
+  }
+}
+
 .Footer p{
   text-decoration: none;
   color: #1b1b1c;
@@ -34,7 +40,6 @@
   font-family: Montserrat;
   font-size: x-small;
   font-weight: 700;
-  line-height: 60px;
   text-transform: uppercase;
   /* Text style for "Copyright" */
   letter-spacing: 0.7px;
