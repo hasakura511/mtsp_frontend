@@ -107,7 +107,7 @@ class Auth extends Component {
             type: "text",
             placeholder: ""
           },
-          label: "House Number / Street",
+          label: "House Number",
           validation: {
             required: true
           },
@@ -128,6 +128,7 @@ class Auth extends Component {
           validation: {
             required: true
           },
+          label: "Street",
           isHalf: true,
           valid: false,
           value: "",
@@ -142,7 +143,7 @@ class Auth extends Component {
             type: "text",
             placeholder: ""
           },
-          label: "City / Postccode",
+          label: "City",
           validation: {
             required: true
           },
@@ -163,6 +164,7 @@ class Auth extends Component {
           validation: {
             required: true
           },
+          label: "Postcode",
           valid: false,
           value: "",
           touched: false,
@@ -279,7 +281,7 @@ class Auth extends Component {
   componentWillReceiveProps(newProps) {
     this.syncProps(newProps);
   }
-  
+
   componentDidMount() {
     if (this.props.isAuth && this.props.authRedirect !== "/") {
       //clear the authRedirect path
@@ -307,7 +309,7 @@ class Auth extends Component {
       isValid = pattern.test(value.trim()) && isValid;
     }
 
-    if(rules.pattern) {
+    if (rules.pattern) {
       isValid = rules.pattern.test(value.trim()) && isValid;
     }
 
@@ -333,7 +335,8 @@ class Auth extends Component {
       controls[identifier]["touched"] = true;
       let formIsValid = true;
       for (let key in controls) {
-        formIsValid = formIsValid && (controls[key].valid || !controls[key].visible);
+        formIsValid =
+          formIsValid && (controls[key].valid || !controls[key].visible);
       }
       return { controls: controls, formIsValid: formIsValid };
     });
@@ -347,7 +350,6 @@ class Auth extends Component {
       this.state.isSignup
     );
   };
-
 
   addToasterClickHandler = () => {
     const toaster = {
@@ -397,11 +399,12 @@ class Auth extends Component {
                   }
                   valid={formElem.valid || !formElem.touched}
                   label={formElem.label}
+                  style={{ width: formElem.isHalf ? "50%" : "100%" }}
                 />
               ))}
               <span>
                 <button disabled={!this.state.formIsValid} type="submit">
-                  {this.state.isSignup ? "Continue Sign Up":"Continue Login"}
+                  {this.state.isSignup ? "Continue Sign Up" : "Continue Login"}
                 </button>
               </span>
             </form>

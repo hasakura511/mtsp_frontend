@@ -7,46 +7,29 @@
 .SocialAuth button{
   font-size: 1em;
   font-family: 'Montserrat', 'Open Sans', sans-serif;
+  padding: 10px;
+  box-sizing: border-box;
+  border: none;
+  color: white;
+  cursor: pointer;
+  outline: none;
+  border-radius: 2px;
+  width: 282px;
 }
 
 .SocialAuth button.Twitter {
-  margin-top: 47px;
-  padding: 10px;
-  box-sizing: border-box;
+  margin-top: 40px;
   background-color: #1da1f2;
-  border: none;
-  color: white;
-  cursor: pointer;
-  outline: none;
-  border-radius: 2px;
-  width: 282px;
 }
 
 .SocialAuth button.Google {
-  margin-top: 47px;
-  padding: 10px;
-  box-sizing: border-box;
+  margin-top: 40px;
   background-color: #4285f4;
-  border: none;
-  color: white;
-  cursor: pointer;
-  outline: none;
-  border-radius: 2px;
-  width: 282px;
 }
 
 .SocialAuth button.Facebook {
   margin-top: 27px;
-  padding: 10px;
-  box-sizing: border-box;
   background-color: #3b5998;
-  border: none;
-  color: white;
-  cursor: pointer;
-  outline: none;
-  border-radius: 2px;
-  width: 282px;
-  /* white-space: pre; */
 }
 
 button span {
