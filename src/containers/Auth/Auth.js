@@ -406,7 +406,7 @@ class Auth extends Component {
               </span>
             </form>
           </div>
-          <SocialAuth />
+          <SocialAuth isSignup={this.state.isSignup} />
         </div>
       </Aux>
     );
