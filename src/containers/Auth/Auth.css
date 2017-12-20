@@ -1,6 +1,15 @@
+.Heading{
+  margin-top: 5%;
+  text-align: center;
+}
+
+.Heading a{
+  color: #1c2791;
+  font-size: 90%;
+}
 .Auth{
   width: 100%;
-  margin: 5% 0px;
+  /* margin: 5% 0px; */
   padding: 20px;
   box-sizing: border-box;
   display: flex;
@@ -32,20 +41,28 @@
   display: inline-flex;
   justify-content: space-around;
   width: 100%;
+  margin-top: 30px;
 }
 
 .Auth .Left form button{
-  padding: 4px;
-  font-weight: bold;
-  font-family: 'Open Sans';
+  margin: auto;
+  padding: 10px;
+  /* font-weight: 700; */
   box-sizing: border-box;
-  background-color: #79edf5;
-  border: 2px solid #36f0f7;
+  background-color: #0fc6a7;
+  border: 2px solid #0fc6a7;
   border-radius: 4px;
   box-shadow: 1px 1px 4px #009297;
-  cursor: pointer;  
+  cursor: pointer;
+  color: white;
+  width: 282px;
 }
 
 .Auth .Left form button:active{
   box-shadow: none;
+}
+.Auth .Left form button:disabled{
+  box-shadow: none;
+  color: #dddddd;
+  cursor: not-allowed;
 }

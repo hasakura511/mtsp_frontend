@@ -8,9 +8,23 @@ import PropTypes from "prop-types";
 import axios from "axios";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import Spinner from "../../components/UI/Spinner/Spinner";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link, withRouter } from "react-router-dom";
 import SocialAuth from "./SocialAuth/SocialAuth";
+import Aux from "../../hoc/_Aux/_Aux";
 //sign up or sign in
+
+const Heading = props => (
+  <h3 className={classes.Heading}>
+    {props.text + " "}
+    <Link to={props.href}>{props.link}</Link>
+  </h3>
+);
+
+Heading.propTypes = {
+  text: PropTypes.string.isRequired,
+  href: PropTypes.string.isRequired,
+  link: PropTypes.string.isRequired
+};
 
 class Auth extends Component {
   constructor(props) {
@@ -22,14 +36,33 @@ class Auth extends Component {
           label: "Title",
           elementType: "select",
           elementConfig: {
-            options: ["Mr.", "Ms.", "Mrs.", "Miss"]
+            options: [
+              {
+                value: "Mr.",
+                displayValue: "Mr."
+              },
+              {
+                value: "Ms.",
+                displayValue: "Ms."
+              },
+              {
+                value: "Mrs.",
+                displayValue: "Mrs."
+              },
+              {
+                value: "Miss",
+                displayValue: "Miss"
+              }
+            ]
           },
           validation: {
             required: true
           },
-          valid: false,
+          value: "Mr.",
+          valid: true,
           touched: false,
-          visible: true
+          visible: true,
+          signupField: true
         },
 
         firstName: {
@@ -46,7 +79,8 @@ class Auth extends Component {
           },
           visible: true,
           valid: false,
-          touched: false
+          touched: false,
+          signupField: true
         },
 
         surname: {
@@ -63,48 +97,50 @@ class Auth extends Component {
           valid: false,
           value: "",
           touched: false,
-          visible: true
+          visible: true,
+          signupField: true
         },
 
         houseNumber: {
           elementType: "input",
           elementConfig: {
             type: "text",
-            placeholder: "",
-            isHalf: true
+            placeholder: ""
           },
           label: "House Number / Street",
           validation: {
             required: true
           },
+          isHalf: true,
           valid: false,
           value: "",
           touched: false,
-          visible: true
+          visible: true,
+          signupField: true
         },
 
         street: {
           elementType: "input",
           elementConfig: {
             type: "text",
-            placeholder: "Street",
-            isHalf: true
+            placeholder: "Street"
           },
           validation: {
             required: true
           },
+          isHalf: true,
           valid: false,
           value: "",
           touched: false,
-          visible: true
+          visible: true,
+          signupField: true
         },
 
         city: {
           elementType: "input",
           elementConfig: {
             type: "text",
-            placeholder: "",
-            isHalf: true
+            placeholder: ""
           },
           label: "City / Postccode",
           validation: {
@@ -113,15 +149,16 @@ class Auth extends Component {
           valid: false,
           value: "",
           touched: false,
-          visible: true
+          isHalf: true,
+          visible: true,
+          signupField: true
         },
 
         postcode: {
           elementType: "input",
           elementConfig: {
             type: "text",
-            placeholder: "Postcode",
-            isHalf: true
+            placeholder: "Postcode"
           },
           validation: {
             required: true
@@ -129,7 +166,9 @@ class Auth extends Component {
           valid: false,
           value: "",
           touched: false,
-          visible: true
+          isHalf: true,
+          visible: true,
+          signupField: true
         },
 
         phoneNumber: {
@@ -146,7 +185,8 @@ class Auth extends Component {
           valid: false,
           value: "",
           touched: false,
-          visible: true
+          visible: true,
+          signupField: true
         },
 
         email: {
@@ -163,7 +203,9 @@ class Auth extends Component {
           },
           valid: false,
           touched: false,
-          visible: true
+          visible: true,
+          signupField: true,
+          signinField: true
         },
 
         password: {
@@ -179,7 +221,9 @@ class Auth extends Component {
           },
           valid: false,
           touched: false,
-          visible: true
+          visible: true,
+          signupField: true,
+          signinField: true
         },
 
         rePassword: {
@@ -195,12 +239,52 @@ class Auth extends Component {
           },
           valid: false,
           touched: false,
-          visible: true
+          visible: true,
+          signupField: true
         }
       },
       isSignup: true,
       formIsValid: false
     };
+  }
+
+  syncProps(props) {
+    const controls = { ...this.state.controls };
+    for (let key in controls) {
+      if (props.location.search === "?signup") {
+        if (controls[key]["signupField"]) {
+          controls[key]["visible"] = true;
+        } else {
+          controls[key]["visible"] = false;
+        }
+      }
+      if (props.location.search === "?signin") {
+        if (controls[key]["signinField"]) {
+          controls[key]["visible"] = true;
+        } else {
+          controls[key]["visible"] = false;
+        }
+      }
+    }
+    this.setState({
+      controls: controls,
+      isSignup: props.location.search === "?signup"
+    });
+  }
+
+  componentWillMount() {
+    this.syncProps(this.props);
+  }
+
+  componentWillReceiveProps(newProps) {
+    this.syncProps(newProps);
+  }
+  
+  componentDidMount() {
+    if (this.props.isAuth && this.props.authRedirect !== "/") {
+      //clear the authRedirect path
+      this.props.clearAuthRedirect();
+    }
   }
 
   checkValidity(value, rules) {
@@ -221,6 +305,10 @@ class Auth extends Component {
     if (rules.isEmail) {
       const pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       isValid = pattern.test(value.trim()) && isValid;
+    }
+
+    if(rules.pattern) {
+      isValid = rules.pattern.test(value.trim()) && isValid;
     }
 
     return isValid;
@@ -245,7 +333,7 @@ class Auth extends Component {
       controls[identifier]["touched"] = true;
       let formIsValid = true;
       for (let key in controls) {
-        formIsValid = formIsValid && controls[key].valid;
+        formIsValid = formIsValid && (controls[key].valid || !controls[key].visible);
       }
       return { controls: controls, formIsValid: formIsValid };
     });
@@ -260,12 +348,6 @@ class Auth extends Component {
     );
   };
 
-  componentDidMount() {
-    if (this.props.isAuth && this.props.authRedirect !== "/") {
-      //clear the authRedirect path
-      this.props.clearAuthRedirect();
-    }
-  }
 
   addToasterClickHandler = () => {
     const toaster = {
@@ -276,53 +358,57 @@ class Auth extends Component {
   };
 
   render() {
-    const formArr = [];
+    const formArr = [],
+      isRedirect =
+        this.props.location.search !== "?signup" &&
+        this.props.location.search !== "?signin";
     Object.keys(this.state.controls).forEach(key => {
-      formArr.push({
-        id: key,
-        ...this.state.controls[key]
-      });
+      if (this.state.controls[key]["visible"]) {
+        formArr.push({
+          id: key,
+          ...this.state.controls[key]
+        });
+      }
     });
-
     return this.props.loading ? (
       <Spinner />
     ) : this.props.isAuth ? (
       <Redirect to={this.props.authRedirect} />
+    ) : isRedirect ? (
+      <Redirect to="/auth?signup" />
     ) : (
-      <div className={classes.Auth}>
-        <div className={classes.Left}>
-          <form onSubmit={this.onFormSubmit}>
-            {formArr.map(formElem => (
-              <Input
-                key={formElem.id}
-                elementType={formElem.elementType}
-                elementConfig={formElem.elementConfig}
-                value={formElem.value}
-                inputChangeHandler={event =>
-                  this.inputChangeHandler(event, formElem.id)
-                }
-                valid={formElem.valid || !formElem.touched}
-                label={formElem.label}
-              />
-            ))}
-            <span>
-              <button disabled={!this.state.formIsValid} type="submit">
-                Continue
-              </button>
-              <button onClick={this.switchAuthModeHandler} type="button">
-                {this.state.isSignup ? `Switch to signin` : `Switch to signup`}
-              </button>
-            </span>
-            <br />
-            <br />
-            <br />
-            <button type="button" onClick={this.addToasterClickHandler}>
-              Test Toaster
-            </button>
-          </form>
+      <Aux>
+        {this.state.isSignup ? (
+          <Heading text="Sign Up or" link="Sign In" href="/auth?signin" />
+        ) : (
+          <Heading text="Sign In or" link="Sign Up" href="/auth?signup" />
+        )}
+        <div className={classes.Auth}>
+          <div className={classes.Left}>
+            <form onSubmit={this.onFormSubmit}>
+              {formArr.map(formElem => (
+                <Input
+                  key={formElem.id}
+                  elementType={formElem.elementType}
+                  elementConfig={formElem.elementConfig}
+                  value={formElem.value}
+                  inputChangeHandler={event =>
+                    this.inputChangeHandler(event, formElem.id)
+                  }
+                  valid={formElem.valid || !formElem.touched}
+                  label={formElem.label}
+                />
+              ))}
+              <span>
+                <button disabled={!this.state.formIsValid} type="submit">
+                  {this.state.isSignup ? "Continue Sign Up":"Continue Login"}
+                </button>
+              </span>
+            </form>
+          </div>
+          <SocialAuth />
         </div>
-        <SocialAuth/>
-      </div>
+      </Aux>
     );
   }
 }
@@ -333,19 +419,23 @@ Auth.propTypes = {
   isAuth: PropTypes.bool.isRequired,
   authRedirect: PropTypes.string.isRequired,
   clearAuthRedirect: PropTypes.func.isRequired,
-  addTimedToaster: PropTypes.func.isRequired
+  addTimedToaster: PropTypes.func.isRequired,
+  location: PropTypes.object.isRequired
 };
 
-export default connect(
-  state => ({
-    loading: state.auth.loading,
-    isAuth: state.auth.token !== null,
-    authRedirect: state.auth.authRedirect
-  }),
-  dispatch => ({
-    onAuth: (email, password, isSignup) =>
-      dispatch(actions.auth(email, password, isSignup)),
-    clearAuthRedirect: () => dispatch(actions.clearAuthRedirect()),
-    addTimedToaster: toaster => dispatch(actions.addTimedToaster(toaster, 3000))
-  })
-)(withErrorHandler(Auth, axios));
+export default withRouter(
+  connect(
+    state => ({
+      loading: state.auth.loading,
+      isAuth: state.auth.token !== null,
+      authRedirect: state.auth.authRedirect
+    }),
+    dispatch => ({
+      onAuth: (email, password, isSignup) =>
+        dispatch(actions.auth(email, password, isSignup)),
+      clearAuthRedirect: () => dispatch(actions.clearAuthRedirect()),
+      addTimedToaster: toaster =>
+        dispatch(actions.addTimedToaster(toaster, 5000))
+    })
+  )(withErrorHandler(Auth, axios))
+);

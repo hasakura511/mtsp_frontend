@@ -21,7 +21,7 @@ const LINKS = [
   },
   {
     id: "link2",
-    href: "/auth",
+    href: "/auth?signin",
     target: "_self",
     active: false,
     text: "LOGIN",
@@ -29,7 +29,7 @@ const LINKS = [
   },
   {
     id: "link3",
-    href: "/auth",
+    href: "/auth?signup",
     target: "_self",
     active: false,
     text: "REGISTER",

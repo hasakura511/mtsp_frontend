@@ -40,10 +40,10 @@ const input = props => {
         >
           {props.elementConfig.options.map(option => (
             <option
-              key={"op" + props.label + (option.value || option)}
-              value={option.value || option}
+              key={"op" + props.label + option.value}
+              value={option.value}
             >
-              {option.displayValue || option.value || option}
+              {option.displayValue}
             </option>
           ))}
         </select>

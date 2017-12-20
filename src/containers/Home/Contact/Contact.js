@@ -25,7 +25,6 @@ const disclaimer = (
   </Aux>
 );
 
-
 const countries = {
   AF: "Afghanistan",
   AX: "Aland Islands",
@@ -548,7 +547,7 @@ class Contact extends Component {
     const nameArr = this.state.controls.name.value.split(" ");
     setTimeout(() => {
       this.setState({ loading: false });
-      this.props.history.goBack();
+      this.props.history.replace("/");
       this.props.addTimedToaster({
         id: "contact-us",
         text: "Message successfully sent"
