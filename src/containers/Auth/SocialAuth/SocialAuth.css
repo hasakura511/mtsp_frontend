@@ -1,0 +1,23 @@
+.SocialAuth{
+  width: 500px;
+  padding: 30px;
+  box-sizing: border-box;
+}
+
+.SocialAuth button.Facebook{
+  margin-top: 27px;
+  padding: 10px;
+  box-sizing: border-box;
+  background-color: #3b5998;
+  border: none;
+  color: white;
+  cursor: pointer;
+  outline: none;
+  border-radius: 2px;
+  width: 282px;
+  /* white-space: pre; */
+}
+
+button.Facebook span{
+  float: left;
+}

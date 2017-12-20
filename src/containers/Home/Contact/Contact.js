@@ -11,6 +11,21 @@ import Spinner from "../../../components/UI/Spinner/Spinner";
 import { connect } from "react-redux";
 import * as actions from "../../../store/actions";
 
+const Aux = props => props.children;
+
+const disclaimer = (
+  <Aux>
+    <p>
+      {`We may use your inputs below if and to the extent we decide in our discretion that the use may contribute to our development of product features. The private information that you provided to us will be kept confidential according to our `}
+      <a href="/privacy_policy" target="_blank">
+        privacy policy
+      </a>
+      {`.`}
+    </p>
+  </Aux>
+);
+
+
 const countries = {
   AF: "Afghanistan",
   AX: "Aland Islands",
@@ -530,11 +545,14 @@ class Contact extends Component {
   onFormSubmit = event => {
     event.preventDefault();
     this.setState({ loading: true });
-    const nameArr = this.state.controls.name.split(" ");
-    //Do axios
+    const nameArr = this.state.controls.name.value.split(" ");
     setTimeout(() => {
       this.setState({ loading: false });
       this.props.history.goBack();
+      this.props.addTimedToaster({
+        id: "contact-us",
+        text: "Message successfully sent"
+      });
     }, 2000);
     // axios
     //   .post("", { first_name: nameArr[0], last_name: nameArr[1] })
@@ -581,6 +599,7 @@ class Contact extends Component {
                   Send Feedback
                 </button>
               </span>
+              <p>{disclaimer}</p>
             </form>
           )}
         </div>

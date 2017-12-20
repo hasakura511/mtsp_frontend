@@ -234,10 +234,23 @@
   text-align: center;
 }
 
+.SectionFive button{
+  height: 6vh;
+}
 
 .Home hr{
   border: 0;
   height: 3px;
   background-color: #45cdb7;
   padding: 0;
+}
+
+@media (max-height: 462px){
+  .Jumbotron{
+    height: 370px;
+    padding-top: 74px;
+  }
+  .SectionFive button{
+    height: 38.5px;
+  }
 }

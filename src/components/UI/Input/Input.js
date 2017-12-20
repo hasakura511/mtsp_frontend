@@ -39,8 +39,11 @@ const input = props => {
           onChange={props.inputChangeHandler}
         >
           {props.elementConfig.options.map(option => (
-            <option key={"op" + option.value} value={option.value}>
-              {option.displayValue}
+            <option
+              key={"op" + props.label + (option.value || option)}
+              value={option.value || option}
+            >
+              {option.displayValue || option.value || option}
             </option>
           ))}
         </select>
@@ -58,7 +61,7 @@ const input = props => {
       );
       break;
   }
-  
+
   return (
     <div className={classes.Input} style={props.style}>
       <label className={classes.Label}>{props.label}</label>

@@ -9,6 +9,7 @@ import axios from "axios";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import { Redirect } from "react-router-dom";
+import SocialAuth from "./SocialAuth/SocialAuth";
 //sign up or sign in
 
 class Auth extends Component {
@@ -17,7 +18,139 @@ class Auth extends Component {
 
     this.state = {
       controls: {
+        title: {
+          label: "Title",
+          elementType: "select",
+          elementConfig: {
+            options: ["Mr.", "Ms.", "Mrs.", "Miss"]
+          },
+          validation: {
+            required: true
+          },
+          valid: false,
+          touched: false,
+          visible: true
+        },
+
+        firstName: {
+          label: "First Name",
+          elementType: "input",
+          elementConfig: {
+            type: "text",
+            placeholder: ""
+          },
+          value: "",
+          validation: {
+            required: true,
+            pattern: /^[A-Za-z]+$/
+          },
+          visible: true,
+          valid: false,
+          touched: false
+        },
+
+        surname: {
+          elementType: "input",
+          elementConfig: {
+            type: "text",
+            placeholder: ""
+          },
+          label: "Surname",
+          validation: {
+            required: true,
+            pattern: /^[A-Za-z]+$/
+          },
+          valid: false,
+          value: "",
+          touched: false,
+          visible: true
+        },
+
+        houseNumber: {
+          elementType: "input",
+          elementConfig: {
+            type: "text",
+            placeholder: "",
+            isHalf: true
+          },
+          label: "House Number / Street",
+          validation: {
+            required: true
+          },
+          valid: false,
+          value: "",
+          touched: false,
+          visible: true
+        },
+
+        street: {
+          elementType: "input",
+          elementConfig: {
+            type: "text",
+            placeholder: "Street",
+            isHalf: true
+          },
+          validation: {
+            required: true
+          },
+          valid: false,
+          value: "",
+          touched: false,
+          visible: true
+        },
+
+        city: {
+          elementType: "input",
+          elementConfig: {
+            type: "text",
+            placeholder: "",
+            isHalf: true
+          },
+          label: "City / Postccode",
+          validation: {
+            required: true
+          },
+          valid: false,
+          value: "",
+          touched: false,
+          visible: true
+        },
+
+        postcode: {
+          elementType: "input",
+          elementConfig: {
+            type: "text",
+            placeholder: "Postcode",
+            isHalf: true
+          },
+          validation: {
+            required: true
+          },
+          valid: false,
+          value: "",
+          touched: false,
+          visible: true
+        },
+
+        phoneNumber: {
+          label: "Phone Number",
+          elementType: "input",
+          elementConfig: {
+            type: "text",
+            placeholder: ""
+          },
+          validation: {
+            required: true,
+            pattern: /^(\+\d{1,3})*\s?\d{10}$/
+          },
+          valid: false,
+          value: "",
+          touched: false,
+          visible: true
+        },
+
         email: {
+          label: "Email",
           elementType: "input",
           elementConfig: {
             type: "email",
@@ -29,14 +162,15 @@ class Auth extends Component {
             isEmail: true
           },
           valid: false,
-          touched: false
+          touched: false,
+          visible: true
         },
 
         password: {
+          label: "Password",
           elementType: "input",
           elementConfig: {
-            type: "password",
-            placeholder: "Password"
+            type: "password"
           },
           value: "",
           validation: {
@@ -44,7 +178,24 @@ class Auth extends Component {
             minLength: 6
           },
           valid: false,
-          touched: false
+          touched: false,
+          visible: true
+        },
+
+        rePassword: {
+          label: "Confirm Password",
+          elementType: "input",
+          elementConfig: {
+            type: "password"
+          },
+          value: "",
+          validation: {
+            required: true,
+            minLength: 6
+          },
+          valid: false,
+          touched: false,
+          visible: true
         }
       },
       isSignup: true,
@@ -139,34 +290,38 @@ class Auth extends Component {
       <Redirect to={this.props.authRedirect} />
     ) : (
       <div className={classes.Auth}>
-        <form onSubmit={this.onFormSubmit}>
-          {formArr.map(formElem => (
-            <Input
-              key={formElem.id}
-              elementType={formElem.elementType}
-              elementConfig={formElem.elementConfig}
-              value={formElem.value}
-              inputChangeHandler={event =>
-                this.inputChangeHandler(event, formElem.id)
-              }
-              valid={formElem.valid || !formElem.touched}
-            />
-          ))}
-          <span>
-            <button disabled={!this.state.formIsValid} type="submit">
-              Continue
+        <div className={classes.Left}>
+          <form onSubmit={this.onFormSubmit}>
+            {formArr.map(formElem => (
+              <Input
+                key={formElem.id}
+                elementType={formElem.elementType}
+                elementConfig={formElem.elementConfig}
+                value={formElem.value}
+                inputChangeHandler={event =>
+                  this.inputChangeHandler(event, formElem.id)
+                }
+                valid={formElem.valid || !formElem.touched}
+                label={formElem.label}
+              />
+            ))}
+            <span>
+              <button disabled={!this.state.formIsValid} type="submit">
+                Continue
+              </button>
+              <button onClick={this.switchAuthModeHandler} type="button">
+                {this.state.isSignup ? `Switch to signin` : `Switch to signup`}
+              </button>
+            </span>
+            <br />
+            <br />
+            <br />
+            <button type="button" onClick={this.addToasterClickHandler}>
+              Test Toaster
             </button>
-            <button onClick={this.switchAuthModeHandler} type="button">
-              {this.state.isSignup ? `Switch to signin` : `Switch to signup`}
-            </button>
-          </span>
-          <br />
-          <br />
-          <br />
-          <button type="button" onClick={this.addToasterClickHandler}>
-            Test Toaster
-          </button>
-        </form>
+          </form>
+        </div>
+        <SocialAuth/>
       </div>
     );
   }

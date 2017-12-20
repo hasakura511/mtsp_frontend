@@ -79,7 +79,6 @@ const HomeData = {
         (wImg = (innerWidth - 2) / 1.07),
           (hImg = 450 * (innerWidth - 2) / (1256 * 1.07));
       }
-      console.log(wImg, hImg);
       return {
         start: {
           x: 750 / 1256 * wImg,
@@ -145,8 +144,7 @@ export const Jumbotron = (
     </div>
     <LRButton
       width="30%"
-      height="6vh"
-      // rad="3vh"
+      height="12%"
       style={{
         backgroundColor: "#0fc6a7",
         borderColor: "#31c5a8",
@@ -289,8 +287,6 @@ export const SectionFive = (
       <Link to="/auth">
         <LRButton
           width="60%"
-          height="6vh"
-          // rad="3vh"
           style={{
             backgroundColor: "#1c2791",
             borderColor: "#1c2791",
