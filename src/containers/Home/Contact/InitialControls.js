@@ -290,7 +290,7 @@ export default {
     validation: {
       cantBe: 'select'
     },
-    valid: true,
+    valid: false,
     touched: false
   },
   riskAssets: {

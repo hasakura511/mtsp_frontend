@@ -13,7 +13,7 @@ const toolbar = props => {
         <i className="fa fa-bars fa-2x" />
       </button>
       <Logo />
-      <DropDown name={props.firstName} items={['1','2','3']}/>
+      {/* <DropDown name={props.firstName} items={['1','2','3']}/> */}
       <nav>
         <NavigationItems links={props.links} />
       </nav>
