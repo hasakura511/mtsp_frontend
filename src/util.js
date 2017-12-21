@@ -64,3 +64,13 @@ export const toUnderScore = str =>
   str
     .replace(/[a-z][A-Z]/g, $1 => $1[0] + "_" + $1[1].toLowerCase())
     .replace("fx", "FX");
+
+export const andify = arr => {
+  let str = arr.slice(0, -1).join(', ');
+  if(arr.length > 1){
+    str += ' and ' + arr[arr.length - 1];
+  }else{
+    str += arr[0];
+  }
+  return str;
+};

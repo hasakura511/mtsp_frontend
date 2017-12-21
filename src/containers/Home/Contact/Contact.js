@@ -11,7 +11,8 @@ import Spinner from "../../../components/UI/Spinner/Spinner";
 import { connect } from "react-redux";
 import * as actions from "../../../store/actions";
 import initialControls from "./InitialControls";
-import { toUnderScore } from "../../../util";
+import { toUnderScore, andify } from "../../../util";
+import protectedComponent from "../../../hoc/ProtectedComponent/ProtectedComponent";
 
 const Aux = props => props.children;
 
@@ -47,36 +48,58 @@ class Contact extends Component {
       formIsValid: false,
       loading: true,
       fetched: false,
-      error: false
+      error: false,
+      submitTitle: ""
     };
   }
 
-  componentDidMount() {
-    if (this.state.loading && !this.state.fetched) {
-      axios
-        .get("/utility/feedback/")
-        .then(response => {
-          const controls = { ...initialControls };
-          for (let key in controls) {
-            if (key.indexOf("experience") !== -1) {
-              controls[key].elementConfig.options = toOptionsList(
-                response["experience"]
-              );
-            }
-          }
-          controls.riskAssets.elementConfig.options = toOptionsList(
-            response["risk_assets"]
-          );
-          this.setState({ controls: controls, loading: false, fetched: true });
-        })
-        .catch(() => {
-          this.setState({ error: true, loading: false });
-          this.props.addTimedToaster({
-            id: "contact-us-error",
-            text: "Server error, please wait till we fix."
-          });
-        });
+  setSubmitTitle() {
+    const errors = [];
+    for (let key in this.state.controls) {
+      if (!this.state.controls[key].valid) {
+        errors.push(key);
+      }
     }
+    this.setState({
+      submitTitle: errors.length
+        ? "Please fill valid " + andify(errors)
+        : "Click to send message"
+    });
+  }
+
+  componentWillMount() {
+    this.setSubmitTitle();
+  }
+
+  componentDidMount() {
+    // axios
+    //   .get("/utility/feedback/")
+    //   .then(response => {
+    //     const controls = { ...initialControls };
+    //     for (let key in controls) {
+    //       if (key.indexOf("experience") !== -1) {
+    //         controls[key].elementConfig.options = toOptionsList(
+    //           response["experience"]
+    //         );
+    //       }
+    //     }
+    //     controls.riskAssets.elementConfig.options = toOptionsList(
+    //       response["risk_assets"]
+    //     );
+    //     this.setState({ controls: controls, loading: false, fetched: true });
+    //   })
+    //   .catch(() => {
+    //     this.setState({ error: true, loading: false });
+    //     this.props.addTimedToaster({
+    //       id: "contact-us-error",
+    //       text: "Server error, please wait till we fix."
+    //     });
+    //   });
+    this.setState({
+      controls: initialControls,
+      loading: false,
+      fetched: true
+    });
   }
 
   inputChangeHandler = (event, identifier) => {
@@ -96,6 +119,7 @@ class Contact extends Component {
       }
       return { controls: controls, formIsValid: formIsValid };
     });
+    this.setSubmitTitle();
   };
 
   checkValidity(value, rules) {
@@ -133,23 +157,31 @@ class Contact extends Component {
       }, {});
     feedback["first_name"] = nameArr[0];
     feedback["last_name"] = nameArr[1];
-    axios
-      .post("/utility/feedback/", feedback)
-      .then(() => {
-        this.setState({ loading: false });
-        this.props.history.goBack();
-        this.props.addTimedToaster({
-          id: "contact-us",
-          text: "Message successfully sent"
-        });
-      })
-      .catch(err => {
-        this.setState({ error: true, loading: false });
-        this.props.addTimedToaster({
-          id: "contact-us-error",
-          text: err.message || "Server error, please wait till we fix."
-        });
+    setTimeout(() => {
+      this.setState({ loading: false });
+      this.props.history.replace("/");
+      this.props.addTimedToaster({
+        id: "contact-us",
+        text: "Message successfully sent"
       });
+    }, 4000);
+    // axios
+    //   .post("/utility/feedback/", feedback)
+    //   .then(() => {
+    //     this.setState({ loading: false });
+    //     this.props.history.goBack();
+    //     this.props.addTimedToaster({
+    //       id: "contact-us",
+    //       text: "Message successfully sent"
+    //     });
+    //   })
+    //   .catch(err => {
+    //     this.setState({ error: true, loading: false });
+    //     this.props.addTimedToaster({
+    //       id: "contact-us-error",
+    //       text: err.message || "Server error, please wait till we fix."
+    //     });
+    //   });
   };
 
   render() {
@@ -184,7 +216,11 @@ class Contact extends Component {
                 />
               ))}
               <span>
-                <button disabled={!this.state.formIsValid} type="submit">
+                <button
+                  disabled={!this.state.formIsValid}
+                  type="submit"
+                  title={this.state.submitTitle}
+                >
                   Send Feedback
                 </button>
               </span>
@@ -201,12 +237,14 @@ Contact.propTypes = {
   history: PropTypes.object.isRequired,
   addTimedToaster: PropTypes.func.isRequired
 };
-export default withErrorHandler(
-  withRouter(
-    connect(null, dispatch => ({
-      addTimedToaster: toaster =>
-        dispatch(actions.addTimedToaster(toaster, 7000))
-    }))(Contact)
-  ),
-  axios
+export default protectedComponent(
+  withErrorHandler(
+    withRouter(
+      connect(null, dispatch => ({
+        addTimedToaster: toaster =>
+          dispatch(actions.addTimedToaster(toaster, 7000))
+      }))(Contact)
+    ),
+    axios
+  )
 );

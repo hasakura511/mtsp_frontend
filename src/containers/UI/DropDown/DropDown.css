@@ -1,0 +1,12 @@
+.Hidden{
+  display: none;
+}
+
+.Icon{
+  font-weight: bold;
+  transform: rotate(0deg);
+}
+
+.Icon.Open{
+  transform: rotate(180deg);
+}

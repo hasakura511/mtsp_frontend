@@ -51,19 +51,17 @@ class Extras extends Component {
   }
 
   componentDidMount() {
-    if (this.state.loading && !this.error) {
-      axios
-        .get(this.props.location.pathname + ".json")
-        .then(response => {
-          this.setState({
-            loading: false,
-            text: response.data
-          });
-        })
-        .catch(() => {
-          this.setState({ error: true });
+    axios
+      .get(this.props.location.pathname + ".json")
+      .then(response => {
+        this.setState({
+          loading: false,
+          text: response.data
         });
-    }
+      })
+      .catch(() => {
+        this.setState({ error: true });
+      });
   }
 
   render() {

@@ -457,8 +457,10 @@ export default {
       placeholder: "Your Feedback"
     },
     value: "",
-    validation: {},
-    valid: true,
+    validation: {
+      required: true
+    },
+    valid: false,
     touched: false
   }
 }
