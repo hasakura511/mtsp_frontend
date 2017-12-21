@@ -36,7 +36,7 @@ const toOptionsList = obj => {
       displayValue: key
     });
   }
-  return arr;
+  return arr.sort((x, y) => x.value > y.value);
 };
 
 class Contact extends Component {
@@ -59,12 +59,12 @@ class Contact extends Component {
       if (!this.state.controls[key].valid) {
         errors.push(key);
       }
+      this.setState({
+        submitTitle: errors.length
+          ? "Please fill valid " + andify(errors)
+          : "Click to send message"
+      });
     }
-    this.setState({
-      submitTitle: errors.length
-        ? "Please fill valid " + andify(errors)
-        : "Click to send message"
-    });
   }
 
   componentWillMount() {
@@ -72,34 +72,29 @@ class Contact extends Component {
   }
 
   componentDidMount() {
-    // axios
-    //   .get("/utility/feedback/")
-    //   .then(response => {
-    //     const controls = { ...initialControls };
-    //     for (let key in controls) {
-    //       if (key.indexOf("experience") !== -1) {
-    //         controls[key].elementConfig.options = toOptionsList(
-    //           response["experience"]
-    //         );
-    //       }
-    //     }
-    //     controls.riskAssets.elementConfig.options = toOptionsList(
-    //       response["risk_assets"]
-    //     );
-    //     this.setState({ controls: controls, loading: false, fetched: true });
-    //   })
-    //   .catch(() => {
-    //     this.setState({ error: true, loading: false });
-    //     this.props.addTimedToaster({
-    //       id: "contact-us-error",
-    //       text: "Server error, please wait till we fix."
-    //     });
-    //   });
-    this.setState({
-      controls: initialControls,
-      loading: false,
-      fetched: true
-    });
+    axios
+      .get("/utility/choices/")
+      .then(response => {
+        const controls = { ...initialControls };
+        for (let key in controls) {
+          if (key.indexOf("Experience") !== -1) {
+            controls[key].elementConfig.options = toOptionsList(
+              response.data["experience"]
+            );
+          }
+        }
+        controls.riskAssets.elementConfig.options = toOptionsList(
+          response.data["risk_assets"]
+        );
+        this.setState({ controls: controls, loading: false, fetched: true });
+      })
+      .catch(() => {
+        this.setState({ error: true, loading: false });
+        this.props.addTimedToaster({
+          id: "contact-us-error",
+          text: "Server error, please wait till we fix."
+        });
+      });
   }
 
   inputChangeHandler = (event, identifier) => {
@@ -140,6 +135,10 @@ class Contact extends Component {
     if (rules.isEmail) {
       const pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       isValid = pattern.test(value.trim()) && isValid;
+    }
+
+    if (rules.cantBe) {
+      isValid = value.toLowerCase() !== rules.cantBe.toLowerCase() && isValid;
     }
 
     return isValid;

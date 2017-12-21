@@ -243,7 +243,8 @@ const countries = {
   EH: "Western Sahara",
   YE: "Yemen",
   ZM: "Zambia",
-  ZW: "Zimbabwe"
+  ZW: "Zimbabwe",
+  select: "Select"
 };
 
 export default {
@@ -285,8 +286,10 @@ export default {
         displayValue: countries[key]
       }))
     },
-    value: "US",
-    validation: {},
+    value: "select",
+    validation: {
+      cantBe: 'select'
+    },
     valid: true,
     touched: false
   },
