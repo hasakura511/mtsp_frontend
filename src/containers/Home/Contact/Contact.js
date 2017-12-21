@@ -54,7 +54,7 @@ class Contact extends Component {
   componentDidMount() {
     if (this.state.loading && !this.state.fetched) {
       axios
-        .get("/utility/feedback/")
+        .get("/utility/choices/")
         .then(response => {
           const controls = { ...initialControls };
           for (let key in controls) {
