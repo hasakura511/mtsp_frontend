@@ -5,12 +5,13 @@ import FormatModal from "../../../components/UI/FormatModal/FormatModal";
 import Input from "../../../components/UI/Input/Input";
 import { clone } from "../../../util";
 import { withRouter } from "react-router-dom";
-import axios from "axios";
+import axios from "../../../axios-gsm";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
 import Spinner from "../../../components/UI/Spinner/Spinner";
 import { connect } from "react-redux";
 import * as actions from "../../../store/actions";
 import initialControls from "./InitialControls";
+import { toUnderScore } from "../../../util";
 
 const Aux = props => props.children;
 
@@ -26,6 +27,17 @@ const disclaimer = (
   </Aux>
 );
 
+const toOptionsList = obj => {
+  const arr = [];
+  for (let key in obj) {
+    arr.push({
+      value: obj[key],
+      displayValue: key
+    });
+  }
+  return arr;
+};
+
 class Contact extends Component {
   constructor(props) {
     super(props);
@@ -33,8 +45,38 @@ class Contact extends Component {
     this.state = {
       controls: initialControls,
       formIsValid: false,
-      loading: false
+      loading: true,
+      fetched: false,
+      error: false
     };
+  }
+
+  componentDidMount() {
+    if (this.state.loading && !this.state.fetched) {
+      axios
+        .get("/utility/feedback/")
+        .then(response => {
+          const controls = { ...initialControls };
+          for (let key in controls) {
+            if (key.indexOf("experience") !== -1) {
+              controls[key].elementConfig.options = toOptionsList(
+                response["experience"]
+              );
+            }
+          }
+          controls.riskAssets.elementConfig.options = toOptionsList(
+            response["risk_assets"]
+          );
+          this.setState({ controls: controls, loading: false, fetched: true });
+        })
+        .catch(() => {
+          this.setState({ error: true, loading: false });
+          this.props.addTimedToaster({
+            id: "contact-us-error",
+            text: "Server error, please wait till we fix."
+          });
+        });
+    }
   }
 
   inputChangeHandler = (event, identifier) => {
@@ -83,21 +125,31 @@ class Contact extends Component {
     event.preventDefault();
     this.setState({ loading: true });
     const nameArr = this.state.controls.name.value.split(" ");
-    setTimeout(() => {
-      this.setState({ loading: false });
-      this.props.history.replace("/");
-      this.props.addTimedToaster({
-        id: "contact-us",
-        text: "Message successfully sent"
+    const feedback = Object.keys(this.state.controls)
+      .filter(key => key !== "name")
+      .reduce((acc, curr) => {
+        acc[toUnderScore(curr)] = this.state.controls[curr].value;
+        return acc;
+      }, {});
+    feedback["first_name"] = nameArr[0];
+    feedback["last_name"] = nameArr[1];
+    axios
+      .post("/utility/feedback/", feedback)
+      .then(() => {
+        this.setState({ loading: false });
+        this.props.history.goBack();
+        this.props.addTimedToaster({
+          id: "contact-us",
+          text: "Message successfully sent"
+        });
+      })
+      .catch(err => {
+        this.setState({ error: true, loading: false });
+        this.props.addTimedToaster({
+          id: "contact-us-error",
+          text: err.message || "Server error, please wait till we fix."
+        });
       });
-    }, 2000);
-    // axios
-    //   .post("", { first_name: nameArr[0], last_name: nameArr[1] })
-    //   .then(() => {
-    //     this.setState({ loading: false });
-    //     this.props.history.goBack();
-    //     this.props.addTimedToaster({id: 'contact-us', text: 'Message successfully sent'});
-    //   }).catch();
   };
 
   render() {
@@ -113,7 +165,7 @@ class Contact extends Component {
         <div className={classes.Contact}>
           {this.state.loading ? (
             <Spinner />
-          ) : (
+          ) : this.state.error ? null : (
             <form onSubmit={this.onFormSubmit}>
               {formArr.map(formElem => (
                 <Input
@@ -153,7 +205,7 @@ export default withErrorHandler(
   withRouter(
     connect(null, dispatch => ({
       addTimedToaster: toaster =>
-        dispatch(actions.addTimedToaster(toaster, 3000))
+        dispatch(actions.addTimedToaster(toaster, 7000))
     }))(Contact)
   ),
   axios

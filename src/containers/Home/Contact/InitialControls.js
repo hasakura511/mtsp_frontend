@@ -322,7 +322,7 @@ export default {
     valid: true,
     touched: false
   },
-  stockTradingExp: {
+  stockTradingExperience: {
     elementType: "select",
     elementConfig: {
       options: [
@@ -354,7 +354,7 @@ export default {
     valid: true,
     touched: false
   },
-  bondTradingExp: {
+  bondTradingExperience: {
     elementType: "select",
     elementConfig: {
       options: [
@@ -386,7 +386,7 @@ export default {
     valid: true,
     touched: false
   },
-  futuresTradingExp: {
+  futuresTradingExperience: {
     elementType: "select",
     elementConfig: {
       options: [
@@ -418,7 +418,7 @@ export default {
     valid: true,
     touched: false
   },
-  fxTradingExp: {
+  fxTradingExperience: {
     elementType: "select",
     elementConfig: {
       options: [
@@ -450,7 +450,7 @@ export default {
     valid: true,
     touched: false
   },
-  message: {
+  feedback: {
     elementType: "textarea",
     elementConfig: {
       type: "text",

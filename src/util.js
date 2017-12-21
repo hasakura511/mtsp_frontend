@@ -56,3 +56,11 @@ export const clone = obj => {
   }
   return o;
 };
+
+export const toCamel = str =>
+  str.replace(/(_|\-[a-z])/g, $1 => $1.toUpperCase().replace(/_|\-/, ""));
+
+export const toUnderScore = str =>
+  str
+    .replace(/[a-z][A-Z]/g, $1 => $1[0] + "_" + $1[1].toLowerCase())
+    .replace("fx", "FX");

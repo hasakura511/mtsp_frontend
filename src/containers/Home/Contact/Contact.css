@@ -8,6 +8,10 @@
   box-sizing: border-box;
 } */
 
+.Contact{
+  min-height: 40vh;
+}
+
 .Contact form span{
   display: flex;
   justify-content: space-around;
