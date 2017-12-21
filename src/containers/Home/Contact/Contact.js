@@ -236,14 +236,23 @@ Contact.propTypes = {
   history: PropTypes.object.isRequired,
   addTimedToaster: PropTypes.func.isRequired
 };
-export default protectedComponent(
-  withErrorHandler(
-    withRouter(
-      connect(null, dispatch => ({
-        addTimedToaster: toaster =>
-          dispatch(actions.addTimedToaster(toaster, 7000))
-      }))(Contact)
-    ),
-    axios
-  )
-);
+// export default protectedComponent(
+//   withErrorHandler(
+//     withRouter(
+//       connect(null, dispatch => ({
+//         addTimedToaster: toaster =>
+//           dispatch(actions.addTimedToaster(toaster, 7000))
+//       }))(Contact)
+//     ),
+//     axios
+//   )
+// );
+export default withErrorHandler(
+  withRouter(
+    connect(null, dispatch => ({
+      addTimedToaster: toaster =>
+        dispatch(actions.addTimedToaster(toaster, 7000))
+    }))(Contact)
+  ),
+  axios
+)
