@@ -1,12 +1,57 @@
-.Hidden{
-  display: none;
-}
 
 .Icon{
   font-weight: bold;
   transform: rotate(0deg);
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
 .Icon.Open{
   transform: rotate(180deg);
+}
+
+.DropDown{
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  padding: 4px;
+  /* background-color: #fafafa; */
+  position: absolute;
+  top: 100px;
+}
+
+.DropDown ul{
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0px;
+  margin: 0px;
+  width: 100%;
+  list-style: none;
+}
+
+.DropDown .Items{
+  width: 100%;
+  height: 100px;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  background-color: #fcfcfc;
+}
+
+.Items.Hide{
+  height: 0px;
+  -webkit-transition: height 0.3s ease-in-out;
+  -moz-transition: height 0.3s ease-in-out;
+  transition: height 0.3s ease-in-out;
+}
+
+
+
+.DropDown button{
+  display: block;
+  width: 100%;
 }

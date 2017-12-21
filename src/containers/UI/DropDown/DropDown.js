@@ -11,9 +11,18 @@ class DropDown extends Component {
     };
   }
 
+  dropDownBlurHandler = () => {
+    this.setState({ show: false });
+  };
+
+  dropDownClickHandler = () => {
+    this.setState(prev => ({ show: !prev.show }));
+  };
+
   render() {
-    let iconClass = "fa fa-caret-down " + classes.Icon,  displayClass = classes.Hidden;
-    if(this.state.show){
+    let iconClass = "fa fa-caret-down " + classes.Icon,
+      displayClass = classes.Hide;
+    if (this.state.show) {
       iconClass += " " + classes.Open;
       displayClass = "";
     }
@@ -24,10 +33,14 @@ class DropDown extends Component {
           onBlur={this.dropDownBlurHandler}
         >
           Menu
-          <i className={iconClass}/>
+          <i className={iconClass} />
         </button>
         <div className={classes.Items + " " + displayClass}>
-          <ul>{this.props.items.map(item => <li key={item.id}>{item}</li>)}</ul>
+          <ul>
+            {this.props.items.map(item => (
+              <li key={item.id || item}>{item}</li>
+            ))}
+          </ul>
         </div>
       </div>
     );
@@ -38,3 +51,5 @@ DropDown.propTypes = {
   items: PropTypes.array.isRequired,
   name: PropTypes.string.isRequired
 };
+
+export default DropDown;
