@@ -35,7 +35,7 @@ const toOptionsList = obj => {
       displayValue: key
     });
   }
-  return arr;
+  return arr.sort((x, y) => x.value > y.value);
 };
 
 class Contact extends Component {
@@ -58,14 +58,14 @@ class Contact extends Component {
         .then(response => {
           const controls = { ...initialControls };
           for (let key in controls) {
-            if (key.indexOf("experience") !== -1) {
+            if (key.indexOf("Experience") !== -1) {
               controls[key].elementConfig.options = toOptionsList(
-                response["experience"]
+                response.data["experience"]
               );
             }
           }
           controls.riskAssets.elementConfig.options = toOptionsList(
-            response["risk_assets"]
+            response.data["risk_assets"]
           );
           this.setState({ controls: controls, loading: false, fetched: true });
         })
@@ -116,6 +116,10 @@ class Contact extends Component {
     if (rules.isEmail) {
       const pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       isValid = pattern.test(value.trim()) && isValid;
+    }
+
+    if (rules.cantBe) {
+      isValid = value.toLowerCase() !== rules.cantBe.toLowerCase() && isValid;
     }
 
     return isValid;
