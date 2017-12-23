@@ -58,14 +58,16 @@ class Contact extends Component {
       if (!controls[key].valid) {
         errors.push(key);
       }
-      return errors.length
-        ? "Please fill valid " + andify(errors)
-        : "Click to send message";
     }
+    return errors.length
+      ? "Please fill valid " + andify(errors)
+      : "Click to send message";
   }
 
   componentWillMount() {
-    this.setState({ submitTitle: this.getSubmitTitle({ ...this.state.controls }) });
+    this.setState({
+      submitTitle: this.getSubmitTitle({ ...this.state.controls })
+    });
   }
 
   componentDidMount() {
@@ -112,7 +114,11 @@ class Contact extends Component {
       for (let key in controls) {
         formIsValid = formIsValid && controls[key].valid;
       }
-      return { controls: controls, formIsValid: formIsValid, submitTitle: this.getSubmitTitle(controls)};
+      return {
+        controls: controls,
+        formIsValid: formIsValid,
+        submitTitle: this.getSubmitTitle(controls)
+      };
     });
   };
 
