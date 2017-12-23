@@ -18,7 +18,7 @@ if (
   process.env.NODE_ENV === "development" ||
   process.env.REACT_APP_BUILD_ENV === "staging"
 ) {
-  apiUrl = `http://localhost:8000`;
+  apiUrl = `http://app.staging.globalsystemsmanagement.net`;
   googleClientId =
     "190521085214-bora8fjbnol1q0sa63fo6e5tqe1b8e5l.apps.googleusercontent.com";
   facebookAppId = "1633545903429163";

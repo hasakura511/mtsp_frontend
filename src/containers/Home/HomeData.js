@@ -20,7 +20,7 @@ import scrollWrap from "../../hoc/scrollWrap/scrollWrap";
 const HomeData = {
   sectionOne: {
     backgroundFilter: backgroundFilter,
-    jumbotronHeading: "Ever had fun trading futures markets?",
+    jumbotronHeading: "Ever had fun trading futures contracts?",
     jumbotronButtonText: "TRY DEMO BELOW >",
     background: background
   },
