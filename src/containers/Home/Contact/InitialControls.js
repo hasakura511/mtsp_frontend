@@ -244,7 +244,7 @@ const countries = {
   YE: "Yemen",
   ZM: "Zambia",
   ZW: "Zimbabwe",
-  select: "Select"
+  select: "Select Country"
 };
 
 export default {
@@ -260,7 +260,8 @@ export default {
       required: true
     },
     valid: false,
-    touched: false
+    touched: false,
+    errorMessage: "Required"
   },
   email: {
     elementType: "input",
@@ -275,7 +276,8 @@ export default {
       isEmail: true
     },
     valid: false,
-    touched: false
+    touched: false,
+    errorMessage: "Please enter a valid email."
   },
   country: {
     elementType: "select",
@@ -288,10 +290,11 @@ export default {
     },
     value: "select",
     validation: {
-      cantBe: 'select'
+      cantBe: "select"
     },
     valid: false,
-    touched: false
+    touched: false,
+    errorMessage: "Required"
   },
   riskAssets: {
     elementType: "select",
@@ -353,7 +356,7 @@ export default {
     },
     value: "",
     validation: {},
-    label: "Stock Trading Txperience",
+    label: "Stock Trading Experience",
     valid: true,
     touched: false
   },
@@ -457,13 +460,14 @@ export default {
     elementType: "textarea",
     elementConfig: {
       type: "text",
-      placeholder: "Your Feedback"
+      placeholder: "Your Feedback is required"
     },
     value: "",
     validation: {
       required: true
     },
     valid: false,
-    touched: false
+    touched: false,
+    errorMessage: "Required"
   }
-}
+};

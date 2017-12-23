@@ -12,7 +12,6 @@ import { connect } from "react-redux";
 import * as actions from "../../../store/actions";
 import initialControls from "./InitialControls";
 import { toUnderScore, andify } from "../../../util";
-import protectedComponent from "../../../hoc/ProtectedComponent/ProtectedComponent";
 
 const Aux = props => props.children;
 
@@ -53,22 +52,20 @@ class Contact extends Component {
     };
   }
 
-  setSubmitTitle() {
+  getSubmitTitle(controls) {
     const errors = [];
-    for (let key in this.state.controls) {
-      if (!this.state.controls[key].valid) {
+    for (let key in controls) {
+      if (!controls[key].valid) {
         errors.push(key);
       }
-      this.setState({
-        submitTitle: errors.length
-          ? "Please fill valid " + andify(errors)
-          : "Click to send message"
-      });
+      return errors.length
+        ? "Please fill valid " + andify(errors)
+        : "Click to send message";
     }
   }
 
   componentWillMount() {
-    this.setSubmitTitle();
+    this.setState({ submitTitle: this.getSubmitTitle({ ...this.state.controls }) });
   }
 
   componentDidMount() {
@@ -81,11 +78,14 @@ class Contact extends Component {
             controls[key].elementConfig.options = toOptionsList(
               response.data["experience"]
             );
+            controls[key].value = controls[key].elementConfig.options[0].value;
           }
         }
         controls.riskAssets.elementConfig.options = toOptionsList(
           response.data["risk_assets"]
         );
+        controls.riskAssets.value =
+          controls.riskAssets.elementConfig.options[0].value;
         this.setState({ controls: controls, loading: false, fetched: true });
       })
       .catch(() => {
@@ -112,9 +112,8 @@ class Contact extends Component {
       for (let key in controls) {
         formIsValid = formIsValid && controls[key].valid;
       }
-      return { controls: controls, formIsValid: formIsValid };
+      return { controls: controls, formIsValid: formIsValid, submitTitle: this.getSubmitTitle(controls)};
     });
-    this.setSubmitTitle();
   };
 
   checkValidity(value, rules) {
@@ -156,31 +155,32 @@ class Contact extends Component {
       }, {});
     feedback["first_name"] = nameArr[0];
     feedback["last_name"] = nameArr[1];
-    setTimeout(() => {
-      this.setState({ loading: false });
-      this.props.history.replace("/");
-      this.props.addTimedToaster({
-        id: "contact-us",
-        text: "Message successfully sent"
-      });
-    }, 4000);
-    // axios
-    //   .post("/utility/feedback/", feedback)
-    //   .then(() => {
-    //     this.setState({ loading: false });
-    //     this.props.history.goBack();
-    //     this.props.addTimedToaster({
-    //       id: "contact-us",
-    //       text: "Message successfully sent"
-    //     });
-    //   })
-    //   .catch(err => {
-    //     this.setState({ error: true, loading: false });
-    //     this.props.addTimedToaster({
-    //       id: "contact-us-error",
-    //       text: err.message || "Server error, please wait till we fix."
-    //     });
+    // setTimeout(() => {
+    //   this.setState({ loading: false });
+    //   this.props.history.replace("/");
+    //   this.props.addTimedToaster({
+    //     id: "contact-us",
+    //     text: "Message successfully sent"
     //   });
+    // }, 4000);
+    console.log(JSON.stringify(feedback));
+    axios
+      .post("/utility/feedback/", feedback)
+      .then(() => {
+        this.setState({ loading: false });
+        this.props.history.goBack();
+        this.props.addTimedToaster({
+          id: "contact-us",
+          text: "Message successfully sent"
+        });
+      })
+      .catch(err => {
+        this.setState({ error: true, loading: false });
+        this.props.addTimedToaster({
+          id: "contact-us-error",
+          text: err.message || "Server error, please wait till we fix."
+        });
+      });
   };
 
   render() {
@@ -212,6 +212,7 @@ class Contact extends Component {
                   style={{
                     width: formElem.elementType === "textarea" ? "100%" : "50%"
                   }}
+                  errorMessage={formElem.errorMessage}
                 />
               ))}
               <span>
@@ -255,4 +256,4 @@ export default withErrorHandler(
     }))(Contact)
   ),
   axios
-)
+);

@@ -92,11 +92,6 @@ class Auth extends Component {
       isValid = value.trim().length <= rules.maxLength && isValid;
     }
 
-    if (rules.isEmail) {
-      const pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      isValid = pattern.test(value.trim()) && isValid;
-    }
-
     if (rules.pattern) {
       isValid = rules.pattern.test(value.trim()) && isValid;
     }
@@ -139,14 +134,6 @@ class Auth extends Component {
     );
   };
 
-  addToasterClickHandler = () => {
-    const toaster = {
-      id: (Math.random() * 10).toFixed(3),
-      text: "A new toaster component"
-    };
-    this.props.addTimedToaster(toaster);
-  };
-
   render() {
     const formArr = [],
       isRedirect =
@@ -186,6 +173,7 @@ class Auth extends Component {
                     this.inputChangeHandler(event, formElem.id)
                   }
                   valid={formElem.valid || !formElem.touched}
+                  errorMessage={formElem.errorMessage}
                   label={formElem.label}
                   style={{ width: formElem.isHalf ? "50%" : "100%" }}
                 />
@@ -197,7 +185,7 @@ class Auth extends Component {
               </span>
             </form>
           </div>
-          <SocialAuth isSignup={this.state.isSignup} />
+          <SocialAuth isSignup={this.state.isSignup} addTimedToaster={this.props.addTimedToaster} />
         </div>
       </Aux>
     );

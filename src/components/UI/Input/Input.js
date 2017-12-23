@@ -66,6 +66,7 @@ const input = props => {
     <div className={classes.Input} style={props.style}>
       <label className={classes.Label}>{props.label}</label>
       {inputElement}
+      {!props.valid && props.errorMessage ? <p>{props.errorMessage}</p> : null}
     </div>
   );
 };
@@ -77,7 +78,9 @@ input.propTypes = {
   value: PropTypes.string.isRequired,
   inputChangeHandler: PropTypes.func.isRequired,
   valid: PropTypes.bool,
-  style: PropTypes.object
+  style: PropTypes.object,
+  errorMessage: PropTypes.string,
+  touched: PropTypes.bool
 };
 
 export default input;

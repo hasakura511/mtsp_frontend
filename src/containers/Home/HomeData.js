@@ -1,5 +1,8 @@
 import crosshairIcon from "../../assets/images/crosshair-icon.png";
 import faceIcon from "../../assets/images/face-icon.png";
+import pizzaIcon from "../../assets/images/pizza-icon.png";
+import cogIcon from "../../assets/images/cog-icon.png";
+import dollarIcon from "../../assets/images/dollar-icon.png";
 import signalsIcon from "../../assets/images/signals-icon.png";
 import sectionThreeBkg from "../../assets/images/section3-bkg.png";
 import sectionThreeBg from "../../assets/images/section3-bg.png";
@@ -98,21 +101,21 @@ const HomeData = {
     cards: [
       {
         id: "sec4-card1",
-        icon: faceIcon,
+        icon: cogIcon,
         title: "Smart Customization",
         description:
           "You can customize your account portfolio to manage volatility and create or improve strategies which will avail unlimited trading options. This allows you test, improve, and implement your market hypothesis."
       },
       {
         id: "sec4-card2",
-        icon: crosshairIcon,
+        icon: pizzaIcon,
         title: "Analytics and Reporting for Advanced Players",
         description:
           "We provide a multitude of advanced analytics such as accuracy maps, market internals, system internals and trading reports so you can see what’s going on inside the hood."
       },
       {
         id: "sec4-card3",
-        icon: signalsIcon,
+        icon: dollarIcon,
         title: "Broker Integrations",
         description:
           "COMING SOON: When you are ready to trade with real money, we will walk you through the simple setup process."

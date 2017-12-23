@@ -1,6 +1,8 @@
 
 .Icon{
   font-weight: bold;
+  padding: 2px;
+  float: right;
   transform: rotate(0deg);
   -webkit-transition: all 0.3s ease-in-out;
   -moz-transition: all 0.3s ease-in-out;
@@ -18,8 +20,6 @@
   align-items: center;
   padding: 4px;
   /* background-color: #fafafa; */
-  position: absolute;
-  top: 100px;
 }
 
 .DropDown ul{
@@ -31,27 +31,51 @@
   margin: 0px;
   width: 100%;
   list-style: none;
+  height: inherit;
+}
+
+.DropDown li{
+  height: inherit;
 }
 
 .DropDown .Items{
-  width: 100%;
-  height: 100px;
-  -webkit-transition: all 0.3s ease-in-out;
-  -moz-transition: all 0.3s ease-in-out;
-  transition: all 0.3s ease-in-out;
+  position: absolute;
+  top: 100%;
+  max-height: 100px;
+  -webkit-transition: max-height 0.3s ease-in-out;
+  -moz-transition: max-height 0.3s ease-in-out;
+  transition: max-height 0.3s ease-in-out;
   background-color: #fcfcfc;
+  opacity: 1;
 }
 
 .Items.Hide{
-  height: 0px;
-  -webkit-transition: height 0.3s ease-in-out;
-  -moz-transition: height 0.3s ease-in-out;
-  transition: height 0.3s ease-in-out;
+  max-height: 0px;
+  opacity: 0;
+  -webkit-transition: max-height 0.3s ease;
+  -moz-transition: max-height 0.3s ease;
+  transition: max-height 0.3s ease;
 }
 
+.Items.Hide li{
+  display: none;
+}
 
 
 .DropDown button{
   display: block;
   width: 100%;
+  padding: 10px;
+  margin: 0px;
+  font-family: 'Montserrat', 'Open Sans', sans-serif;
+  font-weight: 800;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.DropDown li>a{
+  padding-top: 6px;
+  padding-bottom: 6px;
 }

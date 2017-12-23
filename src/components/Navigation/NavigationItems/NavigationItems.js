@@ -5,6 +5,20 @@ import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import LRButton from "../../UI/LeftRoundButton/LeftRoundButton";
+import DropDown from "../../../containers/UI/DropDown/DropDown";
+
+const _ddnLinks = [
+  {
+    id: "ddn-1",
+    href: "/contact",
+    text: "Contact"
+  },
+  {
+    id: "ddn-2",
+    href: "/logout",
+    text: "Logout"
+  }
+];
 
 const navigationItems = props => {
   const links = props.links.map(link => ({
@@ -14,17 +28,29 @@ const navigationItems = props => {
       (props.isAuth && link.show === 2) ||
       (!props.isAuth && link.show === 1)
   }));
+  const ddnLinks = _ddnLinks.map(ddnLink => (
+    <li key={ddnLink.id}>
+      <NavLink to={ddnLink.href}>
+        {ddnLink.text}
+      </NavLink>
+    </li>
+  ));
+
   return (
     <ul className={classes.NavigationItems}>
       {links.map(link => (
         <li key={link.id}>
           {link.isVisible ? (
             link.isButton ? (
-              <LRButton width="159px" height="60%" style={{
-                background: '#0fc6a7',
-                borderColor: '#0fc6a7',
-                fontSize: '0.7em'
-              }}>
+              <LRButton
+                width="159px"
+                height="60%"
+                style={{
+                  background: "#0fc6a7",
+                  borderColor: "#0fc6a7",
+                  fontSize: "0.7em"
+                }}
+              >
                 <NavLink
                   exact={link.exact}
                   to={link.href}
@@ -45,16 +71,23 @@ const navigationItems = props => {
           ) : null}
         </li>
       ))}
+      {props.isAuth ? (
+        <li>
+          <DropDown btnStyle={{fontSize: '0.7em'}} name={props.firstName} items={ddnLinks} />
+        </li>
+      ) : null}
     </ul>
   );
 };
 
 navigationItems.propTypes = {
   links: PropTypes.array.isRequired,
-  isAuth: PropTypes.bool.isRequired
+  isAuth: PropTypes.bool.isRequired,
+  firstName: PropTypes.string
 };
 export default withRouter(
   connect(state => ({
-    isAuth: state.auth.token !== null
+    isAuth: state.auth.token !== null,
+    firstName: state.auth.firstName
   }))(navigationItems)
 );
