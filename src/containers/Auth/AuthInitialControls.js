@@ -190,8 +190,8 @@ export default {
     value: "",
     validation: {
       required: true,
-      minLength: 4,
-      // pattern: /[^a-z]/,
+      minLength: 8,
+      pattern: /[^a-z]/,
       maxLength: 255
     },
     valid: false,
