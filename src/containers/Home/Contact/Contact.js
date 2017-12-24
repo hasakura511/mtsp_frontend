@@ -109,7 +109,6 @@ class Contact extends Component {
       const controls = clone(prevState.controls);
       controls[identifier]["value"] = updatedValue;
       controls[identifier]["valid"] = isValid;
-      controls[identifier]["touched"] = true;
       let formIsValid = true;
       for (let key in controls) {
         formIsValid = formIsValid && controls[key].valid;
@@ -161,15 +160,6 @@ class Contact extends Component {
       }, {});
     feedback["first_name"] = nameArr[0];
     feedback["last_name"] = nameArr[1];
-    // setTimeout(() => {
-    //   this.setState({ loading: false });
-    //   this.props.history.replace("/");
-    //   this.props.addTimedToaster({
-    //     id: "contact-us",
-    //     text: "Message successfully sent"
-    //   });
-    // }, 4000);
-    console.log(JSON.stringify(feedback));
     axios
       .post("/utility/feedback/", feedback)
       .then(() => {
@@ -187,6 +177,14 @@ class Contact extends Component {
           text: err.message || "Server error, please wait till we fix."
         });
       });
+  };
+
+  onBlurHandler = (event, key) => {
+    this.setState(prev => {
+      const controls = { ...prev.controls };
+      controls[key] = { ...controls[key], touched: true };
+      return { controls };
+    });
   };
 
   render() {
@@ -210,6 +208,7 @@ class Contact extends Component {
                   elementType={formElem.elementType}
                   elementConfig={formElem.elementConfig}
                   value={formElem.value}
+                  errorMessage={formElem.errorMessage}
                   inputChangeHandler={event =>
                     this.inputChangeHandler(event, formElem.id)
                   }
@@ -218,7 +217,9 @@ class Contact extends Component {
                   style={{
                     width: formElem.elementType === "textarea" ? "100%" : "50%"
                   }}
-                  errorMessage={formElem.errorMessage}
+                  onBlurHandler={event =>
+                    this.onBlurHandler(event, formElem.id)
+                  }
                 />
               ))}
               <span>
@@ -243,17 +244,7 @@ Contact.propTypes = {
   history: PropTypes.object.isRequired,
   addTimedToaster: PropTypes.func.isRequired
 };
-// export default protectedComponent(
-//   withErrorHandler(
-//     withRouter(
-//       connect(null, dispatch => ({
-//         addTimedToaster: toaster =>
-//           dispatch(actions.addTimedToaster(toaster, 7000))
-//       }))(Contact)
-//     ),
-//     axios
-//   )
-// );
+
 export default withErrorHandler(
   withRouter(
     connect(null, dispatch => ({

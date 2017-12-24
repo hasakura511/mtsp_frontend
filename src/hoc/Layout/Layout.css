@@ -1,3 +1,10 @@
 .Content {
   margin-top: 10vh;
+  min-height: 70vh;
+}
+
+@media (max-height: 550px) {
+  .Content {
+    margin-top: 55px;
+  }
 }

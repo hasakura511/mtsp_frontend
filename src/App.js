@@ -7,10 +7,9 @@ import Auth from "./containers/Auth/Auth";
 import Logout from "./containers/Auth/Logout";
 import * as actions from "./store/actions";
 import Home from "./containers/Home/Home";
-// import TermsOfService from "./components/Extras/TermsOfService";
-// import PrivacyPolicy from "./components/Extras/PrivacyPolicy";
 import Extras from "./components/Extras/Extras";
-
+import GameBoard from "./containers/GameBoard/GameBoard";
+import ForgotPassword from "./containers/Auth/ForgotPassword/ForgotPassword";
 /**
  * This is the Root component where the BrowserHistory of React-Router starts, contains Layout and BrowserRouter
  * and Routes. Maintains SideDrawer visibility state.
@@ -100,7 +99,8 @@ class App extends Component {
           <Route path="/terms_of_service" component={Extras} />
           <Route path="/privacy_policy" component={Extras} />
           <Route path="/risk_disclosure" component={Extras} />
-          <Route exact path="/" component={Home} />
+          <Route path="/forgot_password" component={ForgotPassword} />
+          <Route exact path="/" component={this.props.isAuth ? GameBoard : Home} />
           <Redirect from="*" to="/" />
         </Switch>
       </Layout>
@@ -110,13 +110,19 @@ class App extends Component {
 
 App.propTypes = {
   checkAuth: PropTypes.func.isRequired,
-  location: PropTypes.object.isRequired
+  location: PropTypes.object.isRequired,
+  isAuth: PropTypes.bool.isRequired
 };
 
 export default withRouter(
-  connect(null, dispatch => ({
-    checkAuth() {
-      dispatch(actions.checkAuth());
-    }
-  }))(App)
+  connect(
+    state => ({
+      isAuth: state.auth.token !== null
+    }),
+    dispatch => ({
+      checkAuth() {
+        dispatch(actions.checkAuth());
+      }
+    })
+  )(App)
 );

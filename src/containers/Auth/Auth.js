@@ -115,7 +115,6 @@ class Auth extends Component {
       const controls = clone(prevState.controls);
       controls[identifier]["value"] = updatedValue;
       controls[identifier]["valid"] = isValid;
-      controls[identifier]["touched"] = true;
       let formIsValid = true;
       for (let key in controls) {
         formIsValid =
@@ -133,6 +132,14 @@ class Auth extends Component {
       this.state.isSignup
     );
   };
+
+  onBlurHandler = (event, key) => {
+    this.setState(prev => {
+      const controls = { ...prev.controls };
+      controls[key] = { ...controls[key], touched: true };
+      return { controls };
+    });
+  }
 
   render() {
     const formArr = [],
@@ -175,6 +182,7 @@ class Auth extends Component {
                   valid={formElem.valid || !formElem.touched}
                   errorMessage={formElem.errorMessage}
                   label={formElem.label}
+                  onBlurHandler={event => this.onBlurHandler(event, formElem.id)}
                   style={{ width: formElem.isHalf ? "50%" : "100%" }}
                 />
               ))}
