@@ -1,27 +1,14 @@
 import * as actionTypes from "./actionTypes";
-import axios from "axios";
+import axios from "../../axios-gsm";
+import * as H from "../../util";
 
 const AUTH_EXPIRY_TIME = 2 * 3600;
+const signupUrl = "/utility/auth/signup/";
+const signinUrl = "/utility/auth/login/";
 
 export const authStart = () => {
   return {
     type: actionTypes.AUTH_START
-  };
-};
-
-const signupUrl =
-  "https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyDPIWqm0iVQv7CmOSiQ_LJ26pAw43yRuU4";
-const signinUrl =
-  "https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyDPIWqm0iVQv7CmOSiQ_LJ26pAw43yRuU4";
-
-export const authSuccess = (idToken, userId) => {
-  localStorage.setItem("token", idToken);
-  localStorage.setItem("userId", userId);
-  localStorage.setItem("loginTime", Date.now());
-  return {
-    type: actionTypes.AUTH_SUCCESS,
-    idToken: idToken,
-    userId: userId
   };
 };
 
@@ -32,28 +19,85 @@ export const authFail = error => {
   };
 };
 
-export const auth = (email, password, isSignup) => dispatch => {
+export const auth = (
+  firstName,
+  lastName,
+  email,
+  password,
+  isSignup
+) => dispatch => {
   dispatch(authStart());
   const authData = {
     email: email,
-    password: password,
-    returnSecureToken: true
+    password: password
   };
+  if (isSignup) {
+    authData["first_name"] = firstName;
+    authData["last_name"] = lastName;
+  }
   const url = isSignup ? signupUrl : signinUrl;
   axios
     .post(url, authData)
     .then(response => {
-      dispatch(checkAuthTimeout(AUTH_EXPIRY_TIME));
-      dispatch(authSuccess(response.data.idToken, response.data.localId));
+      if (isSignup) {
+        if (response.data.response === "") {
+          dispatch(
+            authFail({
+              message: "Please verify your account.",
+              status: 202
+            })
+          );
+        } else {
+          dispatch(
+            authFail({
+              message: "Email already exist.",
+              status: 203
+            })
+          );
+        }
+      } else {
+        dispatch(
+          authSuccess(
+            H.keysToCamel(response.data.user),
+            response.data.sessiontoken
+          )
+        );
+      }
     })
-    .catch((error, response) => {
+    .catch(error => {
       dispatch(authFail(error));
     });
 };
 
+export const googleAuth = code => dispatch => {
+  dispatch(authStart());
+  axios
+    .post("/utility/auth/google/", { auth_code: code })
+    .then(response => {
+      dispatch(
+        authSuccess(
+          H.keysToCamel(response.data.user),
+          response.data.sessiontoken
+        )
+      );
+    })
+    .catch(() => {
+      dispatch(authFail());
+    });
+};
+
+export const authSuccess = (user, token) => {
+  localStorage.setItem("token", token);
+  localStorage.setItem("user", JSON.stringify(user));
+  localStorage.setItem("loginTime", Date.now());
+  return {
+    type: actionTypes.AUTH_SUCCESS,
+    user
+  };
+};
 export const logout = () => {
   localStorage.removeItem("token");
-  localStorage.removeItem("userId");
+  localStorage.removeItem("user");
   localStorage.removeItem("loginTime");
   return {
     type: actionTypes.LOGOUT
@@ -81,17 +125,13 @@ export const checkAuthTimeout = expirationTime => dispatch => {
 
 export const checkAuth = () => dispatch => {
   const token = localStorage.getItem("token"),
-    userId = localStorage.getItem("userId"),
+    user = JSON.parse(localStorage.getItem("user")),
     loginTime = localStorage.getItem("loginTime");
   const duration = Date.now() - Number(loginTime);
-  if (
-    token === null ||
-    userId === null ||
-    duration / 1000 >= AUTH_EXPIRY_TIME
-  ) {
+  if (!token || !user || duration / 1000 >= AUTH_EXPIRY_TIME) {
     dispatch(logout());
   } else {
     dispatch(checkAuthTimeout(AUTH_EXPIRY_TIME - duration / 1000));
-    dispatch(authSuccess(token, userId));
+    dispatch(authSuccess(user, token));
   }
 };

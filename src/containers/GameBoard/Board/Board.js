@@ -60,7 +60,7 @@ Board.propTypes = {
     y: PropTypes.number.isRequired
   }).isRequired,
   squareDrop: PropTypes.func.isRequired,
-  canDrop: PropTypes.bool.isRequired
+  canDrop: PropTypes.func.isRequired
 };
 
 export default DragDropContext(HTML5Backend)(Board);

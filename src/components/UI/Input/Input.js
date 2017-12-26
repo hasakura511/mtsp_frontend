@@ -28,7 +28,7 @@ const input = props => {
           {...props.elementConfig}
           value={props.value}
           onChange={props.inputChangeHandler}
-          onBlur={props.onBlurHandler}          
+          onBlur={props.onBlurHandler}
         />
       );
       break;
@@ -39,6 +39,7 @@ const input = props => {
           className={inputClass}
           value={props.value}
           onChange={props.inputChangeHandler}
+          onBlur={props.onBlurHandler}
         >
           {props.elementConfig.options.map(option => (
             <option
@@ -59,7 +60,7 @@ const input = props => {
           {...props.elementConfig}
           value={props.value}
           onChange={props.inputChangeHandler}
-          onBlur={props.onBlurHandler}          
+          onBlur={props.onBlurHandler}
         />
       );
       break;
@@ -83,7 +84,6 @@ input.propTypes = {
   valid: PropTypes.bool,
   style: PropTypes.object,
   errorMessage: PropTypes.string,
-  touched: PropTypes.bool,
   onBlurHandler: PropTypes.func
 };
 

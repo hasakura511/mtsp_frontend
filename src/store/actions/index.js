@@ -3,7 +3,10 @@ export {
   logout,
   setAuthRedirect,
   clearAuthRedirect,
-  checkAuth
+  checkAuth,
+  authSuccess,
+  authFail,
+  googleAuth
 } from "./auth";
 export {
   addToaster,

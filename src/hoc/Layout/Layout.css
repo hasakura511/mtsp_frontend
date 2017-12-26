@@ -1,10 +1,11 @@
 .Content {
   margin-top: 10vh;
-  min-height: 70vh;
+  min-height: calc(90vh - 60px);
 }
 
 @media (max-height: 550px) {
   .Content {
     margin-top: 55px;
+    min-height: calc(100vh - 115px);
   }
 }

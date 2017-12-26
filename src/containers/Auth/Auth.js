@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Input from "../../components/UI/Input/Input";
 import { clone } from "../../util";
 import classes from "./Auth.css";
 import { connect } from "react-redux";
@@ -9,9 +8,12 @@ import axios from "axios";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import { Redirect, Link, withRouter } from "react-router-dom";
-import SocialAuth from "./SocialAuth/SocialAuth";
+import SocialAuth from "./containers/SocialAuth/SocialAuth";
 import Aux from "../../hoc/_Aux/_Aux";
-import authInitialControls from "./AuthInitialControls";
+import authInitialControls, {
+  FormInput,
+  Button
+} from "./components/AuthInitialControls";
 //sign up or sign in
 
 const Heading = props => (
@@ -39,7 +41,7 @@ class Auth extends Component {
   }
 
   syncProps(props) {
-    const controls = { ...this.state.controls };
+    let { controls, formIsValid } = { ...this.state };
     for (let key in controls) {
       if (props.location.search === "?signup") {
         if (controls[key]["signupField"]) {
@@ -55,9 +57,12 @@ class Auth extends Component {
           controls[key]["visible"] = false;
         }
       }
+      formIsValid =
+        formIsValid && (controls[key].valid || !controls[key].visible);
     }
     this.setState({
-      controls: controls,
+      controls,
+      formIsValid,
       isSignup: props.location.search === "?signup"
     });
   }
@@ -68,6 +73,18 @@ class Auth extends Component {
 
   componentWillReceiveProps(newProps) {
     this.syncProps(newProps);
+    if (newProps.error) {
+      this.props.addTimedToaster(
+        {
+          id: "auth-error",
+          text: newProps.error.message || "Error logging in"
+        },
+        5000
+      );
+      if (newProps.error.status === 202) {
+        this.props.history.push("/");
+      }
+    }
   }
 
   componentDidMount() {
@@ -115,18 +132,24 @@ class Auth extends Component {
       const controls = clone(prevState.controls);
       controls[identifier]["value"] = updatedValue;
       controls[identifier]["valid"] = isValid;
+      if (identifier === "password" || identifier === "rePassword") {
+        controls.rePassword.valid =
+          controls.password.value === controls.rePassword.value;
+      }
       let formIsValid = true;
       for (let key in controls) {
         formIsValid =
           formIsValid && (controls[key].valid || !controls[key].visible);
       }
-      return { controls: controls, formIsValid: formIsValid };
+      return { controls, formIsValid };
     });
   };
 
   onFormSubmit = event => {
     event.preventDefault();
     this.props.onAuth(
+      this.state.controls.firstName.value,
+      this.state.controls.lastName.value,
       this.state.controls.email.value,
       this.state.controls.password.value,
       this.state.isSignup
@@ -139,7 +162,7 @@ class Auth extends Component {
       controls[key] = { ...controls[key], touched: true };
       return { controls };
     });
-  }
+  };
 
   render() {
     const formArr = [],
@@ -158,9 +181,7 @@ class Auth extends Component {
       <Spinner />
     ) : this.props.isAuth ? (
       <Redirect to={this.props.authRedirect} />
-    ) : isRedirect ? (
-      <Redirect to="/auth?signup" />
-    ) : (
+    ) : isRedirect ? null : ( // <Redirect to="/auth?signup" />
       <Aux>
         {this.state.isSignup ? (
           <Heading text="Sign Up or" link="Sign In" href="/auth?signin" />
@@ -171,29 +192,20 @@ class Auth extends Component {
           <div className={classes.Left}>
             <form onSubmit={this.onFormSubmit}>
               {formArr.map(formElem => (
-                <Input
-                  key={formElem.id}
-                  elementType={formElem.elementType}
-                  elementConfig={formElem.elementConfig}
-                  value={formElem.value}
-                  inputChangeHandler={event =>
-                    this.inputChangeHandler(event, formElem.id)
-                  }
-                  valid={formElem.valid || !formElem.touched}
-                  errorMessage={formElem.errorMessage}
-                  label={formElem.label}
-                  onBlurHandler={event => this.onBlurHandler(event, formElem.id)}
-                  style={{ width: formElem.isHalf ? "50%" : "100%" }}
-                />
+                <FormInput key={formElem.id} formElem={formElem} {...this} />
               ))}
+              <Link style={{float: 'right'}} to="/auth/forgot">Forgot Password?</Link>
               <span>
-                <button disabled={!this.state.formIsValid} type="submit">
+                <Button disabled={!this.state.formIsValid} type="submit">
                   {this.state.isSignup ? "Continue Sign Up" : "Continue Login"}
-                </button>
+                </Button>
               </span>
             </form>
           </div>
-          <SocialAuth isSignup={this.state.isSignup} addTimedToaster={this.props.addTimedToaster} />
+          <SocialAuth
+            isSignup={this.state.isSignup}
+            addTimedToaster={this.props.addTimedToaster}
+          />
         </div>
       </Aux>
     );
@@ -207,7 +219,9 @@ Auth.propTypes = {
   authRedirect: PropTypes.string.isRequired,
   clearAuthRedirect: PropTypes.func.isRequired,
   addTimedToaster: PropTypes.func.isRequired,
-  location: PropTypes.object.isRequired
+  location: PropTypes.object.isRequired,
+  error: PropTypes.object,
+  history: PropTypes.object.isRequired
 };
 
 export default withRouter(
@@ -215,14 +229,22 @@ export default withRouter(
     state => ({
       loading: state.auth.loading,
       isAuth: state.auth.token !== null,
+      error: state.auth.error,
       authRedirect: state.auth.authRedirect
     }),
     dispatch => ({
-      onAuth: (email, password, isSignup) =>
-        dispatch(actions.auth(email, password, isSignup)),
+      onAuth: (firstName, lastName, email, password, isSignup) =>
+        dispatch(actions.auth(firstName, lastName, email, password, isSignup)),
       clearAuthRedirect: () => dispatch(actions.clearAuthRedirect()),
       addTimedToaster: toaster =>
         dispatch(actions.addTimedToaster(toaster, 5000))
     })
   )(withErrorHandler(Auth, axios))
 );
+
+export {
+  default as AccountVerification
+} from "./containers/AccountVerification";
+export { default as ForgotPassword } from "./containers/ForgotPassword";
+export { default as ChangePassword } from "./containers/ChangePassword";
+export { default as Logout } from "./containers/Logout";

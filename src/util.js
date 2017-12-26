@@ -58,7 +58,7 @@ export const clone = obj => {
 };
 
 export const toCamel = str =>
-  str.replace(/(_|\-[a-z])/g, $1 => $1.toUpperCase().replace(/_|\-/, ""));
+  str.replace(/(_|\-)[a-z]/g, $1 => $1.toUpperCase().replace(/_|\-/, ""));
 
 export const toUnderScore = str =>
   str
@@ -66,11 +66,41 @@ export const toUnderScore = str =>
     .replace("fx", "FX");
 
 export const andify = arr => {
-  let str = arr.slice(0, -1).join(', ');
-  if(arr.length > 1){
-    str += ' and ' + arr[arr.length - 1];
-  }else{
+  let str = arr.slice(0, -1).join(", ");
+  if (arr.length > 1) {
+    str += " and " + arr[arr.length - 1];
+  } else {
     str += arr[0];
   }
   return str;
+};
+
+export const keysToCamel = obj => {
+  const o = {};
+  Object.keys(obj).forEach(key => {
+    o[toCamel(key)] = obj[key];
+  });
+  return o;
+};
+
+export const checkValidity = (value, rules) => {
+  let isValid = true;
+
+  if (rules.required) {
+    isValid = value.trim() !== "" && isValid;
+  }
+
+  if (rules.minLength) {
+    isValid = value.trim().length >= rules.minLength && isValid;
+  }
+
+  if (rules.maxLength) {
+    isValid = value.trim().length <= rules.maxLength && isValid;
+  }
+
+  if (rules.pattern) {
+    isValid = rules.pattern.test(value.trim()) && isValid;
+  }
+
+  return isValid;
 };

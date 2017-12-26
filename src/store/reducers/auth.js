@@ -2,11 +2,13 @@ import * as actionTypes from "../actions/actionTypes";
 
 const initialState = {
   token: null,
-  userId: null,
   error: null,
   loading: false,
   authRedirect: "/",
-  firstName: "Tommy",
+  userId: null,
+  firstName: null,
+  lastName: null,
+  toVerify: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -31,8 +33,10 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        token: action.idToken,
-        userId: action.userId,
+        token: action.token,
+        userId: action.user.id,
+        firstName: action.user.firstName,
+        lastName: action.lastName,
         error: null
       };
     case actionTypes.AUTH_FAIL:

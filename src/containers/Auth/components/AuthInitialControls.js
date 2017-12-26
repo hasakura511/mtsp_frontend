@@ -1,3 +1,8 @@
+import React from "react";
+import Input from "../../../components/UI/Input/Input";
+import PropTypes from 'prop-types';
+import Btn from "../components/Button/Button";
+
 export default {
   // title: {
   //   label: "Title",
@@ -178,7 +183,7 @@ export default {
     visible: true,
     signupField: true,
     signinField: true,
-    errorMessage: "Please fill valid email.",
+    errorMessage: "Please fill valid email."
   },
 
   password: {
@@ -199,7 +204,8 @@ export default {
     visible: true,
     signupField: true,
     signinField: true,
-    errorMessage: "Password must have at least 8 characters, with at least one capitalized letter, number, or symbol"
+    errorMessage:
+      "Password must have at least 8 characters, with at least one capitalized letter, number, or symbol"
   },
 
   rePassword: {
@@ -220,3 +226,26 @@ export default {
     errorMessage: "Please make sure passwords match, re-enter if forgotten."
   }
 };
+
+export const FormInput = props => {
+  const { formElem } = props;
+  return <Input
+    elementType={formElem.elementType}
+    elementConfig={formElem.elementConfig}
+    value={formElem.value}
+    inputChangeHandler={event => props.inputChangeHandler(event, formElem.id)}
+    valid={formElem.valid || !formElem.touched}
+    errorMessage={formElem.errorMessage}
+    label={formElem.label}
+    onBlurHandler={event => props.onBlurHandler(event, formElem.id)}
+    style={{ width: formElem.isHalf ? "50%" : "100%" }}
+  />;
+};
+
+export const Button = Btn;
+
+FormInput.propTypes = {
+  formElem: PropTypes.object.isRequired,
+  onBlurHandler: PropTypes.func.isRequired,
+  inputChangeHandler: PropTypes.func.isRequired
+}

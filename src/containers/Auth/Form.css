@@ -1,0 +1,9 @@
+.Form {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 500px;
+  margin: auto;
+  margin-top: 5%;
+}

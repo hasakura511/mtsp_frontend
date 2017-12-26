@@ -3,13 +3,16 @@ import Layout from "./hoc/Layout/Layout";
 import { withRouter, Route, Switch, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import Auth from "./containers/Auth/Auth";
-import Logout from "./containers/Auth/Logout";
 import * as actions from "./store/actions";
 import Home from "./containers/Home/Home";
 import Extras from "./components/Extras/Extras";
 import GameBoard from "./containers/GameBoard/GameBoard";
-import ForgotPassword from "./containers/Auth/ForgotPassword/ForgotPassword";
+import Auth, {
+  AccountVerification,
+  ForgotPassword,
+  ChangePassword,
+  Logout
+} from "./containers/Auth/Auth";
 /**
  * This is the Root component where the BrowserHistory of React-Router starts, contains Layout and BrowserRouter
  * and Routes. Maintains SideDrawer visibility state.
@@ -93,14 +96,23 @@ class App extends Component {
         toggleSideDrawer={this.toggleSideDrawer}
       >
         <Switch>
-          <Route path="/auth" component={Auth} />
           <Route path="/logout" component={Logout} />
           <Route path="/contact" component={Home} />
           <Route path="/terms_of_service" component={Extras} />
           <Route path="/privacy_policy" component={Extras} />
           <Route path="/risk_disclosure" component={Extras} />
-          <Route path="/forgot_password" component={ForgotPassword} />
-          <Route exact path="/" component={this.props.isAuth ? GameBoard : Home} />
+          <Route
+            path="/auth/changepassword"
+            component={ChangePassword}
+          />
+          <Route path="/auth/verify" component={AccountVerification} />
+          <Route exact path="/auth" component={Auth} />
+          <Route exact path="/auth/forgot" component={ForgotPassword} />
+          <Route
+            exact
+            path="/"
+            component={this.props.isAuth ? GameBoard : Home}
+          />
           <Redirect from="*" to="/" />
         </Switch>
       </Layout>

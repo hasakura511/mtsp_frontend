@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import classes from "./SocialAuth.css";
-import PropTypes from "prop-types";
-// import axios from "../../../axios-gsm";
-import axios from "../../../axios-gsm";
-import Config from "../../../AppConfig";
+import PropTypes, { string } from "prop-types";
+import Config from "../../../../AppConfig";
+import { connect } from "react-redux";
+import * as actions from "../../../../store/actions";
 
 const fbSDK = () => {
   /**
@@ -59,6 +59,14 @@ const googleSDK = () => {
 };
 
 class SocialAuth extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      error: null
+    };
+  }
+
   componentDidMount() {
     /**
      * load Facebook SDK
@@ -71,37 +79,43 @@ class SocialAuth extends Component {
   }
 
   fbAuth = () => {
-    window.FB.getLoginStatus(response => {
-      if (response.status !== "connected") {
-        window.FB.login(response => {
-          if (response.authResponse) {
-            console.dir(JSON.stringify(response));
-            window.FB.api(Config.FACEBOOK_API_SCOPES, response => {
-              if (response.error) {
-                this.props.addTimedToaster({
-                  id: "fbAuth-error",
-                  text: "Problem with facebook login, try again."
-                });
-              } else {
-                console.dir(JSON.stringify(response));
-                console.log("Good to see you, " + response.name + ". now do normal auth.");
-                // Do auth
-              }
-            });
-          } else {
-            this.props.addTimedToaster({
-              id: "fbAuth-error",
-              text: "Why you no signin :o("
-            });
-          }
-        });
-      } else {
-        this.props.addTimedToaster({
-          id: "fbAuth-already" + 1000 * Math.random(),
-          text: "ALready logged in :o)"
-        });
-      }
-    });
+    window.FB.login(
+      response => {
+        if (response.authResponse) {
+          console.dir(JSON.stringify(response));
+          window.FB.api(Config.FACEBOOK_API_SCOPES, response => {
+            if (response.error) {
+              this.props.addTimedToaster({
+                id: "fbAuth-error",
+                text: "Problem with facebook login, try again."
+              });
+            } else {
+              console.dir(JSON.stringify(response));
+              console.log(
+                "Good to see you, " + response.name + ". now do normal auth."
+              );
+              // Do auth
+            }
+          });
+        } else {
+          this.props.addTimedToaster({
+            id: "fbAuth-error",
+            text: "Why you no signin :o("
+          });
+        }
+      },
+      { scope: "email" }
+    );
+    // window.FB.getLoginStatus(response => {
+    //   if (response.status !== "connected") {
+
+    //   } else {
+    //     this.props.addTimedToaster({
+    //       id: "fbAuth-already" + 1000 * Math.random(),
+    //       text: "Already logged in :o)"
+    //     });
+    //   }
+    // });
   };
 
   googleAuth = () => {
@@ -111,23 +125,10 @@ class SocialAuth extends Component {
     window.googleAuth2
       .grantOfflineAccess()
       .then(response => {
-        axios
-          .post("/auth/google/", response.code)
-          .then(() => {
-            console.dir(JSON.stringify(arguments));            
-            // this.addTimedToaster({})
-            debugger;
-          })
-          .catch(() => {
-            console.dir(JSON.stringify(arguments));
-            this.props.addTimedToaster({
-              id: "googleAuth-error",
-              text: "Why you no signin :o("
-            });
-          });
+        this.props.googleAuth(response.code);
       })
       .catch(() => {
-        console.dir(JSON.stringify(arguments));
+        debugger;
         this.props.addTimedToaster({
           id: "googleAuth-error",
           text: "Why you no signin :o("
@@ -141,7 +142,7 @@ class SocialAuth extends Component {
         .method("GET")
         .result(response => {
           console.log(response);
-          console.log('Do actual login here.');
+          console.log("Do actual login here.");
         });
     }, this);
   };
@@ -184,7 +185,20 @@ class SocialAuth extends Component {
 
 SocialAuth.propTypes = {
   isSignup: PropTypes.bool.isRequired,
-  addTimedToaster: PropTypes.func.isRequired
+  addTimedToaster: PropTypes.func.isRequired,
+  googleAuth: PropTypes.func.isRequired
 };
 
-export default SocialAuth;
+const stateToProps = state => {
+  return {};
+};
+
+const dispatchToProps = dispatch => {
+  return {
+    googleAuth: code => {
+      dispatch(actions.googleAuth(code));
+    }
+  };
+};
+
+export default connect(stateToProps, dispatchToProps)(SocialAuth);

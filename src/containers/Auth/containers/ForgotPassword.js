@@ -4,8 +4,9 @@ import * as actions from "../../../store/actions";
 import { Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 import axios from "../../../axios-gsm";
-import Input from "../../../components/UI/Input/Input";
-import classes from "./ForgotPassword.css";
+import classes from "../Form.css";
+import { FormInput, Button } from "../components/AuthInitialControls";
+import Spinner from "../../../components/UI/Spinner/Spinner";
 
 class ForgotPassword extends Component {
   constructor(props) {
@@ -28,7 +29,9 @@ class ForgotPassword extends Component {
           valid: false,
           touched: false,
           errorMessage: "Please enter a valid email."
-        }
+        },
+        loading: false,
+        error: false
       }
     };
   }
@@ -41,6 +44,7 @@ class ForgotPassword extends Component {
           ...prev.controls,
           email: {
             ...prev.controls.email,
+            value: value,
             valid: value && prev.controls.email.validation.pattern.test(value)
           }
         }
@@ -62,27 +66,36 @@ class ForgotPassword extends Component {
     });
   };
 
+  onFormSubmit = () => {
+    this.setState({
+      loading: true
+    });
+    axios.post("/utility/auth/forgotpassword/", { email: this.state.controls.email.value }).then(() => {
+      this.setState({loading: false});
+      this.props.addTimedToaster({
+        id: "forgot-success",
+        text: "Link to update password email sent."
+      }, 5000);
+      this.props.history.push("/");
+    }).catch((error) => {
+      this.setState({loading: false});
+      this.props.addTimedToaster({
+        id: 'forgot-error',
+        text: error.Message || 'Email does not exist'
+      }, 5000);
+    });
+  };
+
   render() {
     const formElem = this.state.controls.email;
     return this.props.isAuth ? (
       <Redirect to="/" />
+    ) : this.state.loading ? (
+      <Spinner />
     ) : (
-      <form className={classes.ForgotForm}>
-        <Input
-          key={"forgot-email-id"}
-          elementType={formElem.elementType}
-          elementConfig={formElem.elementConfig}
-          value={formElem.value}
-          errorMessage={formElem.errorMessage}
-          inputChangeHandler={this.inputChangeHandler}
-          label={formElem.label}
-          valid={formElem.valid || !formElem.touched}
-          onBlurHandler={this.onBlurHandler}
-          style={{
-            width: formElem.elementType === "textarea" ? "100%" : "50%"
-          }}
-        />
-        <button>Reset Password</button>
+      <form className={classes.Form} onSubmit={this.onFormSubmit}>
+        <FormInput {...{ ...this, formElem }} />
+        <Button disabled={!formElem.valid}>Reset Password</Button>
       </form>
     );
   }
@@ -102,6 +115,7 @@ const dispatchToProps = dispatch => {
 
 ForgotPassword.propTypes = {
   isAuth: PropTypes.bool.isRequired,
-  addTimedToaster: PropTypes.func.isRequired
+  addTimedToaster: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired
 };
 export default connect(stateToProps, dispatchToProps)(ForgotPassword);
