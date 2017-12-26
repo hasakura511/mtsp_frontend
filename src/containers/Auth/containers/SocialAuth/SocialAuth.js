@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import classes from "./SocialAuth.css";
-import PropTypes, { string } from "prop-types";
+import PropTypes from "prop-types";
 import Config from "../../../../AppConfig";
 import { connect } from "react-redux";
 import * as actions from "../../../../store/actions";
+import { keysToCamel } from "../../../../util";
 
 const fbSDK = () => {
   /**
@@ -80,9 +81,9 @@ class SocialAuth extends Component {
 
   fbAuth = () => {
     window.FB.login(
-      response => {
-        if (response.authResponse) {
-          console.dir(JSON.stringify(response));
+      res => {
+        if (res.authResponse) {
+          // console.dir(JSON.stringify(response));
           window.FB.api(Config.FACEBOOK_API_SCOPES, response => {
             if (response.error) {
               this.props.addTimedToaster({
@@ -90,7 +91,9 @@ class SocialAuth extends Component {
                 text: "Problem with facebook login, try again."
               });
             } else {
-              console.dir(JSON.stringify(response));
+              // console.dir(JSON.stringify(response));
+              this.props.authSuccess(keysToCamel(response), res.authResponse);
+              this.props.history.push("/");
               console.log(
                 "Good to see you, " + response.name + ". now do normal auth."
               );
@@ -186,7 +189,9 @@ class SocialAuth extends Component {
 SocialAuth.propTypes = {
   isSignup: PropTypes.bool.isRequired,
   addTimedToaster: PropTypes.func.isRequired,
-  googleAuth: PropTypes.func.isRequired
+  googleAuth: PropTypes.func.isRequired,
+  authSuccess: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired
 };
 
 const stateToProps = state => {
@@ -197,6 +202,9 @@ const dispatchToProps = dispatch => {
   return {
     googleAuth: code => {
       dispatch(actions.googleAuth(code));
+    },
+    authSuccess: (user, sessiontoken) => {
+      dispatch(actions.authSuccess(user, sessiontoken));
     }
   };
 };

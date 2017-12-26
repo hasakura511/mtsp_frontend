@@ -205,6 +205,7 @@ class Auth extends Component {
           <SocialAuth
             isSignup={this.state.isSignup}
             addTimedToaster={this.props.addTimedToaster}
+            history={this.props.history}
           />
         </div>
       </Aux>
