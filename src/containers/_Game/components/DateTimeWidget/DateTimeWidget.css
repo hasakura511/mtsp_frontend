@@ -1,0 +1,15 @@
+.Widget{
+  width: 200px;
+  height: 66px;
+  padding: 20px;
+  font-size: 1em;
+  font-weight: 500;
+  border-radius: 33px;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(#347da6,#4797bc,#347da6);
+  border: 1px solid #4698b7;
+  box-shadow: 1px 1px 2px #01405b;
+  box-sizing: border-box;
+  color: #fafafa;
+}

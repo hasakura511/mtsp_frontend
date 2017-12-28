@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-// import { Redirect } from "react-router-dom";
 import axios from "../../../axios-gsm";
 import * as H from "../../../util";
 import * as actions from "../../../store/actions";
@@ -10,7 +9,6 @@ import Spinner from "../../../components/UI/Spinner/Spinner";
 class AccountVerification extends Component {
   componentDidMount() {
     const data = H.parseQueryString(this.props.location.search);
-    debugger;
     axios
       .post("/utility/auth/registration/verification/", data)
       .then(response => {
@@ -28,7 +26,6 @@ class AccountVerification extends Component {
   }
 
   render() {
-    // return <Redirect to="/" />;
     return <Spinner />;
   }
 }

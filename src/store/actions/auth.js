@@ -86,6 +86,21 @@ export const googleAuth = code => dispatch => {
     });
 };
 
+export const facebookAuth = (inputToken, user) => dispatch => {
+  dispatch(authStart());
+  axios
+    .post("/utility/auth/facebook/", {
+      input_token: inputToken,
+      user_details: user
+    })
+    .then(response => {
+      dispatch(authSuccess(response.data.user, response.data.sessiontoken));
+    })
+    .catch(error => {
+      dispatch(authFail(error));
+    });
+};
+
 export const authSuccess = (user, token) => {
   localStorage.setItem("token", token);
   localStorage.setItem("user", JSON.stringify(user));

@@ -460,7 +460,7 @@ export default {
     elementType: "textarea",
     elementConfig: {
       type: "text",
-      placeholder: "Your Feedback is required"
+      placeholder: "Your feedback is required"
     },
     value: "",
     validation: {

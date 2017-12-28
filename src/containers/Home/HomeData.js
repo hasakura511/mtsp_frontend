@@ -34,7 +34,7 @@ const HomeData = {
         icon: faceIcon,
         title: "Make Smart Bets",
         description:
-          "Bet on different trading strategies using live market analytics, all from one easy to understand game board."
+          "Bet on trading strategies that you created and improve betting results by improving your trading strategies, all from easy to understand game board."
       },
       {
         id: "sec2-card3",
@@ -111,7 +111,7 @@ const HomeData = {
         icon: pizzaIcon,
         title: "Analytics and Reporting for Advanced Players",
         description:
-          "We provide a multitude of advanced analytics such as accuracy maps, market internals, system internals and trading reports so you can see what’s going on inside the hood."
+          "We provide a multitude of advanced analytics such as accuracy maps, market internals, system internals and trading reports so you can easily overview what's going on inside the hood."
       },
       {
         id: "sec4-card3",
@@ -207,7 +207,8 @@ export const SectionThree = scrollWrap(props => {
       className={classes.SectionThree}
       style={{
         backgroundImage: "url(" + HomeData.sectionThree.fullBackground + ")"
-      }}  id="sec3"
+      }}
+      id="sec3"
     >
       <h2>
         <b>{HomeData.sectionThree.title}</b>

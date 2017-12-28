@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import Config from "../../../../AppConfig";
 import { connect } from "react-redux";
 import * as actions from "../../../../store/actions";
-import { keysToCamel } from "../../../../util";
 
 const fbSDK = () => {
   /**
@@ -81,9 +80,9 @@ class SocialAuth extends Component {
 
   fbAuth = () => {
     window.FB.login(
-      res => {
-        if (res.authResponse) {
-          // console.dir(JSON.stringify(response));
+      _response => {
+        if (_response.authResponse) {
+          // console.dir(JSON.stringify(_response));
           window.FB.api(Config.FACEBOOK_API_SCOPES, response => {
             if (response.error) {
               this.props.addTimedToaster({
@@ -92,12 +91,13 @@ class SocialAuth extends Component {
               });
             } else {
               // console.dir(JSON.stringify(response));
-              this.props.authSuccess(keysToCamel(response), res.authResponse);
-              this.props.history.push("/");
-              console.log(
-                "Good to see you, " + response.name + ". now do normal auth."
-              );
-              // Do auth
+              const { email, first_name, last_name, id } = response;
+              this.props.facebookAuth(_response.authResponse.accessToken, {
+                id,
+                first_name,
+                last_name,
+                email
+              });
             }
           });
         } else {
@@ -131,7 +131,6 @@ class SocialAuth extends Component {
         this.props.googleAuth(response.code);
       })
       .catch(() => {
-        debugger;
         this.props.addTimedToaster({
           id: "googleAuth-error",
           text: "Why you no signin :o("
@@ -190,11 +189,12 @@ SocialAuth.propTypes = {
   isSignup: PropTypes.bool.isRequired,
   addTimedToaster: PropTypes.func.isRequired,
   googleAuth: PropTypes.func.isRequired,
+  facebookAuth: PropTypes.func.isRequired,
   authSuccess: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired
 };
 
-const stateToProps = state => {
+const stateToProps = () => {
   return {};
 };
 
@@ -205,6 +205,9 @@ const dispatchToProps = dispatch => {
     },
     authSuccess: (user, sessiontoken) => {
       dispatch(actions.authSuccess(user, sessiontoken));
+    },
+    facebookAuth: (inputToken, user) => {
+      dispatch(actions.facebookAuth(inputToken, user));
     }
   };
 };

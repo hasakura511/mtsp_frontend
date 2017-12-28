@@ -13,6 +13,7 @@ import Auth, {
   ChangePassword,
   Logout
 } from "./containers/Auth/Auth";
+import Board from "./containers/_Game/containers/Board/Board";
 /**
  * This is the Root component where the BrowserHistory of React-Router starts, contains Layout and BrowserRouter
  * and Routes. Maintains SideDrawer visibility state.
@@ -101,18 +102,11 @@ class App extends Component {
           <Route path="/terms_of_service" component={Extras} />
           <Route path="/privacy_policy" component={Extras} />
           <Route path="/risk_disclosure" component={Extras} />
-          <Route
-            path="/auth/changepassword"
-            component={ChangePassword}
-          />
+          <Route path="/auth/changepassword" component={ChangePassword} />
           <Route path="/auth/verify" component={AccountVerification} />
           <Route exact path="/auth" component={Auth} />
           <Route exact path="/auth/forgot" component={ForgotPassword} />
-          <Route
-            exact
-            path="/"
-            component={this.props.isAuth ? GameBoard : Home}
-          />
+          <Route exact path="/" component={this.props.isAuth ? Board : Home} />
           <Redirect from="*" to="/" />
         </Switch>
       </Layout>

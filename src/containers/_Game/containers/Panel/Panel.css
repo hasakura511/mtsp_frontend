@@ -1,0 +1,35 @@
+.Panel{
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+  width: 850px;
+  padding: 10px;
+  padding-top: 0px;
+  border: 1px solid #aaaaaa;
+  border-radius: 1px;
+  margin-left: 5px;
+  position: relative;
+  margin: auto;
+  /* margin-top: 15%; */
+  font-size: 0.8em;
+  box-shadow: 1px 1px 2px #aaaaaa;
+  background-color: #86dde0;
+}
+
+.Panel .Column{
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 220px;
+}
+
+.Panel .Strip{
+  position: absolute;
+  left: 0;
+  width: 50px;
+  height: 50px;
+  background-color: blueviolet;
+  left: -50px;
+  top: 0px;
+}

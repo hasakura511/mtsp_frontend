@@ -8,7 +8,7 @@ const initialState = {
   userId: null,
   firstName: null,
   lastName: null,
-  toVerify: false
+  withVerification: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -36,7 +36,7 @@ const reducer = (state = initialState, action) => {
         token: action.token,
         userId: action.user.id,
         firstName: action.user.firstName,
-        lastName: action.lastName,
+        lastName: action.user.lastName,
         error: null
       };
     case actionTypes.AUTH_FAIL:

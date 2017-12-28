@@ -88,7 +88,11 @@ class Contact extends Component {
         );
         controls.riskAssets.value =
           controls.riskAssets.elementConfig.options[0].value;
-        this.setState({ controls: controls, loading: false, fetched: true });
+        this.setState({
+          controls: controls,
+          loading: false,
+          fetched: true
+        });
       })
       .catch(() => {
         this.setState({ error: true, loading: false });
