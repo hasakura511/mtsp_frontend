@@ -94,7 +94,7 @@ export const facebookAuth = (inputToken, user) => dispatch => {
       user_details: user
     })
     .then(response => {
-      dispatch(authSuccess(response.data.user, response.data.sessiontoken));
+      dispatch(authSuccess(H.keysToCamel(user), response.data.sessiontoken));
     })
     .catch(error => {
       dispatch(authFail(error));
