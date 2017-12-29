@@ -170,16 +170,6 @@ class SocialAuth extends Component {
       },
       { scope: "email" }
     );
-    // window.FB.getLoginStatus(response => {
-    //   if (response.status !== "connected") {
-
-    //   } else {
-    //     this.props.addTimedToaster({
-    //       id: "fbAuth-already" + 1000 * Math.random(),
-    //       text: "Already logged in :o)"
-    //     });
-    //   }
-    // });
   };
 
   googleAuth = () => {

@@ -288,7 +288,7 @@ export default {
         displayValue: countries[key]
       }))
     },
-    value: "select",
+    value: "Select Country",
     validation: {
       cantBe: "select"
     },
