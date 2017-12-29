@@ -284,7 +284,7 @@ export default {
     label: "Country",
     elementConfig: {
       options: Object.keys(countries).map(key => ({
-        value: key,
+        value: countries[key],
         displayValue: countries[key]
       }))
     },

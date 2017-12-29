@@ -67,9 +67,27 @@ class SocialAuth extends Component {
     this.state = {
       error: null,
       loading: false,
-      twitterUrl: null
+      twitterUrl: null,
+      linkedinUrl: null
     };
   }
+
+  onWindowMessageHandler = () => {
+    window.onmessage = res => {
+      if (res.data.Message === "TWITTER_AUTH_SUCCESS") {
+        this.props.authSuccess(
+          keysToCamel(res.data.user),
+          res.data.sessiontoken
+        );
+      }
+      if (res.data.Message === "LINKEDIN_AUTH_SUCCESS") {
+        this.props.authSuccess(
+          keysToCamel(res.data.user),
+          res.data.sessiontoken
+        );
+      }
+    };
+  };
 
   componentDidMount() {
     /**
@@ -91,14 +109,7 @@ class SocialAuth extends Component {
           loading: false,
           twitterUrl: response.data["authorize_url"]
         });
-        window.onmessage = res => {
-          if (res.data.Message === "TWITTER_AUTH_SUCCESS") {
-            this.props.authSuccess(
-              keysToCamel(res.data.user),
-              res.data.sessiontoken
-            );
-          }
-        };
+        this.onWindowMessageHandler();
       })
       .catch(error => {
         this.setState({
@@ -106,6 +117,26 @@ class SocialAuth extends Component {
           error: error
         });
       });
+
+    /**
+     * load Linked in auth url
+     */
+    axios
+      .get("/utility/auth/linkedin/")
+      .then(response => {
+        this.setState({
+          loading: false,
+          linkedinUrl: response.data["authorize_url"]
+        });
+        this.onWindowMessageHandler();
+      })
+      .catch(error => {
+        this.setState({ loading: false, error: error });
+      });
+  }
+
+  componentWillUnmount(){
+    window.onmessage = null;
   }
 
   fbAuth = () => {
@@ -173,14 +204,7 @@ class SocialAuth extends Component {
   };
 
   linkedinAuth = () => {
-    window.IN.User.authorize(() => {
-      window.IN.API.Raw(Config.LINKEDIN_API_SCOPES)
-        .method("GET")
-        .result(response => {
-          console.log(response);
-          console.log("Do actual login here.");
-        });
-    }, this);
+    window.open(this.state.linkedinUrl, "newWindow", "width=500, height=500");
   };
 
   render() {

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Panel from "../Panel/Panel";
 import PropTypes from "prop-types";
 import classes from "./Board.css";
-import bgBoard from "../../../../assets/images/board_bg.png";
+import bgBoard from "../../../../assets/images/boardBg.png";
 
 class Board extends Component {
   render() {
