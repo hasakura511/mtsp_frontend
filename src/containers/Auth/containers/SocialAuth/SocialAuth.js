@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 import Config from "../../../../AppConfig";
 import { connect } from "react-redux";
 import * as actions from "../../../../store/actions";
+import axios from "../../../../axios-gsm";
+import { keysToCamel } from "../../../../util";
 
 const fbSDK = () => {
   /**
@@ -63,7 +65,9 @@ class SocialAuth extends Component {
     super(props);
 
     this.state = {
-      error: null
+      error: null,
+      loading: false,
+      twitterUrl: null
     };
   }
 
@@ -76,6 +80,32 @@ class SocialAuth extends Component {
      * load Google SDK
      */
     googleSDK();
+    /**
+     * load Twitter auth url
+     */
+    this.setState({ loading: true });
+    axios
+      .get("/utility/auth/twitter/")
+      .then(response => {
+        this.setState({
+          loading: false,
+          twitterUrl: response.data["authorize_url"]
+        });
+        window.onmessage = res => {
+          if (res.data.Message === "TWITTER_AUTH_SUCCESS") {
+            this.props.authSuccess(
+              keysToCamel(res.data.user),
+              res.data.sessiontoken
+            );
+          }
+        };
+      })
+      .catch(error => {
+        this.setState({
+          loading: false,
+          error: error
+        });
+      });
   }
 
   fbAuth = () => {
@@ -138,6 +168,10 @@ class SocialAuth extends Component {
       });
   };
 
+  twitterAuth = () => {
+    window.open(this.state.twitterUrl, "newWindow", "width=500, height=500");
+  };
+
   linkedinAuth = () => {
     window.IN.User.authorize(() => {
       window.IN.API.Raw(Config.LINKEDIN_API_SCOPES)
@@ -166,7 +200,7 @@ class SocialAuth extends Component {
           </span>
           {this.props.isSignup ? "Sign Up with Google" : "Login with Google"}
         </button>
-        <button className={classes.Twitter}>
+        <button className={classes.Twitter} onClick={this.twitterAuth}>
           <span>
             <i className="fa fa-twitter" />
           </span>

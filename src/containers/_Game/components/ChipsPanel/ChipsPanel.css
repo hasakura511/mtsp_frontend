@@ -16,3 +16,14 @@
   height: 100%;
   display: flex;
 }
+
+.ChipContainer{
+  margin-left: 10px;
+  width: 48px;
+  height: 48px;
+  border: 6px solid #ffffff;
+  border-radius: 48px;
+  box-sizing: border-box;
+  background-image: linear-gradient(#ffffff, #aaaaaa);
+  opacity: 0.3;
+}

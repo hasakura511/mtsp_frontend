@@ -25,10 +25,10 @@ module.exports = {
     "no-unused-vars": "warn",
     "constructor-super": "warn",
     "valid-typeof": "warn",
-    "no-console": 0,
-    "no-unsafe-finally": 0,
-    "no-process-env": 0,
-    "no-debugger": 0,
+    "no-console": "warn",
+    "no-unsafe-finally": "warn",
+    "no-process-env": "warn",
+    "no-debugger": "warn",
     "react/display-name": [0, {
       "ignoreTranspilerName": true
     }]
