@@ -14,6 +14,7 @@ import Auth, {
   Logout
 } from "./containers/Auth/Auth";
 import Board from "./containers/_Game/containers/Board/Board";
+import Profile from "./containers/Home/Profile/Profile";
 /**
  * This is the Root component where the BrowserHistory of React-Router starts, contains Layout and BrowserRouter
  * and Routes. Maintains SideDrawer visibility state.
@@ -99,6 +100,7 @@ class App extends Component {
         <Switch>
           <Route path="/logout" component={Logout} />
           <Route path="/contact" component={Home} />
+          <Route path="/profile" component={Profile} />
           <Route path="/terms_of_service" component={Extras} />
           <Route path="/privacy_policy" component={Extras} />
           <Route path="/risk_disclosure" component={Extras} />

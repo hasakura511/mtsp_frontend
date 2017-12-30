@@ -37,7 +37,7 @@
   background-color: #0077b7;
 }
 
-button span {
+button>span {
   float: left;
   width: 20px;
   height: 20px;
@@ -46,6 +46,12 @@ button span {
   flex-flow: column;
   align-items: center;
   justify-content: center;
+  padding-top: 2px;
+  box-sizing: border-box;
+}
+
+button>span>i{
+  line-height: 0px;
 }
 
 button.Facebook span{

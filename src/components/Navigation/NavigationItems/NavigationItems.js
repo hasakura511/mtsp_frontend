@@ -10,8 +10,8 @@ import DropDown from "../../../containers/UI/DropDown/DropDown";
 const _ddnLinks = [
   {
     id: "ddn-1",
-    href: "/contact",
-    text: "Contact"
+    href: "/profile",
+    text: "Profile"
   },
   {
     id: "ddn-2",

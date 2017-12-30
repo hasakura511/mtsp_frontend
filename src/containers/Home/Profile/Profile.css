@@ -1,0 +1,72 @@
+.Profile {
+  margin: auto;
+  padding: 10px;
+  width: 40%;
+  box-sizing: border-box;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: space-between;
+  /* border-radius: 2px;
+  border: 2px solid #cccccc;
+  box-shadow: 1px 1px 2px #cccccc; */
+}
+
+.Profile > span {
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+}
+
+.Profile > span > p {
+  margin: 0px;
+  display: inline;
+}
+
+.Profile h3 {
+  font-weight: 700;
+  font-size: 1.2em;
+}
+
+.Profile .Social {
+  width: 100%;
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.Social button {
+  padding: 10px;
+  font-size: 1em;
+  font-family: "Montserrat", "Open Sans", sans-serif;
+  box-sizing: border-box;
+  /* background-color: #0fc6a7;
+  border: 2px solid #0fc6a7; */
+  /* box-shadow: 1px 1px 4px #009297; */
+  border-radius: 4px;
+  cursor: pointer;
+  color: white;
+  width: 200px;
+  outline: none;
+}
+
+button.Facebook {
+  background-color: #3b5998;
+  border-color: #3b5998;
+}
+
+button.Twitter {
+  background-color: #1da1f2;
+  border-color: #1da1f2;
+}
+
+.Facebook>span{
+  color: #3b5998;
+}
+
+.Twitter>span{
+  color: #1da1f2;
+}

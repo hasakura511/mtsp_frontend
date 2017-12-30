@@ -104,12 +104,18 @@ export const facebookAuth = (inputToken, user) => dispatch => {
 export const authSuccess = (user, token) => {
   localStorage.setItem("token", token);
   localStorage.setItem("user", JSON.stringify(user));
-  localStorage.setItem("loginTime", Date.now());
+  localStorage.setItem(
+    "loginTime",
+    localStorage.getItem("loginTime") || Date.now()
+  );
   return {
     type: actionTypes.AUTH_SUCCESS,
-    user
+    user,
+    token
   };
 };
+
+
 export const logout = () => {
   localStorage.removeItem("token");
   localStorage.removeItem("user");
