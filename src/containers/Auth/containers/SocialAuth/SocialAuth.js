@@ -75,8 +75,8 @@ class SocialAuth extends Component {
       loading: false,
       twitterUrl: null,
       linkedinUrl: null,
-      googleSDK: false,
-      facebookSDK: false,
+      googleSDK: !!window.FB,
+      facebookSDK: !!window.gapi && !!window.gapi.auth2,
       exists: true
     };
   }
