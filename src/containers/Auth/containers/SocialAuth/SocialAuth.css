@@ -63,3 +63,7 @@ button.Google span{
 button.Linkedin span{
   color:  #0077b7;
 }
+
+button:disabled{
+  cursor: not-allowed;
+}

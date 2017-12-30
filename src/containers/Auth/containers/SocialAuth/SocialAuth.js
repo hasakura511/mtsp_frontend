@@ -7,7 +7,7 @@ import * as actions from "../../../../store/actions";
 import axios from "../../../../axios-gsm";
 import { keysToCamel } from "../../../../util";
 
-const fbSDK = () => {
+const fbSDK = component => {
   /**
      * If you need it to be loaded synchronously before your app is loaded, you should put it up at the top.
      As for fbAsyncInit and passing the FB data down into the app, you could have that happen in componentDidMount within the App container. That way, your app will be booted up and ready to go. If you have access to a callback when Facebook is loaded, you could trigger a dispatch call to let your app know FB is ready to be used.
@@ -19,6 +19,9 @@ const fbSDK = () => {
       xfbml: true,
       version: "v2.1"
     });
+    if (component.state.exists) {
+      component.setState({ facebookSDK: true });
+    }
   };
   // Load the SDK asynchronously
   (function(d, s, id) {
@@ -32,7 +35,7 @@ const fbSDK = () => {
   })(document, "script", "facebook-jssdk");
 };
 
-const googleSDK = () => {
+const googleSDK = component => {
   /**
    * Google Authentication Object
    */
@@ -42,6 +45,9 @@ const googleSDK = () => {
         client_id: Config.GOOGLE_CLIENT_ID,
         scope: Config.GOOGLE_API_SCOPES
       });
+      if (component.state.exists) {
+        component.setState({ googleSDK: true });
+      }
     });
   };
   /**
@@ -68,7 +74,10 @@ class SocialAuth extends Component {
       error: null,
       loading: false,
       twitterUrl: null,
-      linkedinUrl: null
+      linkedinUrl: null,
+      googleSDK: false,
+      facebookSDK: false,
+      exists: true
     };
   }
 
@@ -93,29 +102,24 @@ class SocialAuth extends Component {
     /**
      * load Facebook SDK
      */
-    fbSDK();
+    fbSDK(this);
     /**
      * load Google SDK
      */
-    googleSDK();
+    googleSDK(this);
     /**
      * load Twitter auth url
      */
-    this.setState({ loading: true });
     axios
       .get("/utility/auth/twitter/")
       .then(response => {
         this.setState({
-          loading: false,
           twitterUrl: response.data["authorize_url"]
         });
         this.onWindowMessageHandler();
       })
-      .catch(error => {
-        this.setState({
-          loading: false,
-          error: error
-        });
+      .catch(() => {
+        this.props.authFail({ Message: "Could not load twitter Oauth URL" });
       });
 
     /**
@@ -125,18 +129,20 @@ class SocialAuth extends Component {
       .get("/utility/auth/linkedin/")
       .then(response => {
         this.setState({
-          loading: false,
           linkedinUrl: response.data["authorize_url"]
         });
         this.onWindowMessageHandler();
       })
       .catch(error => {
-        this.setState({ loading: false, error: error });
+        this.props.authFail({
+          Message: "Could not load linkedin Oauth URL"
+        });
       });
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     window.onmessage = null;
+    this.setState({ exists: false });
   }
 
   fbAuth = () => {
@@ -162,9 +168,8 @@ class SocialAuth extends Component {
             }
           });
         } else {
-          this.props.addTimedToaster({
-            id: "fbAuth-error",
-            text: "Why you no signin :o("
+          this.props.authFail({
+            Message: "You decline login o:("
           });
         }
       },
@@ -182,10 +187,7 @@ class SocialAuth extends Component {
         this.props.googleAuth(response.code);
       })
       .catch(() => {
-        this.props.addTimedToaster({
-          id: "googleAuth-error",
-          text: "Why you no signin :o("
-        });
+        this.props.authFail({ Message: "Why you no signin :o(" });
       });
   };
 
@@ -200,29 +202,61 @@ class SocialAuth extends Component {
   render() {
     return (
       <div className={classes.SocialAuth}>
-        <button className={classes.Facebook} onClick={this.fbAuth}>
+        <button
+          className={classes.Facebook}
+          onClick={this.fbAuth}
+          disabled={!this.state.facebookSDK}
+        >
           <span>
-            <i className="fa fa-facebook" />
+            <i
+              className={
+                "fa " + (this.state.facebookSDK ? "fa-facebook" : "fa-spinner")
+              }
+            />
           </span>
           {this.props.isSignup
             ? "Sign Up with Facebook"
             : "Login with Facebook"}
         </button>
-        <button className={classes.Google} onClick={this.googleAuth}>
+        <button
+          className={classes.Google}
+          onClick={this.googleAuth}
+          disabled={!this.state.googleSDK}
+        >
           <span>
-            <i className="fa fa-google" />
+            <i
+              className={
+                "fa " + (this.state.googleSDK ? "fa-google" : "fa-spinner")
+              }
+            />
           </span>
           {this.props.isSignup ? "Sign Up with Google" : "Login with Google"}
         </button>
-        <button className={classes.Twitter} onClick={this.twitterAuth}>
+        <button
+          className={classes.Twitter}
+          onClick={this.twitterAuth}
+          disabled={!this.state.twitterUrl}
+        >
           <span>
-            <i className="fa fa-twitter" />
+            <i
+              className={
+                "fa " + (this.state.twitterUrl ? "fa-twitter" : "fa-spinner")
+              }
+            />
           </span>
           {this.props.isSignup ? "Sign Up with Twitter" : "Login with Twitter"}
         </button>
-        <button className={classes.Linkedin} onClick={this.linkedinAuth}>
+        <button
+          className={classes.Linkedin}
+          onClick={this.linkedinAuth}
+          disabled={!this.state.linkedinUrl}
+        >
           <span>
-            <i className="fa fa-linkedin" />
+            <i
+              className={
+                "fa " + (this.state.linkedinUrl ? "fa-linkedin" : "fa-spinner")
+              }
+            />
           </span>
           {this.props.isSignup
             ? "Sign Up with LinkedIn"
@@ -239,7 +273,8 @@ SocialAuth.propTypes = {
   googleAuth: PropTypes.func.isRequired,
   facebookAuth: PropTypes.func.isRequired,
   authSuccess: PropTypes.func.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
+  authFail: PropTypes.func.isRequired
 };
 
 const stateToProps = () => {
@@ -256,6 +291,9 @@ const dispatchToProps = dispatch => {
     },
     facebookAuth: (inputToken, user) => {
       dispatch(actions.facebookAuth(inputToken, user));
+    },
+    authFail: error => {
+      dispatch(actions.authFail(error));
     }
   };
 };

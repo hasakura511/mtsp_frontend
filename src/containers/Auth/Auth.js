@@ -76,8 +76,11 @@ class Auth extends Component {
     if (newProps.error) {
       this.props.addTimedToaster(
         {
-          id: "auth-error",
-          text: newProps.error.message || "Error logging in"
+          id: "auth-error" + Math.random().toFixed(3),
+          text:
+            newProps.error.message ||
+            newProps.error.Message ||
+            "Error logging in"
         },
         5000
       );
@@ -194,7 +197,9 @@ class Auth extends Component {
               {formArr.map(formElem => (
                 <FormInput key={formElem.id} formElem={formElem} {...this} />
               ))}
-              <Link style={{float: 'right'}} to="/auth/forgot">Forgot Password?</Link>
+              <Link style={{ float: "right" }} to="/auth/forgot">
+                Forgot Password?
+              </Link>
               <span>
                 <Button disabled={!this.state.formIsValid} type="submit">
                   {this.state.isSignup ? "Continue Sign Up" : "Continue Login"}
