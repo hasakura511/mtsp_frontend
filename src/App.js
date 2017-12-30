@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import * as actions from "./store/actions";
 import Home from "./containers/Home/Home";
 import Extras from "./components/Extras/Extras";
-import GameBoard from "./containers/GameBoard/GameBoard";
+// import GameBoard from "./containers/GameBoard/GameBoard";
 import Auth, {
   AccountVerification,
   ForgotPassword,

@@ -13,4 +13,11 @@
   background-image: linear-gradient(to top, #00468c 0%, #2a92fa 100%);
   border: 6px solid #002040;
   color: white;
+  cursor: move;
+  outline: none;
+}
+
+.Chip p{
+  outline: none;
+  user-select: none;
 }

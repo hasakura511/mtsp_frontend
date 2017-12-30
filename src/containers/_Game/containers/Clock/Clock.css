@@ -1,0 +1,60 @@
+.Widget{
+  width: 230px;
+  height: 66px;
+  padding: 8px;
+  font-size: 1em;
+  font-weight: 500;
+  border-radius: 33px;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(#347da6,#4797bc,#347da6);
+  border: 1px solid #4698b7;
+  box-shadow: 1px 1px 2px #01405b;
+  box-sizing: border-box;
+  color: #fafafa;
+}
+
+.Widget>.Left, .Widget>.Right{
+  padding: 4px;
+}
+
+.Widget>div{
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.Widget>.Right>span{
+  display: inline-flex;
+  align-items: flex-end;
+  width: 100%;
+  justify-content: space-between;
+  padding: 4px 0px;
+}
+
+.Widget>.Right>span>p, .Widget>.Right>span>h3{
+  padding: 0 0px;
+  margin: 0px;
+}
+
+.Widget>.Right>span>p{
+  font-size: 0.8em;
+  font-weight: 400;
+}
+
+.Widget>.Right>span>h3{
+  font-size: 2.0em;
+  font-weight: 500;
+}
+
+.Widget>.Saperation{
+  border-left: 2px solid #347da6;
+  border-right: 2px solid #347da6;
+  border-radius: 100%;
+}
+
+.Widget>.Left>i{
+  font-size: 4em;
+}

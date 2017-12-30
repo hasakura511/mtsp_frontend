@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import Config, * as SystemTypes from "../../../Config";
 import classes from "./TopSection.css";
-import DateTimeWidget from "../../DateTimeWidget/DateTimeWidget";
+import Clock from "../../../containers/Clock/Clock";
 import ChipsPanel from "../../ChipsPanel/ChipsPanel";
 import ChipConfig from "../../_Chip/ChipConfig";
 
@@ -31,7 +31,7 @@ const topSection = props => {
           );
         })}
       <ChipsPanel chips={chips} />
-      <DateTimeWidget />
+      <Clock />
     </div>
   );
 };
