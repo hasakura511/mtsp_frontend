@@ -12,6 +12,20 @@
   box-shadow: 1px 1px 2px #cccccc; */
 }
 
+.Heading {
+  margin: auto;
+  padding: 20px;
+  text-align: justify;
+  width: 80%;
+}
+
+.Heading > h2 {
+  font-size: 1.5em;
+  font-weight: 500;
+  color: #1c2791;
+  margin: 0px;
+}
+
 .Profile > span {
   width: 100%;
   padding: 20px;
@@ -28,6 +42,7 @@
 .Profile h3 {
   font-weight: 700;
   font-size: 1.2em;
+  color: #1c2791;
 }
 
 .Profile .Social {
@@ -63,10 +78,20 @@ button.Twitter {
   border-color: #1da1f2;
 }
 
-.Facebook>span{
+.Facebook > span {
   color: #3b5998;
 }
 
-.Twitter>span{
+.Twitter > span {
   color: #1da1f2;
+}
+
+.Form {
+  width: 100%;
+  /* display: flex; */
+  flex-flow: column;
+  align-items: center;
+  /* justify-content: space-between; */
+  padding: 20px 20px;
+  box-sizing: border-box;
 }

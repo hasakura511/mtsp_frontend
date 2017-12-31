@@ -50,7 +50,7 @@ class App extends Component {
       window.ga("set", "page", location.pathname + location.search);
       window.ga("send", "pageview");
     } else {
-      console.log("GA not defined yet");
+      // console.log("GA not defined yet");
     }
     this.props.checkAuth();
   }

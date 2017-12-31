@@ -19,7 +19,7 @@ const fbSDK = component => {
       xfbml: true,
       version: "v2.1"
     });
-    if (component.state.exists) {
+    if (component.exists) {
       component.setState({ facebookSDK: true });
     }
   };
@@ -45,7 +45,7 @@ const googleSDK = component => {
         client_id: Config.GOOGLE_CLIENT_ID,
         scope: Config.GOOGLE_API_SCOPES
       });
-      if (component.state.exists) {
+      if (component.exists) {
         component.setState({ googleSDK: true });
       }
     });
@@ -76,9 +76,10 @@ class SocialAuth extends Component {
       twitterUrl: null,
       linkedinUrl: null,
       googleSDK: !!window.FB,
-      facebookSDK: !!window.gapi && !!window.gapi.auth2,
-      exists: true
+      facebookSDK: !!window.gapi && !!window.gapi.auth2
     };
+
+    this.exists = true;
   }
 
   onWindowMessageHandler = () => {
@@ -113,6 +114,9 @@ class SocialAuth extends Component {
     axios
       .get("/utility/auth/twitter/")
       .then(response => {
+        if (!this.exists) {
+          return;
+        }
         this.setState({
           twitterUrl: response.data["authorize_url"]
         });
@@ -128,6 +132,9 @@ class SocialAuth extends Component {
     axios
       .get("/utility/auth/linkedin/")
       .then(response => {
+        if (!this.exists) {
+          return;
+        }
         this.setState({
           linkedinUrl: response.data["authorize_url"]
         });
@@ -135,14 +142,14 @@ class SocialAuth extends Component {
       })
       .catch(error => {
         this.props.authFail({
-          Message: "Could not load linkedin Oauth URL"
+          Message: error.Message || "Could not load linkedin Oauth URL"
         });
       });
   }
 
   componentWillUnmount() {
     window.onmessage = null;
-    this.setState({ exists: false });
+    this.exists = false;
   }
 
   fbAuth = () => {

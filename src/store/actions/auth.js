@@ -94,7 +94,12 @@ export const facebookAuth = (inputToken, user) => dispatch => {
       user_details: user
     })
     .then(response => {
-      dispatch(authSuccess(H.keysToCamel(user), response.data.sessiontoken));
+      dispatch(
+        authSuccess(
+          H.keysToCamel(response.data.user),
+          response.data.sessiontoken
+        )
+      );
     })
     .catch(error => {
       dispatch(authFail(error));
@@ -108,6 +113,7 @@ export const authSuccess = (user, token) => {
     "loginTime",
     localStorage.getItem("loginTime") || Date.now()
   );
+  axios.defaults.headers.common["sessiontoken"] = localStorage.getItem("token");
   return {
     type: actionTypes.AUTH_SUCCESS,
     user,
@@ -115,11 +121,11 @@ export const authSuccess = (user, token) => {
   };
 };
 
-
 export const logout = () => {
   localStorage.removeItem("token");
   localStorage.removeItem("user");
   localStorage.removeItem("loginTime");
+  delete axios.defaults.headers.common["sessiontoken"];
   return {
     type: actionTypes.LOGOUT
   };

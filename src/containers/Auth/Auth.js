@@ -14,6 +14,8 @@ import authInitialControls, {
   FormInput,
   Button
 } from "./components/AuthInitialControls";
+import TosModal from "./containers/TosModal/TosModal";
+import RdModal from "./containers/RdModal/RdModal";
 //sign up or sign in
 
 const Heading = props => (
@@ -91,7 +93,12 @@ class Auth extends Component {
   }
 
   componentDidMount() {
-    if (this.props.isAuth && this.props.authRedirect !== "/") {
+    if (
+      this.props.isAuthenticated &&
+      this.props.rdAccepted &&
+      this.props.tosAccepted &&
+      this.props.authRedirect !== "/"
+    ) {
       //clear the authRedirect path
       this.props.clearAuthRedirect();
     }
@@ -167,11 +174,33 @@ class Auth extends Component {
     });
   };
 
+  isAuthTemplate() {
+    if (this.props.rdAccepted && this.props.tosAccepted) {
+      return <Redirect to={this.props.authRedirect} />;
+    } else if (!this.props.tosAccepted) {
+      //Show modal to accept TOS
+      return <TosModal />;
+    } else if (!this.props.rdAccepted) {
+      return <RdModal />;
+    }
+  }
+
   render() {
     const formArr = [],
       isRedirect =
         this.props.location.search !== "?signup" &&
         this.props.location.search !== "?signin";
+    if (isRedirect) {
+      return <Redirect to="/auth?signup" />;
+    }
+    if (this.props.loading) {
+      return <Spinner />;
+    }
+
+    if (this.props.isAuthenticated) {
+      return this.isAuthTemplate();
+    }
+
     Object.keys(this.state.controls).forEach(key => {
       if (this.state.controls[key]["visible"]) {
         formArr.push({
@@ -180,11 +209,7 @@ class Auth extends Component {
         });
       }
     });
-    return this.props.loading ? (
-      <Spinner />
-    ) : this.props.isAuth ? (
-      <Redirect to={this.props.authRedirect} />
-    ) : isRedirect ? null : ( // <Redirect to="/auth?signup" />
+    return (
       <Aux>
         {this.state.isSignup ? (
           <Heading text="Sign Up or" link="Sign In" href="/auth?signin" />
@@ -221,7 +246,9 @@ class Auth extends Component {
 Auth.propTypes = {
   onAuth: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
-  isAuth: PropTypes.bool.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired,
+  rdAccepted: PropTypes.bool.isRequired,
+  tosAccepted: PropTypes.bool.isRequired,
   authRedirect: PropTypes.string.isRequired,
   clearAuthRedirect: PropTypes.func.isRequired,
   addTimedToaster: PropTypes.func.isRequired,
@@ -234,7 +261,9 @@ export default withRouter(
   connect(
     state => ({
       loading: state.auth.loading,
-      isAuth: state.auth.token !== null,
+      isAuthenticated: state.auth.token !== null,
+      tosAccepted: state.auth.tosAccepted,
+      rdAccepted: state.auth.rdAccepted,
       error: state.auth.error,
       authRedirect: state.auth.authRedirect
     }),

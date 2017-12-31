@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 import classes from "./Panel.css";
 import Slot from "../Slot/Slot";
 import RiskStrip from "../../components/_RiskStrip/_RiskStrip";

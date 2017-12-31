@@ -4,7 +4,7 @@ import classes from "./Toasters.css";
 import * as actions from "../../../store/actions/index";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
+import { TransitionGroup } from "react-transition-group";
 import Fade from "../../../hoc/withFade/withFade";
 
 class Toasters extends Component {

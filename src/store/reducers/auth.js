@@ -8,7 +8,9 @@ const initialState = {
   userId: null,
   firstName: null,
   lastName: null,
-  email: null
+  email: null,
+  tosAccepted: false,
+  rdAccepted: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -38,6 +40,8 @@ const reducer = (state = initialState, action) => {
         firstName: action.user.firstName,
         lastName: action.user.lastName,
         email: action.user.email,
+        rdAccepted: action.user.rdAccepted,
+        tosAccepted: action.user.tosAccepted,
         error: null
       };
     case actionTypes.AUTH_FAIL:

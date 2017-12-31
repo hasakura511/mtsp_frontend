@@ -4,7 +4,7 @@ import Logo from "../../Logo/Logo";
 import PropTypes from "prop-types";
 import NavigationItems from "../NavigationItems/NavigationItems";
 import { connect } from "react-redux";
-import DropDown from "../../../containers/UI/DropDown/DropDown";
+// import DropDown from "../../../containers/UI/DropDown/DropDown";
 
 const toolbar = props => {
   return (

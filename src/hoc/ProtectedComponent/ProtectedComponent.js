@@ -31,7 +31,12 @@ export default WrappedComponent => {
 
   return withRouter(
     connect(
-      state => ({ isAuth: state.auth.token !== null }),
+      state => ({
+        isAuth:
+          state.auth.token !== null &&
+          state.auth.tosAccepted &&
+          state.auth.rdAccepted
+      }),
       dispatch => ({
         setAuthRedirect: path => dispatch(actions.setAuthRedirect(path))
       })

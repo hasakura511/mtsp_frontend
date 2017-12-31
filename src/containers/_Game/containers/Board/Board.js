@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import Panel from "../Panel/Panel";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 import classes from "./Board.css";
 import bgBoard from "../../../../assets/images/boardBg.png";
+import { DragDropContext } from "react-dnd";
+import HTML5Backend from "react-dnd-html5-backend";
 
 class Board extends Component {
   render() {
@@ -24,4 +26,4 @@ class Board extends Component {
   }
 }
 
-export default Board;
+export default DragDropContext(HTML5Backend)(Board);

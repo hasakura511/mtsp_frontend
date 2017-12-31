@@ -24,7 +24,7 @@ class RouteModal extends Component {
   render() {
     return (
       <Route path={this.props.path} exact >
-        {({ match, ...rest }) => (
+        {({ match }) => (
         <Modal hidden={!match} toggle={this.toggle}>
           {this.props.children}
         </Modal>

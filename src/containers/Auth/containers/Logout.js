@@ -19,7 +19,7 @@ Logout.propTypes = {
 };
 
 export default connect(
-  state => ({}),
+  null,
   dispatch => ({
     logout: () => dispatch(actions.logout())
   })

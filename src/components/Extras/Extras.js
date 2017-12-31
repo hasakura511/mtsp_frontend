@@ -7,7 +7,7 @@ import Spinner from "../UI/Spinner/Spinner";
 import { Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 
-const withHeaders = str => {
+export const withHeaders = str => {
   return str
     ? str.split("[").map((substr, i) =>
         substr.split("]").map((content, j) => {
