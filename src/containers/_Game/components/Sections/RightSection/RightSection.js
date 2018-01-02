@@ -6,24 +6,17 @@ import Config, * as SystemTypes from "../../../Config";
 const rightSection = props => {
   return (
     <div className={classes.RightSection}>
-      {props.systems
-        .filter(system => Config[system]["position"] === "right")
-        .map(system => {
-          return (
-            <div
-              key={"right-" + SystemTypes[system]}
-              className={classes.RightCell}
-              style={{ borderRightColor: Config[system]["color"] }}
-            >
-              {SystemTypes[system]
-                .toLowerCase()
-                .replace(
-                  /(^[a-z]|_[a-z])/g,
-                  $1 => " " + $1[$1.length - 1].toUpperCase()
-                )}
-            </div>
-          );
-        })}
+      {props.systems.map(({ id, color, display }) => {
+        return (
+          <div
+            key={"right-" + id}
+            className={classes.RightCell}
+            style={{ borderRightColor: color }}
+          >
+            {display}
+          </div>
+        );
+      })}
     </div>
   );
 };

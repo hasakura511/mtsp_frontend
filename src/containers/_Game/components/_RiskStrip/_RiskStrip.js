@@ -5,10 +5,10 @@ import Config from "../../Config";
 
 
 const riskStrip = props => {
-  const color = Config[props.system]["color"];
+  const color = props.system.color;
   return <div style={{borderBottomColor: color}} className={classes.RiskStrip}/>;
 };
 riskStrip.propTypes = {
-  system: PropTypes.string.isRequired
+  system: PropTypes.object.isRequired
 };
 export default riskStrip;

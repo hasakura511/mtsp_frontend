@@ -2,7 +2,8 @@
   position: absolute;
   height: 55px;
   bottom: -55px;
-  padding: 0px 10px;
+  left: 0px;
+  padding: 0px 15px;
   display: flex;
   flex-flow: row;
   align-items: flex-start;
@@ -16,7 +17,7 @@
   box-shadow: 1px 1px 2px #aaaaaa;
   box-sizing: border-box;
   margin-right: 10px;
-  width: 100px;
+  width: 150px;
   display: flex;
   justify-content: center;
   align-items: center;

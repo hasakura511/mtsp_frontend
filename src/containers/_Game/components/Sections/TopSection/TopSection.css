@@ -2,12 +2,13 @@
   position: absolute;
   height: 100px;
   top: -100px;
-  padding: 0px 0px;
+  left: 0px;
+  padding: 0px 20px;
   display: flex;
   flex-flow: row;
   align-items: flex-start;
   justify-content: flex-start;
-  width: 100%;
+  /* width: 100%; */
 }
 .TopSection>div:last-child {
   margin-left: auto;
@@ -20,9 +21,8 @@
   border-top: 5px solid;
   box-shadow: 1px 1px 2px #aaaaaa;
   box-sizing: border-box;
-  margin-right: 13px;
-  margin-left: 1px;
-  width: 58px;
+  margin-right: 20px;
+  width: 60px;
   display: flex;
   justify-content: center;
   align-items: start;

@@ -3,32 +3,67 @@ import classes from "./Slot.css";
 import Square from "../../components/Square/Square";
 import PropTypes from "prop-types";
 import Config from "../../Config";
+import { DropTarget } from "react-dnd";
 
-const getColorsObject = systems => {
-  const colors = {};
-  systems.forEach(system => {
-    let borderKey =
-      "border" +
-      Config[system]["position"].replace(/^./, $1 => $1.toUpperCase()) +
-      "Color";
-    colors[borderKey] = Config[system]["color"];
-  });
-  return colors;
+/**
+ * Droptarget Spec
+ */
+const slotTarget = {
+  drop(props) {
+    debugger;
+  },
+  canDrop(props) {
+    return true;
+  }
 };
+
+const collect = (connect, monitor) => {
+  return {
+    dropTarget: connect.dropTarget(),
+    isOver: monitor.isOver(),
+    canDrop: monitor.canDrop()
+  };
+};
+
+// const getColorsObject = systems => {
+//   const colors = {};
+//   systems.forEach(system => {
+//     let borderKey =
+//       "border" +
+//       Config[system]["position"].replace(/^./, $1 => $1.toUpperCase()) +
+//       "Color";
+//     colors[borderKey] = Config[system]["color"];
+//   });
+//   return colors;
+// };
 
 class Slot extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      systems: Object.keys(Config)
-    };
+    this.state = {};
   }
 
   render() {
-    return (
+    const {
+      dropTarget,
+      isOver,
+      canDrop,
+      leftSystem,
+      rightSystem,
+      bottomSystem,
+      topSystem
+    } = this.props;
+    return dropTarget(
       <div className={classes.Slot}>
-        <Square colors={getColorsObject(this.state.systems)}>
+        <Square
+          colors={{
+            borderBottomColor: bottomSystem.color,
+            borderTopColor: topSystem.color,
+            borderLeftColor: leftSystem.color,
+            borderRightColor: rightSystem.color
+          }}
+        >
           {this.props.position}
         </Square>
       </div>
@@ -37,9 +72,15 @@ class Slot extends Component {
 }
 
 Slot.propTypes = {
-  systems: PropTypes.array,
-  chips: PropTypes.array,
-  position: PropTypes.number.isRequired
+  topSystem: PropTypes.any,
+  bottomSystem: PropTypes.any,
+  leftSystem: PropTypes.any,
+  rightSystem: PropTypes.any,
+  heldChips: PropTypes.array,
+  position: PropTypes.number.isRequired,
+  dropTarget: PropTypes.func,
+  isOver: PropTypes.bool,
+  canDrop: PropTypes.bool
 };
 
-export default Slot;
+export default DropTarget("chip", slotTarget, collect)(Slot);

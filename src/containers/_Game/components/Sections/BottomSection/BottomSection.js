@@ -6,24 +6,17 @@ import classes from "./BottomSection.css";
 const bottomSection = props => {
   return (
     <div className={classes.BottomSection}>
-      {props.systems
-        .filter(system => Config[system]["position"] === "bottom")
-        .map(system => {
-          return (
-            <div
-              key={"bottom-" + SystemTypes[system]}
-              className={classes.BottomCell}
-              style={{ borderBottomColor: Config[system]["color"] }}
-            >
-              {SystemTypes[system]
-                .toLowerCase()
-                .replace(
-                  /(^[a-z]|_[a-z])/g,
-                  $1 => " " + $1[$1.length - 1].toUpperCase()
-                )}
-            </div>
-          );
-        })}
+      {props.systems.map(({ id, color, display }) => {
+        return (
+          <div
+            key={"bottom-" + id}
+            className={classes.BottomCell}
+            style={{ borderBottomColor: color }}
+          >
+            {display}
+          </div>
+        );
+      })}
     </div>
   );
 };

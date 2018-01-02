@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 
 const chipsPanel = props => {
   const emptyChipSlots = [];
-  for (let i = 0; i < 6 - props.chips.length; i++) {
+  for (let i = 0; i < 6 - props.balanceChips.length; i++) {
     emptyChipSlots.push(
       <div key={"empty-chip-" + i} className={classes.ChipContainer} />
     );
@@ -16,7 +16,7 @@ const chipsPanel = props => {
         <p>Off: </p>
       </div>
       <div className={classes.Right}>
-        {props.chips.map((chip, i) => {
+        {props.balanceChips.map((chip, i) => {
           return <Chip key={"panel-chip-" + i} chip={chip} />;
         })}
         {emptyChipSlots}
@@ -26,7 +26,7 @@ const chipsPanel = props => {
 };
 
 chipsPanel.propTypes = {
-  chips: PropTypes.array.isRequired
+  balanceChips: PropTypes.array.isRequired
 };
 
 export default chipsPanel;
