@@ -92,11 +92,11 @@ class Board extends Component {
         }}
       >
         <Panel
-          leftSystems={leftSystems}
-          rightSystems={rightSystems}
-          bottomSystems={bottomSystems}
-          topSystems={topSystems}
-          balanceChips={balanceChips}
+          leftSystems={leftSystems || []}
+          rightSystems={rightSystems || []}
+          bottomSystems={bottomSystems || []}
+          topSystems={topSystems || []}
+          balanceChips={balanceChips || []}
         />
       </div>
     );
