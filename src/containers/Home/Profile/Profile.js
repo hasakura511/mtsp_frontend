@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import classes from "./Profile.css";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-// import { Redirect } from "react-router-dom";
 import protectedComponent from "../../../hoc/ProtectedComponent/ProtectedComponent";
 import Aux from "../../../hoc/_Aux/_Aux";
 import axios from "../../../axios-gsm";
+import axiosFirebase from "../../../axios-constants";
 import Controls from "../../Auth/components/AuthInitialControls";
 import Button from "../../Auth/components/Button/Button";
 import { FormInput } from "../../Auth/components/AuthInitialControls";
@@ -16,20 +16,21 @@ import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
 
 const { firstName, lastName } = Controls;
 
-const Heading = (
+const HEADING = `Thank you for registering for early access! We notify you soon when we launch functionality to bet and track your positions daily with updated end-of-day data.`;
+
+const TITLE = `Congratulations! As the early registerer you will be eligible for additional perks, beginning with six months free access to our newly implemented features and invitations to all beta launches.`;
+
+const Heading = ({ heading, title }) => (
   <div className={classes.Heading}>
-    <h2>
-      Thank you for registering for early access! We notify you soon when we
-      launch functionality to bet and track your positions daily with updated
-      end-of-day data.
-    </h2>
-    <p>
-      Congratulations! As the early registerer you will be eligible for
-      additional perks, beginning with six months free access to our newly
-      implemented features and invitations to all beta launches.
-    </p>
+    <h2>{heading}</h2>
+    <p>{title}</p>
   </div>
 );
+
+Heading.propTypes = {
+  heading: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired
+};
 
 class Profile extends Component {
   twitterShare = event => {
@@ -95,7 +96,9 @@ class Profile extends Component {
         lastName: lastName
       },
       formIsValid: true,
-      loading: false
+      loading: false,
+      heading: "",
+      title: ""
     };
     this.state.controls.firstName.value = this.props.firstName;
     this.state.controls.firstName.valid = true;
@@ -155,6 +158,23 @@ class Profile extends Component {
     });
   };
 
+  componentDidMount() {
+    this.setState({ loading: true });
+    axiosFirebase
+      .get("/profile_page.json")
+      .then(response => {
+        const { heading, title } = response.data;
+        this.setState({ loading: false, heading, title });
+      })
+      .catch(() => {
+        this.props.addTimedToaster({
+          id: "gsm-constants-profile",
+          text: "Error fetching constants from firebase"
+        });
+        this.setState({ loading: false, heading: HEADING, title: TITLE });
+      });
+  }
+
   render() {
     const formArr = [];
     for (let key in this.state.controls) {
@@ -163,12 +183,12 @@ class Profile extends Component {
         ...this.state.controls[key]
       });
     }
-
-    return this.state.loading ? (
+    const { title, heading, loading, formIsValid } = this.state;
+    return loading ? (
       <Spinner />
     ) : (
       <Aux>
-        {Heading}
+        <Heading title={title} heading={heading} />
         <div className={classes.Profile}>
           <form className={classes.Form}>
             {formArr.map(formElem => (
@@ -183,7 +203,7 @@ class Profile extends Component {
             ))}
             <div style={{ textAlign: "center", marginTop: "20px" }}>
               <Button
-                disabled={!this.state.formIsValid}
+                disabled={!formIsValid}
                 onClick={this.profileUpdateHandler}
               >
                 Update Profile
