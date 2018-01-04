@@ -16,7 +16,7 @@
 
 .TopSection .TopCell{
   height: 100%;
-  border: 1px solid #aaaaaa;
+  /* border: 1px solid #aaaaaa; */
   padding-top: 10px;
   border-top: 5px solid;
   box-shadow: 1px 1px 2px #aaaaaa;

@@ -274,7 +274,7 @@ export default withRouter(
       addTimedToaster: toaster =>
         dispatch(actions.addTimedToaster(toaster, 5000))
     })
-  )(withErrorHandler(Auth, axios))
+  )(withErrorHandler(axios)(Auth))
 );
 
 export {
@@ -283,3 +283,4 @@ export {
 export { default as ForgotPassword } from "./containers/ForgotPassword";
 export { default as ChangePassword } from "./containers/ChangePassword";
 export { default as Logout } from "./containers/Logout";
+export { default as UpdatePassword } from "./containers/UpdatePassword";

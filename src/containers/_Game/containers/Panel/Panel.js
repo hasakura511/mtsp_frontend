@@ -34,7 +34,17 @@ class Panel extends Component {
        */
       slots: [],
       maxHeight: 0,
-      maxWidth: 0
+      maxWidth: 0,
+      topSystems:
+        props.topSystems && props.topSystems.length
+          ? props.topSystems
+          : [blankSystem],
+      bottomSystems:
+        props.bottomSystems && props.bottomSystems.length
+          ? props.bottomSystems
+          : [blankSystem],
+      leftSystems: props.leftSystems,
+      rightSystems: props.rightSystems
     };
   }
   /**
@@ -42,7 +52,7 @@ class Panel extends Component {
    * @memberof Panel
    */
   componentWillMount() {
-    const { topSystems, bottomSystems, leftSystems, rightSystems } = this.props;
+    const { topSystems, bottomSystems, leftSystems, rightSystems } = this.state;
     const slots = [],
       sideSystems = [],
       maxHeight = Math.max(leftSystems.length, rightSystems.length) + 1,
@@ -78,8 +88,7 @@ class Panel extends Component {
 
   render() {
     const slotsGrid = [];
-    const { maxWidth, maxHeight, slots } = this.state;
-    const { topSystems } = this.props;
+    const { maxWidth, maxHeight, slots, topSystems } = this.state;
     let slot = null;
     for (let xIndex = 0; xIndex < maxWidth; xIndex++) {
       const column = [];
@@ -107,7 +116,10 @@ class Panel extends Component {
     return (
       <div className={classes.Panel}>
         {slotsGrid}
-        <BottomSection systems={this.props.bottomSystems} />
+        <BottomSection
+          systems={this.props.bottomSystems}
+          topSystems={this.props.topSystems}
+        />
         <LeftSection systems={this.props.leftSystems} />
         <RightSection systems={this.props.rightSystems} />
         <TopSection

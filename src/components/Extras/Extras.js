@@ -81,4 +81,4 @@ Extras.propTypes = {
 };
 
 // export default { PrivacyPolicy, TermsOfService, RiskDisclosure };
-export default withErrorHandler(Extras, axios);
+export default withErrorHandler(axios)(Extras);

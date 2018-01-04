@@ -5,7 +5,7 @@ import FormatModal from "../../../components/UI/FormatModal/FormatModal";
 import Input from "../../../components/UI/Input/Input";
 import { clone } from "../../../util";
 import { withRouter } from "react-router-dom";
-import axios from "../../../axios-gsm";
+import { axiosOpen } from "../../../axios-gsm";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
 import Spinner from "../../../components/UI/Spinner/Spinner";
 import { connect } from "react-redux";
@@ -38,7 +38,12 @@ const toOptionsList = obj => {
   return arr.sort((x, y) => x.value > y.value);
 };
 
-class Contact extends Component {
+@withErrorHandler(axiosOpen)
+@withRouter
+@connect(null, dispatch => ({
+  addTimedToaster: toaster => dispatch(actions.addTimedToaster(toaster, 7000))
+}))
+export default class Contact extends Component {
   constructor(props) {
     super(props);
 
@@ -51,6 +56,11 @@ class Contact extends Component {
       submitTitle: ""
     };
   }
+
+  static propTypes = {
+    history: PropTypes.object.isRequired,
+    addTimedToaster: PropTypes.func.isRequired
+  };
 
   getSubmitTitle(controls) {
     const errors = [];
@@ -71,8 +81,8 @@ class Contact extends Component {
   }
 
   componentDidMount() {
-    axios
-      .get("/utility/choices/")
+    axiosOpen
+      .get("http://localhost:8000/utility/choices/")
       .then(response => {
         const controls = { ...initialControls };
         for (let key in controls) {
@@ -164,7 +174,7 @@ class Contact extends Component {
       }, {});
     feedback["first_name"] = nameArr[0];
     feedback["last_name"] = nameArr[1];
-    axios
+    axiosOpen
       .post("/utility/feedback/", feedback)
       .then(() => {
         this.setState({ loading: false });
@@ -243,18 +253,3 @@ class Contact extends Component {
     );
   }
 }
-
-Contact.propTypes = {
-  history: PropTypes.object.isRequired,
-  addTimedToaster: PropTypes.func.isRequired
-};
-
-export default withErrorHandler(
-  withRouter(
-    connect(null, dispatch => ({
-      addTimedToaster: toaster =>
-        dispatch(actions.addTimedToaster(toaster, 7000))
-    }))(Contact)
-  ),
-  axios
-);

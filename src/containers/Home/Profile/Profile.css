@@ -1,11 +1,11 @@
 .Profile {
   margin: auto;
   padding: 10px;
-  width: 40%;
+  /* width: 40%; */
   box-sizing: border-box;
   display: flex;
-  flex-flow: column;
-  align-items: center;
+  flex-flow: row;
+  align-items: start;
   justify-content: space-between;
   /* border-radius: 2px;
   border: 2px solid #cccccc;
@@ -46,9 +46,16 @@
 }
 
 .Profile .Social {
+  width: 70%;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.Social>span{
   width: 100%;
   display: flex;
-  flex-flow: row;
   align-items: center;
   justify-content: space-evenly;
 }
@@ -87,11 +94,39 @@ button.Twitter {
 }
 
 .Form {
-  width: 100%;
+  width: 60%;
   /* display: flex; */
   flex-flow: column;
   align-items: center;
   /* justify-content: space-between; */
   padding: 20px 20px;
   box-sizing: border-box;
+}
+
+.Form span{
+  width: 100%;
+}
+
+.DeleteSection{
+  margin: 40px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.DeleteSection button{
+  padding: 5px;
+  background-color: #ff6a6a;
+  border: 2px solid #ff6a6a;
+  box-shadow: 1px 1px 2px #ff6a6a;
+  border-radius: 2px;
+  box-sizing: border-box;
+  color: white;
+  outline: none;
+  font-size: 1em;
+  font-weight: 500;
+  cursor: pointer;
+}
+.DeleteSection button:active{
+  box-shadow: none;
 }

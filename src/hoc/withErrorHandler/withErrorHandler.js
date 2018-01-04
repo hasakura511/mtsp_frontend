@@ -15,7 +15,7 @@ const ERROR_MESSAGE = {
   // ...
 };
 
-const withErrorHandler = (WrappedComponent, axios) => {
+const withErrorHandler = axios => WrappedComponent => {
   return class extends Component {
     constructor(props) {
       super(props);

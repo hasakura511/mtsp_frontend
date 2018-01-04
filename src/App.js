@@ -11,7 +11,8 @@ import Auth, {
   AccountVerification,
   ForgotPassword,
   ChangePassword,
-  Logout
+  Logout,
+  UpdatePassword
 } from "./containers/Auth/Auth";
 import Board from "./containers/_Game/containers/Board/Board";
 import Profile from "./containers/Home/Profile/Profile";
@@ -105,6 +106,7 @@ class App extends Component {
           <Route path="/privacy_policy" component={Extras} />
           <Route path="/risk_disclosure" component={Extras} />
           <Route path="/auth/changepassword" component={ChangePassword} />
+          <Route path="/auth/updatepassword" component={UpdatePassword} />
           <Route path="/auth/verify" component={AccountVerification} />
           <Route exact path="/auth" component={Auth} />
           <Route exact path="/auth/forgot" component={ForgotPassword} />

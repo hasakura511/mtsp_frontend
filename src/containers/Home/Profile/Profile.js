@@ -209,29 +209,28 @@ class Profile extends Component {
                 Update Profile
               </Button>
             </div>
+            <span className={classes.DeleteSection}>
+              <b>Delete your account</b> <button>Delete</button>
+            </span>
           </form>
-          {/* <span>
-            <b>Notification Email: </b>
-            <p>{this.props.email}</p>
-          </span>
-          <br />
-          <br /> */}
-          <div>
-            <h3>Share GSM with your friends</h3>
-          </div>
           <div className={classes.Social}>
-            <button className={classes.Facebook} onClick={this.fbShare}>
-              <span>
-                <i className="fa fa-facebook" />
-              </span>
-              Facebook
-            </button>
-            <button className={classes.Twitter} onClick={this.twitterShare}>
-              <span>
-                <i className="fa fa-twitter" />
-              </span>
-              Twitter
-            </button>
+            <div>
+              <h3>Share GSM with your friends</h3>
+            </div>
+            <span>
+              <button className={classes.Facebook} onClick={this.fbShare}>
+                <span>
+                  <i className="fa fa-facebook" />
+                </span>
+                Facebook
+              </button>
+              <button className={classes.Twitter} onClick={this.twitterShare}>
+                <span>
+                  <i className="fa fa-twitter" />
+                </span>
+                Twitter
+              </button>
+            </span>
           </div>
         </div>
       </Aux>
@@ -267,5 +266,14 @@ const dispatchToProps = dispatch => {
 };
 
 export default protectedComponent(
-  connect(stateToProps, dispatchToProps)(withErrorHandler(Profile, axios))
+  connect(stateToProps, dispatchToProps)(withErrorHandler(axios)(Profile))
 );
+
+{
+  /* <span>
+  <b>Notification Email: </b>
+  <p>{this.props.email}</p>
+</span>
+<br />
+<br /> */
+}

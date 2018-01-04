@@ -3,9 +3,13 @@ import PropTypes from "prop-types";
 import Spinner from "../../../components/UI/Spinner/Spinner";
 import Input from "../../../components/UI/Input/Input";
 import Button from "../components/Button/Button";
-import { checkValidity, clone } from "../../../util";
+import {
+  checkValidity,
+  clone,
+  parseQueryString,
+  keysToCamel
+} from "../../../util";
 import axios from "../../../axios-gsm";
-import { parseQueryString, keysToCamel } from "../../../util";
 import classes from "../Form.css";
 import { connect } from "react-redux";
 import * as actions from "../../../store/actions";
@@ -97,7 +101,7 @@ class ChangePassword extends Component {
           id: "change-success",
           text: Message || "Password changed."
         });
-        this.props.history.push("/");        
+        this.props.history.push("/");
       })
       .catch(error => {
         this.props.history.push("/");
@@ -158,7 +162,8 @@ ChangePassword.propTypes = {
 
 const dispatchToProps = dispatch => {
   return {
-    addTimedToaster: toaster => dispatch(actions.addTimedToaster(toaster, 5000)),
+    addTimedToaster: toaster =>
+      dispatch(actions.addTimedToaster(toaster, 5000)),
     authSuccess: (user, token) => dispatch(actions.authSuccess(user, token))
   };
 };

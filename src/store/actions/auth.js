@@ -113,7 +113,10 @@ export const authSuccess = (user, token) => {
     "loginTime",
     localStorage.getItem("loginTime") || Date.now()
   );
-  axios.defaults.headers.common["sessiontoken"] = localStorage.getItem("token");
+  axios.defaults.headers = {
+    ...axios.defaults.headers,
+    sessiontoken: localStorage.getItem("token")
+  };
   return {
     type: actionTypes.AUTH_SUCCESS,
     user,
@@ -125,7 +128,7 @@ export const logout = () => {
   localStorage.removeItem("token");
   localStorage.removeItem("user");
   localStorage.removeItem("loginTime");
-  delete axios.defaults.headers.common["sessiontoken"];
+  delete axios.defaults.headers["sessiontoken"];
   return {
     type: actionTypes.LOGOUT
   };
