@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classes from "./RightSection.css";
-import Config, * as SystemTypes from "../../../Config";
 
 const rightSection = props => {
   return (
