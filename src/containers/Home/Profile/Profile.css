@@ -47,6 +47,7 @@
 
 .Profile .Social {
   width: 70%;
+  height: 30vh;
   display: flex;
   flex-flow: column;
   align-items: center;

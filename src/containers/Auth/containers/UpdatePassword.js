@@ -67,9 +67,9 @@ export default class UpdatePassword extends Component {
   onFormSubmit = event => {
     event.preventDefault();
     this.setState({ loading: true });
-    const { password } = this.state;
+    const { password } = this.state.controls;
     axios
-      .post("/utility/auth/update", {
+      .post("/utility/auth/update/", {
         password: password.value
       })
       .then(() => {
@@ -113,7 +113,12 @@ export default class UpdatePassword extends Component {
             errorMessage={formElem.errorMessage}
           />
         ))}
-        <Button disabled={!this.state.formIsValid}>Submit</Button>
+        <div className={classes.ButtonContainer}>
+          <Button disabled={!this.state.formIsValid}>Submit</Button>
+          <Button type="button" onClick={() => this.props.history.goBack()}>
+            Back
+          </Button>
+        </div>
       </form>
     );
   }

@@ -13,6 +13,7 @@ import { clone, keysToCamel } from "../../../util";
 import * as actions from "../../../store/actions";
 import Spinner from "../../../components/UI/Spinner/Spinner";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
+import { Link } from "react-router-dom";
 
 const { firstName, lastName } = Controls;
 
@@ -191,6 +192,13 @@ class Profile extends Component {
         <Heading title={title} heading={heading} />
         <div className={classes.Profile}>
           <form className={classes.Form}>
+            <div style={{ margin: "10px" }}>
+              <b>Notification Email: </b>
+              <p>
+                {this.props.email}{" "}
+                <Link to="/profile/updatepassword">Change Password</Link>
+              </p>
+            </div>
             {formArr.map(formElem => (
               <FormInput
                 key={formElem.id}
@@ -270,10 +278,7 @@ export default protectedComponent(
 );
 
 {
-  /* <span>
-  <b>Notification Email: </b>
-  <p>{this.props.email}</p>
-</span>
+  /* 
 <br />
 <br /> */
 }

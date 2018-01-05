@@ -170,7 +170,7 @@ export default {
     elementType: "input",
     elementConfig: {
       type: "email",
-      placeholder: "Mail Address"
+      placeholder: ""
     },
     value: "",
     validation: {

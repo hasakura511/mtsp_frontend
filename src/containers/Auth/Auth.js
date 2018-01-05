@@ -75,7 +75,7 @@ class Auth extends Component {
 
   componentWillReceiveProps(newProps) {
     this.syncProps(newProps);
-    if (newProps.error) {
+    if (newProps.error && newProps.error !== this.props.error) {
       this.props.addTimedToaster(
         {
           id: "auth-error" + Math.random().toFixed(3),
@@ -212,9 +212,9 @@ class Auth extends Component {
     return (
       <Aux>
         {this.state.isSignup ? (
-          <Heading text="Sign Up or" link="Sign In" href="/auth?signin" />
+          <Heading text="Register or" link="Login" href="/auth?signin" />
         ) : (
-          <Heading text="Sign In or" link="Sign Up" href="/auth?signup" />
+          <Heading text="Login or" link="Register" href="/auth?signup" />
         )}
         <div className={classes.Auth}>
           <div className={classes.Left}>
@@ -227,7 +227,7 @@ class Auth extends Component {
               </Link>
               <span>
                 <Button disabled={!this.state.formIsValid} type="submit">
-                  {this.state.isSignup ? "Continue Sign Up" : "Continue Login"}
+                  {this.state.isSignup ? "Register" : "Login"}
                 </Button>
               </span>
             </form>

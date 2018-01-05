@@ -101,7 +101,8 @@ class App extends Component {
         <Switch>
           <Route path="/logout" component={Logout} />
           <Route path="/contact" component={Home} />
-          <Route path="/profile" component={Profile} />
+          <Route exact path="/profile" component={Profile} />
+          <Route exact path="/profile/updatepassword" component={UpdatePassword} />
           <Route path="/terms_of_service" component={Extras} />
           <Route path="/privacy_policy" component={Extras} />
           <Route path="/risk_disclosure" component={Extras} />

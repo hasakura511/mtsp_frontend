@@ -65,6 +65,7 @@ export const auth = (
       }
     })
     .catch(error => {
+      console.log(error.response);
       dispatch(authFail(error));
     });
 };
@@ -164,4 +165,22 @@ export const checkAuth = () => dispatch => {
     dispatch(checkAuthTimeout(AUTH_EXPIRY_TIME - duration / 1000));
     dispatch(authSuccess(user, token));
   }
+};
+
+export const tosAgreed = () => {
+  return {
+    type: actionTypes.TOS_AGREED
+  };
+};
+
+export const rdAgreed = () => {
+  const user = {
+    ...JSON.parse(localStorage.getItem("user")),
+    rdAccepted: true,
+    tosAccepted: true
+  };
+  localStorage.setItem("user", user);
+  return {
+    type: actionTypes.RD_AGREED
+  };
 };

@@ -25,6 +25,17 @@ const reducer = (state = initialState, action) => {
         ...state,
         authRedirect: "/"
       };
+
+    case actionTypes.TOS_AGREED:
+      return {
+        ...state,
+        tosAccepted: true
+      };
+    case actionTypes.RD_AGREED:
+      return {
+        ...state,
+        rdAccepted: true
+      };
     case actionTypes.AUTH_START:
       return {
         ...state,

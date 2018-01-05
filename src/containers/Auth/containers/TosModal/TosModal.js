@@ -5,12 +5,11 @@ import * as actions from "../../../../store/actions";
 import { connect } from "react-redux";
 import classes from "./TosModal.css";
 import axiosConstants from "../../../../axios-constants";
-import axios from "../../../../axios-gsm";
 import { withHeaders } from "../../../../components/Extras/Extras";
 import Modal from "../../../../components/UI/Modal/Modal";
 import Spinner from "../../../../components/UI/Spinner/Spinner";
 import { Button } from "../../components/AuthInitialControls";
-import { keysToCamel } from "../../../../util";
+import CancelButton from "../../../../components/UI/CancelButton/CancelButton";
 
 class TosModal extends Component {
   constructor(props) {
@@ -45,19 +44,7 @@ class TosModal extends Component {
 
   acceptHandler = event => {
     event.preventDefault();
-    this.setState({ loading: true });
-    axios
-      .post("/utility/auth/tos_update/", {})
-      .then(response => {
-        this.setState({ loading: false, show: false });
-        this.props.authSuccess(
-          keysToCamel(response.data.user),
-          response.data.sessiontoken
-        );
-      })
-      .catch(error => {
-        this.errorHandler(error, "Error updating TOS status.");
-      });
+    this.props.tosAgreed();
   };
 
   render() {
@@ -65,12 +52,13 @@ class TosModal extends Component {
       return <Spinner />;
     }
     return (
-      <Modal toggle={this.errorHandler} hidden={!this.state.show}>
+      <Modal hidden={!this.state.show}>
         <FormatModal title="You must accept our terms of service">
           <div className={classes.Content}>
             {withHeaders(this.state.tosContent)}
           </div>
           <div className={classes.Footer}>
+            <CancelButton onClick={this.errorHandler}>I disagree</CancelButton>
             <Button onClick={this.acceptHandler}>
               I agree to terms of service.
             </Button>
@@ -84,7 +72,8 @@ class TosModal extends Component {
 TosModal.propTypes = {
   authSuccess: PropTypes.func.isRequired,
   logout: PropTypes.func.isRequired,
-  addTimedToaster: PropTypes.func.isRequired
+  addTimedToaster: PropTypes.func.isRequired,
+  tosAgreed: PropTypes.func.isRequired
 };
 
 export default connect(null, dispatch => {
@@ -97,6 +86,7 @@ export default connect(null, dispatch => {
     },
     addTimedToaster: toaster => {
       dispatch(actions.addTimedToaster(toaster, 5000));
-    }
+    },
+    tosAgreed: () => dispatch(actions.tosAgreed())
   };
 })(TosModal);

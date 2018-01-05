@@ -1,0 +1,24 @@
+.Button {
+  margin: auto;
+  padding: 10px;
+  font-size: 1em;
+  font-family: "Montserrat", "Open Sans", sans-serif;
+  box-sizing: border-box;
+  background-color: #FAFAFA;
+  border: 2px solid #FAFAFA;
+  border-radius: 4px;
+  box-shadow: 1px 1px 4px #AFAFAF;
+  cursor: pointer;
+  color: #6e6e6e;
+  width: 282px;
+}
+
+.Button:active {
+  box-shadow: none;
+}
+
+.Button:disabled {
+  box-shadow: none;
+  color: #dddddd;
+  cursor: not-allowed;
+}

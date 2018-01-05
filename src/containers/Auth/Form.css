@@ -3,7 +3,20 @@
   flex-flow: column;
   align-items: center;
   justify-content: space-between;
-  width: 500px;
+  width: 600px;
   margin: auto;
   margin-top: 5%;
+}
+
+.Form > h2,
+.Form > p {
+  font-weight: 500;
+  color: #1c2791;
+}
+
+.ButtonContainer {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
 }

@@ -6,6 +6,7 @@ import { DragDropContext } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import Config from "../../Config";
 import ChipsConfig from "../../ChipsConfig";
+import protectedComponent from "../../../../hoc/ProtectedComponent/ProtectedComponent";
 
 const systems = [];
 for (let key in Config) {
@@ -38,7 +39,17 @@ const balanceChips = ChipsConfig.map(chip => {
   return chip;
 });
 
-class Board extends Component {
+
+
+@protectedComponent
+@DragDropContext(HTML5Backend)
+/**
+ * Board component, that encapsulates our board-game, drag-drop-lifecycle
+ *
+ * @class Board
+ * @extends {Component}
+ */
+export default class Board extends Component {
   constructor(props) {
     super(props);
 
@@ -102,5 +113,3 @@ class Board extends Component {
     );
   }
 }
-
-export default DragDropContext(HTML5Backend)(Board);

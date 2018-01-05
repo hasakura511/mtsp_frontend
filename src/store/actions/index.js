@@ -7,7 +7,9 @@ export {
   authSuccess,
   authFail,
   googleAuth,
-  facebookAuth
+  facebookAuth,
+  tosAgreed,
+  rdAgreed
 } from "./auth";
 export {
   addToaster,

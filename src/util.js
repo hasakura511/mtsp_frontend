@@ -104,3 +104,5 @@ export const checkValidity = (value, rules) => {
 
   return isValid;
 };
+
+export const BUG_MESSAGE = `Erroroneous code, please report this bug to us.`;

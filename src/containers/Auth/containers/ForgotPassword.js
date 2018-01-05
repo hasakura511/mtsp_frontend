@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import * as actions from "../../../store/actions";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import axios from "../../../axios-gsm";
 import classes from "../Form.css";
 import { FormInput, Button } from "../components/AuthInitialControls";
 import Spinner from "../../../components/UI/Spinner/Spinner";
+import Aux from "../../../hoc/_Aux/_Aux";
 
 class ForgotPassword extends Component {
   constructor(props) {
@@ -19,7 +20,7 @@ class ForgotPassword extends Component {
           label: "Email*",
           elementConfig: {
             type: "email",
-            placeholder: "Email Address"
+            placeholder: ""
           },
           value: "",
           validation: {
@@ -70,20 +71,31 @@ class ForgotPassword extends Component {
     this.setState({
       loading: true
     });
-    axios.post("/utility/auth/forgotpassword/", { email: this.state.controls.email.value }).then(() => {
-      this.setState({loading: false});
-      this.props.addTimedToaster({
-        id: "forgot-success",
-        text: "Link to update password email sent."
-      }, 5000);
-      this.props.history.push("/");
-    }).catch((error) => {
-      this.setState({loading: false});
-      this.props.addTimedToaster({
-        id: 'forgot-error',
-        text: error.Message || 'Email does not exist'
-      }, 5000);
-    });
+    axios
+      .post("/utility/auth/forgotpassword/", {
+        email: this.state.controls.email.value
+      })
+      .then(() => {
+        this.setState({ loading: false });
+        this.props.addTimedToaster(
+          {
+            id: "forgot-success",
+            text: "Link to update password email sent."
+          },
+          5000
+        );
+        this.props.history.push("/");
+      })
+      .catch(error => {
+        this.setState({ loading: false });
+        this.props.addTimedToaster(
+          {
+            id: "forgot-error",
+            text: error.Message || "Email does not exist"
+          },
+          5000
+        );
+      });
   };
 
   render() {
@@ -93,10 +105,19 @@ class ForgotPassword extends Component {
     ) : this.state.loading ? (
       <Spinner />
     ) : (
-      <form className={classes.Form} onSubmit={this.onFormSubmit}>
-        <FormInput {...{ ...this, formElem }} />
-        <Button disabled={!formElem.valid}>Reset Password</Button>
-      </form>
+      <Aux>
+        <form className={classes.Form} onSubmit={this.onFormSubmit}>
+          <h2>Reset Password</h2>
+          <p>Enter your email address which is linked to your account</p>
+          <FormInput {...{ ...this, formElem }} />
+          <div className={classes.ButtonContainer}>
+            <Button disabled={!formElem.valid}>Reset Password</Button>
+          </div>
+          <p>
+            I remembered, take me back to <Link to="/auth?signin">login!</Link>
+          </p>
+        </form>
+      </Aux>
     );
   }
 }
