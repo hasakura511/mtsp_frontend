@@ -11,7 +11,11 @@ const toaster = props => {
       className={classes.Toaster + " " + focusedClass}
     >
       <div className={classes.Text}>
-        <p>{props.text}</p>
+        <p>
+          {props.text
+            .replace(/\[|\]|u'|'/g, "")
+            .replace(/^[a-z]/, $1 => $1.toUpperCase())}
+        </p>
       </div>
       <button onClick={() => props.closeClick(props.id)}>X</button>
     </div>

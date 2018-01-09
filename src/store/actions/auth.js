@@ -65,8 +65,7 @@ export const auth = (
       }
     })
     .catch(error => {
-      console.log(error.response);
-      dispatch(authFail(error));
+      dispatch(authFail(error.response.data));
     });
 };
 
@@ -107,7 +106,16 @@ export const facebookAuth = (inputToken, user) => dispatch => {
     });
 };
 
-export const authSuccess = (user, token) => {
+export const authSuccess = (user, token) => dispatch => {
+  if (user.deactivatedAt) {
+    dispatch(logout());
+    dispatch(authFail({ Message: "Account has been deleted" }));
+  } else {
+    dispatch(authSuccessSave(user, token));
+  }
+};
+
+export const authSuccessSave = (user, token) => {
   localStorage.setItem("token", token);
   localStorage.setItem("user", JSON.stringify(user));
   localStorage.setItem(
@@ -118,21 +126,33 @@ export const authSuccess = (user, token) => {
     ...axios.defaults.headers,
     sessiontoken: localStorage.getItem("token")
   };
-  return {
-    type: actionTypes.AUTH_SUCCESS,
-    user,
-    token
-  };
+  return { type: actionTypes.AUTH_SUCCESS, user, token };
 };
 
-export const logout = () => {
+export const logout = () => dispatch => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    dispatch(logoutSave());
+  } else {
+    dispatch(authStart());
+    axios
+      .post("/utility/auth/logout/", {})
+      .then(() => {
+        dispatch(logoutSave());
+      })
+      .catch(() => {
+        dispatch(logoutSave());
+        dispatch(authFail({ Message: "Server warning in logging out." }));
+      });
+  }
+};
+
+export const logoutSave = () => {
   localStorage.removeItem("token");
   localStorage.removeItem("user");
   localStorage.removeItem("loginTime");
   delete axios.defaults.headers["sessiontoken"];
-  return {
-    type: actionTypes.LOGOUT
-  };
+  return { type: actionTypes.LOGOUT };
 };
 
 export const setAuthRedirect = path => {

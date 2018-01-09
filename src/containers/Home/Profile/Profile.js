@@ -15,7 +15,14 @@ import Spinner from "../../../components/UI/Spinner/Spinner";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
 import { Link } from "react-router-dom";
 
+
 const { firstName, lastName } = Controls;
+
+const { DELETE_TITLE, DELETE_MESSAGE, DELETE_SUCCESS } = {
+  DELETE_TITLE: `Do you really want to close your account?`,
+  DELETE_MESSAGE: `Are you sure that you want to close your account here? Confirming this will remove your account permanently with immediate effect.`,
+  DELETE_SUCCESS: `Account successfully deactivated.`
+};
 
 const HEADING = `Thank you for registering for early access! We notify you soon when we launch functionality to bet and track your positions daily with updated end-of-day data.`;
 
@@ -33,7 +40,38 @@ Heading.propTypes = {
   title: PropTypes.string.isRequired
 };
 
-class Profile extends Component {
+const stateToProps = state => {
+  return {
+    email: state.auth.email,
+    firstName: state.auth.firstName,
+    lastName: state.auth.lastName
+  };
+};
+
+const dispatchToProps = dispatch => {
+  return {
+    addTimedToaster: toaster => {
+      dispatch(actions.addTimedToaster(toaster, 5000));
+    },
+    authSuccess: (user, token) => {
+      dispatch(actions.authSuccess(user, token));
+    },
+    showDialog: (title, message, onSuccess, onCancel) => {
+      dispatch(actions.showDialog(title, message, onSuccess, onCancel));
+    },
+    killDialog: () => {
+      dispatch(actions.killDialog());
+    },
+    logout: () => {
+      dispatch(actions.logout());
+    }
+  };
+};
+
+@protectedComponent
+@connect(stateToProps, dispatchToProps)
+@withErrorHandler(axios)
+export default class Profile extends Component {
   twitterShare = event => {
     event.preventDefault();
     const twitterWindow = window.open(
@@ -80,11 +118,7 @@ class Profile extends Component {
         });
       })
       .catch(error => {
-        this.setState({ loading: false });
-        this.props.addTimedToaster({
-          id: "profile-update-error",
-          text: error.Message || "Could not update profile, try again later"
-        });
+        this.errorHandler(error);
       });
   };
 
@@ -159,6 +193,35 @@ class Profile extends Component {
     });
   };
 
+  profileDeleteHandler = event => {
+    event.preventDefault();
+    this.props.showDialog(DELETE_TITLE, DELETE_MESSAGE, () => {
+      this.props.killDialog();
+      this.setState({ loading: true });
+      axios
+        .post("/utility/auth/deactivate/", {})
+        .then(() => {
+          this.setState({ loading: false });
+          this.props.logout();
+          this.props.addTimedToaster({
+            id: "deactivate-success",
+            text: DELETE_SUCCESS
+          });
+        })
+        .catch(error => {
+          this.errorHandler(error);
+        });
+    });
+  };
+
+  errorHandler = error => {
+    this.setState({ loading: false });
+    this.props.addTimedToaster({
+      id: "profile-update-error",
+      text: error.Message || "Could not update profile, try again later"
+    });
+  };
+
   componentDidMount() {
     this.setState({ loading: true });
     axiosFirebase
@@ -218,7 +281,8 @@ class Profile extends Component {
               </Button>
             </div>
             <span className={classes.DeleteSection}>
-              <b>Delete your account</b> <button>Delete</button>
+              <b>Delete your account</b>{" "}
+              <button onClick={this.profileDeleteHandler}>Delete</button>
             </span>
           </form>
           <div className={classes.Social}>
@@ -244,41 +308,15 @@ class Profile extends Component {
       </Aux>
     );
   }
-}
 
-Profile.propTypes = {
-  email: PropTypes.string,
-  firstName: PropTypes.string,
-  lastName: PropTypes.string,
-  authSuccess: PropTypes.func.isRequired,
-  addTimedToaster: PropTypes.func.isRequired
-};
-
-const stateToProps = state => {
-  return {
-    email: state.auth.email,
-    firstName: state.auth.firstName,
-    lastName: state.auth.lastName
+  static propTypes = {
+    email: PropTypes.string,
+    firstName: PropTypes.string,
+    lastName: PropTypes.string,
+    authSuccess: PropTypes.func.isRequired,
+    addTimedToaster: PropTypes.func.isRequired,
+    showDialog: PropTypes.func.isRequired,
+    killDialog: PropTypes.func.isRequired,
+    logout: PropTypes.func.isRequired
   };
-};
-
-const dispatchToProps = dispatch => {
-  return {
-    addTimedToaster: toaster => {
-      dispatch(actions.addTimedToaster(toaster, 5000));
-    },
-    authSuccess: (user, token) => {
-      dispatch(actions.authSuccess(user, token));
-    }
-  };
-};
-
-export default protectedComponent(
-  connect(stateToProps, dispatchToProps)(withErrorHandler(axios)(Profile))
-);
-
-{
-  /* 
-<br />
-<br /> */
 }

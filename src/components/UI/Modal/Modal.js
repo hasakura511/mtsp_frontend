@@ -7,7 +7,10 @@ import Backdrop from "../Backdrop/Backdrop";
 class Modal extends Component {
   shouldComponentUpdate(nextProps) {
     return (
-      nextProps.hidden !== this.props.hidden || nextProps.hardUpdate || false
+      nextProps.hidden !== this.props.hidden ||
+      nextProps.hardUpdate ||
+      (!nextProps.hidden && !this.props.hidden) ||
+      false
     );
   }
 

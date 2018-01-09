@@ -12,6 +12,7 @@
   padding: 0 20px;
   padding-right: 0px;
   box-sizing: border-box;
+  box-shadow: 0px 1px 0px #eeeeee;
   /* (to make sure that the toolbar is sized correctly even with the padding) */
   z-index: 90;
   /* has to be lower than backdrop */

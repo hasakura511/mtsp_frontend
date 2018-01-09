@@ -147,7 +147,8 @@ module.exports = {
               // directory for faster rebuilds.
               cacheDirectory: true,
               plugins: [
-                require("babel-plugin-transform-decorators-legacy").default
+                require("babel-plugin-transform-decorators-legacy").default,
+                require("babel-plugin-transform-flow-strip-types")
               ]
             }
           },

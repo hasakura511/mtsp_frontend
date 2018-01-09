@@ -11,8 +11,5 @@ export {
   tosAgreed,
   rdAgreed
 } from "./auth";
-export {
-  addToaster,
-  removeToaster,
-  addTimedToaster
-} from "./toasters";
+export { addToaster, removeToaster, addTimedToaster } from "./toasters";
+export { killDialog, showDialog, loadingDialog } from "./modal";

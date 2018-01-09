@@ -7,6 +7,7 @@ import SideDrawer from "../../components/Navigation/SideDrawer/SideDrawer";
 import Backdrop from "../../components/UI/Backdrop/Backdrop";
 import Footer from "../../components/UI/Footer/Footer";
 import Toasters from "../../containers/UI/Toasters/Toasters";
+import Dialog from "../../components/UI/Modal/Dialog";
 
 // show 0 to show always, 1 for logged out and 2 for logged in users
 const LINKS = [
@@ -51,6 +52,7 @@ const layout = props => (
     <main className={styles.Content}>{props.children}</main>
     <Footer />
     <Toasters />
+    <Dialog />
   </Aux>
 );
 

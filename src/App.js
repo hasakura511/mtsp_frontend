@@ -1,3 +1,4 @@
+//@flow
 import React, { Component } from "react";
 import Layout from "./hoc/Layout/Layout";
 import { withRouter, Route, Switch, Redirect } from "react-router-dom";
@@ -7,6 +8,7 @@ import * as actions from "./store/actions";
 import Home from "./containers/Home/Home";
 import Extras from "./components/Extras/Extras";
 // import GameBoard from "./containers/GameBoard/GameBoard";
+
 import Auth, {
   AccountVerification,
   ForgotPassword,
@@ -16,6 +18,13 @@ import Auth, {
 } from "./containers/Auth/Auth";
 import Board from "./containers/_Game/containers/Board/Board";
 import Profile from "./containers/Home/Profile/Profile";
+
+type PropType = {
+  checkAuth: Function,
+  location: Object,
+  isAuth: boolean
+};
+
 /**
  * This is the Root component where the BrowserHistory of React-Router starts, contains Layout and BrowserRouter
  * and Routes. Maintains SideDrawer visibility state.
@@ -23,14 +32,14 @@ import Profile from "./containers/Home/Profile/Profile";
  * @class App
  * @extends {Component}
  */
-class App extends Component {
+class App extends Component<PropType, { showSideDrawer: boolean }> {
   /**
    * Creates an instance of App.
    * @constructor
    * @param {any} props
    * @memberof App
    */
-  constructor(props) {
+  constructor(props: PropType) {
     super(props);
 
     this.state = {
@@ -92,7 +101,7 @@ class App extends Component {
    * @returns {string} returns jsx
    * @memberof App
    */
-  render() {
+  render(): React$Element<any> {
     return (
       <Layout
         showSideDrawer={this.state.showSideDrawer}
@@ -102,7 +111,11 @@ class App extends Component {
           <Route path="/logout" component={Logout} />
           <Route path="/contact" component={Home} />
           <Route exact path="/profile" component={Profile} />
-          <Route exact path="/profile/updatepassword" component={UpdatePassword} />
+          <Route
+            exact
+            path="/profile/updatepassword"
+            component={UpdatePassword}
+          />
           <Route path="/terms_of_service" component={Extras} />
           <Route path="/privacy_policy" component={Extras} />
           <Route path="/risk_disclosure" component={Extras} />
@@ -127,10 +140,10 @@ App.propTypes = {
 
 export default withRouter(
   connect(
-    state => ({
+    (state: { auth: { token: string } }): { isAuth: boolean } => ({
       isAuth: state.auth.token !== null
     }),
-    dispatch => ({
+    (dispatch: Function): { checkAuth: Function } => ({
       checkAuth() {
         dispatch(actions.checkAuth());
       }
