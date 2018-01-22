@@ -199,7 +199,7 @@ export const rdAgreed = () => {
     rdAccepted: true,
     tosAccepted: true
   };
-  localStorage.setItem("user", user);
+  localStorage.setItem("user", JSON.stringify(user));
   return {
     type: actionTypes.RD_AGREED
   };

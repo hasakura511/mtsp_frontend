@@ -1,6 +1,7 @@
 let trackId = "UA-XXXXXXXXX-X";
 
 let apiUrl = `http://app.staging.globalsystemsmanagement.net`,
+  origin = "http://staging.globalsystemsmanagement.net",
   facebookAppId,
   googleClientId,
   googleApiScopes,
@@ -30,6 +31,7 @@ if (
 
 if (process.env.NODE_ENV == "development") {
   apiUrl = "http://localhost:8000";
+  origin = "http://localhost:3000";
 }
 
 export default {
@@ -39,5 +41,6 @@ export default {
   GOOGLE_CLIENT_ID: googleClientId,
   GOOGLE_API_SCOPES: googleApiScopes,
   FACEBOOK_API_SCOPES: facebookApiScopes,
-  LINKEDIN_API_SCOPES: linkedinApiScopes
+  LINKEDIN_API_SCOPES: linkedinApiScopes,
+  ORIGIN: origin
 };

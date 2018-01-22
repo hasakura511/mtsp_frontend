@@ -39,25 +39,26 @@ class Clock extends PureComponent {
     super(props);
 
     this.state = {
-      estTime: null
+      estTime: "5:00:00 PM"
     };
   }
 
   componentDidMount() {
-    this.timerInterval = setInterval(() => {
-      this.setState({
-        estTime: new Date().toLocaleTimeString([], {
-          timeZone: "America/New_York"
-        })
-      });
-    }, 1000);
+    // this.timerInterval = setInterval(() => {
+    //   this.setState({
+    //     estTime: new Date().toLocaleTimeString([], {
+    //       timeZone: "America/New_York"
+    //     })
+    //   });
+    // }, 1000);
   }
 
   componentWillUnmount() {
-    clearInterval(this.timerInterval);
+    // clearInterval(this.timerInterval);
   }
 
   render() {
+    this.clockTime = this.state.estTime.split(/\s/);
     return (
       <div className={classes.Widget}>
         <div className={classes.Left}>
@@ -66,7 +67,8 @@ class Clock extends PureComponent {
         <div className={classes.Saperation} />
         <div className={classes.Right}>
           <span>
-            <h3>{this.state.estTime}</h3>
+            <h3 style={{ width: "95px" }}>{this.clockTime[0]}</h3>
+            <h3 style={{ width: "45px" }}>{this.clockTime[1]}</h3>
             <p>EST</p>
           </span>
           <span>

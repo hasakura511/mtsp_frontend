@@ -82,7 +82,7 @@ export default class Contact extends Component {
 
   componentDidMount() {
     axiosOpen
-      .get("http://localhost:8000/utility/choices/")
+      .get("/utility/choices/")
       .then(response => {
         const controls = { ...initialControls };
         for (let key in controls) {

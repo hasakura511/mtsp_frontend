@@ -7,6 +7,23 @@ import Spinner from "../UI/Spinner/Spinner";
 import { Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 
+export const WithLinks = props => {
+  return props.str
+    ? props.str.split(/\<|\>/).map((chunk, i) => {
+        if (i % 2) {
+          const splittedChunk = chunk.split(/\{|\}/);
+          return (
+            <a key={"link-" + i} target="_blank" href={splittedChunk[1]}>
+              {splittedChunk[splittedChunk.length - 1]}
+            </a>
+          );
+        } else {
+          return chunk;
+        }
+      })
+    : null;
+};
+
 export const withHeaders = str => {
   return str
     ? str.split("[").map((substr, i) =>
@@ -14,7 +31,9 @@ export const withHeaders = str => {
           if (j === 0) {
             return (
               <p key={"content" + i + "-" + j}>
-                <strong>{content}</strong>
+                <strong>
+                  <WithLinks str={content} />
+                </strong>
               </p>
             );
           } else {
@@ -23,7 +42,7 @@ export const withHeaders = str => {
               .filter(line => line && line !== "\n" && line !== " ")
               .map((line, k) => (
                 <Aux key={"line" + i + j + k}>
-                  {line + "."}
+                  <WithLinks str={line + "."} />
                   <br />
                 </Aux>
               ));
@@ -39,7 +58,8 @@ export const withHeaders = str => {
     : null;
 };
 
-class Extras extends Component {
+@withErrorHandler(axios)
+export default class Extras extends Component {
   constructor(props) {
     super(props);
 
@@ -74,11 +94,8 @@ class Extras extends Component {
       <div className={classes.Container}>{withHeaders(this.state.text)}</div>
     );
   }
+
+  static propTypes = {
+    location: PropTypes.object.isRequired
+  };
 }
-
-Extras.propTypes = {
-  location: PropTypes.object.isRequired
-};
-
-// export default { PrivacyPolicy, TermsOfService, RiskDisclosure };
-export default withErrorHandler(axios)(Extras);
