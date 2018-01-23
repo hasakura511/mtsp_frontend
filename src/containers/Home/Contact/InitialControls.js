@@ -145,7 +145,7 @@ const countries = {
   MC: "Monaco",
   MN: "Mongolia",
   ME: "Montenegro",
-  MS: "Montserrat",
+  MS: "Kanit",
   MA: "Morocco",
   MZ: "Mozambique",
   MM: "Myanmar",
