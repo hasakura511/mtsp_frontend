@@ -4,10 +4,7 @@ import classes from "./Square.css";
 
 const square = props => {
   return (
-    <div
-      style={props.colors}
-      className={classes.Square}
-    >
+    <div style={props.colors} className={classes.Square} title={props.title}>
       {props.children}
     </div>
   );
@@ -19,6 +16,7 @@ square.propTypes = {
     borderRightColor: PropTypes.string,
     borderTopColor: PropTypes.string,
     borderBottomColor: PropTypes.string
-  }).isRequired
+  }).isRequired,
+  title: PropTypes.string
 };
 export default square;

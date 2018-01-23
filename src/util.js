@@ -105,4 +105,15 @@ export const checkValidity = (value, rules) => {
   return isValid;
 };
 
+
+/**
+ * @function toIntegerDate
+ * @param {string} str of format yyyy/mm/dd 
+ * @returns integer with digits as yyyymmdd
+ * @description toIntegerDate converts / saperated string date to integral value 
+ */
+export const toIntegerDate = str => {
+  return Number(str.replace(/\//g, "")) || 20180101;
+}
+
 export const BUG_MESSAGE = `Erroroneous code, please report this bug to us.`;

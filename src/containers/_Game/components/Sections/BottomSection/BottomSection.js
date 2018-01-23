@@ -6,7 +6,7 @@ const bottomSection = props => {
   const WIDTH = 60 + (props.topSystems.length - 1) * 80;
   return (
     <div className={classes.BottomSection}>
-      {props.systems.map(({ id, color, display }) => {
+      {props.systems.map(({ id, color, display, description }) => {
         return (
           <div
             key={"bottom-" + id}
@@ -15,6 +15,7 @@ const bottomSection = props => {
               borderBottomColor: color,
               width: WIDTH > 0 ? WIDTH : 60
             }}
+            title={description}
           >
             {display}
           </div>

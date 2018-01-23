@@ -2,15 +2,18 @@ import React from "react";
 import PropTypes from "prop-types";
 import classes from "./_Chip.css";
 import { DragSource } from "react-dnd";
-import imgSource from "../../../../assets/images/chip-drag.png"
+import imgSource from "../../../../assets/images/chip-drag.png";
+import { replaceSymbols } from "../../ChipsConfig";
 
 const chip = props => {
   const { dragSource, isDragging, dragPreview, canDrag, chip } = props;
   const img = new Image();
   img.src = imgSource;
   dragPreview(img);
+  const title =
+    "Portfolio: " + JSON.stringify(chip.qty).replace(/\{|\}|\'|\"/g, "");
   return dragSource(
-    <div className={classes.Chip}>
+    <div className={classes.Chip} title={replaceSymbols(title)}>
       <p>{chip.display}</p>
     </div>
   );

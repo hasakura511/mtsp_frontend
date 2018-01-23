@@ -54,6 +54,12 @@ class Slot extends Component {
       bottomSystem,
       topSystem
     } = this.props;
+    const titleArray = [
+      bottomSystem.display,
+      topSystem.display,
+      leftSystem.display,
+      rightSystem.display
+    ];
     return dropTarget(
       <div className={classes.Slot}>
         <Square
@@ -63,6 +69,7 @@ class Slot extends Component {
             borderLeftColor: leftSystem.color,
             borderRightColor: rightSystem.color
           }}
+          title={titleArray.join(", ")}
         >
           {this.props.position}
         </Square>

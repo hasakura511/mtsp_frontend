@@ -1,20 +1,32 @@
 export default [
   {
-    account_id: "5K_0_1516105730",
+    accountId: "5K_0_1516105730",
     display: "5K",
-    account_value: 5000.0,
+    accountValue: 5000.0,
     portfolio: ["TU", "BO"],
     qty: "{'TU': 2, 'BO': 1}",
     target: 250,
-    total_margin: 1925.0,
-    max_commissions: 8.100000000000001,
+    totalMargin: 1925.0,
+    maxCommissions: 8.100000000000001,
     created: 1516105728,
     updated: 1516105730
   },
   {
-    account_id: "50K_0_1516105887",
+    accountId: "25K_0_1516006972",
+    display: "25K",
+    accountValue: 25000,
+    portfolio: ["TU", "BO", "LC", "MP", "PL", "NG"],
+    qty: "{'TU': 2, 'BO': 1, 'LC': 1, 'MP': 1, 'PL': 1, 'NG': 1}",
+    target: 250,
+    totalMargin: 11493.75,
+    maxCommissions: 18.9,
+    created: 1516006970,
+    updated: 1516006972
+  },
+  {
+    accountId: "50K_0_1516105887",
     display: "50K",
-    account_value: 50000.0,
+    accountValue: 50000.0,
     portfolio: [
       "TU",
       "BO",
@@ -31,15 +43,63 @@ export default [
     qty:
       "{'TU': 2, 'BO': 1, 'LC': 1, 'MP': 1, 'PL': 1, 'CL': 1, 'NQ': 1, 'FV': 1, 'C': 1, 'LH': 1, 'AD': 1}",
     target: 250,
-    total_margin: 24471.0,
-    max_commissions: 32.4,
+    totalMargin: 24471.0,
+    maxCommissions: 32.4,
     created: 1516105885,
     updated: 1516105887
   },
   {
-    account_id: "5000K_0_1516106713",
+    accountId: "500K_0_1516105902",
+    display: "0.5M",
+    accountValue: 500000.0,
+    portfolio: [
+      "TU",
+      "BO",
+      "LC",
+      "MP",
+      "PL",
+      "NG",
+      "NQ",
+      "FV",
+      "C",
+      "LH",
+      "CD",
+      "HG",
+      "CL",
+      "YM",
+      "TY",
+      "W",
+      "FC",
+      "AD",
+      "SI",
+      "HO",
+      "ES",
+      "US",
+      "SM",
+      "NE",
+      "GC",
+      "RB",
+      "NIY",
+      "S",
+      "JY",
+      "PA",
+      "EMD",
+      "SF",
+      "BP",
+      "CU"
+    ],
+    qty:
+      "{'TU': 12, 'BO': 5, 'LC': 2, 'MP': 5, 'PL': 2, 'NG': 1, 'NQ': 1, 'FV': 8, 'C': 11, 'LH': 2, 'CD': 2, 'HG': 1, 'CL': 1, 'YM': 1, 'TY': 4, 'W': 4, 'FC': 1, 'AD': 3, 'SI': 1, 'HO': 1, 'ES': 1, 'US': 1, 'SM': 3, 'NE': 3, 'GC': 1, 'RB': 1, 'NIY': 1, 'S': 3, 'JY': 2, 'PA': 1, 'EMD': 1, 'SF': 1, 'BP': 2, 'CU': 1}",
+    target: 1500,
+    totalMargin: 205501.0,
+    maxCommissions: 242.99999999999986,
+    created: 1516105900,
+    updated: 1516105902
+  },
+  {
+    accountId: "5000K_0_1516106713",
     display: "5M",
-    account_value: 5000000.0,
+    accountValue: 5000000.0,
     portfolio: [
       "TU",
       "BO",
@@ -79,11 +139,57 @@ export default [
     qty:
       "{'TU': 115, 'BO': 47, 'LC': 19, 'MP': 52, 'PL': 20, 'NG': 11, 'NQ': 11, 'FV': 75, 'C': 100, 'LH': 24, 'CD': 25, 'HG': 11, 'CL': 15, 'YM': 17, 'TY': 41, 'W': 44, 'FC': 10, 'NE': 29, 'SI': 12, 'HO': 11, 'NIY': 12, 'US': 13, 'SM': 35, 'AD': 31, 'GC': 12, 'RB': 10, 'ES': 16, 'S': 28, 'JY': 24, 'PA': 7, 'EMD': 9, 'SF': 17, 'BP': 27, 'CU': 14}",
     target: 13750,
-    total_margin: 2344404.0,
-    max_commissions: 2548.8000000000006,
+    totalMargin: 2344404.0,
+    maxCommissions: 2548.8000000000006,
     created: 1516106711,
     updated: 1516106713
   }
 ];
 
-const x = {};
+export const description = {
+  AD: "Australian Dollar-CME(Floor+Electronic Combined)",
+  BO: "Soybean Oil-CBT (Floor+Electronic Combined)",
+  BP: "British Pound-CME(Floor+Electronic Combined)",
+  C: "Corn-CBT (Floor+Electronic Combined)",
+  CD: "Canadian Dollar-CME(Floor+Electronic Combined)",
+  CL: "Crude Oil-Light-NYMEX(Floor+Electronic Combined)",
+  CU: "Euro(Floor+Electronic Combined)-CME",
+  EMD: "Index-S&P Midcap 400 E-mini-CME",
+  ES: "S&P 500 Index-E-mini-CME",
+  FC: "Cattle-Feeder-CME(Floor+Electronic Combined)",
+  FV: "T-Note-U.S. 5 Yr-CBT(Floor+Electronic Combined)",
+  GC: "Gold-COMEX(Floor+Electronic Combined)",
+  HG: "CopperHG-COMEX(Floor+Electronic Combined)",
+  HO: "Heating Oil #2-NYMEX(Floor+Electronic Combined)",
+  JY: "Japanese Yen-CME(Floor+Electronic Combined)",
+  LC: "Cattle-Live(Floor+Electronic Combined)-CME",
+  LH: "Hogs-Lean(Floor+Electronic Combined)-CME",
+  MP: "Mexican Peso(Floor+Electronic Combined)-CME",
+  NE: "New Zealand Dollar-CME(Floor+Electronic Combined)",
+  NG: "Natural Gas-Henry Hub-NYMEX(Floor+Electronic Combined)",
+  NIY: "Nikkei 225 Index-Yen(Floor+Electronic Combined)-CME",
+  NQ: "Nasdaq 100 Index-E-mini",
+  PA: "Palladium-NYMEX(Floor+Electronic Combined)",
+  PL: "Platinum-NYMEX(Floor+Electronic Combined)",
+  RB: "Gasoline-Reformulated Blendstock(Combined)-NYMEX",
+  S: "Soybeans (Floor+Electronic Combined)-CBT",
+  SF: "Swiss Franc-CME-(Floor+Electronic Combined)",
+  SI: "Silver-COMEX(Floor+Electronic Combined)",
+  SM: "Soybean Meal-CBT (Floor+Electronic Combined)",
+  TU: "T-Note-U.S.  2 Yr (Floor+Electronic Combined)-CBT",
+  TY: "T-Note-U.S. 10 Yr w/Prj A-CBT(Floor+Electronic Combined)",
+  US: "T-Bond-U.S.-CBT(Floor+Electronic Combined)",
+  W: "Wheat-CBT (Floor+Electronic Combined)",
+  YM: "DJIA Mini $5 Index-CBT"
+};
+
+export const replaceSymbols = str => {
+  for (let key in description) {
+    const value = description[key];
+    str = str.replace(
+      new RegExp(key, "gi"),
+      value.substring(0, value.indexOf("("))
+    );
+  }
+  return str;
+};

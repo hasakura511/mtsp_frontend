@@ -7,6 +7,9 @@ import HTML5Backend from "react-dnd-html5-backend";
 import Config from "../../Config";
 import ChipsConfig from "../../ChipsConfig";
 import protectedComponent from "../../../../hoc/ProtectedComponent/ProtectedComponent";
+import Aux from "../../../../hoc/_Aux/_Aux";
+import Dashboard from "../../components/Dashboard/Dashboard";
+import Bettings from "../../BettingConfig";
 
 const systems = [];
 for (let key in Config) {
@@ -38,8 +41,6 @@ const balanceChips = ChipsConfig.map(chip => {
   chip["count"] = 2;
   return chip;
 });
-
-
 
 @protectedComponent
 @DragDropContext(HTML5Backend)
@@ -91,25 +92,28 @@ export default class Board extends Component {
       balanceChips
     } = this.state;
     return (
-      <div
-        className={classes.Board}
-        style={{
-          backgroundImage: "url(" + bgBoard + ")",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          paddingTop: "200px",
-          marginTop: "5%",
-          paddingBottom: "100px"
-        }}
-      >
-        <Panel
-          leftSystems={leftSystems || []}
-          rightSystems={rightSystems || []}
-          bottomSystems={bottomSystems || []}
-          topSystems={topSystems || []}
-          balanceChips={balanceChips || []}
-        />
-      </div>
+      <Aux>
+        <Dashboard {...Bettings} />
+        <div
+          className={classes.Board}
+          style={{
+            backgroundImage: "url(" + bgBoard + ")",
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
+            paddingTop: "200px",
+            // marginTop: "5%",
+            paddingBottom: "100px"
+          }}
+        >
+          <Panel
+            leftSystems={leftSystems || []}
+            rightSystems={rightSystems || []}
+            bottomSystems={bottomSystems || []}
+            topSystems={topSystems || []}
+            balanceChips={balanceChips || []}
+          />
+        </div>
+      </Aux>
     );
   }
 }

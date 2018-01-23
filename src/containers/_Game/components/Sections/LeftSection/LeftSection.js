@@ -6,12 +6,13 @@ import Config, * as SystemTypes from "../../../Config";
 const leftSection = props => {
   return (
     <div className={classes.LeftSection}>
-      {props.systems.map(({ id, color, display }) => {
+      {props.systems.map(({ id, color, display, description }) => {
         return (
           <div
             key={"left-" + id}
             className={classes.LeftCell}
             style={{ borderLeftColor: color }}
+            title={description}
           >
             {display}
           </div>

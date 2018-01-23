@@ -7,12 +7,13 @@ import ChipsPanel from "../../ChipsPanel/ChipsPanel";
 const topSection = props => {
   return (
     <div className={classes.TopSection}>
-      {props.systems.map(({ id, color, display }) => {
+      {props.systems.map(({ id, color, display, description }) => {
         return (
           <div
             key={"top-" + id}
             className={classes.TopCell}
             style={{ borderTopColor: color }}
+            title={description}
           >
             {display}
           </div>
