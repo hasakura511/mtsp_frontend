@@ -16,8 +16,19 @@ const chipsPanel = props => {
         <p>Off: </p>
       </div>
       <div className={classes.Right}>
-        {props.balanceChips.map((chip, i) => {
-          return <Chip key={"panel-chip-" + i} chip={chip} />;
+        {props.balanceChips.map(chip => {
+          return chip.count > 0 ? (
+            <Chip
+              key={"panel-chip-" + chip.accountId}
+              chip={chip}
+              canDrag={true}
+            />
+          ) : (
+            <div
+              key={"blank-chip-" + chip.accountId}
+              className={classes.ChipContainer}
+            />
+          );
         })}
         {emptyChipSlots}
       </div>

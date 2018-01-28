@@ -15,13 +15,13 @@ import Spinner from "../../../components/UI/Spinner/Spinner";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
 import { Link } from "react-router-dom";
 
-
 const { firstName, lastName } = Controls;
 
-const { DELETE_TITLE, DELETE_MESSAGE, DELETE_SUCCESS } = {
+const { DELETE_TITLE, DELETE_MESSAGE, DELETE_SUCCESS, RECOVER_SUCCESS } = {
   DELETE_TITLE: `Do you really want to close your account?`,
   DELETE_MESSAGE: `Are you sure that you want to close your account here? Confirming this will remove your account permanently with immediate effect.`,
-  DELETE_SUCCESS: `Account successfully deactivated.`
+  DELETE_SUCCESS: `Account successfully deactivated.`,
+  RECOVER_SUCCESS: `Account successfully recovered, welcome back.`
 };
 
 const HEADING = `Thank you for registering for early access! We notify you soon when we launch functionality to bet and track your positions daily with updated end-of-day data.`;
@@ -44,7 +44,8 @@ const stateToProps = state => {
   return {
     email: state.auth.email,
     firstName: state.auth.firstName,
-    lastName: state.auth.lastName
+    lastName: state.auth.lastName,
+    deactivatedAt: state.auth.deactivatedAt
   };
 };
 
@@ -64,6 +65,9 @@ const dispatchToProps = dispatch => {
     },
     logout: () => {
       dispatch(actions.logout());
+    },
+    reactivate: () => {
+      dispatch(actions.reactivate());
     }
   };
 };
@@ -214,6 +218,24 @@ export default class Profile extends Component {
     });
   };
 
+  profileRecoverHandler = event => {
+    event.preventDefault();
+    if (confirm("Would you like to reactivate your account?")) {
+      axios
+        .post("/utility/auth/reactivate/", {})
+        .then(() => {
+          this.props.reactivate();
+          this.props.addTimedToaster({
+            id: "reactivate-success",
+            text: RECOVER_SUCCESS
+          });
+        })
+        .catch(error => {
+          this.errorHandler(error);
+        });
+    }
+  };
+
   errorHandler = error => {
     this.setState({ loading: false });
     this.props.addTimedToaster({
@@ -281,8 +303,17 @@ export default class Profile extends Component {
               </Button>
             </div>
             <span className={classes.DeleteSection}>
-              <b>Delete your account</b>{" "}
-              <button onClick={this.profileDeleteHandler}>Delete</button>
+              {this.props.deactivatedAt ? (
+                <Aux>
+                  <b>Recover your account</b>{" "}
+                  <button onClick={this.profileRecoverHandler}>Recover</button>
+                </Aux>
+              ) : (
+                <Aux>
+                  <b>Delete your account</b>{" "}
+                  <button onClick={this.profileDeleteHandler}>Delete</button>
+                </Aux>
+              )}
             </span>
           </form>
           <div className={classes.Social}>
@@ -317,6 +348,8 @@ export default class Profile extends Component {
     addTimedToaster: PropTypes.func.isRequired,
     showDialog: PropTypes.func.isRequired,
     killDialog: PropTypes.func.isRequired,
-    logout: PropTypes.func.isRequired
+    logout: PropTypes.func.isRequired,
+    reactivate: PropTypes.func.isRequired,
+    deactivatedAt: PropTypes.any
   };
 }

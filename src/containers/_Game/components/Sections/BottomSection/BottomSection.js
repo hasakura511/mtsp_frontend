@@ -6,8 +6,8 @@ const bottomSection = props => {
   const WIDTH = 60 + (props.topSystems.length - 1) * 80;
   return (
     <div className={classes.BottomSection}>
-      {props.systems.map(({ id, color, display, description }) => {
-        return (
+      {props.systems.map(({ id, color, display, description, position }) => {
+        return position ? (
           <div
             key={"bottom-" + id}
             className={classes.BottomCell}
@@ -19,7 +19,7 @@ const bottomSection = props => {
           >
             {display}
           </div>
-        );
+        ) : null;
       })}
     </div>
   );

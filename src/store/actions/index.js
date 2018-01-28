@@ -9,7 +9,8 @@ export {
   googleAuth,
   facebookAuth,
   tosAgreed,
-  rdAgreed
+  rdAgreed,
+  reactivate
 } from "./auth";
 export { addToaster, removeToaster, addTimedToaster } from "./toasters";
 export { killDialog, showDialog, loadingDialog } from "./modal";

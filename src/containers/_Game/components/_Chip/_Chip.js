@@ -11,7 +11,7 @@ const chip = props => {
   img.src = imgSource;
   dragPreview(img);
   const title =
-    "Portfolio: " + JSON.stringify(chip.qty).replace(/\{|\}|\'|\"/g, "");
+    "Portfolio: " + JSON.stringify(chip.qty).replace(/\{|\}|\'|\"/gi, "");
   return dragSource(
     <div className={classes.Chip} title={replaceSymbols(title)}>
       <p>{chip.display}</p>
@@ -26,14 +26,21 @@ chip.propTypes = {
   dragPreview: PropTypes.any
 };
 
+
+/**
+ * @type {Object} Dragsource Spec.
+ */
 const chipSource = {
   /**
    * @returns {Object} returns the Object representation of item being dragged
-   * @param {Object} props Component's props
+   * @param {Object} props Component's actual props without influence of DragSource Decorator
    */
   beginDrag(props) {
-    const { id, display, amount } = props;
-    return { id, display, amount };
+    const { chip } = props;
+    return chip;
+  },
+  canDrag(props) {
+    return props.canDrag;
   }
 };
 

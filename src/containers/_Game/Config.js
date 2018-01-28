@@ -8,41 +8,47 @@ export default {
     position: "left",
     display: "Previous (1 day)",
     description:
-      "Previous trading days signals. For example if gold went up the previous day, the signal would be LONG."
+      "Previous trading days signals. For example if gold went up the previous day, the signal would be LONG.",
+    column: "prev1"
   },
   ANTI_PREVIOUS_1_DAY: {
     color: "indigo",
     position: "left",
     display: "Anti Previous (1 day)",
-    description: "Opposite of Previous signals."
+    description: "Opposite of Previous signals.",
+    column: "antiPrev1"
   },
   PREVIOUS_5_DAYS: {
     color: "yellow",
     position: "right",
     display: "Previous (5 days)",
     description:
-      "Previous trading days signals. For example if gold went up the previous day, the signal would be LONG."
+      "Previous trading days signals. For example if gold went up the previous day, the signal would be LONG.",
+    column: "prev5"
   },
   RISK_OFF: {
     color: "black",
     position: "top",
     display: "Risk Off",
     description:
-      "Opposite of RiskOn signals. (Fixed Signals consisting of Long precious metals and bonds, Short all other risky assets)"
+      "Opposite of RiskOn signals. (Fixed Signals consisting of Long precious metals and bonds, Short all other risky assets)",
+    column: "riskOff"
   },
   RISK_ON: {
     color: "red",
     position: "top",
     display: "Risk On",
     description:
-      "Fixed Signals consisting of Short precious metals and bonds, Long all other risky assets"
+      "Fixed Signals consisting of Short precious metals and bonds, Long all other risky assets",
+    column: "riskOn"
   },
   LOWEST_EQ: {
     color: "#f8cd80",
     position: "bottom",
     display: "Lowest Eq.",
     description:
-      "Machine learning system prioritizing signals from worst performing systems."
+      "Machine learning system prioritizing signals from worst performing systems.",
+    column: "lowEq"
   },
 
   // ANTI_LE: {
@@ -57,13 +63,15 @@ export default {
     position: "bottom",
     display: "Highest Eq.",
     description:
-      "Machine learning system prioritizing signals from best performing systems."
+      "Machine learning system prioritizing signals from best performing systems.",
+    column: "highEq"
   },
   ANTI_HE: {
     color: "#c25de3",
     position: "bottom",
     display: "Anti-HE",
-    description: "Opposite of HighestEquity signals"
+    description: "Opposite of HighestEquity signals",
+    column: "antiHighEq"
   },
 
   // 50: {
@@ -76,20 +84,23 @@ export default {
     color: "#8ec54e",
     position: "bottom",
     display: "Anti-50",
-    description: "Opposite of 50/50 signals"
+    description: "Opposite of 50/50 signals",
+    column: "anti50"
   },
   SEASONALITY: {
     color: "#f49535",
     position: "bottom",
     display: "Seasonality",
     description:
-      "Signals computed from 10 to 30+ years of seasonal daily data."
+      "Signals computed from 10 to 30+ years of seasonal daily data.",
+    column: "sea"
   },
   ANTI_SEA: {
     color: "#3fa3e7",
     position: "bottom",
     display: "Anti-Sea",
-    description: "Opposite of Seasonality signals."
+    description: "Opposite of Seasonality signals.",
+    column: "antiSea"
   },
   BLANK: {
     color: "transparent",
@@ -104,3 +115,5 @@ export const ANTI_PREVIOUS = "ANTI_PREVIOUS";
 export const LOWEST_EQ = "LOWEST_EQ";
 export const HIGHEST_EQ = "HIGHEST_EQ";
 export const ALPHA = "ALPHA";
+
+export const TARGET = 500;

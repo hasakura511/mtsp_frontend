@@ -7,8 +7,8 @@ import ChipsPanel from "../../ChipsPanel/ChipsPanel";
 const topSection = props => {
   return (
     <div className={classes.TopSection}>
-      {props.systems.map(({ id, color, display, description }) => {
-        return (
+      {props.systems.map(({ id, color, display, description, position }) => {
+        return position ? (
           <div
             key={"top-" + id}
             className={classes.TopCell}
@@ -17,7 +17,7 @@ const topSection = props => {
           >
             {display}
           </div>
-        );
+        ) : null;
       })}
       <ChipsPanel balanceChips={props.balanceChips} />
       <Clock />

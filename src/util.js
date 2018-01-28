@@ -117,3 +117,10 @@ export const toIntegerDate = str => {
 }
 
 export const BUG_MESSAGE = `Erroroneous code, please report this bug to us.`;
+
+
+export const toWordedDate = integerDate => {
+  const strDate = integerDate.toString();
+  const localeDateString = strDate.slice(4,6) + "/" + strDate.slice(6,8) + "/" + strDate.slice(0,4);
+  return (new Date(localeDateString)).toDateString();
+}

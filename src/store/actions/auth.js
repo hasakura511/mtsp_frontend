@@ -108,8 +108,14 @@ export const facebookAuth = (inputToken, user) => dispatch => {
 
 export const authSuccess = (user, token) => dispatch => {
   if (user.deactivatedAt) {
-    dispatch(logout());
-    dispatch(authFail({ Message: "Account has been deleted" }));
+    // dispatch(logout());
+    dispatch(
+      authFail({
+        Message:
+          "Welcome back! You can reactivate your account on profile page."
+      })
+    );
+    dispatch(authSuccessSave(user, token));
   } else {
     dispatch(authSuccessSave(user, token));
   }
@@ -203,4 +209,11 @@ export const rdAgreed = () => {
   return {
     type: actionTypes.RD_AGREED
   };
+};
+
+export const reactivate = () => dispatch => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const token = localStorage.getItem("token");
+  user.deactivatedAt = null;
+  dispatch(authSuccessSave(user, token));
 };

@@ -1,0 +1,55 @@
+.Order {
+  min-height: 500px;
+  width: 100%;
+  background-color: #bdc6ce;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.Order > .TitleRow {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.Left,
+.Right {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.Right{
+  width: 42%;
+}
+
+.Left > p, .Right > p{
+  font-size: 1.5em;
+  font-weight: 400;
+}
+
+.Systems > ul {
+  padding: 10px;
+}
+
+.Systems > ul > li {
+  list-style: none;
+}
+
+.Systems > ul > li > p {
+  margin: 0px;
+}
+
+.Order > .Content {
+  min-height: 400px;
+}
+
+.Content{
+  width: 100%;
+}

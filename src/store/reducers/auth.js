@@ -10,7 +10,8 @@ const initialState = {
   lastName: null,
   email: null,
   tosAccepted: false,
-  rdAccepted: false
+  rdAccepted: false,
+  deactivatedAt: null
 };
 
 const reducer = (state = initialState, action) => {
@@ -53,6 +54,7 @@ const reducer = (state = initialState, action) => {
         email: action.user.email,
         rdAccepted: action.user.rdAccepted,
         tosAccepted: action.user.tosAccepted,
+        deactivatedAt: action.user.deactivatedAt,
         error: null
       };
     case actionTypes.AUTH_FAIL:

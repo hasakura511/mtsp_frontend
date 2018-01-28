@@ -46,7 +46,9 @@ const googleSDK = component => {
         scope: Config.GOOGLE_API_SCOPES
       });
       if (component.exists) {
-        component.setState({ googleSDK: true });
+        component.setState({
+          googleSDK: true
+        });
       }
     });
   };
@@ -75,8 +77,8 @@ class SocialAuth extends Component {
       loading: false,
       twitterUrl: null,
       linkedinUrl: null,
-      googleSDK: !!window.FB,
-      facebookSDK: !!window.gapi && !!window.gapi.auth2
+      facebookSDK: !!window.FB,
+      googleSDK: !!window.gapi && !!window.gapi.auth2
     };
 
     this.exists = true;
@@ -103,11 +105,11 @@ class SocialAuth extends Component {
     /**
      * load Facebook SDK
      */
-    fbSDK(this);
+    this.state.facebookSDK || fbSDK(this);
     /**
      * load Google SDK
      */
-    googleSDK(this);
+    this.state.googleSDK || googleSDK(this);
     /**
      * load Twitter auth url
      */
