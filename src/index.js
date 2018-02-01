@@ -16,7 +16,8 @@ const rootReducer = combineReducers(reducers);
 const composeEnhancers =
   process.env.NODE_ENV === "development"
     ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
-    : compose;
+    : window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+// : compose;
 
 const store = createStore(
   rootReducer,
