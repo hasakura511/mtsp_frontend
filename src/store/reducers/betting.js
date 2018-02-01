@@ -122,7 +122,7 @@ const reducer = (state = initialState, action) => {
         const { changePercent } = modifiedPastBets[accountId] || {};
         return {
           accountId,
-          accountValue: accountValue * (1 + changePercent || 0)
+          accountValue: accountValue * (1 + (changePercent || 0))
         };
       });
       return {
