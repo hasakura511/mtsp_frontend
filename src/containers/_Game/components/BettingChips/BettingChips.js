@@ -6,13 +6,13 @@ import classes from "./BettingChips.css";
 const bettingChips = props => {
   return props.chips.length === 1 ? (
     <div className={classes.BettingChips}>
-      <Chip chip={props.chips[0]} />
+      <Chip chip={props.chips[0]} canDrag={true} />
     </div>
   ) : null;
 };
 
 bettingChips.propTypes = {
-  chips: PropTypes.array
+  chips: PropTypes.array.isRequired
 };
 
 export default bettingChips;

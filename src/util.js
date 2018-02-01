@@ -39,6 +39,9 @@ export const prettyPrint = obj => {
 };
 
 export const clone = obj => {
+  if (obj === null) {
+    return null;
+  }
   const o = {};
   for (let key in obj) {
     if (typeof obj[key] === "object") {
@@ -54,6 +57,16 @@ export const clone = obj => {
       o[key] = obj[key];
     }
   }
+  return o;
+};
+
+export const clean = obj => {
+  const o = {};
+  Object.keys(obj).forEach(key => {
+    if (obj[key]) {
+      o[key] = obj[key];
+    }
+  });
   return o;
 };
 
@@ -105,22 +118,37 @@ export const checkValidity = (value, rules) => {
   return isValid;
 };
 
-
 /**
  * @function toIntegerDate
- * @param {string} str of format yyyy/mm/dd 
+ * @param {string} str of format yyyy/mm/dd
  * @returns integer with digits as yyyymmdd
- * @description toIntegerDate converts / saperated string date to integral value 
+ * @description toIntegerDate converts / saperated string date to integral value
  */
 export const toIntegerDate = str => {
   return Number(str.replace(/\//g, "")) || 20180101;
-}
+};
 
 export const BUG_MESSAGE = `Erroroneous code, please report this bug to us.`;
 
-
 export const toWordedDate = integerDate => {
   const strDate = integerDate.toString();
-  const localeDateString = strDate.slice(4,6) + "/" + strDate.slice(6,8) + "/" + strDate.slice(0,4);
-  return (new Date(localeDateString)).toDateString();
-}
+  const localeDateString =
+    strDate.slice(4, 6) + "/" + strDate.slice(6, 8) + "/" + strDate.slice(0, 4);
+  return new Date(localeDateString).toDateString();
+};
+
+export const toStringDate = integerDate => {
+  const strDate = integerDate.toString();
+  return [
+    "'" + strDate.slice(2, 4),
+    strDate.slice(4, 6),
+    strDate.slice(6, 8)
+  ].join(".");
+};
+
+export const toSlashDate = integerDate => {
+  const strDate = integerDate.toString();
+  return [strDate.slice(0, 4), strDate.slice(4, 6), strDate.slice(6, 8)].join(
+    "/"
+  );
+};

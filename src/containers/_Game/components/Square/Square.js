@@ -4,14 +4,14 @@ import classes from "./Square.css";
 
 const square = props => {
   return (
-    <div style={props.colors} className={classes.Square} title={props.title}>
+    <div style={props.style} className={classes.Square} title={props.title}>
       {props.children}
     </div>
   );
 };
 square.propTypes = {
   children: PropTypes.any,
-  colors: PropTypes.shape({
+  style: PropTypes.shape({
     borderLeftColor: PropTypes.string,
     borderRightColor: PropTypes.string,
     borderTopColor: PropTypes.string,

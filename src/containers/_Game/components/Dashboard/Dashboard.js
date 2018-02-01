@@ -1,55 +1,63 @@
-import React, { Component } from "react";
+import React from "react";
 import ChipsConfig from "../../ChipsConfig";
-import {
-  accountValue,
-  lastUpdatedDate,
-  lastPastBet,
-  lastCurrentBet
-} from "../../BettingConfig";
 import classes from "./Dashboard.css";
 import chipIcon from "../../../../assets/images/chip-icon.png";
 import lossIcon from "../../../../assets/images/loss-icon.png";
 import gainIcon from "../../../../assets/images/gain-icon.png";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
-const dashboard = () => {
+const stateToProps = state => {
+  return {
+    currentBets: state.betting.currentBets,
+    pastBets: state.betting.pastBets,
+    accounts: state.betting.accounts
+  };
+};
+
+const dashboard = props => {
+  const { currentBets, pastBets, accounts } = props;
   return (
-    <div>
+    <div style={{ backgroundColor: "#e0f1f5" }}>
       <table className={classes.Table}>
         <thead>
           <tr>
+            <th>Account</th>
             <th>Current Bet</th>
-            <th>Past Bet</th>
+            <th>Previous Bet</th>
             <th>Gains/Losses</th>
             <th>Account Values</th>
             <th>Last Update</th>
           </tr>
         </thead>
         <tbody>
-          {ChipsConfig.map(chip => {
-            const lpBet = lastPastBet(chip.accountId);
-            const lcBet = lastCurrentBet(chip.accountId);
+          {ChipsConfig.map(({ accountId, display }) => {
+            const lpBet = pastBets[accountId];
+            const lcBet = currentBets[accountId];
             return (
-              <tr key={"dashboard-row-" + chip.accountId}>
+              <tr key={`dashboard-row-${accountId}`}>
+                <td>
+                  <div className={classes.Cell + " " + classes.Flex}>
+                    <img src={chipIcon} />
+                    <strong>{display}</strong>
+                  </div>
+                </td>
                 <td>
                   <div className={classes.Cell}>
-                    <img src={chipIcon} />
-                    <strong>{chip.display}</strong>
                     {lcBet ? (
                       <p>
-                        <span>{lcBet.slot}</span>
-                        <span>{"(MOC " + lcBet.bettingDate + ")"}</span>
+                        <span>{lcBet.position}</span>
+                        <span>{`MOC(${lcBet.bettingDate})`}</span>
                       </p>
                     ) : null}
                   </div>
                 </td>
                 <td>
                   <div className={classes.Cell}>
-                    <img src={chipIcon} />
-                    <strong>{chip.display}</strong>
                     {lpBet ? (
                       <p>
-                        <span>{lpBet.slot}</span>
-                        <span>{"(MOC " + lpBet.bettingDate + ")"}</span>
+                        <span>{lpBet.position}</span>
+                        <span>{`MOC(${lpBet.bettingDate})`}</span>
                       </p>
                     ) : null}
                   </div>
@@ -62,7 +70,9 @@ const dashboard = () => {
                     {lpBet ? (
                       <p style={{ width: "auto" }}>
                         <img src={lpBet.change > 0 ? gainIcon : lossIcon} />
-                        ${Math.abs(lpBet.change)} ({lpBet.changePercent}%)
+                        ${Math.abs(lpBet.change).toLocaleString("en")} ({(
+                          lpBet.changePercent * 100
+                        ).toFixed(2)}%)
                       </p>
                     ) : null}
                   </div>
@@ -72,9 +82,9 @@ const dashboard = () => {
                     className={classes.Cell}
                     style={{ justifyContent: "center" }}
                   >
-                    {lpBet
-                      ? "$" + accountValue(chip.accountId).toFixed(3)
-                      : null}
+                    {`$${accounts
+                      .find(account => accountId === account.accountId)
+                      .accountValue.toLocaleString("en")}`}
                   </div>
                 </td>
                 <td>
@@ -82,16 +92,36 @@ const dashboard = () => {
                     className={classes.Cell}
                     style={{ justifyContent: "center" }}
                   >
-                    {lpBet ? lastUpdatedDate(chip.accountId) : null}
+                    {lpBet ? lpBet.updateDate : null}
                   </div>
                 </td>
               </tr>
             );
           })}
+          <tr>
+            <th />
+            <td />
+            <td />
+            <td />
+            <td>
+              <div className={classes.Cell}>
+                {`$${accounts
+                  .map(({ accountValue }) => accountValue)
+                  .reduce((acc, inc) => acc + inc, 0)
+                  .toLocaleString("en")}`}
+              </div>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
   );
 };
 
-export default dashboard;
+dashboard.propTypes = {
+  currentBets: PropTypes.object.isRequired,
+  pastBets: PropTypes.object.isRequired,
+  accounts: PropTypes.array.isRequired
+};
+
+export default connect(stateToProps)(dashboard);

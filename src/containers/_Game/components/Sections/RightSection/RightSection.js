@@ -1,22 +1,26 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classes from "./RightSection.css";
+import Container from "../Container";
 
 const rightSection = props => {
   return (
     <div className={classes.RightSection}>
-      {props.systems.map(({ id, color, display, description }) => {
-        return (
-          <div
-            key={"right-" + id}
-            className={classes.RightCell}
-            style={{ borderRightColor: color }}
-            title={description}
-          >
-            {display}
-          </div>
-        );
-      })}
+      {props.systems.map(
+        ({ id, color, display, description, column, heldChips }) => {
+          return (
+            <div
+              key={"right-" + id}
+              className={classes.RightCell}
+              style={{ borderRightColor: color }}
+              title={description}
+            >
+              <Container {...props} column={column} heldChips={heldChips} />
+              {display}
+            </div>
+          );
+        }
+      )}
     </div>
   );
 };

@@ -1,13 +1,18 @@
 td,
 th {
   border-right: 1px solid black;
+  border-left: 1px solid black;
   border-bottom: 1px solid #d6d6d6;
+  border-top: 1px solid #d6d6d6;
   box-sizing: border-box;
   width: 220px;
+  text-align: left;
+  padding-left: 20px;
 }
 
 .Table {
   width: 100%;
+  margin: auto;
   background-color: #e0f1f5;
   border-collapse: collapse;
 }
@@ -17,20 +22,23 @@ th {
   font-weight: 400;
 }
 
-.Table td > .Cell {
+.Table td > .Cell.Flex {
   display: flex;
   flex-flow: row;
   justify-content: flex-start;
   align-items: center;
-  font-size: 0.9em;
+}
+
+.Table td > .Cell {
+  /* font-size: 0.9em; */
   font-weight: 500;
 }
 
 .Cell > p {
   width: 190px;
   margin: 0px 0px;
-  font-size: 0.9em;
-  font-weight: 500;
+  /* font-size: 0.9em; */
+  font-weight: 400;
 }
 
 .Cell > p > span {

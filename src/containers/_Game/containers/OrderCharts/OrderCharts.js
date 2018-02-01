@@ -2,6 +2,20 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classes from "./OrderCharts.css";
 import PerformanceChart from "./PerformanceChart/PerformanceChart";
+import Spinner from "../../../../components/UI/Spinner/Spinner";
+import RankingChart from "./RankingChart/RankingChart";
+
+const loader = (
+  <div
+    style={{
+      width: "100%",
+      height: "100%",
+      backgroundColor: "white"
+    }}
+  >
+    <Spinner />
+  </div>
+);
 
 class OrderCharts extends Component {
   constructor(props) {
@@ -19,7 +33,14 @@ class OrderCharts extends Component {
 
   render() {
     const { isPerformance, isRanking } = this.state;
-    const { performance } = this.props;
+    const {
+      performance,
+      position,
+      rankingLoading,
+      rankingData,
+      rankingError,
+      chip
+    } = this.props;
     return (
       <div className={classes.OrderCharts}>
         <div className={classes.Tabs}>
@@ -41,10 +62,21 @@ class OrderCharts extends Component {
         <div className={classes.Contents}>
           {isPerformance ? (
             <div className={classes.Content}>
-              <PerformanceChart performance={performance} />
+              <PerformanceChart performance={performance} position={position} />
             </div>
           ) : (
-            <div className={classes.Content}>Ranking Content</div>
+            <div className={classes.Content}>
+              {rankingLoading ? (
+                loader
+              ) : rankingError ? (
+                <p>
+                  {rankingError.Message ||
+                    "Could not load ranking charts, please contact us to report the bug."}
+                </p>
+              ) : (
+                <RankingChart rankingData={rankingData} chip={chip} />
+              )}
+            </div>
           )}
         </div>
       </div>
@@ -53,7 +85,12 @@ class OrderCharts extends Component {
 }
 
 OrderCharts.propTypes = {
-  performance: PropTypes.object.isRequired
+  performance: PropTypes.object.isRequired,
+  position: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  rankingLoading: PropTypes.bool.isRequired,
+  rankingData: PropTypes.array,
+  rankingError: PropTypes.object,
+  chip: PropTypes.object.isRequired
 };
 
 export default OrderCharts;

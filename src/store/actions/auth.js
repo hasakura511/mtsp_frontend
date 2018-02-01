@@ -3,6 +3,7 @@ import axios from "../../axios-gsm";
 import * as H from "../../util";
 
 const AUTH_EXPIRY_TIME = 2 * 3600;
+// const AUTH_EXPIRY_TIME = 2 * 1;
 const signupUrl = "/utility/auth/signup/";
 const signinUrl = "/utility/auth/login/";
 

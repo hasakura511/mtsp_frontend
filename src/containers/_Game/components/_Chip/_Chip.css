@@ -1,4 +1,4 @@
-.Chip{
+.Chip {
   /* margin-left: 10px; */
   width: 28px;
   height: 28px;
@@ -17,7 +17,7 @@
   outline: none;
 }
 
-.Chip p{
+.Chip p {
   outline: none;
   user-select: none;
 }

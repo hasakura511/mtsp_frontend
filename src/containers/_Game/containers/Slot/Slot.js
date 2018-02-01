@@ -20,8 +20,10 @@ const slotTarget = {
     );
     props.moveChipToSlot(monitor.getItem(), props.position);
   },
-  canDrop(props) {
-    return true;
+  canDrop(props, monitor) {
+    return !props.heldChips.find(
+      chip => chip.accountId === monitor.getItem().accountId
+    );
   }
 };
 
@@ -60,7 +62,10 @@ class Slot extends Component {
       leftSystem,
       rightSystem,
       bottomSystem,
-      topSystem
+      topSystem,
+      position,
+      heldChips,
+      children
     } = this.props;
     const titleArray = [
       bottomSystem.display,
@@ -71,17 +76,19 @@ class Slot extends Component {
     return dropTarget(
       <div className={classes.Slot}>
         <Square
-          colors={{
+          style={{
             borderBottomColor: bottomSystem.color,
             borderTopColor: topSystem.color,
             borderLeftColor: leftSystem.color,
-            borderRightColor: rightSystem.color
+            borderRightColor: rightSystem.color,
+            backgroundColor: canDrop ? "#d0f4a6" : "transparent",
+            opacity: canDrop ? (isOver ? 0.8 : 0.5) : 1
           }}
           title={titleArray.join(", ")}
         >
-          <BettingChips chips={this.props.heldChips} />
-          {this.props.position}
-          {this.props.children}
+          <BettingChips chips={heldChips} />
+          {position}
+          {children}
         </Square>
       </div>
     );
@@ -94,7 +101,8 @@ Slot.propTypes = {
   leftSystem: PropTypes.any,
   rightSystem: PropTypes.any,
   heldChips: PropTypes.array,
-  position: PropTypes.number.isRequired,
+  position: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+    .isRequired,
   dropTarget: PropTypes.func,
   isOver: PropTypes.bool,
   canDrop: PropTypes.bool,

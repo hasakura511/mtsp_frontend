@@ -9,42 +9,52 @@ import LeftSection from "../../components/Sections/LeftSection/LeftSection";
 import RightSection from "../../components/Sections/RightSection/RightSection";
 import TopSection from "../../components/Sections/TopSection/TopSection";
 import OrderDialog from "../OrderDialog/OrderDialog";
-// import { connect } from "react-redux";
-// import * as actions from "../../../../store/actions";
+import axios from "../../../../axios-gsm";
+import ChipsConfig from "../../ChipsConfig";
+import { connect } from "react-redux";
+import * as actions from "../../../../store/actions";
+import { toSlashDate } from "../../../../util";
+/**
+ * returns state to `Props` mapping object with keys that would later become props.
+ * @function stateToProps
+ * @param {Object} state redux current state
+ * @returns {Object} props enhancement object
+ */
+const stateToProps = state => {
+  return { simulatedDate: state.betting.simulatedDate };
+};
+
+/**
+ * returns distpatch to `Props` mapping object with keys that would later become props.
+ * @function dispatchToProps
+ * @param {function} dispatch dispatch redux action dispatcher function
+ * @returns {Object} props enhancement object
+ */
+const dispatchToProps = dispatch => {
+  return {
+    addLast3DaysProfit: last3DaysProfit => {
+      dispatch(actions.addLast3DaysProfit(last3DaysProfit));
+    },
+    addBet: bet => {
+      dispatch(actions.addBet(bet));
+    }
+  };
+};
 
 const blankSystem = {
   id: "BLANK",
   ...Config.BLANK
 };
 
-// /**
-//  *
-//  * @function dispatchToProps returns object with keys that would later become props.
-//  * @param {function} dispatch redux action dispatcher function
-//  * @returns nothing
-//  */
-// const dispatchToProps = dispatch => {
-//   return {
-//     showDialog: (title, message, onSuccess, onCancel) => {
-//       dispatch(actions.showDialog(title, message, onSuccess, onCancel));
-//     },
-//     killDialog: () => {
-//       dispatch(actions.killDialog());
-//     }
-//   };
-// };
-
-// /**
-//  * Redux connect
-//  */
-// @connect(null, dispatchToProps)
-// /**
-//  * Panel component that holds the state of the board game and all the board components.
-//  *
-//  * @class Panel
-//  * @extends {Component}
-//  *
-//  */
+//Redux connect
+@connect(stateToProps, dispatchToProps)
+/**
+ * Panel component that holds the state of the board game and all the board components.
+ *
+ * @class Panel
+ * @extends {Component}
+ *
+ */
 export default class Panel extends Component {
   /**
    * Creates an instance of Panel.
@@ -80,63 +90,66 @@ export default class Panel extends Component {
       /**
        * Related to Order Dialogue
        */
-      // showOrderDialog: false,
-      // orderChip: null,
-      // orderSlot: null
-      showOrderDialog: true,
-      orderChip: {
-        accountId: "5K_0_1516105730",
-        display: "5K",
-        accountValue: 5000,
-        portfolio: ["TU", "BO"],
-        qty: "{'TU': 2, 'BO': 1}",
-        target: 250,
-        totalMargin: 1925,
-        maxCommissions: 8.100000000000001,
-        created: 1516105728,
-        updated: 1516105730,
-        count: 1
-      },
-      orderSlot: {
-        position: 7,
-        topSystem: {
-          id: "RISK_OFF",
-          color: "black",
-          position: "top",
-          display: "Risk Off",
-          description:
-            "Opposite of RiskOn signals. (Fixed Signals consisting of Long precious metals and bonds, Short all other risky assets)",
-          column: "riskOff"
-        },
-        bottomSystem: {
-          id: "HIGHEST_EQ",
-          color: "#0049c1",
-          position: "bottom",
-          display: "Highest Eq.",
-          description:
-            "Machine learning system prioritizing signals from best performing systems.",
-          column: "highEq"
-        },
-        leftSystem: {
-          id: "PREVIOUS_1_DAY",
-          color: "pink",
-          position: "left",
-          display: "Previous (1 day)",
-          description:
-            "Previous trading days signals. For example if gold went up the previous day, the signal would be LONG.",
-          column: "prev1"
-        },
-        rightSystem: {
-          id: "PREVIOUS_5_DAYS",
-          color: "yellow",
-          position: "right",
-          display: "Previous (5 days)",
-          description:
-            "Previous trading days signals. For example if gold went up the previous day, the signal would be LONG.",
-          column: "prev5"
-        },
-        heldChips: []
-      }
+      // showOrderDialog: true,
+      // orderChip: {
+      //   accountId: "5K_0_1516105730",
+      //   display: "5K",
+      //   accountValue: 5000,
+      //   portfolio: ["TU", "BO"],
+      //   qty: "{'TU': 2, 'BO': 1}",
+      //   target: 250,
+      //   totalMargin: 1925,
+      //   maxCommissions: 8.100000000000001,
+      //   created: 1516105728,
+      //   updated: 1516105730,
+      //   count: 1
+      // },
+      // orderSlot: {
+      //   position: 7,
+      //   topSystem: {
+      //     id: "RISK_OFF",
+      //     color: "black",
+      //     position: "top",
+      //     display: "Risk Off",
+      //     description:
+      //       "Opposite of RiskOn signals. (Fixed Signals consisting of Long precious metals and bonds, Short all other risky assets)",
+      //     column: "riskOff"
+      //   },
+      //   bottomSystem: {
+      //     id: "HIGHEST_EQ",
+      //     color: "#0049c1",
+      //     position: "bottom",
+      //     display: "Highest Eq.",
+      //     description:
+      //       "Machine learning system prioritizing signals from best performing systems.",
+      //     column: "highEq"
+      //   },
+      //   leftSystem: {
+      //     id: "PREVIOUS_1_DAY",
+      //     color: "pink",
+      //     position: "left",
+      //     display: "Previous (1 day)",
+      //     description:
+      //       "Previous trading days signals. For example if gold went up the previous day, the signal would be LONG.",
+      //     column: "prev1"
+      //   },
+      //   rightSystem: {
+      //     id: "PREVIOUS_5_DAYS",
+      //     color: "yellow",
+      //     position: "right",
+      //     display: "Previous (5 days)",
+      //     description:
+      //       "Previous trading days signals. For example if gold went up the previous day, the signal would be LONG.",
+      //     column: "prev5"
+      //   },
+      //   heldChips: []
+      // }
+      showOrderDialog: false,
+      orderChip: null,
+      orderSlot: null,
+      rankingLoading: true,
+      rankingData: [],
+      rankingError: null
     };
   }
 
@@ -181,6 +194,17 @@ export default class Panel extends Component {
     this.setState({ slots, maxHeight, maxWidth });
   }
 
+  componentWillReceiveProps(newProps) {
+    const { topSystems, leftSystems, rightSystems, bottomSystems } = newProps;
+    this.setState({
+      topSystems: topSystems && topSystems.length ? topSystems : [blankSystem],
+      bottomSystems:
+        bottomSystems && bottomSystems.length ? bottomSystems : [blankSystem],
+      leftSystems: leftSystems,
+      rightSystems: rightSystems
+    });
+  }
+
   /**
    *
    * @function moveChipToSlot Puts the betting of size of the chip on a particular position
@@ -193,6 +217,22 @@ export default class Panel extends Component {
 
   moveChipToSlot = (chip, position) => {
     // Open order dialogue
+    const {
+      topSystems,
+      bottomSystems,
+      leftSystems,
+      rightSystems,
+      moveToBalance,
+      addLast3DaysProfit,
+      addBet,
+      simulatedDate
+    } = this.props;
+    const system = [
+      ...topSystems,
+      ...bottomSystems,
+      ...leftSystems,
+      ...rightSystems
+    ].find(sys => sys.column === position);
     const slot = this.state.slots.find(slot => slot.position === position);
     if (slot) {
       this.setState({
@@ -200,6 +240,44 @@ export default class Panel extends Component {
         orderChip: chip,
         orderSlot: slot
       });
+    } else if (system) {
+      const systemToSlot = {
+        position: system.column,
+        topSystem: blankSystem,
+        bottomSystem: blankSystem,
+        leftSystem: blankSystem,
+        rightSystem: blankSystem
+      };
+      systemToSlot[`${system.position}System`] = system;
+      this.setState({
+        showOrderDialog: true,
+        orderChip: chip,
+        orderSlot: systemToSlot
+      });
+    } else if (position === "off") {
+      // Here you first need to remove the bet in the state so it's location
+      // appears correctly on the board
+      moveToBalance(chip);
+
+      // Then we need to reflect this in our redux store:
+      // 1. add default off location's last3DaysProfit (basically 0 changePercent)
+      const profitObj = {};
+      profitObj[chip.accountId] = {
+        position: "off",
+        "20180105": { changePercent: 0 },
+        "20180108": { changePercent: 0 },
+        "20180109": { changePercent: 0 }
+      };
+      addLast3DaysProfit(profitObj);
+
+      // 2. append a new currentBet on off location
+      const bet = {};
+      bet[chip.accountId] = {
+        bettingDate: toSlashDate(simulatedDate),
+        position: "off",
+        isAnti: false
+      };
+      addBet(bet);
     }
   };
 
@@ -243,7 +321,10 @@ export default class Panel extends Component {
       topSystems,
       showOrderDialog,
       orderSlot,
-      orderChip
+      orderChip,
+      rankingLoading,
+      rankingData,
+      rankingError
     } = this.state;
 
     let slot = null;
@@ -273,18 +354,26 @@ export default class Panel extends Component {
       );
     }
 
-    return (
+    const panel = (
       <div className={classes.Panel}>
         {slotsGrid}
         <BottomSection
           systems={this.state.bottomSystems}
           topSystems={this.state.topSystems}
+          moveChipToSlot={this.moveChipToSlot}
         />
-        <LeftSection systems={this.state.leftSystems} />
-        <RightSection systems={this.state.rightSystems} />
+        <LeftSection
+          systems={this.state.leftSystems}
+          moveChipToSlot={this.moveChipToSlot}
+        />
+        <RightSection
+          systems={this.state.rightSystems}
+          moveChipToSlot={this.moveChipToSlot}
+        />
         <TopSection
           systems={this.state.topSystems}
           balanceChips={this.props.balanceChips}
+          moveChipToSlot={this.moveChipToSlot}
         />
         {showOrderDialog ? (
           <OrderDialog
@@ -292,10 +381,83 @@ export default class Panel extends Component {
             chip={orderChip}
             toggle={this.toggleOrderDialog}
             successHandler={this.props.addBettingChip}
+            rankingLoading={rankingLoading}
+            rankingData={rankingData}
+            rankingError={rankingError}
           />
         ) : null}
       </div>
     );
+
+    // Lets try with non blocking approach
+    // return rankingLoading ? <Spinner /> : panel;
+    return panel;
+  }
+
+  /**
+   *
+   *
+   * @function componentDidUnmount Component did unmount hook of the Panel component,
+   *  called after the thing has been rendered
+   *
+   * @memberof Panel
+   *
+   *
+   */
+
+  componentDidMount() {
+    // Do the api call for ranking charts
+    // the request params would be containing
+    // array of chip configurations, call it accounts array
+    // array of tiles-systems configurations
+    // response would be lookback(1, 5, 20) scoped aggregated pnl for all the tiles
+    //   for all the different account sizes.
+    // example params:
+    // {
+    //   "accounts": [
+    //     {
+    //       "portfolio": ["TU", "BO"],
+    //       "target": "500",
+    //       "accountValue": 5000
+    //     }
+    //   ],
+    //   "slots": [
+    //     {
+    //       "position": 1,
+    //       "systems": ["prev1", "prev5"]
+    //     },
+    //     {
+    //       "position": 2,
+    //       "systems": ["lowEq", "antiHighEq"]
+    //     }
+    //   ],
+    //   "lookback": 23
+    // }
+    const { slots } = this.state;
+    this.setState({ rankingLoading: true });
+    const { portfolio, target, accountValue } = ChipsConfig[0];
+    axios
+      .post("/utility/ranking_charts/", {
+        //only 5k chip for tier 0
+        accounts: [{ portfolio, target, accountValue }],
+        slots: slots.map(
+          ({ position, topSystem, bottomSystem, leftSystem, rightSystem }) => {
+            return {
+              position: position.toString(),
+              systems: [topSystem, bottomSystem, leftSystem, rightSystem]
+                .map(system => system.column)
+                .filter(system => system)
+            };
+          }
+        ),
+        lookback: 23
+      })
+      .then(({ data }) => {
+        this.setState({ rankingLoading: false, rankingData: data.rankingData });
+      })
+      .catch(error => {
+        this.setState({ rankingLoading: false, rankingError: error });
+      });
   }
 
   static propTypes = {
@@ -305,6 +467,10 @@ export default class Panel extends Component {
     rightSystems: PropTypes.array,
     balanceChips: PropTypes.array,
     bettingChips: PropTypes.array,
-    addBettingChip: PropTypes.func.isRequired
+    addBettingChip: PropTypes.func.isRequired,
+    addLast3DaysProfit: PropTypes.func.isRequired,
+    moveToBalance: PropTypes.func.isRequired,
+    addBet: PropTypes.func.isRequired,
+    simulatedDate: PropTypes.string.isRequired
   };
 }

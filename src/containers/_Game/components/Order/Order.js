@@ -13,17 +13,28 @@ const getSystems = slot => {
 };
 
 const order = props => {
+  const {
+    slot,
+    performance,
+    toggleSystem,
+    rankingError,
+    rankingLoading,
+    rankingData,
+    chip,
+    submitBetHandler,
+    close
+  } = props;
   return (
     <div className={classes.Order}>
       <div className={classes.TitleRow}>
         <div className={classes.Left}>
           <p>Bet: </p>
-          <Chip chip={props.chip} />
-          <Slot {...props.slot} heldChips={[]} />
+          <Chip chip={chip} />
+          <Slot {...slot} heldChips={[]} />
           <div className={classes.Systems}>
             <ul>
-              {getSystems(props.slot).map(system => (
-                <li key={system.id}>
+              {getSystems(slot).map(system => (
+                <li key={`${system.id}${Math.random().toFixed(3)}`}>
                   <p>{system.display}</p>
                 </li>
               ))}
@@ -32,12 +43,25 @@ const order = props => {
         </div>
         <div className={classes.Right}>
           <p>System</p>
-          <Switch toggle={props.toggleSystem} />
+          <Switch toggle={toggleSystem} />
           <p>Anti-System</p>
         </div>
       </div>
       <div className={classes.Content}>
-        <OrderCharts performance={props.performance} />
+        <OrderCharts
+          performance={performance}
+          position={slot.position}
+          rankingError={rankingError}
+          rankingLoading={rankingLoading}
+          rankingData={rankingData}
+          chip={chip}
+        />
+      </div>
+      <div className={classes.ActionFooter}>
+        <button onClick={close}>Cancel</button>
+        <button className={classes.Submit} onClick={submitBetHandler}>
+          Place Bet Order
+        </button>
       </div>
     </div>
   );
@@ -47,7 +71,12 @@ order.propTypes = {
   slot: PropTypes.object.isRequired,
   chip: PropTypes.object.isRequired,
   performance: PropTypes.object.isRequired,
-  toggleSystem: PropTypes.func.isRequired
+  toggleSystem: PropTypes.func.isRequired,
+  rankingError: PropTypes.object,
+  rankingData: PropTypes.array,
+  rankingLoading: PropTypes.bool.isRequired,
+  submitBetHandler: PropTypes.func.isRequired,
+  close: PropTypes.func.isRequired
 };
 
 export default order;

@@ -20,7 +20,7 @@
   width: 200px;
   height: 40px;
   background-color: #f7f7f7;
-  padding: 5px;
+  padding: 5px 10px;
   cursor: pointer;
   box-sizing: border-box;
   font-size: 1.5em;
@@ -31,9 +31,23 @@
   background-color: #ececec;
 }
 
-.Contents{
-  padding: 10px 0px;
+.Contents {
+  padding-top: 10px;
   background-color: #ececec;
   width: 100%;
   min-height: 300px;
+  display: flex;
+  flex-flow: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  max-height: 310px;
+}
+
+.Content {
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  overflow-y: auto;
 }

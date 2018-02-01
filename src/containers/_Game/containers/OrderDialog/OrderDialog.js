@@ -5,6 +5,26 @@ import Spinner from "../../../../components/UI/Spinner/Spinner";
 import Order from "../../components/Order/Order";
 import axios from "../../../../axios-gsm";
 import { TARGET } from "../../Config";
+import { connect } from "react-redux";
+import * as actions from "../../../../store/actions";
+import { toSlashDate } from "../../../../util";
+
+const stateToProps = state => {
+  return {
+    simulatedDate: state.betting.simulatedDate
+  };
+};
+
+const dispatchToProps = dispatch => {
+  return {
+    addLast3DaysProfit: last3DaysProfit => {
+      dispatch(actions.addLast3DaysProfit(last3DaysProfit));
+    },
+    addBet: bet => {
+      dispatch(actions.addBet(bet));
+    }
+  };
+};
 
 /**
  * OrderDialog React component
@@ -13,6 +33,7 @@ import { TARGET } from "../../Config";
  * @class OrderDialog
  * @extends {Component}
  */
+@connect(stateToProps, dispatchToProps)
 export default class OrderDialog extends Component {
   /**
    * Creates an instance of OrderDialog.
@@ -28,11 +49,11 @@ export default class OrderDialog extends Component {
       /**
        * @type {boolean}
        */
-      loading: true,
+      performanceLoading: true,
       /**
        * @type {boolean}
        */
-      error: false,
+      performanceError: false,
       /**
        * @type {Performance}
        */
@@ -70,7 +91,7 @@ export default class OrderDialog extends Component {
     const systems = Object.values(this.props.slot)
         .map(value => value.column)
         .filter(s => s),
-      { portfolio, accountValue } = this.props.chip;
+      { portfolio, accountValue, accountId } = this.props.chip;
 
     /**
      * Fetch performance charts
@@ -91,10 +112,42 @@ export default class OrderDialog extends Component {
          * @namespace {Performance}
          */
         const performance = response.data;
-        this.setState({ loading: false, performance });
+        this.setState({ performanceLoading: false, performance });
+
+        // Adding last 3 days profit for simulation
+        // __TEMPERORY__CODE__
+        const profitObj = {};
+        profitObj[accountId] = {
+          position: this.props.slot.position,
+          "20180105": {
+            changePercent: Number(
+              performance.pnlData.find(pnlObj => pnlObj.date === "20180105")[
+                "changePercent"
+              ]
+            )
+          },
+          "20180108": {
+            changePercent: Number(
+              performance.pnlData.find(pnlObj => pnlObj.date === "20180108")[
+                "changePercent"
+              ]
+            )
+          },
+          "20180109": {
+            changePercent: Number(
+              performance.pnlData.find(pnlObj => pnlObj.date === "20180109")[
+                "changePercent"
+              ]
+            )
+          }
+        };
+        this.props.addLast3DaysProfit(profitObj);
       })
-      .catch(error => {
-        this.setState({ loading: false, error: error });
+      .catch(performanceError => {
+        this.setState({
+          performanceLoading: false,
+          performanceError: performanceError
+        });
       });
   }
 
@@ -104,8 +157,8 @@ export default class OrderDialog extends Component {
    * @memberof OrderDialog
    */
   toggle = () => {
-    this.closeTimer = this.setState({ showModal: false });
-    setTimeout(() => {
+    this.setState({ showModal: false });
+    this.closeTimer = setTimeout(() => {
       this.props.toggle();
     }, 300);
   };
@@ -126,6 +179,33 @@ export default class OrderDialog extends Component {
   };
 
   /**
+   * @function submitBetHandler
+   * Handles the order dialogue's submission event,
+   * Basically adds this bet to today's (current) bets
+   * @memberof OrderDialog
+   */
+  submitBetHandler = event => {
+    event.preventDefault();
+    const { slot, simulatedDate, addBet, chip } = this.props;
+    const { isAnti } = this.state;
+    const bet = new Object();
+    // example bet:
+    // {"5K_0_1516105730": {
+    //   bettingDate: "2018/01/06",
+    //   position: "1",
+    //   bettingTime: null,
+    // }}
+    bet[chip.accountId] = {
+      bettingDate: toSlashDate(simulatedDate),
+      position: slot.position,
+      isAnti
+    };
+    addBet(bet);
+    this.props.successHandler(chip, slot.position);
+    this.toggle();
+  };
+
+  /**
    *
    * @function render Render method of the OrderDialog component
    * @returns {ReactHTMLElement} returns jsx for OrderDialog component
@@ -133,24 +213,34 @@ export default class OrderDialog extends Component {
    */
 
   render() {
-    const { performance, loading, error, showModal } = this.state;
+    const {
+      performance,
+      performanceLoading,
+      performanceError,
+      showModal
+    } = this.state;
+    const { rankingError, rankingData, rankingLoading } = this.props;
     return (
       <Modal hidden={!showModal} toggle={this.toggle}>
-        {loading ? (
+        {performanceLoading ? (
           <Spinner />
+        ) : performanceError ? (
+          <h1>
+            {performanceError.Message ||
+              "Could not load performance data, contact us to report this bug."}
+          </h1>
         ) : (
           <Order
             {...this.props}
             performance={performance}
             toggleSystem={this.toggleSystem}
+            rankingData={rankingData}
+            rankingError={rankingError}
+            rankingLoading={rankingLoading}
+            submitBetHandler={this.submitBetHandler}
+            close={this.toggle}
           />
         )}
-        {error ? (
-          <h1>
-            {error.Message ||
-              "Could not load performance data, contact us to report this bug."}
-          </h1>
-        ) : null}
       </Modal>
     );
   }
@@ -159,6 +249,12 @@ export default class OrderDialog extends Component {
     slot: PropTypes.object.isRequired,
     chip: PropTypes.object.isRequired,
     successHandler: PropTypes.func.isRequired,
-    toggle: PropTypes.func.isRequired
+    toggle: PropTypes.func.isRequired,
+    rankingLoading: PropTypes.bool.isRequired,
+    rankingData: PropTypes.array,
+    rankingError: PropTypes.object,
+    simulatedDate: PropTypes.string.isRequired,
+    addLast3DaysProfit: PropTypes.func.isRequired,
+    addBet: PropTypes.func.isRequired
   };
 }

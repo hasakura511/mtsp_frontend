@@ -10,6 +10,9 @@ import protectedComponent from "../../../../hoc/ProtectedComponent/ProtectedComp
 import Aux from "../../../../hoc/_Aux/_Aux";
 import Dashboard from "../../components/Dashboard/Dashboard";
 import Bettings from "../../BettingConfig";
+import { connect } from "react-redux";
+import * as actions from "../../../../store/actions";
+import PropTypes from "prop-types";
 
 const systems = [];
 for (let key in Config) {
@@ -37,6 +40,7 @@ const { leftSystems, rightSystems, bottomSystems, topSystems } = systems.reduce(
 /**
  * create dummy balanceChips array
  */
+
 const inGameChips = {
   balanceChips: ChipsConfig.map(chip => {
     chip["count"] = 1;
@@ -45,8 +49,44 @@ const inGameChips = {
   bettingChips: []
 };
 
-// @protectedComponent
+// Inserts or removes chip into system
+const insertChip = (systems, column, chip) => {
+  return systems.map(system => {
+    const { heldChips } = system;
+    return system.column === column
+      ? {
+          ...system,
+          heldChips: [
+            ...heldChips.filter(c => c.accountId !== chip.accountId),
+            chip
+          ]
+        }
+      : {
+          ...system,
+          heldChips: heldChips.filter(c => c.accountId !== chip.accountId)
+        };
+  });
+};
+
+/**
+ *
+ * @function dispatchToProps React-redux dispatch to props mapping function
+ * @param {any} dispatch
+ * @returns {Object} object with keys which would later become props to the `component`.
+ */
+
+const dispatchToProps = dispatch => {
+  return {
+    nextDay: () => {
+      dispatch(actions.nextDay());
+    }
+  };
+};
+
+@protectedComponent
 @DragDropContext(HTML5Backend)
+@connect(null, dispatchToProps)
+
 /**
  * Board component, that encapsulates our board-game, drag-drop-lifecycle
  *
@@ -54,6 +94,10 @@ const inGameChips = {
  * @extends {Component}
  */
 export default class Board extends Component {
+  static propTypes = {
+    nextDay: PropTypes.func.isRequired
+  };
+
   constructor(props) {
     super(props);
 
@@ -90,6 +134,7 @@ export default class Board extends Component {
       inGameChips
     });
   }
+
   /**
    *
    * @function addBettingChip transfers a chip from balanceChips to bettingChips
@@ -98,44 +143,123 @@ export default class Board extends Component {
    * @todo find a better way to handle position of the bet.
    */
   addBettingChip = (chip, position) => {
-    this.setState(prevState => {
-      if (chip.position) {
+    this.setState(
+      ({
+        topSystems,
+        bottomSystems,
+        leftSystems,
+        rightSystems,
+        inGameChips
+      }) => {
+        // In case the chip is dropped on a system
+        // we push it in system's heldChips in the inserChip method.
+        if (chip.position) {
+          /**
+           * When chip is moved from one betting position to other.
+           */
+          const balanceChips = [...inGameChips.balanceChips];
+          const bettingChips = inGameChips.bettingChips.map(c => {
+            return c.accountId === chip.accountId
+              ? {
+                  ...c,
+                  position: position
+                }
+              : c;
+          });
+          return {
+            inGameChips: { balanceChips, bettingChips },
+            topSystems: insertChip(topSystems, position, {
+              ...chip,
+              position
+            }),
+            bottomSystems: insertChip(bottomSystems, position, {
+              ...chip,
+              position
+            }),
+            leftSystems: insertChip(leftSystems, position, {
+              ...chip,
+              position
+            }),
+            rightSystems: insertChip(rightSystems, position, {
+              ...chip,
+              position
+            })
+          };
+        } else {
+          /**
+           * When chip is moved from off location to a betting position.
+           */
+          const balanceChips = inGameChips.balanceChips.map(c => {
+            return c.accountId === chip.accountId
+              ? {
+                  ...c,
+                  count: c.count - 1
+                }
+              : c;
+          });
+          const bettingChips = [
+            ...inGameChips.bettingChips,
+            { ...chip, position }
+          ];
+          return {
+            inGameChips: { balanceChips, bettingChips },
+            topSystems: insertChip(topSystems, position, {
+              ...chip,
+              position
+            }),
+            bottomSystems: insertChip(bottomSystems, position, {
+              ...chip,
+              position
+            }),
+            leftSystems: insertChip(leftSystems, position, {
+              ...chip,
+              position
+            }),
+            rightSystems: insertChip(rightSystems, position, {
+              ...chip,
+              position
+            })
+          };
+        }
+      }
+    );
+  };
+
+  /**
+   * Removes the chip from its older betting position to off location
+   * That basically moves your chip to balance chips.
+   * @function moveToBalance
+   * @param {any} chip
+   */
+  moveToBalance = chip => {
+    this.setState(
+      ({
+        topSystems,
+        bottomSystems,
+        leftSystems,
+        rightSystems,
+        inGameChips
+      }) => {
         /**
-         * When chip is moved from one betting position to other.
+         * When chip is moved to off location from some betting position.
          */
-        const balanceChips = [...prevState.inGameChips.balanceChips];
-        const bettingChips = prevState.inGameChips.bettingChips.map(c => {
+        const balanceChips = inGameChips.balanceChips.map(c => {
           return c.accountId === chip.accountId
-            ? { ...c, position: position }
+            ? { ...c, count: c.count + 1 }
             : c;
         });
+        const bettingChips = inGameChips.bettingChips.filter(
+          c => c.accountId !== chip.accountId
+        );
         return {
-          inGameChips: {
-            balanceChips,
-            bettingChips
-          }
-        };
-      } else {
-        /**
-         * When chip is moved from off location to a betting position.
-         */
-        const balanceChips = prevState.inGameChips.balanceChips.map(c => {
-          return c.accountId === chip.accountId
-            ? { ...c, count: c.count - 1 }
-            : c;
-        });
-        const bettingChips = [
-          ...prevState.inGameChips.bettingChips,
-          { ...chip, position }
-        ];
-        return {
-          inGameChips: {
-            balanceChips,
-            bettingChips
-          }
+          inGameChips: { bettingChips, balanceChips },
+          topSystems: insertChip(topSystems, "off", chip),
+          bottomSystems: insertChip(bottomSystems, "off", chip),
+          leftSystems: insertChip(leftSystems, "off", chip),
+          rightSystems: insertChip(rightSystems, "off", chip)
         };
       }
-    });
+    );
   };
 
   render() {
@@ -149,14 +273,16 @@ export default class Board extends Component {
     return (
       <Aux>
         <Dashboard {...Bettings} />
+        <div className={classes.ActionRow}>
+          <button onClick={this.props.nextDay}>Next Day</button>
+        </div>
         <div
           className={classes.Board}
           style={{
             backgroundImage: "url(" + bgBoard + ")",
             backgroundRepeat: "no-repeat",
             backgroundSize: "cover",
-            paddingTop: "200px",
-            // marginTop: "5%",
+            paddingTop: "200px", // marginTop: "5%",
             paddingBottom: "100px"
           }}
         >
@@ -168,6 +294,7 @@ export default class Board extends Component {
             balanceChips={inGameChips.balanceChips || []}
             bettingChips={inGameChips.bettingChips || []}
             addBettingChip={this.addBettingChip}
+            moveToBalance={this.moveToBalance}
           />
         </div>
       </Aux>

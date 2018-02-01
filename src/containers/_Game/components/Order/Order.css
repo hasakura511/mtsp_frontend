@@ -25,11 +25,12 @@
   justify-content: space-evenly;
 }
 
-.Right{
+.Right {
   width: 42%;
 }
 
-.Left > p, .Right > p{
+.Left > p,
+.Right > p {
   font-size: 1.5em;
   font-weight: 400;
 }
@@ -50,6 +51,41 @@
   min-height: 400px;
 }
 
-.Content{
+.Content {
   width: 100%;
+}
+
+.ActionFooter {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  display: flex;
+  flex-flow: row;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.ActionFooter button {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  padding: 5px;
+  font-size: 1.2em;
+  font-weight: 500;
+  cursor: pointer;
+  color: #17193a;
+  font-family: Kanit;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 28px;
+  /* Text style for "P, lace Be" */
+  letter-spacing: 0.35px;
+}
+
+button.Submit {
+  /* Style for "Rectangle" */
+  width: 142px;
+  height: 36px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  background-color: #8dc44c;
 }
