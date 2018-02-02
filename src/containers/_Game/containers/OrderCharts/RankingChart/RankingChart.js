@@ -12,6 +12,8 @@ import {
   Bar
 } from "recharts";
 
+const DEFAULT_LOOKBACK = "20 Days lookback";
+
 class RankingChart extends Component {
   constructor(props) {
     super(props);
@@ -20,10 +22,18 @@ class RankingChart extends Component {
       // lookback,
       //if in future we decide to include filters
       //filters: []
+      rankingChartData: []
     };
   }
 
-  render() {
+  componentWillMount() {
+    //parse ranking data and setState
+    this.setState({
+      rankingChartData: this.syncRankingChart(DEFAULT_LOOKBACK)
+    });
+  }
+
+  syncRankingChart(lookback) {
     // const data = [
     //   {
     //     name: "Page A",
@@ -69,11 +79,17 @@ class RankingChart extends Component {
     //   }
     // ];
     const { rankingData, chip } = this.props;
+
     // console.log(JSON.stringify(rankingData));
+    // const antiRankings = [];
     const rankingChartData = rankingData
+
+      // Pick the result for the given account value
       .find(
         ({ account }) => account.accountValue === chip.accountValue.toString()
       )
+
+      // Parse rankign results as required in the ReChart signed-stack-chart package
       .accountResult.map(({ position, result }) => {
         return {
           name: position,
@@ -85,28 +101,95 @@ class RankingChart extends Component {
             result.find(r => r.lookback === "1").changePercent * 100
         };
       })
+
+      // sort results by 20 days lookback by default
       .sort((r1, r2) => {
-        return r2["20 Days lookback"] - r1["20 Days lookback"];
+        return r2[lookback] - r1[lookback];
+      })
+
+      //put rank beside the system/slot name
+      .map((rankingObj, index) => {
+        return {
+          ...rankingObj,
+          name: `${rankingObj.name}  (${index + 1})`
+        };
       });
+
+    return rankingChartData;
+  }
+
+  getColor({ x, y, payload }) {
+    // tickObj.payload.value will be the string value "1" or "2" or "prev1" etc but with ranks
+    const value = payload.value.split(" ")[0];
+
+    let color = "black";
+    const {
+      topSystem,
+      leftSystem,
+      rightSystem,
+      bottomSystem,
+      position
+    } = this.props.slot;
+    if (
+      [topSystem, leftSystem, rightSystem, bottomSystem]
+        .map(system => system.column)
+        .indexOf(value) !== -1
+    ) {
+      color = "blue";
+    }
+    if (position.toString() === value) {
+      color = "red";
+    }
+    return (
+      <text
+        x={x}
+        y={y - 13}
+        dy={16}
+        // fontFamily="Roboto"
+        fontSize="16px"
+        textAnchor="end"
+        fill={color || "#8884d8"}
+      >
+        {payload.value}
+      </text>
+    );
+  }
+
+  changeLookbackHandler = ({ value }) => {
+    this.setState({ rankingChartData: this.syncRankingChart(value) });
+  };
+
+  render() {
+    const { rankingChartData } = this.state;
     return (
       <div className={classes.RankingChart}>
         <BarChart
-          width={600}
+          width={650}
           height={2000}
           data={rankingChartData}
           layout="vertical"
           margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+          stackOffset="sign"
         >
           <XAxis type="number" tickFormatter={value => `${value}%`} />
-          <YAxis type="category" dataKey="name" />
+          <YAxis
+            type="category"
+            dataKey="name"
+            tick={props => this.getColor(props)}
+            width={100}
+          />
           <CartesianGrid strokeDasharray="3 3" />
           <Tooltip formatter={value => `${value.toFixed(2)}%`} />
-          <Legend verticalAlign="top" wrapperStyle={{ lineHeight: "40px" }} />
+          <Legend
+            verticalAlign="top"
+            wrapperStyle={{ lineHeight: "40px" }}
+            onClick={this.changeLookbackHandler}
+          />
           <ReferenceLine x={0} stroke="#000" />
           {/* <Brush dataKey="name" height={30} stroke="#8884d8" /> */}
-          <Bar dataKey="1 Day lookback" stackId="a" fill="#f00155" />
-          <Bar dataKey="5 Days lookback" stackId="a" fill="#ffde00" />
-          <Bar dataKey="20 Days lookback" stackId="a" fill="#02abca" />
+          <Bar dataKey="1 Day lookback" stackId="stack" fill="#f00155" />
+          <Bar dataKey="5 Days lookback" stackId="stack" fill="#ffde00" />
+          <Bar dataKey="20 Days lookback" stackId="stack" fill="#02abca" />
         </BarChart>
       </div>
     );
@@ -502,7 +585,8 @@ RankingChart.propTypes = {
    *
    */
   rankingData: PropTypes.array.isRequired,
-  chip: PropTypes.object.isRequired
+  chip: PropTypes.object.isRequired,
+  slot: PropTypes.object.isRequired
 };
 
 export default RankingChart;

@@ -13,7 +13,7 @@ const leftSection = props => {
             <div
               key={"left-" + id}
               className={classes.LeftCell}
-              style={{ borderLeftColor: color }}
+              style={{ borderLeftColor: color, borderRightColor: color }}
               title={description}
             >
               <Container {...props} column={column} heldChips={heldChips} />

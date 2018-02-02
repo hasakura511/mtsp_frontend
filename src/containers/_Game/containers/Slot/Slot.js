@@ -4,7 +4,7 @@ import Square from "../../components/Square/Square";
 import PropTypes from "prop-types";
 import { DropTarget } from "react-dnd";
 import BettingChips from "../../components/BettingChips/BettingChips";
-
+import { getAbbrevation } from "../../../../util";
 /**
  * Droptarget Spec
  */
@@ -12,12 +12,12 @@ const slotTarget = {
   drop(props, monitor) {
     // monitor.getItem() gives the item
     // props.moveChipToSlot(); is the method we can call to update the position of the chip
-    console.log(
-      "item\n",
-      JSON.stringify(monitor.getItem()),
-      "dropped at tile\n",
-      JSON.stringify(props)
-    );
+    // console.log(
+    //   "item\n",
+    //   JSON.stringify(monitor.getItem()),
+    //   "dropped at tile\n",
+    //   JSON.stringify(props)
+    // );
     props.moveChipToSlot(monitor.getItem(), props.position);
   },
   canDrop(props, monitor) {
@@ -65,7 +65,8 @@ class Slot extends Component {
       topSystem,
       position,
       heldChips,
-      children
+      children,
+      width
     } = this.props;
     const titleArray = [
       bottomSystem.display,
@@ -82,12 +83,13 @@ class Slot extends Component {
             borderLeftColor: leftSystem.color,
             borderRightColor: rightSystem.color,
             backgroundColor: canDrop ? "#d0f4a6" : "transparent",
-            opacity: canDrop ? (isOver ? 0.8 : 0.5) : 1
+            opacity: canDrop ? (isOver ? 0.8 : 0.5) : 1,
+            width: width
           }}
           title={titleArray.join(", ")}
         >
           <BettingChips chips={heldChips} />
-          {position}
+          {getAbbrevation(position)}
           {children}
         </Square>
       </div>
@@ -107,7 +109,8 @@ Slot.propTypes = {
   isOver: PropTypes.bool,
   canDrop: PropTypes.bool,
   children: PropTypes.any,
-  moveChipToSlot: PropTypes.func
+  moveChipToSlot: PropTypes.func,
+  width: PropTypes.string
 };
 
 export default DropTarget("chip", slotTarget, collect)(Slot);

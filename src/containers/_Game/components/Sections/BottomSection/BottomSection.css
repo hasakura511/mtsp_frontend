@@ -1,4 +1,4 @@
-.BottomSection{
+.BottomSection {
   position: absolute;
   height: 55px;
   bottom: -55px;
@@ -10,10 +10,11 @@
   justify-content: space-between;
 }
 
-.BottomSection .BottomCell{
+.BottomSection .BottomCell {
   height: 100%;
   /* border: 1px solid #aaaaaa; */
   border-bottom: 5px solid;
+  border-top: 5px solid;
   box-shadow: 1px 1px 2px #aaaaaa;
   box-sizing: border-box;
   margin-right: 20px;
@@ -26,4 +27,5 @@
   background-color: #86dde0;
   word-break: break-word;
   position: relative;
+  white-space: pre;
 }

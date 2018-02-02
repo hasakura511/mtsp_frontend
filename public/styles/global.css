@@ -1,3 +1,6 @@
-.testing {
-  width: 100%;
+.recharts-legend-wrapper .recharts-default-legend .recharts-legend-item {
+  cursor: pointer;
+}
+.recharts-legend-wrapper .recharts-default-legend .recharts-legend-item:hover {
+  opacity: 0.9;
 }

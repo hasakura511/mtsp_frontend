@@ -6,7 +6,7 @@ export default {
   PREVIOUS_1_DAY: {
     color: "pink",
     position: "left",
-    display: "Previous (1 day)",
+    display: "Previous\n(1 day)",
     description:
       "Previous trading days signals. For example if gold went up the previous day, the signal would be LONG.",
     column: "prev1",
@@ -15,7 +15,7 @@ export default {
   ANTI_PREVIOUS_1_DAY: {
     color: "indigo",
     position: "left",
-    display: "Anti Previous (1 day)",
+    display: "Anti Previous\n(1 day)",
     description: "Opposite of Previous signals.",
     column: "antiPrev1",
     heldChips: []
@@ -23,7 +23,7 @@ export default {
   PREVIOUS_5_DAYS: {
     color: "yellow",
     position: "right",
-    display: "Previous (5 days)",
+    display: "Previous\n(5 days)",
     description:
       "Previous trading days signals. For example if gold went up the previous day, the signal would be LONG.",
     column: "prev5",

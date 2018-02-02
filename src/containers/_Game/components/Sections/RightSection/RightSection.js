@@ -12,7 +12,7 @@ const rightSection = props => {
             <div
               key={"right-" + id}
               className={classes.RightCell}
-              style={{ borderRightColor: color }}
+              style={{ borderRightColor: color, borderLeftColor: color }}
               title={description}
             >
               <Container {...props} column={column} heldChips={heldChips} />

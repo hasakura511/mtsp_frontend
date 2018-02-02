@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { toWordedDate, toStringDate } from "../../../../../util";
+import { toWordedDate, toSlashDate } from "../../../../../util";
 import classes from "./PerformanceChart.css";
 import {
   LineChart,
@@ -59,7 +59,7 @@ const mergeChartData = (performance, lookback, endDate, position) => {
   for (let index = 0; index < len; index++) {
     chartData.push({
       date: Number(pnlData[index].date),
-      axisDate: toStringDate(pnlData[index].date),
+      axisDate: toSlashDate(pnlData[index].date),
       "P&L": pnlData[index].pnl,
       "Anti P&L": antiPnlData[index].pnl,
       Benchmark: benchmarkData[index].pnl,
@@ -91,14 +91,12 @@ class CustomTooltip extends Component {
         position
       } = payload[0].payload;
 
-
       // example payload for testing purpose:
       // const date = "20181212",
       // pnlData = { date: "20171221", pnl: "5000", changePercent: "0", cumulative: "0" },
       // antiPnlData = { date: "20171221", pnl: "5000", changePercent: "0", cumulative: "0" },
       // benchmarkData = { date: "20171221", pnl: "5000", changePercent: "0", cumulative: "0" },
       // position = 7;
-
 
       return (
         <div className={classes.ToolTip}>
@@ -184,7 +182,10 @@ class PerformanceChart extends Component {
     const { performance, position } = this.props;
     const { lookback, endDate } = this.state;
     return (
-      <div className={classes.PerformanceChart}>
+      <div
+        className={classes.PerformanceChart}
+        title={"Hypothetical Historical Performance for Market-on-Close orders"}
+      >
         <div className={classes.Tabs}>
           <div className={classes.Tab} onClick={() => this.lookbackHandler(1)}>
             <p className={lookback === 1 ? classes.active : ""}>1 day</p>
@@ -204,13 +205,13 @@ class PerformanceChart extends Component {
         </div>
         <div className={classes.ChartContainer}>
           <LineChart
-            width={600}
+            width={680}
             height={300}
             data={mergeChartData(performance, lookback, endDate, position)}
             margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
           >
             <XAxis dataKey="axisDate" />
-            <YAxis />
+            <YAxis tickFormatter={value => `${value.toLocaleString("en")}`} />
             <CartesianGrid strokeDasharray="3 3" />
             <Tooltip content={<CustomTooltip />} />
             <Legend />

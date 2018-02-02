@@ -1,4 +1,4 @@
-.PerformanceChart{
+.PerformanceChart {
   height: 100%;
 }
 
@@ -16,11 +16,11 @@
   opacity: 0.8;
 }
 
-.ToolTip .Row{
+.ToolTip .Row {
   width: 100%;
 }
 
-.ToolTip .Row p{
+.ToolTip .Row p {
   margin: 0px;
   width: 100%;
   display: flex;
@@ -58,4 +58,6 @@
 
 .ChartContainer {
   background-color: #f7f7f7;
+  display: flex;
+  justify-content: center;
 }

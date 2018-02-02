@@ -1,4 +1,4 @@
-.TopSection{
+.TopSection {
   position: absolute;
   height: 100px;
   top: -100px;
@@ -10,11 +10,11 @@
   justify-content: flex-start;
   min-width: 100%;
 }
-.TopSection>div:last-child {
+.TopSection > div:last-child {
   margin-left: auto;
 }
 
-.TopSection .TopCell{
+.TopSection .TopCell {
   height: 100%;
   /* border: 1px solid #aaaaaa; */
   padding-top: 6px;
@@ -31,6 +31,7 @@
   font-weight: 500;
   background-color: #86dde0;
   position: relative;
+  white-space: pre;
 }
 /* .Container {
   top: 0px;

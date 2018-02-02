@@ -46,7 +46,9 @@ const dashboard = props => {
                   <div className={classes.Cell}>
                     {lcBet ? (
                       <p>
-                        <span>{lcBet.position}</span>
+                        <span>{`${lcBet.isAnti ? "Anti" : ""} ${
+                          lcBet.position
+                        }`}</span>
                         <span>{`MOC(${lcBet.bettingDate})`}</span>
                       </p>
                     ) : null}

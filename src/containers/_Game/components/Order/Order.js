@@ -30,7 +30,11 @@ const order = props => {
         <div className={classes.Left}>
           <p>Bet: </p>
           <Chip chip={chip} />
-          <Slot {...slot} heldChips={[]} />
+          <Slot
+            {...slot}
+            heldChips={[]}
+            width={slot.position.toString().length > 1 ? "100px" : "60"}
+          />
           <div className={classes.Systems}>
             <ul>
               {getSystems(slot).map(system => (
@@ -55,6 +59,7 @@ const order = props => {
           rankingLoading={rankingLoading}
           rankingData={rankingData}
           chip={chip}
+          slot={slot}
         />
       </div>
       <div className={classes.ActionFooter}>

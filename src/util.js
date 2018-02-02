@@ -152,3 +152,13 @@ export const toSlashDate = integerDate => {
     "/"
   );
 };
+
+export const getAbbrevation = name => {
+  // console.log(name);
+  switch (name) {
+    case "antiHighEq":
+      return "AHE";
+    default:
+      return name;
+  }
+};

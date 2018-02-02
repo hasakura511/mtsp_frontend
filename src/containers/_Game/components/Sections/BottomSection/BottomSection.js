@@ -15,6 +15,7 @@ const bottomSection = props => {
               className={classes.BottomCell}
               style={{
                 borderBottomColor: color,
+                borderTopColor: color,
                 width: WIDTH > 0 ? WIDTH : 60
               }}
               title={description}

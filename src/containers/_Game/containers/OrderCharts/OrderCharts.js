@@ -39,7 +39,8 @@ class OrderCharts extends Component {
       rankingLoading,
       rankingData,
       rankingError,
-      chip
+      chip,
+      slot
     } = this.props;
     return (
       <div className={classes.OrderCharts}>
@@ -74,7 +75,11 @@ class OrderCharts extends Component {
                     "Could not load ranking charts, please contact us to report the bug."}
                 </p>
               ) : (
-                <RankingChart rankingData={rankingData} chip={chip} />
+                <RankingChart
+                  rankingData={rankingData}
+                  chip={chip}
+                  slot={slot}
+                />
               )}
             </div>
           )}
@@ -86,11 +91,13 @@ class OrderCharts extends Component {
 
 OrderCharts.propTypes = {
   performance: PropTypes.object.isRequired,
-  position: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  position: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    .isRequired,
   rankingLoading: PropTypes.bool.isRequired,
   rankingData: PropTypes.array,
   rankingError: PropTypes.object,
-  chip: PropTypes.object.isRequired
+  chip: PropTypes.object.isRequired,
+  slot: PropTypes.object.isRequired
 };
 
 export default OrderCharts;
