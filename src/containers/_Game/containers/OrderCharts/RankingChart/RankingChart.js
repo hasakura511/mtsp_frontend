@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import classes from "./RankingChart.css";
 import {
   BarChart,
   XAxis,
@@ -88,24 +89,26 @@ class RankingChart extends Component {
         return r2["20 Days lookback"] - r1["20 Days lookback"];
       });
     return (
-      <BarChart
-        width={600}
-        height={2000}
-        data={rankingChartData}
-        layout="vertical"
-        margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-      >
-        <XAxis type="number" tickFormatter={value => `${value}%`} />
-        <YAxis type="category" dataKey="name" />
-        <CartesianGrid strokeDasharray="3 3" />
-        <Tooltip formatter={value => `${value.toFixed(2)}%`} />
-        <Legend verticalAlign="top" wrapperStyle={{ lineHeight: "40px" }} />
-        <ReferenceLine x={0} stroke="#000" />
-        {/* <Brush dataKey="name" height={30} stroke="#8884d8" /> */}
-        <Bar dataKey="1 Day lookback" stackId="a" fill="#f00155" />
-        <Bar dataKey="5 Days lookback" stackId="a" fill="#ffde00" />
-        <Bar dataKey="20 Days lookback" stackId="a" fill="#02abca" />
-      </BarChart>
+      <div className={classes.RankingChart}>
+        <BarChart
+          width={600}
+          height={2000}
+          data={rankingChartData}
+          layout="vertical"
+          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+        >
+          <XAxis type="number" tickFormatter={value => `${value}%`} />
+          <YAxis type="category" dataKey="name" />
+          <CartesianGrid strokeDasharray="3 3" />
+          <Tooltip formatter={value => `${value.toFixed(2)}%`} />
+          <Legend verticalAlign="top" wrapperStyle={{ lineHeight: "40px" }} />
+          <ReferenceLine x={0} stroke="#000" />
+          {/* <Brush dataKey="name" height={30} stroke="#8884d8" /> */}
+          <Bar dataKey="1 Day lookback" stackId="a" fill="#f00155" />
+          <Bar dataKey="5 Days lookback" stackId="a" fill="#ffde00" />
+          <Bar dataKey="20 Days lookback" stackId="a" fill="#02abca" />
+        </BarChart>
+      </div>
     );
   }
 }

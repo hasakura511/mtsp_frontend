@@ -49,5 +49,7 @@
   flex-flow: column;
   align-items: stretch;
   justify-content: flex-start;
-  overflow-y: auto;
+  /* overflow-y: auto; */
+  /* overflow-x: hidden; */
+  /* min-height: 341px; */
 }
