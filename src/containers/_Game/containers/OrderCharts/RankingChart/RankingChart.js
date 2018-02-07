@@ -9,7 +9,8 @@ import {
   Tooltip,
   Legend,
   ReferenceLine,
-  Bar
+  Bar,
+  ResponsiveContainer
 } from "recharts";
 
 const DEFAULT_LOOKBACK = "20 Days lookback";
@@ -111,7 +112,7 @@ class RankingChart extends Component {
       .map((rankingObj, index) => {
         return {
           ...rankingObj,
-          name: `${rankingObj.name}  (${index + 1})`
+          name: `${rankingObj.name} (${index + 1})`
         };
       });
 
@@ -141,17 +142,18 @@ class RankingChart extends Component {
       color = "red";
     }
     return (
-      <text
-        x={x}
-        y={y - 13}
-        dy={16}
-        // fontFamily="Roboto"
-        fontSize="16px"
-        textAnchor="end"
-        fill={color || "#8884d8"}
-      >
-        {payload.value}
-      </text>
+      <g transform={`translate(${x},${y})`}>
+        <text
+          x={0}
+          y={0}
+          dy={16}
+          textAnchor="end"
+          fill={color || "#8884d8"}
+          transform="rotate(-45)"
+        >
+          {payload.value}
+        </text>
+      </g>
     );
   }
 
@@ -163,34 +165,33 @@ class RankingChart extends Component {
     const { rankingChartData } = this.state;
     return (
       <div className={classes.RankingChart}>
-        <BarChart
-          width={650}
-          height={2000}
-          data={rankingChartData}
-          layout="vertical"
-          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-          stackOffset="sign"
-        >
-          <XAxis type="number" tickFormatter={value => `${value}%`} />
-          <YAxis
-            type="category"
-            dataKey="name"
-            tick={props => this.getColor(props)}
-            width={100}
-          />
-          <CartesianGrid strokeDasharray="3 3" />
-          <Tooltip formatter={value => `${value.toFixed(2)}%`} />
-          <Legend
-            verticalAlign="top"
-            wrapperStyle={{ lineHeight: "40px" }}
-            onClick={this.changeLookbackHandler}
-          />
-          <ReferenceLine x={0} stroke="#000" />
-          {/* <Brush dataKey="name" height={30} stroke="#8884d8" /> */}
-          <Bar dataKey="1 Day lookback" stackId="stack" fill="#f00155" />
-          <Bar dataKey="5 Days lookback" stackId="stack" fill="#ffde00" />
-          <Bar dataKey="20 Days lookback" stackId="stack" fill="#02abca" />
-        </BarChart>
+        <ResponsiveContainer width="100%" height={325}>
+          <BarChart
+            data={rankingChartData}
+            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+            stackOffset="sign"
+          >
+            <YAxis type="number" tickFormatter={value => `${value}%`} />
+            <XAxis
+              type="category"
+              dataKey="name"
+              tick={props => this.getColor(props)}
+              interval={0}
+              height={100}
+            />
+            <CartesianGrid strokeDasharray="3 3" />
+            <Tooltip formatter={value => `${value.toFixed(2)}%`} />
+            <Legend
+              verticalAlign="top"
+              wrapperStyle={{ lineHeight: "40px" }}
+              onClick={this.changeLookbackHandler}
+            />
+            <ReferenceLine x={0} stroke="#000" />
+            <Bar dataKey="1 Day lookback" stackId="stack" fill="#f00155" />
+            <Bar dataKey="5 Days lookback" stackId="stack" fill="#ffde00" />
+            <Bar dataKey="20 Days lookback" stackId="stack" fill="#02abca" />
+          </BarChart>
+        </ResponsiveContainer>
       </div>
     );
   }

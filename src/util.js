@@ -162,3 +162,18 @@ export const getAbbrevation = name => {
       return name;
   }
 };
+export const promiseSerial = factoryFunctions =>
+  factoryFunctions.reduce(
+    (acc, func) =>
+      acc.then(all => func().then(result => [].concat(all, result))),
+    Promise.resolve([])
+  );
+
+
+export const promiseSer = async factoryFunctions => {
+  const results = [];
+  await factoryFunctions.forEach(async func => {
+    await func().then(res => results.push(res));
+  })
+  return results;
+}

@@ -11,7 +11,7 @@ import Spinner from "../../../../components/UI/Spinner/Spinner";
 import { Button } from "../../components/AuthInitialControls";
 import CancelButton from "../../../../components/UI/CancelButton/CancelButton";
 import axios from "../../../../axios-gsm";
-import { keysToCamel, BUG_MESSAGE } from "../../../../util";
+import { keysToCamel, BUG_MESSAGE, promiseSerial } from "../../../../util";
 
 class RdModal extends Component {
   constructor(props) {
@@ -65,6 +65,26 @@ class RdModal extends Component {
       .catch(error => {
         this.errorHandler(error, "Error updating RD status.");
       });
+    
+    // example series execution:
+    // const promise1 = () =>
+    //   new Promise((resolve, reject) => {
+    //     setTimeout(() => {
+    //       resolve({ msg: "got first response after 2 sec" });
+    //     }, 2000);
+    //   });
+
+    // const promise2 = () =>
+    //   new Promise((resolve, reject) => {
+    //     setTimeout(() => {
+    //       resolve({ msg: "got second response after 3 sec" });
+    //     }, 3000);
+    //   });
+
+    // promise1()
+    //   .then(x => promise2().then(res => [x].concat(res)))
+    //   .then(res => console.log(res));
+    // promiseSerial([promise1, promise2]).then(res => console.log(res));
   };
 
   render() {

@@ -221,7 +221,7 @@ export default class OrderDialog extends Component {
     } = this.state;
     const { rankingError, rankingData, rankingLoading } = this.props;
     return (
-      <Modal hidden={!showModal} toggle={this.toggle}>
+      <Modal hidden={!showModal} toggle={this.toggle} isLarge>
         {performanceLoading ? (
           <Spinner />
         ) : performanceError ? (

@@ -35,7 +35,7 @@ module.exports = {
     ],
     "no-useless-escape": 0,
     // "flowtype/boolean-style": ["warn", "boolean"],
-    // "flowtype/define-flow-type": 1,
+    "flowtype/define-flow-type": 1,
     // // "flowtype/delimiter-dangle": [2, "never"],
     // "flowtype/delimiter-dangle": "warn",
     // "flowtype/generic-spacing": ["warn", "never"],

@@ -33,7 +33,7 @@ const order = props => {
           <Slot
             {...slot}
             heldChips={[]}
-            width={slot.position.toString().length > 1 ? "100px" : "60"}
+            width={isNaN(Number(slot.position)) ? "100px" : "60"}
           />
           <div className={classes.Systems}>
             <ul>

@@ -9,7 +9,8 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend
+  Legend,
+  ResponsiveContainer
 } from "recharts";
 
 const convert = pnlObj => {
@@ -178,6 +179,16 @@ class PerformanceChart extends Component {
     this.setState({ lookback });
   };
 
+  xTick({ payload, x, y }) {
+    return (
+      <g transform={`translate(${x},${y})`}>
+        <text x={0} y={0} dy={16} textAnchor="end" transform="rotate(-45)">
+          {payload.value}
+        </text>
+      </g>
+    );
+  }
+
   render() {
     const { performance, position } = this.props;
     const { lookback, endDate } = this.state;
@@ -204,31 +215,36 @@ class PerformanceChart extends Component {
           </div>
         </div>
         <div className={classes.ChartContainer}>
-          <LineChart
-            width={680}
-            height={300}
-            data={mergeChartData(performance, lookback, endDate, position)}
-            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-          >
-            <XAxis dataKey="axisDate" />
-            <YAxis tickFormatter={value => `${value.toLocaleString("en")}`} />
-            <CartesianGrid strokeDasharray="3 3" />
-            <Tooltip content={<CustomTooltip />} />
-            <Legend />
-            <Line
-              type="monotone"
-              dataKey="P&L"
-              stroke="#8884d8"
-              // activeDot={{ r: 8 }}
-            />
-            <Line
-              type="monotone"
-              dataKey="Anti P&L"
-              stroke="#e12f48"
-              // activeDot={{ r: 8 }}
-            />
-            <Line type="monotone" dataKey="Benchmark" stroke="#82ca9d" />
-          </LineChart>
+          <ResponsiveContainer width="100%" height={325}>
+            <LineChart
+              data={mergeChartData(performance, lookback, endDate, position)}
+              margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+            >
+              <XAxis
+                dataKey="axisDate"
+                interval={0}
+                tick={props => this.xTick(props)}
+                height={100}
+              />
+              <YAxis tickFormatter={value => `${value.toLocaleString("en")}`} />
+              <CartesianGrid strokeDasharray="3 3" />
+              <Tooltip content={<CustomTooltip />} />
+              <Legend />
+              <Line
+                type="monotone"
+                dataKey="P&L"
+                stroke="#8884d8"
+                // activeDot={{ r: 8 }}
+              />
+              <Line
+                type="monotone"
+                dataKey="Anti P&L"
+                stroke="#e12f48"
+                // activeDot={{ r: 8 }}
+              />
+              <Line type="monotone" dataKey="Benchmark" stroke="#82ca9d" />
+            </LineChart>
+          </ResponsiveContainer>
         </div>
       </div>
     );

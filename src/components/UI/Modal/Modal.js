@@ -21,7 +21,12 @@ class Modal extends Component {
     }
     return (
       <Aux>
-        <div className={classes.Modal + " " + hidden}>
+        <div
+          className={classes.Modal + " " + hidden}
+          style={
+            this.props.isLarge ? { width: "95%", left: "2.5%", top: "1%" } : {}
+          }
+        >
           {this.props.children}
         </div>
         <Backdrop show={!this.props.hidden} toggle={this.props.toggle} />
@@ -33,6 +38,7 @@ class Modal extends Component {
 Modal.propTypes = {
   children: PropTypes.any,
   hidden: PropTypes.bool.isRequired,
+  isLarge: PropTypes.bool,
   toggle: PropTypes.func
 };
 
