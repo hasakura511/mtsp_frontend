@@ -172,7 +172,7 @@ export default {
     display: "Anti-Trend\n120D",
     id: "ANTI_ZZ-TREND_120D",
     column: "antiZz120",
-    description: "",
+    description: "Bet against the trends as seen from a 120 day perspective.",
     short: "Anti-Trend120",
     heldChips: []
   },
@@ -182,7 +182,8 @@ export default {
     display: "Mode 30D",
     id: "ZZ-MODE_30D",
     column: "zz30",
-    description: "",
+    description:
+      "Bet on recent market swings as seen from a 30 day perspective.",
     short: "Mode 30",
     heldChips: []
   },
@@ -192,7 +193,7 @@ export default {
     display: "Risk On",
     id: "RISK-ON",
     column: "riskOn",
-    description: "",
+    description: "Bet on risky assets and against government bonds.",
     short: "Risk On",
     heldChips: []
   },
@@ -202,7 +203,7 @@ export default {
     display: "Risk Off",
     id: "RISK-OFF",
     column: "riskOff",
-    description: "",
+    description: "Bet on government bonds and against risky assets.",
     short: "Risk Off",
     heldChips: []
   },
@@ -212,7 +213,7 @@ export default {
     display: "Anti-\nSeasonality",
     id: "ANTI_SEASONALITY",
     column: "antiSea",
-    description: "",
+    description: "Bet against long-term seasonal trends.",
     short: "A-Season",
     heldChips: []
   },
@@ -222,8 +223,9 @@ export default {
     display: "Anti-All Scalper\n(non-filtered)",
     id: "ANTI_ML-SCALP-ALL",
     column: "antiMlScalpAll",
-    description: "A-All Scalp",
-    short: "",
+    description:
+      "Bet against prediction models that try to predict the next day.",
+    short: "A-All Scalp",
     heldChips: []
   },
   ML_SCALP_BIG_FB: {
@@ -232,7 +234,8 @@ export default {
     display: "Big Scalper\n(filtered)",
     id: "ML-SCALP-BIG_FB",
     column: "mlScalpBigFb",
-    description: "",
+    description:
+      "Bet on prediction models that try to predict days with big price movements.",
     short: "Big Scalp",
     heldChips: []
   },
@@ -241,8 +244,9 @@ export default {
     position: "bottom",
     display: "Big Swinger\n(filtered)",
     id: "ML-SWING-BIG_FB",
-    column: "mlScalpBigFb",
-    description: "",
+    column: "mlSwingBigFb",
+    description:
+      "Bet on prediction models that try to predict multi-day swings in the market.",
     short: "Big Swing",
     heldChips: []
   },
@@ -252,7 +256,8 @@ export default {
     display: "Search Best\n(filtered)",
     id: "ML-LAST-BEST_FB",
     column: "mlLastBestFb",
-    description: "",
+    description:
+      "Bet on the best prediction models based on the previous day’s results.",
     short: "Best Mod",
     heldChips: []
   },
@@ -262,7 +267,8 @@ export default {
     display: "Anti-Search\nWorst (filtered)",
     id: "ANTI_ML-LAST-WORST_FW",
     column: "antiMlLastWorstFw",
-    description: "",
+    description:
+      "Bet against the worst prediction models based on the previous day's results.",
     short: "A-Worst",
     heldChips: []
   }
