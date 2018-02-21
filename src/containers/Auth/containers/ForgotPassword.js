@@ -80,7 +80,8 @@ class ForgotPassword extends Component {
         this.props.addTimedToaster(
           {
             id: "forgot-success",
-            text: "Link to update password email sent."
+            text: "Link to update password email sent.",
+            success: true
           },
           5000
         );

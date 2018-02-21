@@ -54,7 +54,7 @@ const dispatchToProps = dispatch => {
     addFailureToaster: () => {
       dispatch(
         actions.addTimedToaster(
-          { id: "verification-failure", text: "Link has expired :o(" },
+          { id: "verification-failure", text: "This link has already been used." },
           5000
         )
       );

@@ -1,21 +1,21 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import classes from './FormatModal.css'
+import React from "react";
+import PropTypes from "prop-types";
+import classes from "./FormatModal.css";
 
-const formatModal = (props) => {
+const formatModal = props => {
+  const { title, children } = props;
+  const Title = title;
   return (
     <div className={classes.FormatModal}>
       <div className={classes.Title}>
-        <h2>{props.title}</h2>
+        {typeof title === "function" ? <Title /> : <h2>{title}</h2>}
       </div>
-      <div className={classes.Content}>
-        {props.children}
-      </div>
+      <div className={classes.Content}>{children}</div>
     </div>
   );
 };
 formatModal.propTypes = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
   children: PropTypes.any
-}
+};
 export default formatModal;

@@ -227,7 +227,7 @@ export const SectionThree = scrollWrap(props => {
       </div>
       <div className={classes.Container}>
         <img src={HomeData.sectionThree.background} alt="" useMap="mapname" />
-        <Link to={"/link"}>
+        <Link to={"/board"}>
           <map name="mapname">
             <area
               shape="rect"

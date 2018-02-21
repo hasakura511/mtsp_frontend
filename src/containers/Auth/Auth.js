@@ -82,7 +82,8 @@ class Auth extends Component {
           text:
             newProps.error.message ||
             newProps.error.Message ||
-            "Error logging in"
+            "Error logging in",
+          success: newProps.error.success
         },
         5000
       );

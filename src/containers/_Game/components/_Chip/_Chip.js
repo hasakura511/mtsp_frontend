@@ -2,13 +2,34 @@ import React from "react";
 import PropTypes from "prop-types";
 import classes from "./_Chip.css";
 import { DragSource } from "react-dnd";
-import imgSource from "../../../../assets/images/chip-drag.png";
+import imgSource_25K from "../../../../assets/images/chip-drag-25K.png";
+import imgSource_50K from "../../../../assets/images/chip-drag-50K.png";
+import imgSource_100K from "../../../../assets/images/chip-drag-0.1M.png";
 import { replaceSymbols } from "../../ChipsConfig";
 
 const chip = props => {
   const { dragSource, isDragging, dragPreview, canDrag, chip } = props;
   const img = new Image();
-  img.src = imgSource;
+  img.style = {
+    width: "48px",
+    height: "48px"
+  };
+  switch (chip.display) {
+    case "25K":
+      img.src = imgSource_25K;
+      break;
+
+    case "50K":
+      img.src = imgSource_50K;
+      break;
+
+    case "0.1M":
+      img.src = imgSource_100K;
+      break;
+
+    default:
+      break;
+  }
   dragPreview(img);
   const title =
     "Portfolio: " + JSON.stringify(chip.qty).replace(/\{|\}|\'|\"/gi, "");
@@ -25,7 +46,6 @@ chip.propTypes = {
   canDrag: PropTypes.bool,
   dragPreview: PropTypes.any
 };
-
 
 /**
  * @type {Object} Dragsource Spec.

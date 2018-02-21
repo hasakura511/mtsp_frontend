@@ -1,6 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classes from "./RankingChart.css";
+import Config from "../../../Config";
+
+const LongShortMap = Object.values(Config).reduce((acc, { column, short }) => {
+  acc[column] = short;
+  return acc;
+}, {});
+
 import {
   BarChart,
   XAxis,
@@ -122,6 +129,7 @@ class RankingChart extends Component {
   getColor({ x, y, payload }) {
     // tickObj.payload.value will be the string value "1" or "2" or "prev1" etc but with ranks
     const value = payload.value.split(" ")[0];
+    const rank = payload.value.split(" ")[1];
 
     let color = "black";
     const {
@@ -151,7 +159,7 @@ class RankingChart extends Component {
           fill={color || "#8884d8"}
           transform="rotate(-45)"
         >
-          {payload.value}
+          {LongShortMap[value] || value} {rank}
         </text>
       </g>
     );
@@ -165,7 +173,7 @@ class RankingChart extends Component {
     const { rankingChartData } = this.state;
     return (
       <div className={classes.RankingChart}>
-        <ResponsiveContainer width="100%" height={325}>
+        <ResponsiveContainer width="100%" height={455}>
           <BarChart
             data={rankingChartData}
             margin={{ top: 5, right: 30, left: 20, bottom: 5 }}

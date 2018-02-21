@@ -66,7 +66,8 @@ class Slot extends Component {
       position,
       heldChips,
       children,
-      width
+      width,
+      fontSize
     } = this.props;
     const titleArray = [
       bottomSystem.display,
@@ -84,7 +85,8 @@ class Slot extends Component {
             borderRightColor: rightSystem.color,
             backgroundColor: canDrop ? "#d0f4a6" : "transparent",
             opacity: canDrop ? (isOver ? 0.8 : 0.5) : 1,
-            width: width
+            width,
+            fontSize
           }}
           title={titleArray.join(", ")}
         >
@@ -110,7 +112,8 @@ Slot.propTypes = {
   canDrop: PropTypes.bool,
   children: PropTypes.any,
   moveChipToSlot: PropTypes.func,
-  width: PropTypes.string
+  width: PropTypes.string,
+  fontSize: PropTypes.string
 };
 
 export default DropTarget("chip", slotTarget, collect)(Slot);

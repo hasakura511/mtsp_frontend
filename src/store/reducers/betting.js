@@ -1,6 +1,6 @@
 import * as actionTypes from "../actions/actionTypes";
 import ChipsConfig from "../../containers/_Game/ChipsConfig";
-import { clone, toSlashDate, clean } from "../../util";
+import { clone, toSlashDate, uniq } from "../../util";
 
 const initialState = {
   // example bet:
@@ -31,7 +31,7 @@ const initialState = {
     accountId,
     accountValue
   })),
-  simulatedDate: "20180105",
+  simulatedDate: "20180201",
   /**
    * Last 3 days profit
    * __TEMPERORY__CODE__
@@ -60,43 +60,49 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.ADD_BET: {
+      const accountId = Object.keys(action.bet)[0];
+      const pastBet = {};
+      pastBet[accountId] = state.currentBets[accountId];
       return {
         ...state,
         currentBets: {
           ...state.currentBets,
           ...action.bet
+        },
+        pastBets: {
+          ...state.pastBets,
+          ...pastBet
         }
       };
     }
     case actionTypes.MOVE_TO_NEXT_DAY: {
-      const {
-        last3DaysProfits,
-        simulatedDate,
-        pastBets,
-        currentBets,
-        accounts
-      } = state;
-      const modifiedPastBets = {
-        ...clone(pastBets),
-        ...clone(clean(currentBets))
-      };
+      const { last3DaysProfits, simulatedDate, currentBets, accounts } = state;
+      // const modifiedPastBets = {
+      //   ...clone(pastBets),
+      //   ...clone(clean(currentBets))
+      // };
 
-      const dates = Object.values(last3DaysProfits)
-        // ***hack*** to avoid crash when we dont have pnlData for that particular account
-        // which is possible in tier 0 as the pnlData is fed from performanceData and
-        // that happens when a new bet is placed which only gets performanceData for the account
-        // that particular bet is using.
-        // Remove hack when we have proper data feed for changePercent per account basis
-        .map(profitObj => Object.keys(profitObj || {}))
-        .reduce((acc, curr) => acc.concat(curr), [])
-        .filter(date => !isNaN(Number(date)))
-        .sort((d1, d2) => Number(d1) > Number(d2));
+      const modifiedCurrentBets = clone(currentBets);
+
+      const dates = uniq(
+        Object.values(last3DaysProfits)
+          // ***hack*** to avoid crash when we dont have pnlData for that particular account
+          // which is possible in tier 0 as the pnlData is fed from performanceData and
+          // that happens when a new bet is placed which only gets performanceData for the account
+          // that particular bet is using.
+          // Remove hack when we have proper data feed for changePercent per account basis
+          .map(profitObj => Object.keys(profitObj || {}))
+          .reduce((acc, curr) => acc.concat(curr), [])
+          .filter(date => !isNaN(Number(date)))
+          .sort((d1, d2) => Number(d1) > Number(d2))
+      );
+
       if (dates.indexOf(simulatedDate) === dates.length - 1) {
         return state;
       }
 
-      // loop this new pastBets object `for` all the accounts
-      for (let key in modifiedPastBets) {
+      // loop this currentBets object `for` all the accounts
+      for (let key in modifiedCurrentBets) {
         // ***hack*** to avoid crash when we dont have pnlData for that particular account
         // which is possible in tier 0 as the pnlData is fed from performanceData and
         // that happens when a new bet is placed which only gets performanceData for the account
@@ -106,39 +112,35 @@ const reducer = (state = initialState, action) => {
         if (
           last3DaysProfits[key] &&
           last3DaysProfits[key][simulatedDate] &&
-          modifiedPastBets[key] !== null
+          modifiedCurrentBets[key] !== null
         ) {
-          const isAnti = modifiedPastBets[key].isAnti;
-          modifiedPastBets[key].changePercent =
+          const isAnti = modifiedCurrentBets[key].isAnti;
+          modifiedCurrentBets[key].changePercent =
             (last3DaysProfits[key][simulatedDate].changePercent || 0) *
             (isAnti ? -1 : 1);
-          modifiedPastBets[key].change =
-            modifiedPastBets[key].changePercent *
+          modifiedCurrentBets[key].change =
+            modifiedCurrentBets[key].changePercent *
             accounts.find(({ accountId }) => accountId === key).accountValue;
-          modifiedPastBets[key].updateDate = toSlashDate(simulatedDate);
+          modifiedCurrentBets[key].updateDate = toSlashDate(simulatedDate);
         }
       }
+
       const modifiedAccounts = accounts.map(({ accountId, accountValue }) => {
-        const { changePercent } = modifiedPastBets[accountId] || {};
+        const { changePercent } = modifiedCurrentBets[accountId] || {};
         return {
           accountId,
           accountValue: accountValue * (1 + (changePercent || 0))
         };
       });
+
       return {
         ...state,
         accounts: modifiedAccounts,
-        pastBets: modifiedPastBets,
-        currentBets: accounts
-          .map(({ accountId }) => accountId)
-          .reduce((acc, curr) => {
-            acc[curr] = null;
-            return acc;
-          }, {}),
+        currentBets: modifiedCurrentBets,
         simulatedDate: dates[dates.indexOf(simulatedDate) + 1] || simulatedDate
       };
     }
-    case actionTypes.ADD_LAST_3_DAYS_PROFIT:
+    case actionTypes.ADD_LAST_3_DAYS_PROFIT: {
       return {
         ...state,
         last3DaysProfits: {
@@ -146,6 +148,7 @@ const reducer = (state = initialState, action) => {
           ...action.last3DaysProfit
         }
       };
+    }
     default:
       return state;
   }

@@ -40,24 +40,34 @@ class OrderCharts extends Component {
       rankingData,
       rankingError,
       chip,
-      slot
+      slot,
+      submitBetHandler,
+      close
     } = this.props;
     return (
       <div className={classes.OrderCharts}>
-        <div className={classes.Tabs}>
-          <div
-            className={
-              classes.Tab + " " + (isPerformance ? classes.active : "")
-            }
-            onClick={() => this.toggle(true)}
-          >
-            Performance Chart
+        <div className={classes.Row}>
+          <div className={classes.Tabs}>
+            <div
+              className={
+                classes.Tab + " " + (isPerformance ? classes.active : "")
+              }
+              onClick={() => this.toggle(true)}
+            >
+              Performance Chart
+            </div>
+            <div
+              className={classes.Tab + " " + (isRanking ? classes.active : "")}
+              onClick={() => this.toggle(false)}
+            >
+              Ranking Chart
+            </div>
           </div>
-          <div
-            className={classes.Tab + " " + (isRanking ? classes.active : "")}
-            onClick={() => this.toggle(false)}
-          >
-            Ranking Chart
+          <div className={classes.ActionBar}>
+            <button onClick={close}>Cancel</button>
+            <button className={classes.Submit} onClick={submitBetHandler}>
+              Place Bet Order
+            </button>
           </div>
         </div>
         <div className={classes.Contents}>
@@ -97,7 +107,9 @@ OrderCharts.propTypes = {
   rankingData: PropTypes.array,
   rankingError: PropTypes.object,
   chip: PropTypes.object.isRequired,
-  slot: PropTypes.object.isRequired
+  slot: PropTypes.object.isRequired,
+  submitBetHandler: PropTypes.func.isRequired,
+  close: PropTypes.func.isRequired
 };
 
 export default OrderCharts;

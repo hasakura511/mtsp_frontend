@@ -2,11 +2,9 @@ import React, { Component } from "react";
 import Panel from "../Panel/Panel";
 import classes from "./Board.css";
 import bgBoard from "../../../../assets/images/boardBg.png";
-import { DragDropContext } from "react-dnd";
-import HTML5Backend from "react-dnd-html5-backend";
 import Config from "../../Config";
 import ChipsConfig from "../../ChipsConfig";
-import protectedComponent from "../../../../hoc/ProtectedComponent/ProtectedComponent";
+// import protectedComponent from "../../../../hoc/ProtectedComponent/ProtectedComponent";
 import Aux from "../../../../hoc/_Aux/_Aux";
 import Dashboard from "../../components/Dashboard/Dashboard";
 import Bettings from "../../BettingConfig";
@@ -83,8 +81,7 @@ const dispatchToProps = dispatch => {
   };
 };
 
-@protectedComponent
-@DragDropContext(HTML5Backend)
+// @protectedComponent
 @connect(null, dispatchToProps)
 
 /**

@@ -8,6 +8,7 @@ export const showDialog = (
   successAction,
   cancelAction
 ) => {
+  console.log(arguments);
   return {
     type: actionTypes.SHOW_DIALOG,
     onSuccess,

@@ -14,6 +14,7 @@ import ChipsConfig from "../../ChipsConfig";
 import { connect } from "react-redux";
 import * as actions from "../../../../store/actions";
 import { toSlashDate } from "../../../../util";
+import Title from "../OrderDialog/OffOrderDialogTitle";
 /**
  * returns state to `Props` mapping object with keys that would later become props.
  * @function stateToProps
@@ -32,11 +33,20 @@ const stateToProps = state => {
  */
 const dispatchToProps = dispatch => {
   return {
-    addLast3DaysProfit: last3DaysProfit => {
+    addLast3DaysProfit(last3DaysProfit) {
       dispatch(actions.addLast3DaysProfit(last3DaysProfit));
     },
-    addBet: bet => {
+    addBet(bet) {
       dispatch(actions.addBet(bet));
+    },
+    showDialog() {
+      dispatch(actions.showDialog(...arguments));
+    },
+    killDialog() {
+      dispatch(actions.killDialog());
+    },
+    addTimedToaster(toaster) {
+      dispatch(actions.addTimedToaster(toaster, -1));
     }
   };
 };
@@ -46,7 +56,7 @@ const blankSystem = {
   ...Config.BLANK
 };
 
-//Redux connect
+// Redux connect
 @connect(stateToProps, dispatchToProps)
 /**
  * Panel component that holds the state of the board game and all the board components.
@@ -151,6 +161,7 @@ export default class Panel extends Component {
       rankingData: [],
       rankingError: null
     };
+    this._isMounted = false;
   }
 
   /**
@@ -192,6 +203,7 @@ export default class Panel extends Component {
       });
     });
     this.setState({ slots, maxHeight, maxWidth });
+    this._isMounted = true;
   }
 
   componentWillReceiveProps(newProps) {
@@ -225,8 +237,12 @@ export default class Panel extends Component {
       moveToBalance,
       addLast3DaysProfit,
       addBet,
-      simulatedDate
+      simulatedDate,
+      showDialog,
+      killDialog,
+      addTimedToaster
     } = this.props;
+
     const system = [
       ...topSystems,
       ...bottomSystems,
@@ -234,6 +250,19 @@ export default class Panel extends Component {
       ...rightSystems
     ].find(sys => sys.column === position);
     const slot = this.state.slots.find(slot => slot.position === position);
+
+    // __TEMPERORY_CODE__
+    // disallow multiple chip on same position
+    const betChip = this.props.bettingChips.find(c => c.position === position);
+    if (betChip) {
+      addTimedToaster({
+        id: "move-chip-error",
+        text: `This strategy is already in use for ${betChip.display} account.
+          Feature to support multiple accounts on one strategy is under development.`
+      });
+      return undefined;
+    }
+
     if (slot) {
       this.setState({
         showOrderDialog: true,
@@ -255,29 +284,42 @@ export default class Panel extends Component {
         orderSlot: systemToSlot
       });
     } else if (position === "off") {
-      // Here you first need to remove the bet in the state so it's location
-      // appears correctly on the board
-      moveToBalance(chip);
+      showDialog(
+        Title({ chip, canDrag: false }),
+        "All positions for this account will be cleared at the market close, your funds will be held in cash",
+        () => {
+          // Here you first need to remove the bet in the state so it's location
+          // appears correctly on the board
+          moveToBalance(chip);
 
-      // Then we need to reflect this in our redux store:
-      // 1. add default off location's last3DaysProfit (basically 0 changePercent)
-      const profitObj = {};
-      profitObj[chip.accountId] = {
-        position: "off",
-        "20180105": { changePercent: 0 },
-        "20180108": { changePercent: 0 },
-        "20180109": { changePercent: 0 }
-      };
-      addLast3DaysProfit(profitObj);
+          // Then we need to reflect this in our redux store:
+          // 1. add default off location's last3DaysProfit (basically 0 changePercent)
+          const profitObj = {};
+          profitObj[chip.accountId] = {
+            position: "off",
+            "20180201": { changePercent: 0 },
+            "20180202": { changePercent: 0 },
+            "20180205": { changePercent: 0 },
+            "20180206": { changePercent: 0 },
+            "20180207": { changePercent: 0 },
+            "20180208": { changePercent: 0 }
+          };
+          addLast3DaysProfit(profitObj);
 
-      // 2. append a new currentBet on off location
-      const bet = {};
-      bet[chip.accountId] = {
-        bettingDate: toSlashDate(simulatedDate),
-        position: "off",
-        isAnti: false
-      };
-      addBet(bet);
+          // 2. append a new currentBet on off location
+          const bet = {};
+          bet[chip.accountId] = {
+            bettingDate: toSlashDate(simulatedDate),
+            position: "off",
+            isAnti: false
+          };
+          addBet(bet);
+          killDialog();
+        },
+        null,
+        "Clear all positions",
+        "Cancel"
+      );
     }
   };
 
@@ -397,7 +439,7 @@ export default class Panel extends Component {
   /**
    *
    *
-   * @function componentDidUnmount Component did unmount hook of the Panel component,
+   * @function componentDidMount Component did mount hook of the Panel component,
    *  called after the thing has been rendered
    *
    * @memberof Panel
@@ -435,11 +477,12 @@ export default class Panel extends Component {
     // }
     const { slots } = this.state;
     this.setState({ rankingLoading: true });
-    const { portfolio, target, accountValue } = ChipsConfig[0];
+    // const { portfolio, target, accountValue } = ChipsConfig[0];
     axios
       .post("/utility/ranking_charts/", {
         //only 5k chip for tier 0
-        accounts: [{ portfolio, target, accountValue }],
+        // accounts: [{ portfolio, target, accountValue }],
+        accounts: ChipsConfig,
         slots: slots.map(
           ({ position, topSystem, bottomSystem, leftSystem, rightSystem }) => {
             return {
@@ -453,11 +496,30 @@ export default class Panel extends Component {
         lookback: 23
       })
       .then(({ data }) => {
-        this.setState({ rankingLoading: false, rankingData: data.rankingData });
+        // eslint-disable-next-line react/no-is-mounted
+        this._isMounted &&
+          this.setState({
+            rankingLoading: false,
+            rankingData: data.rankingData
+          });
       })
       .catch(error => {
-        this.setState({ rankingLoading: false, rankingError: error });
+        // eslint-disable-next-line react/no-is-mounted
+        this._isMounted &&
+          this.setState({
+            rankingLoading: false,
+            rankingError: error
+          });
       });
+  }
+
+  /**
+   * Set the _isMounted property to be false for the component to handle Promise case.
+   * @function componentWillUnmount as the name suggests its pre-unmount hook for the panel component
+   * @memberof Panel
+   */
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   static propTypes = {
@@ -471,6 +533,9 @@ export default class Panel extends Component {
     addLast3DaysProfit: PropTypes.func.isRequired,
     moveToBalance: PropTypes.func.isRequired,
     addBet: PropTypes.func.isRequired,
-    simulatedDate: PropTypes.string.isRequired
+    simulatedDate: PropTypes.string.isRequired,
+    showDialog: PropTypes.func.isRequired,
+    killDialog: PropTypes.func.isRequired,
+    addTimedToaster: PropTypes.func.isRequired
   };
 }

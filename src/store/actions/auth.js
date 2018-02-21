@@ -44,7 +44,8 @@ export const auth = (
         if (response.data.response === "") {
           dispatch(
             authFail({
-              message: "Please verify your account.",
+              message:
+                "Verification link is sent to your email, please verify.",
               status: 202
             })
           );
@@ -113,7 +114,8 @@ export const authSuccess = (user, token) => dispatch => {
     dispatch(
       authFail({
         Message:
-          "Welcome back! You can reactivate your account on profile page."
+          "Welcome back! You can reactivate your account on profile page.",
+        success: true
       })
     );
     dispatch(authSuccessSave(user, token));

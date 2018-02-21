@@ -6,13 +6,20 @@
   justify-content: flex-start;
   padding: 10px;
   box-sizing: border-box;
+  padding-top: 0px;
+}
+
+.Row {
+  width: 100%;
+  display: flex;
+  background-color: #bac4cc;
 }
 
 .Tabs {
-  width: 100%;
+  width: 50%;
   display: flex;
   flex-flow: row;
-  align-items: end;
+  align-items: flex-end;
   justify-content: flex-start;
 }
 
@@ -32,7 +39,7 @@
 }
 
 .Contents {
-  padding-top: 10px;
+  padding-top: 4px;
   background-color: #ececec;
   width: 100%;
   min-height: 300px;
@@ -52,4 +59,39 @@
   /* overflow-y: auto; */
   /* overflow-x: hidden; */
   /* min-height: 341px; */
+}
+
+.ActionBar {
+  width: 50%;
+  /* padding: 10px; */
+  box-sizing: border-box;
+  display: flex;
+  flex-flow: row;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.ActionBar button {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  margin: 5px;
+  font-size: 1.2em;
+  font-weight: 500;
+  cursor: pointer;
+  color: #17193a;
+  font-family: Kanit;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 28px;
+  /* Text style for "P, lace Be" */
+  letter-spacing: 0.35px;
+}
+
+button.Submit {
+  /* Style for "Rectangle" */
+  width: 142px;
+  height: 36px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  background-color: #8dc44c;
 }

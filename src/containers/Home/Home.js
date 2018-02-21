@@ -10,7 +10,22 @@ import {
 } from "./HomeData";
 import RouteModal from "../../hoc/RouteModal/RouteModal";
 import Contact from "./Contact/Contact";
-class Home extends Component {
+// import * as actions from "../../store/actions";
+// import { connect } from "react-redux";
+
+// @connect(null, dispatch => {
+//   return {
+//     addTimedToaster: () => {
+//       dispatch(
+//         actions.addTimedToaster({
+//           text: "Testing",
+//           id: "test" + Math.random().toFixed(3)
+//         })
+//       );
+//     }
+//   };
+// })
+export default class Home extends Component {
   constructor(props) {
     super(props);
 
@@ -57,6 +72,7 @@ class Home extends Component {
           <Contact />
         </RouteModal>
         {Jumbotron}
+        {/* <button onClick={this.showToaster}>Show</button> */}
         <SectionTwo
           onWindowScroll={this.handleSecondScroll}
           display={this.state.showSectionTwoCards}
@@ -73,9 +89,7 @@ class Home extends Component {
       </div>
     );
   }
+  static propTypes = {
+    history: PropTypes.object.isRequired
+  };
 }
-
-Home.propTypes = {
-  history: PropTypes.object.isRequired
-};
-export default Home;

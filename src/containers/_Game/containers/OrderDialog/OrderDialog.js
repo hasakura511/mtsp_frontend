@@ -8,10 +8,12 @@ import { TARGET } from "../../Config";
 import { connect } from "react-redux";
 import * as actions from "../../../../store/actions";
 import { toSlashDate } from "../../../../util";
+import { withRouter } from "react-router-dom";
 
 const stateToProps = state => {
   return {
-    simulatedDate: state.betting.simulatedDate
+    simulatedDate: state.betting.simulatedDate,
+    isAuth: state.auth.token !== null
   };
 };
 
@@ -22,6 +24,9 @@ const dispatchToProps = dispatch => {
     },
     addBet: bet => {
       dispatch(actions.addBet(bet));
+    },
+    addTimedToaster(toaster) {
+      dispatch(actions.addTimedToaster(toaster));
     }
   };
 };
@@ -33,6 +38,7 @@ const dispatchToProps = dispatch => {
  * @class OrderDialog
  * @extends {Component}
  */
+@withRouter
 @connect(stateToProps, dispatchToProps)
 export default class OrderDialog extends Component {
   /**
@@ -67,8 +73,15 @@ export default class OrderDialog extends Component {
        * Figures out the anti of the given set of systems
        * @type {boolean}
        */
-      isAnti: false
+      isAnti: false,
+
+      /**
+       * Stores the last 3 days profits object
+       * @type {Object}
+       */
+      last3DaysProfit: null
     };
+    this._isMounted = false;
   }
 
   /**
@@ -112,36 +125,61 @@ export default class OrderDialog extends Component {
          * @namespace {Performance}
          */
         const performance = response.data;
-        this.setState({ performanceLoading: false, performance });
 
         // Adding last 3 days profit for simulation
         // __TEMPERORY__CODE__
         const profitObj = {};
         profitObj[accountId] = {
           position: this.props.slot.position,
-          "20180105": {
+          "20180201": {
             changePercent: Number(
-              performance.pnlData.find(pnlObj => pnlObj.date === "20180105")[
+              performance.pnlData.find(pnlObj => pnlObj.date === "20180206")[
                 "changePercent"
               ]
             )
           },
-          "20180108": {
+          "20180202": {
             changePercent: Number(
-              performance.pnlData.find(pnlObj => pnlObj.date === "20180108")[
+              performance.pnlData.find(pnlObj => pnlObj.date === "20180206")[
                 "changePercent"
               ]
             )
           },
-          "20180109": {
+          "20180205": {
             changePercent: Number(
-              performance.pnlData.find(pnlObj => pnlObj.date === "20180109")[
+              performance.pnlData.find(pnlObj => pnlObj.date === "20180206")[
+                "changePercent"
+              ]
+            )
+          },
+          "20180206": {
+            changePercent: Number(
+              performance.pnlData.find(pnlObj => pnlObj.date === "20180206")[
+                "changePercent"
+              ]
+            )
+          },
+          "20180207": {
+            changePercent: Number(
+              performance.pnlData.find(pnlObj => pnlObj.date === "20180207")[
+                "changePercent"
+              ]
+            )
+          },
+          "20180208": {
+            changePercent: Number(
+              performance.pnlData.find(pnlObj => pnlObj.date === "20180208")[
                 "changePercent"
               ]
             )
           }
         };
-        this.props.addLast3DaysProfit(profitObj);
+        this._isMounted &&
+          this.setState({
+            last3DaysProfit: profitObj,
+            performanceLoading: false,
+            performance
+          });
       })
       .catch(performanceError => {
         this.setState({
@@ -172,6 +210,27 @@ export default class OrderDialog extends Component {
   componentWillUnmount() {
     clearTimeout(this.openTimer);
     clearTimeout(this.closeTimer);
+    this._isMounted = false;
+  }
+
+  /**
+   * @function componentWillMount Component will Mount hook to check isAuth.
+   *
+   * @memberof OrderDialog
+   */
+
+  componentWillMount() {
+    const { chip, history, isAuth, addTimedToaster } = this.props;
+    if (chip.display !== "25K" && !isAuth) {
+      history.push("/auth");
+      addTimedToaster({
+        id: "board-auth-error",
+        text: `Only registered users are allowed to try ${
+          chip.display
+        } account.`
+      });
+    }
+    this._isMounted = true;
   }
 
   toggleSystem = () => {
@@ -186,8 +245,15 @@ export default class OrderDialog extends Component {
    */
   submitBetHandler = event => {
     event.preventDefault();
-    const { slot, simulatedDate, addBet, chip } = this.props;
-    const { isAnti } = this.state;
+    const {
+      slot,
+      simulatedDate,
+      addBet,
+      chip,
+      addLast3DaysProfit,
+      successHandler
+    } = this.props;
+    const { isAnti, last3DaysProfit } = this.state;
     const bet = new Object();
     // example bet:
     // {"5K_0_1516105730": {
@@ -201,7 +267,8 @@ export default class OrderDialog extends Component {
       isAnti
     };
     addBet(bet);
-    this.props.successHandler(chip, slot.position);
+    addLast3DaysProfit(last3DaysProfit);
+    successHandler(chip, slot.position);
     this.toggle();
   };
 
@@ -217,7 +284,8 @@ export default class OrderDialog extends Component {
       performance,
       performanceLoading,
       performanceError,
-      showModal
+      showModal,
+      isAnti
     } = this.state;
     const { rankingError, rankingData, rankingLoading } = this.props;
     return (
@@ -239,6 +307,7 @@ export default class OrderDialog extends Component {
             rankingLoading={rankingLoading}
             submitBetHandler={this.submitBetHandler}
             close={this.toggle}
+            isAnti={isAnti}
           />
         )}
       </Modal>
@@ -255,6 +324,9 @@ export default class OrderDialog extends Component {
     rankingError: PropTypes.object,
     simulatedDate: PropTypes.string.isRequired,
     addLast3DaysProfit: PropTypes.func.isRequired,
-    addBet: PropTypes.func.isRequired
+    addBet: PropTypes.func.isRequired,
+    isAuth: PropTypes.bool.isRequired,
+    history: PropTypes.object.isRequired,
+    addTimedToaster: PropTypes.func.isRequired
   };
 }

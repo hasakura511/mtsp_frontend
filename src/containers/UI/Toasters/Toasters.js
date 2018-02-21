@@ -35,8 +35,7 @@ class Toasters extends Component {
         {this.props.toasters.map(toaster => (
           <Fade key={toaster.id}>
             <Toaster
-              id={toaster.id}
-              text={toaster.text}
+              {...toaster}
               closeClick={this.closeHandler}
               onFocusHandler={this.focusHandler}
               onUnfocusHandler={this.unFocusHandler}

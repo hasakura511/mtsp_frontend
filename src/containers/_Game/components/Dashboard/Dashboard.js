@@ -17,6 +17,14 @@ const stateToProps = state => {
 
 const dashboard = props => {
   const { currentBets, pastBets, accounts } = props;
+  const netPnl = Object.values(currentBets)
+      .map(bet => (bet ? bet.change || 0 : 0))
+      .reduce((a, c) => a + c, 0),
+    netStartAmount = ChipsConfig.reduce(
+      (acc, chip) => acc + chip.accountValue,
+      0
+    ),
+    netChangePercent = netPnl / netStartAmount * 100;
   return (
     <div style={{ backgroundColor: "#e0f1f5" }}>
       <table className={classes.Table}>
@@ -69,11 +77,11 @@ const dashboard = props => {
                     className={classes.Cell}
                     style={{ justifyContent: "center" }}
                   >
-                    {lpBet ? (
+                    {lcBet && lcBet.change ? (
                       <p style={{ width: "auto" }}>
-                        <img src={lpBet.change > 0 ? gainIcon : lossIcon} />
-                        ${Math.abs(lpBet.change).toLocaleString("en")} ({(
-                          lpBet.changePercent * 100
+                        <img src={lcBet.change > 0 ? gainIcon : lossIcon} />
+                        ${Math.abs(lcBet.change).toLocaleString("en")} ({(
+                          lcBet.changePercent * 100
                         ).toFixed(2)}%)
                       </p>
                     ) : null}
@@ -101,10 +109,26 @@ const dashboard = props => {
             );
           })}
           <tr>
-            <th />
+            <th>
+              <div className={classes.Cell}>
+                Totals: ${netStartAmount.toLocaleString("en")}
+              </div>
+            </th>
             <td />
             <td />
-            <td />
+            <td>
+              <div
+                className={classes.Cell}
+                style={{ justifyContent: "center" }}
+              >
+                <p style={{ width: "auto" }}>
+                  <img src={netPnl > 0 ? gainIcon : lossIcon} />
+                  ${Math.abs(netPnl).toLocaleString(
+                    "en"
+                  )} ({netChangePercent.toFixed(3)}%)
+                </p>
+              </div>
+            </td>
             <td>
               <div className={classes.Cell}>
                 {`$${accounts

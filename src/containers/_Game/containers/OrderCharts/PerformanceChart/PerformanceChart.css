@@ -32,7 +32,7 @@
   display: inline-flex;
   align-items: end;
   justify-content: flex-start;
-  padding: 10px;
+  /* padding: 10px; */
   padding-left: 100px;
   padding-bottom: 1px;
   width: 100%;

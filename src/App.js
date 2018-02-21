@@ -19,6 +19,9 @@ import Auth, {
 import Board from "./containers/_Game/containers/Board/Board";
 import Profile from "./containers/Home/Profile/Profile";
 
+import { DragDropContext } from "react-dnd";
+import HTML5Backend from "react-dnd-html5-backend";
+
 type PropType = {
   checkAuth: Function,
   location: Object,
@@ -124,7 +127,9 @@ class App extends Component<PropType, { showSideDrawer: boolean }> {
           <Route path="/auth/verify" component={AccountVerification} />
           <Route exact path="/auth" component={Auth} />
           <Route exact path="/auth/forgot" component={ForgotPassword} />
-          <Route exact path="/" component={this.props.isAuth ? Board : Home} />
+          {/* <Route exact path="/" component={this.props.isAuth ? Board : Home} /> */}
+          <Route exact path="/board" component={Board} />
+          <Route exact path="/" component={Home} />
           <Redirect from="*" to="/" />
         </Switch>
       </Layout>
@@ -148,5 +153,5 @@ export default withRouter(
         dispatch(actions.checkAuth());
       }
     })
-  )(App)
+  )(DragDropContext(HTML5Backend)(App))
 );

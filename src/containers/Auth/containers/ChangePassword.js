@@ -99,14 +99,15 @@ class ChangePassword extends Component {
         this.props.authSuccess(keysToCamel(user), sessiontoken);
         this.props.addTimedToaster({
           id: "change-success",
-          text: Message || "Password changed."
+          text: Message || "Password changed.",
+          success: true
         });
         this.props.history.push("/");
       })
       .catch(error => {
         this.props.history.push("/");
         this.props.addTimedToaster({
-          id: "change-success",
+          id: "change-error",
           text: error.Message || "Invalid link"
         });
       });

@@ -1,4 +1,4 @@
-.Toaster{
+.Toaster {
   /* width: 200px; */
   height: auto;
   padding: 2px 10px;
@@ -12,18 +12,19 @@
   border-radius: 4px;
   z-index: 999999;
   background-color: #fcfcfc;
-  opacity: 0.7;
+  /* opacity: 0.8; */
+  min-width: 50vw;
 }
 
-.Toaster .Text{
+/* .Toaster .Text {
   width: 180px;
-}
+} */
 
-.Toaster.Focused{
+.Toaster.Focused {
   opacity: 1;
 }
 
-.Toaster button{
+.Toaster button.CloseIcon {
   border-radius: 50%;
   background-color: #707070;
   border: 2px solid #cccccc;
@@ -34,4 +35,27 @@
   cursor: pointer;
   box-shadow: 2px 2px 4px #707070;
   outline: none;
+}
+
+.Toaster button.Close {
+  padding: 6px 10px;
+  font-size: 1em;
+  font-family: "Kanit", "Open Sans", sans-serif;
+  box-sizing: border-box;
+  background-color: #0fc6a7;
+  border: 2px solid #0fc6a7;
+  border-radius: 4px;
+  box-shadow: 1px 1px 4px #009297;
+  cursor: pointer;
+  color: white;
+}
+
+.Toaster button.Close:active {
+  box-shadow: none;
+}
+
+.Toaster button.Close:disabled {
+  box-shadow: none;
+  color: #dddddd;
+  cursor: not-allowed;
 }

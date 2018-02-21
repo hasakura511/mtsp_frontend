@@ -35,7 +35,7 @@ export default class Dialog extends Component {
     hidden: PropTypes.bool.isRequired,
     onCancel: PropTypes.func,
     message: PropTypes.string,
-    title: PropTypes.string,
+    title: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
     cancelAction: PropTypes.string,
     successAction: PropTypes.string,
     onSuccess: PropTypes.func,

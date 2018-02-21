@@ -169,11 +169,18 @@ export const promiseSerial = factoryFunctions =>
     Promise.resolve([])
   );
 
-
 export const promiseSer = async factoryFunctions => {
   const results = [];
   await factoryFunctions.forEach(async func => {
     await func().then(res => results.push(res));
-  })
+  });
   return results;
-}
+};
+
+export const uniq = arr => {
+  const o = {};
+  for (let elem in arr) {
+    o[arr[elem]] = true;
+  }
+  return Object.keys(o);
+};

@@ -181,7 +181,8 @@ export default class Contact extends Component {
         this.props.history.goBack();
         this.props.addTimedToaster({
           id: "contact-us",
-          text: "Message successfully sent"
+          text: "Message successfully sent",
+          success: true
         });
       })
       .catch(err => {

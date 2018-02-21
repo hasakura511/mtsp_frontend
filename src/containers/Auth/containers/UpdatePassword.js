@@ -76,7 +76,8 @@ export default class UpdatePassword extends Component {
         this.setState({ loading: false });
         this.props.addTimedToaster({
           id: "update-password-success",
-          text: "Password updated successfully"
+          text: "Password updated successfully",
+          success: true
         });
         this.props.history.push("/profile");
       })

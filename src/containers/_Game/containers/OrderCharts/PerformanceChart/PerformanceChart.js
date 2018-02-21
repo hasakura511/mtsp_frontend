@@ -73,11 +73,11 @@ const mergeChartData = (performance, lookback, endDate, position) => {
   }
   let index = 0;
   chartData.forEach((data, i) => {
-    if (data.date >= endDate) {
+    if (data.date <= endDate) {
       index = i;
     }
   });
-  return chartData.slice(index - lookback, index);
+  return chartData.slice(index - lookback > 0 ? index - lookback : 0, index);
 };
 
 class CustomTooltip extends Component {
@@ -171,7 +171,7 @@ class PerformanceChart extends Component {
 
     this.state = {
       lookback: 20,
-      endDate: 20180105
+      endDate: 20180201
     };
   }
 
@@ -215,7 +215,7 @@ class PerformanceChart extends Component {
           </div>
         </div>
         <div className={classes.ChartContainer}>
-          <ResponsiveContainer width="100%" height={325}>
+          <ResponsiveContainer width="100%" height={440} maxHeight="100%">
             <LineChart
               data={mergeChartData(performance, lookback, endDate, position)}
               margin={{ top: 5, right: 30, left: 20, bottom: 5 }}

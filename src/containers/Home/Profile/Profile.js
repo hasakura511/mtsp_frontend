@@ -118,7 +118,8 @@ export default class Profile extends Component {
         );
         this.props.addTimedToaster({
           id: "profile-update-error",
-          text: "Profile updated successfully."
+          text: "Profile updated successfully.",
+          success: true
         });
       })
       .catch(error => {
@@ -209,7 +210,8 @@ export default class Profile extends Component {
           this.props.logout();
           this.props.addTimedToaster({
             id: "deactivate-success",
-            text: DELETE_SUCCESS
+            text: DELETE_SUCCESS,
+            success: true
           });
         })
         .catch(error => {
@@ -227,10 +229,12 @@ export default class Profile extends Component {
           this.props.reactivate();
           this.props.addTimedToaster({
             id: "reactivate-success",
-            text: RECOVER_SUCCESS
+            text: RECOVER_SUCCESS,
+            success: true
           });
         })
         .catch(error => {
+          this.props.logout();
           this.errorHandler(error);
         });
     }
@@ -240,7 +244,7 @@ export default class Profile extends Component {
     this.setState({ loading: false });
     this.props.addTimedToaster({
       id: "profile-update-error",
-      text: error.Message || "Could not update profile, try again later"
+      text: error.Message || "Your session expired, please try again after login."
     });
   };
 

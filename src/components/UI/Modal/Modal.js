@@ -24,7 +24,9 @@ class Modal extends Component {
         <div
           className={classes.Modal + " " + hidden}
           style={
-            this.props.isLarge ? { width: "95%", left: "2.5%", top: "1%" } : {}
+            this.props.isLarge
+              ? { width: "95%", left: "2.5%", top: "1%", minHeight: "98.5vh" }
+              : {}
           }
         >
           {this.props.children}
