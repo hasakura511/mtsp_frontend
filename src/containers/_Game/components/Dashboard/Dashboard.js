@@ -6,6 +6,7 @@ import lossIcon from "../../../../assets/images/loss-icon.png";
 import gainIcon from "../../../../assets/images/gain-icon.png";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import { LongShortMap } from "../../Config";
 
 const stateToProps = state => {
   return {
@@ -55,7 +56,7 @@ const dashboard = props => {
                     {lcBet ? (
                       <p>
                         <span>{`${lcBet.isAnti ? "Anti" : ""} ${
-                          lcBet.position
+                          LongShortMap[lcBet.position]
                         }`}</span>
                         <span>{`MOC(${lcBet.bettingDate})`}</span>
                       </p>
@@ -66,7 +67,7 @@ const dashboard = props => {
                   <div className={classes.Cell}>
                     {lpBet ? (
                       <p>
-                        <span>{lpBet.position}</span>
+                        <span>{LongShortMap[lpBet.position]}</span>
                         <span>{`MOC(${lpBet.bettingDate})`}</span>
                       </p>
                     ) : null}

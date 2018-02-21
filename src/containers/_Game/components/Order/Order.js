@@ -28,13 +28,13 @@ const order = props => {
             className={classes.ElementContainer}
             style={{
               padding: "0px",
-              width: isNaN(Number(slot.position)) ? "100px" : "auto"
+              width: isNaN(Number(slot.position)) ? "150px" : "auto"
             }}
           >
             <Slot
               {...slot}
               heldChips={[]}
-              width={isNaN(Number(slot.position)) ? "100px" : "60px"}
+              width={isNaN(Number(slot.position)) ? "150px" : "60px"}
               fontSize={isNaN(Number(slot.position)) ? "1.5em" : "2.2em"}
             />
           </div>

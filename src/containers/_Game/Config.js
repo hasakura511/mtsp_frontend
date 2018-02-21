@@ -143,7 +143,7 @@ export const TARGET = 500;
 // 5) Last Worst Filtered: As above but showing the alternate view. My understanding of this is based on how it's built, it wouldn't necessarily have the same results as Anti-Last Best
 // 6) Seasonality or Adjusted Seasonality: Tbh I'm not entirely sure how these two work but would rather show this than the "Overall Best/Worst" systems as they are too close conceptually to Last Best/Worst. If you feel Overall is a stronger proposition could do those instead of Last Best/Worst as well.
 
-export default {
+const Config = {
   PREVIOUS_5D: {
     color: "#BE0032",
     position: "left",
@@ -275,3 +275,16 @@ export default {
     heldChips: []
   }
 };
+
+const LSM = Object.values(Config).reduce((acc, { column, short }) => {
+  acc[column] = short;
+  return acc;
+}, {});
+
+for (let number = 1; number <= 100; number++) {
+  LSM[number] = number;
+}
+
+export const LongShortMap = LSM;
+
+export default Config;

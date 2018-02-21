@@ -4,7 +4,8 @@ import Square from "../../components/Square/Square";
 import PropTypes from "prop-types";
 import { DropTarget } from "react-dnd";
 import BettingChips from "../../components/BettingChips/BettingChips";
-import { getAbbrevation } from "../../../../util";
+import { LongShortMap } from "../../Config";
+
 /**
  * Droptarget Spec
  */
@@ -91,7 +92,7 @@ class Slot extends Component {
           title={titleArray.join(", ")}
         >
           <BettingChips chips={heldChips} />
-          {getAbbrevation(position)}
+          {LongShortMap[position] || position}
           {children}
         </Square>
       </div>
