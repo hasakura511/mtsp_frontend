@@ -147,7 +147,8 @@ export default {
   PREVIOUS_5D: {
     color: "#BE0032",
     position: "left",
-    display: "Previous\n(5 day)",
+    // display: "Previous\n(5 day)",
+    display: "Prev 5",
     id: "PREVIOUS_5D",
     column: "prev5",
     description:
@@ -158,7 +159,8 @@ export default {
   PREVIOUS_10D: {
     color: "#FF0000",
     position: "left",
-    display: "Previous\n(10 day)",
+    // display: "Previous\n(10 day)",
+    display: "Prev 10",
     id: "PREVIOUS_10D",
     column: "prev10",
     description:
@@ -169,7 +171,7 @@ export default {
   ANTI_ZZ_TREND_120D: {
     color: "#FFD966 ",
     position: "right",
-    display: "Anti-Trend\n120D",
+    display: "Anti-Trend120",
     id: "ANTI_ZZ-TREND_120D",
     column: "antiZz120",
     description: "Bet against the trends as seen from a 120 day perspective.",
@@ -179,7 +181,7 @@ export default {
   ZZ_MODE_30D: {
     color: "#9D67D1",
     position: "right",
-    display: "Mode 30D",
+    display: "Mode 30",
     id: "ZZ-MODE_30D",
     column: "zz30",
     description:
@@ -210,7 +212,7 @@ export default {
   ANTI_SEASONALITY: {
     color: "#B84E00",
     position: "bottom",
-    display: "Anti-\nSeasonality",
+    display: "A-Season",
     id: "ANTI_SEASONALITY",
     column: "antiSea",
     description: "Bet against long-term seasonal trends.",
@@ -220,7 +222,7 @@ export default {
   ANTI_ML_SCALP_ALL: {
     color: "#006256",
     position: "bottom",
-    display: "Anti-All Scalper\n(non-filtered)",
+    display: "A-All Scalp",
     id: "ANTI_ML-SCALP-ALL",
     column: "antiMlScalpAll",
     description:
@@ -231,7 +233,7 @@ export default {
   ML_SCALP_BIG_FB: {
     color: "#00C256",
     position: "bottom",
-    display: "Big Scalper\n(filtered)",
+    display: "Big Scalp",
     id: "ML-SCALP-BIG_FB",
     column: "mlScalpBigFb",
     description:
@@ -242,7 +244,7 @@ export default {
   ML_SWING_BIG_FB: {
     color: "#003773",
     position: "bottom",
-    display: "Big Swinger\n(filtered)",
+    display: "Big Swing",
     id: "ML-SWING-BIG_FB",
     column: "mlSwingBigFb",
     description:
@@ -253,7 +255,7 @@ export default {
   ML_LAST_BEST_FB: {
     color: "#CE8B8B",
     position: "bottom",
-    display: "Search Best\n(filtered)",
+    display: "Best Mod",
     id: "ML-LAST-BEST_FB",
     column: "mlLastBestFb",
     description:
@@ -264,7 +266,7 @@ export default {
   ANTI_ML_LAST_WORST_FW: {
     color: "#C69300",
     position: "bottom",
-    display: "Anti-Search\nWorst (filtered)",
+    display: "A-Worst",
     id: "ANTI_ML-LAST-WORST_FW",
     column: "antiMlLastWorstFw",
     description:

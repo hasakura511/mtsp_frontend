@@ -96,7 +96,7 @@ export default [
     maxCommissions: 54.0,
     created: 1516105900,
     updated: 1516105902
-  },
+  }
   // {
   //   accountId: "5000K_0_1516106713",
   //   display: "5M",
@@ -148,40 +148,40 @@ export default [
 ];
 
 export const description = {
-  AD: "Australian Dollar-CME(Floor+Electronic Combined)",
-  BO: "Soybean Oil-CBT (Floor+Electronic Combined)",
-  BP: "British Pound-CME(Floor+Electronic Combined)",
-  C: "Corn-CBT (Floor+Electronic Combined)",
-  CD: "Canadian Dollar-CME(Floor+Electronic Combined)",
-  CL: "Crude Oil-Light-NYMEX(Floor+Electronic Combined)",
-  CU: "Euro(Floor+Electronic Combined)-CME",
-  EMD: "Index-S&P Midcap 400 E-mini-CME",
-  ES: "S&P 500 Index-E-mini-CME",
-  FC: "Cattle-Feeder-CME(Floor+Electronic Combined)",
-  FV: "T-Note-U.S. 5 Yr-CBT(Floor+Electronic Combined)",
-  GC: "Gold-COMEX(Floor+Electronic Combined)",
-  HG: "CopperHG-COMEX(Floor+Electronic Combined)",
-  HO: "Heating Oil #2-NYMEX(Floor+Electronic Combined)",
-  JY: "Japanese Yen-CME(Floor+Electronic Combined)",
-  LC: "Cattle-Live(Floor+Electronic Combined)-CME",
-  LH: "Hogs-Lean(Floor+Electronic Combined)-CME",
-  MP: "Mexican Peso(Floor+Electronic Combined)-CME",
-  NE: "New Zealand Dollar-CME(Floor+Electronic Combined)",
-  NG: "Natural Gas-Henry Hub-NYMEX(Floor+Electronic Combined)",
-  NIY: "Nikkei 225 Index-Yen(Floor+Electronic Combined)-CME",
-  NQ: "Nasdaq 100 Index-E-mini",
-  PA: "Palladium-NYMEX(Floor+Electronic Combined)",
-  PL: "Platinum-NYMEX(Floor+Electronic Combined)",
-  RB: "Gasoline-Reformulated Blendstock(Combined)-NYMEX",
-  S: "Soybeans (Floor+Electronic Combined)-CBT",
-  SF: "Swiss Franc-CME-(Floor+Electronic Combined)",
-  SI: "Silver-COMEX(Floor+Electronic Combined)",
-  SM: "Soybean Meal-CBT (Floor+Electronic Combined)",
-  TU: "T-Note-U.S.  2 Yr (Floor+Electronic Combined)-CBT",
-  TY: "T-Note-U.S. 10 Yr w/Prj A-CBT(Floor+Electronic Combined)",
-  US: "T-Bond-U.S.-CBT(Floor+Electronic Combined)",
-  W: "Wheat-CBT (Floor+Electronic Combined)",
-  YM: "DJIA Mini $5 Index-CBT"
+  AD: "Australian Dollar",
+  BO: "Soybean Oil",
+  BP: "British Pound",
+  C: "Corn",
+  CD: "Canadian Dollar",
+  CL: "Crude Oil",
+  CU: "Euro",
+  EMD: "S&P Midcap 400",
+  ES: "S&P 500",
+  FC: "Feeder Cattle",
+  FV: "5 Year T-Note",
+  GC: "Gold",
+  HG: "Copper",
+  HO: "Heating Oil",
+  JY: "Japanese Yen",
+  LC: "Live Cattle",
+  LH: "Lean Hogs",
+  MP: "Mexican Peso",
+  NE: "New Zealand Dollar",
+  NG: "Natural Gas",
+  NIY: "Nikkei 225",
+  NQ: "Nasdaq 100",
+  PA: "Palladium",
+  PL: "Platinum",
+  RB: "Gasoline",
+  S: "Soybeans",
+  SF: "Swiss Franc",
+  SI: "Silver",
+  SM: "Soybean Meal",
+  TU: "2 Year T-Note",
+  TY: "10 Year T-Note",
+  US: "30 Year T-Bond",
+  W: "Wheat",
+  YM: "Dow Jones Industrial Avg."
 };
 
 export const replaceSymbols = str => {
@@ -189,7 +189,7 @@ export const replaceSymbols = str => {
     const value = description[key];
     str = str.replace(
       new RegExp(key, "gi"),
-      value.substring(0, value.indexOf("("))
+      value
     );
   }
   return str;
