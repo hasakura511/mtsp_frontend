@@ -185,12 +185,10 @@ export const description = {
 };
 
 export const replaceSymbols = str => {
-  for (let key in description) {
-    const value = description[key];
-    str = str.replace(
-      new RegExp(key, "gi"),
-      value
-    );
-  }
+  str = str.replace(
+    new RegExp(Object.keys(description).join("|"), "gi"),
+    $1 => description[$1]
+  );
+
   return str;
 };
