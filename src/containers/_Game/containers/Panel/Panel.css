@@ -1,4 +1,4 @@
-.Panel{
+.Panel {
   display: flex;
   flex-flow: row;
   justify-content: space-between;
@@ -16,7 +16,7 @@
   background-color: #86dde0;
 }
 
-.Panel .Column{
+.Panel .Column {
   display: flex;
   flex-flow: column;
   align-items: center;
@@ -24,7 +24,7 @@
   padding: 0px 10px;
 }
 
-.Panel .Strip{
+.Panel .Strip {
   position: absolute;
   left: 0;
   width: 50px;
@@ -32,4 +32,11 @@
   background-color: blueviolet;
   left: -50px;
   top: 0px;
+}
+
+@media screen and (max-width: 1100px) and (max-height: 800px) {
+  .Panel{
+    transform: scale(0.6);
+    margin-left: 5px;
+  }
 }
