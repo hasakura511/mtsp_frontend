@@ -66,7 +66,7 @@ class OrderCharts extends Component {
           <div className={classes.ActionBar}>
             <button onClick={close}>Cancel</button>
             <button className={classes.Submit} onClick={submitBetHandler}>
-              Place Bet Order
+              Place MOC Order
             </button>
           </div>
         </div>

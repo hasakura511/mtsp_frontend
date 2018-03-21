@@ -15,6 +15,11 @@ const _ddnLinks = [
   },
   {
     id: "ddn-2",
+    href: "/board",
+    text: "Board"
+  },
+  {
+    id: "ddn-3",
     href: "/logout",
     text: "Logout"
   }

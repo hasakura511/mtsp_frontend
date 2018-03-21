@@ -480,6 +480,7 @@ export default class Panel extends Component {
     // const { portfolio, target, accountValue } = ChipsConfig[0];
     axios
       .post("/utility/ranking_charts/", {
+        // .get("https://api.myjson.com/bins/11pqxf", {
         //only 5k chip for tier 0
         // accounts: [{ portfolio, target, accountValue }],
         accounts: ChipsConfig,

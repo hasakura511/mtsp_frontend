@@ -200,7 +200,7 @@ export default {
       maxLength: 255
     },
     valid: false,
-    touched: false,
+    touched: true,
     visible: true,
     signupField: true,
     signinField: true,

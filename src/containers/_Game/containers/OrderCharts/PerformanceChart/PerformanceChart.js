@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { toWordedDate, toSlashDate } from "../../../../../util";
 import classes from "./PerformanceChart.css";
+import { LongShortMap } from "../../../Config";
 import {
   LineChart,
   Line,
@@ -10,8 +11,15 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-  ResponsiveContainer
+  ResponsiveContainer,
+  Label
 } from "recharts";
+
+import { connect } from "react-redux";
+
+const stateToProps = state => ({
+  simulatedDate: state.betting.simulatedDate
+});
 
 const convert = pnlObj => {
   return {
@@ -20,6 +28,10 @@ const convert = pnlObj => {
     changePercent: (pnlObj.changePercent * 100).toFixed(2)
   };
 };
+
+const RED = "#e12f48",
+  BLUE = "#8884d8",
+  GREEN = "#63a57c";
 
 const mergeChartData = (performance, lookback, endDate, position) => {
   // Example data is like this:
@@ -63,7 +75,7 @@ const mergeChartData = (performance, lookback, endDate, position) => {
       axisDate: toSlashDate(pnlData[index].date),
       "P&L": pnlData[index].pnl,
       "Anti P&L": antiPnlData[index].pnl,
-      Benchmark: benchmarkData[index].pnl,
+      "S&P 500": benchmarkData[index].pnl,
       "Anti Benchmark": antiBenchmarkData[index].pnl,
       pnlData: convert(pnlData[index]),
       antiPnlData: convert(antiPnlData[index]),
@@ -77,6 +89,11 @@ const mergeChartData = (performance, lookback, endDate, position) => {
       index = i;
     }
   });
+
+  // check all chartData till now:
+  // return chartData;
+
+  // check chartData till simulation Date:
   return chartData.slice(index - lookback > 0 ? index - lookback : 0, index);
 };
 
@@ -84,14 +101,14 @@ class CustomTooltip extends Component {
   render() {
     const { payload, active } = this.props;
     if (active) {
-      const {
+      let {
         date,
         pnlData,
         antiPnlData,
         benchmarkData,
         position
       } = payload[0].payload;
-
+      position = LongShortMap[position];
       // example payload for testing purpose:
       // const date = "20181212",
       // pnlData = { date: "20171221", pnl: "5000", changePercent: "0", cumulative: "0" },
@@ -103,50 +120,50 @@ class CustomTooltip extends Component {
         <div className={classes.ToolTip}>
           <div className={classes.Row}>{toWordedDate(date)}</div>
           <hr style={{ width: "100%" }} />
-          <div className={classes.Row} style={{ color: "#8884d8" }}>
+          <div className={classes.Row} style={{ color: BLUE }}>
             <p>
               <span>{position}:</span> <span>{pnlData.pnl}</span>
             </p>
           </div>
-          <div className={classes.Row} style={{ color: "#8884d8" }}>
+          <div className={classes.Row} style={{ color: BLUE }}>
             <p>
-              <span>{position} Daily P&L: </span>
+              <span>{position} Daily %Chg.: </span>
               <span>{pnlData.changePercent}%</span>
             </p>
           </div>
-          <div className={classes.Row} style={{ color: "#8884d8" }}>
+          <div className={classes.Row} style={{ color: BLUE }}>
             <p>
-              <span>{position} Cumm: </span>
+              <span>{position} Cum. %Chg.: </span>
               <span>{pnlData.cumulative}%</span>
             </p>
           </div>
-          <div className={classes.Row} style={{ color: "#e12f48" }}>
+          <div className={classes.Row} style={{ color: GREEN }}>
             <p>
               <span>Anti {position}: </span>
               <span>{antiPnlData.pnl}</span>
             </p>
           </div>
-          <div className={classes.Row} style={{ color: "#e12f48" }}>
+          <div className={classes.Row} style={{ color: GREEN }}>
             <p>
-              <span>Anti {position} Daily P&L: </span>
+              <span>Anti {position} Daily %Chg.: </span>
               <span>{antiPnlData.changePercent}%</span>
             </p>
           </div>
-          <div className={classes.Row} style={{ color: "#e12f48" }}>
+          <div className={classes.Row} style={{ color: GREEN }}>
             <p>
-              <span>Anti {position} Cumm:</span>{" "}
+              <span>Anti {position} Cum. %Chg.:</span>{" "}
               <span>{antiPnlData.cumulative}%</span>
             </p>
           </div>
-          <div className={classes.Row} style={{ color: "#82ca9d" }}>
+          <div className={classes.Row} style={{ color: RED }}>
             <p>
-              <span>Benchmark: </span>
+              <span>S&P 500: </span>
               <span>{benchmarkData.pnl}</span>
             </p>
           </div>
-          <div className={classes.Row} style={{ color: "#82ca9d" }}>
+          <div className={classes.Row} style={{ color: RED }}>
             <p>
-              <span>Benchmark Cumm: </span>
+              <span>S&P 500 Cum. %Chg.: </span>
               <span>{benchmarkData.cumulative}%</span>
             </p>
           </div>
@@ -165,13 +182,14 @@ class CustomTooltip extends Component {
   };
 }
 
+@connect(stateToProps)
 class PerformanceChart extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      lookback: 20,
-      endDate: 20180201
+      lookback: 20
+      // endDate: 20180201
     };
   }
 
@@ -190,13 +208,10 @@ class PerformanceChart extends Component {
   }
 
   render() {
-    const { performance, position } = this.props;
-    const { lookback, endDate } = this.state;
+    const { performance, position, simulatedDate } = this.props;
+    const { lookback } = this.state;
     return (
-      <div
-        className={classes.PerformanceChart}
-        title={"Hypothetical Historical Performance for Market-on-Close orders"}
-      >
+      <div className={classes.PerformanceChart}>
         <div className={classes.Tabs}>
           <div className={classes.Tab} onClick={() => this.lookbackHandler(1)}>
             <p className={lookback === 1 ? classes.active : ""}>1 day</p>
@@ -217,7 +232,12 @@ class PerformanceChart extends Component {
         <div className={classes.ChartContainer}>
           <ResponsiveContainer width="100%" height={440} maxHeight="100%">
             <LineChart
-              data={mergeChartData(performance, lookback, endDate, position)}
+              data={mergeChartData(
+                performance,
+                lookback,
+                simulatedDate,
+                position
+              )}
               margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
             >
               <XAxis
@@ -225,24 +245,35 @@ class PerformanceChart extends Component {
                 interval={0}
                 tick={props => this.xTick(props)}
                 height={100}
+              >
+                <Label
+                  position="bottom"
+                  offset={-15}
+                  value="Hypothetical Historical Performance for Market-on-Close orders"
+                />
+              </XAxis>
+              <YAxis
+                tickFormatter={value =>
+                  `${Math.floor(value).toLocaleString("en")}`
+                }
+                domain={["dataMin", "dataMax"]}
               />
-              <YAxis tickFormatter={value => `${value.toLocaleString("en")}`} />
               <CartesianGrid strokeDasharray="3 3" />
               <Tooltip content={<CustomTooltip />} />
               <Legend />
               <Line
                 type="monotone"
                 dataKey="P&L"
-                stroke="#8884d8"
+                stroke={BLUE}
                 // activeDot={{ r: 8 }}
               />
               <Line
                 type="monotone"
                 dataKey="Anti P&L"
-                stroke="#e12f48"
+                stroke={GREEN}
                 // activeDot={{ r: 8 }}
               />
-              <Line type="monotone" dataKey="Benchmark" stroke="#82ca9d" />
+              <Line type="monotone" dataKey="S&P 500" stroke={RED} />
             </LineChart>
           </ResponsiveContainer>
         </div>
@@ -504,7 +535,8 @@ PerformanceChart.propTypes = {
    * 
    */
   performance: PropTypes.object,
-  position: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+  position: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  simulatedDate: PropTypes.string.isRequired
 };
 
 export default PerformanceChart;

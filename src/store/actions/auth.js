@@ -46,7 +46,8 @@ export const auth = (
             authFail({
               message:
                 "Verification link is sent to your email, please verify.",
-              status: 202
+              status: 202,
+              success: true
             })
           );
         } else {

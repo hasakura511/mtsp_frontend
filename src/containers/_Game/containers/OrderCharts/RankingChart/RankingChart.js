@@ -17,10 +17,11 @@ import {
   Legend,
   ReferenceLine,
   Bar,
-  ResponsiveContainer
+  ResponsiveContainer,
+  Label
 } from "recharts";
 
-const DEFAULT_LOOKBACK = "20 Days lookback";
+const DEFAULT_LOOKBACK = "20 Day Cum. %Chg.";
 
 class RankingChart extends Component {
   constructor(props) {
@@ -30,7 +31,8 @@ class RankingChart extends Component {
       // lookback,
       //if in future we decide to include filters
       //filters: []
-      rankingChartData: []
+      rankingChartData: [],
+      lookback: "20 Day Cum. %Chg."
     };
   }
 
@@ -45,52 +47,52 @@ class RankingChart extends Component {
     // const data = [
     //   {
     //     name: "Page A",
-    //     "20 days lookback": 4000,
-    //     "5 days lookback": 2400,
-    //     "1 day lookback": 2400
+    //     "20 Day Cum. %Chg.": 4000,
+    //     "5 Day Cum. %Chg.": 2400,
+    //     "1 Day Cum. %Chg.": 2400
     //   },
     //   {
     //     name: "Page B",
-    //     "20 days lookback": -3000,
-    //     "5 days lookback": 1398,
-    //     "1 day lookback": 2210
+    //     "20 Day Cum. %Chg.": -3000,
+    //     "5 Day Cum. %Chg.": 1398,
+    //     "1 Day Cum. %Chg.": 2210
     //   },
     //   {
     //     name: "Page C",
-    //     "20 days lookback": -2000,
-    //     "5 days lookback": -9800,
-    //     "1 day lookback": 2290
+    //     "20 Day Cum. %Chg.": -2000,
+    //     "5 Day Cum. %Chg.": -9800,
+    //     "1 Day Cum. %Chg.": 2290
     //   },
     //   {
     //     name: "Page D",
-    //     "20 days lookback": 2780,
-    //     "5 days lookback": 3908,
-    //     "1 day lookback": 2000
+    //     "20 Day Cum. %Chg.": 2780,
+    //     "5 Day Cum. %Chg.": 3908,
+    //     "1 Day Cum. %Chg.": 2000
     //   },
     //   {
     //     name: "Page E",
-    //     "20 days lookback": -1890,
-    //     "5 days lookback": 4800,
-    //     "1 day lookback": 2181
+    //     "20 Day Cum. %Chg.": -1890,
+    //     "5 Day Cum. %Chg.": 4800,
+    //     "1 Day Cum. %Chg.": 2181
     //   },
     //   {
     //     name: "Page F",
-    //     "20 days lookback": 2390,
-    //     "5 days lookback": -3800,
-    //     "1 day lookback": 2500
+    //     "20 Day Cum. %Chg.": 2390,
+    //     "5 Day Cum. %Chg.": -3800,
+    //     "1 Day Cum. %Chg.": 2500
     //   },
     //   {
     //     name: "Page G",
-    //     "20 days lookback": 3490,
-    //     "5 days lookback": 4300,
-    //     "1 day lookback": 2100
+    //     "20 Day Cum. %Chg.": 3490,
+    //     "5 Day Cum. %Chg.": 4300,
+    //     "1 Day Cum. %Chg.": 2100
     //   }
     // ];
     const { rankingData, chip } = this.props;
 
     // console.log(JSON.stringify(rankingData));
     // const antiRankings = [];
-    const rankingChartData = rankingData
+    let rankingChartData = rankingData
 
       // Pick the result for the given account value
       .find(
@@ -101,26 +103,40 @@ class RankingChart extends Component {
       .accountResult.map(({ position, result }) => {
         return {
           name: position,
-          "20 Days lookback":
+          "20 Day Cum. %Chg.":
             result.find(r => r.lookback === "20").changePercent * 100,
-          "5 Days lookback":
+          "5 Day Cum. %Chg.":
             result.find(r => r.lookback === "5").changePercent * 100,
-          "1 Day lookback":
+          "1 Day Cum. %Chg.":
             result.find(r => r.lookback === "1").changePercent * 100
         };
-      })
+      });
 
-      // sort results by 20 days lookback by default
+    //push anti values
+    rankingChartData.push(
+      ...rankingChartData
+        .map(rank => {
+          return !isNaN(Number(rank.name.split(/\s/)[0]))
+            ? {
+                "1 Day Cum. %Chg.": rank["1 Day Cum. %Chg."] * -1,
+                "5 Day Cum. %Chg.": rank["5 Day Cum. %Chg."] * -1,
+                "20 Day Cum. %Chg.": rank["20 Day Cum. %Chg."] * -1,
+                name: "Anti-" + rank.name
+              }
+            : null;
+        })
+        .filter(item => item)
+    );
+
+    rankingChartData = rankingChartData
+      // sort results by 20 Day Cum. %Chg. by default
       .sort((r1, r2) => {
         return r2[lookback] - r1[lookback];
       })
 
       //put rank beside the system/slot name
       .map((rankingObj, index) => {
-        return {
-          ...rankingObj,
-          name: `${rankingObj.name} (${index + 1})`
-        };
+        return { ...rankingObj, name: `${rankingObj.name} (${index + 1})` };
       });
 
     return rankingChartData;
@@ -157,7 +173,8 @@ class RankingChart extends Component {
           dy={16}
           textAnchor="end"
           fill={color || "#8884d8"}
-          transform="rotate(-45)"
+          transform="rotate(-70)"
+          fontSize={14}
         >
           {LongShortMap[value] || value} {rank}
         </text>
@@ -166,17 +183,23 @@ class RankingChart extends Component {
   }
 
   changeLookbackHandler = ({ value }) => {
-    this.setState({ rankingChartData: this.syncRankingChart(value) });
+    this.setState({
+      rankingChartData: this.syncRankingChart(value),
+      lookback: value
+    });
   };
 
   render() {
-    const { rankingChartData } = this.state;
+    const { rankingChartData, lookback } = this.state;
+    const look = lookback.split(" ")[0];
+    const [look1, look2] = ["1", "5", "20"].filter(x => x !== look);
+    const fill = { "20": "#02abca", "1": "#f00155", "5": "#ffde00" };
     return (
       <div className={classes.RankingChart}>
-        <ResponsiveContainer width="100%" height={455}>
+        <ResponsiveContainer width="100%" height={470}>
           <BarChart
             data={rankingChartData}
-            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+            margin={{ top: 5, right: 30, left: 20, bottom: 40 }}
             stackOffset="sign"
           >
             <YAxis type="number" tickFormatter={value => `${value}%`} />
@@ -186,7 +209,13 @@ class RankingChart extends Component {
               tick={props => this.getColor(props)}
               interval={0}
               height={100}
-            />
+            >
+              <Label
+                position="bottom"
+                offset={15}
+                value="Hypothetical Historical Ranking for Market-on-Close (MOC) Orders"
+              />
+            </XAxis>
             <CartesianGrid strokeDasharray="3 3" />
             <Tooltip formatter={value => `${value.toFixed(2)}%`} />
             <Legend
@@ -195,9 +224,17 @@ class RankingChart extends Component {
               onClick={this.changeLookbackHandler}
             />
             <ReferenceLine x={0} stroke="#000" />
-            <Bar dataKey="1 Day lookback" stackId="stack" fill="#f00155" />
-            <Bar dataKey="5 Days lookback" stackId="stack" fill="#ffde00" />
-            <Bar dataKey="20 Days lookback" stackId="stack" fill="#02abca" />
+            <Bar dataKey={lookback} stackId="stack" fill={fill[look]} />
+            <Bar
+              dataKey={look1 + " Day Cum. %Chg."}
+              stackId="stack"
+              fill={fill[look1]}
+            />
+            <Bar
+              dataKey={look2 + " Day Cum. %Chg."}
+              stackId="stack"
+              fill={fill[look2]}
+            />
           </BarChart>
         </ResponsiveContainer>
       </div>

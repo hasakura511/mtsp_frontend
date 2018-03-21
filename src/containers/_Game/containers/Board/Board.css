@@ -10,13 +10,15 @@
 }
 
 .ActionRow button {
-  border: none;
+  /* border: none; */
   outline: none;
   background-color: transparent;
   padding: 5px;
   font-size: 1.2em;
   font-weight: 500;
   cursor: pointer;
+  margin: 4px;
+  border-radius: 2px;
 }
 
 @media screen and (max-width: 1100px) and (max-height: 800px) {

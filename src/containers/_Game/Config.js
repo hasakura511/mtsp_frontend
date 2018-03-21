@@ -144,18 +144,6 @@ export const TARGET = 500;
 // 6) Seasonality or Adjusted Seasonality: Tbh I'm not entirely sure how these two work but would rather show this than the "Overall Best/Worst" systems as they are too close conceptually to Last Best/Worst. If you feel Overall is a stronger proposition could do those instead of Last Best/Worst as well.
 
 const Config = {
-  PREVIOUS_5D: {
-    color: "#BE0032",
-    position: "left",
-    // display: "Previous\n(5 day)",
-    display: "Prev 5",
-    id: "PREVIOUS_5D",
-    column: "prev5",
-    description:
-      "Preious trading day(s) signals, if contract went up last 5 days, the signal would be LONG",
-    short: "Prev 5",
-    heldChips: []
-  },
   PREVIOUS_10D: {
     color: "#FF0000",
     position: "left",
@@ -163,9 +151,19 @@ const Config = {
     display: "Prev 10",
     id: "PREVIOUS_10D",
     column: "prev10",
-    description:
-      "Preious trading day(s) signals, if contract went up last 10 days, the signal would be LONG",
+    description: "Bet that the 10 day price change will continue",
     short: "Prev 10",
+    heldChips: []
+  },
+  PREVIOUS_5D: {
+    color: "#BE0032",
+    position: "left",
+    // display: "Previous\n(5 day)",
+    display: "Prev 5",
+    id: "PREVIOUS_5D",
+    column: "prev5",
+    description: "Bet that the 5 day price change will continue",
+    short: "Prev 5",
     heldChips: []
   },
   ANTI_ZZ_TREND_120D: {
@@ -222,7 +220,7 @@ const Config = {
   ANTI_ML_SCALP_ALL: {
     color: "#006256",
     position: "bottom",
-    display: "A-All Scalp",
+    display: "Anti-All\nScalper",
     id: "ANTI_ML-SCALP-ALL",
     column: "antiMlScalpAll",
     description:
@@ -284,6 +282,8 @@ const LSM = Object.values(Config).reduce((acc, { column, short }) => {
 for (let number = 1; number <= 100; number++) {
   LSM[number] = number;
 }
+
+LSM["off"] = "Off";
 
 export const LongShortMap = LSM;
 

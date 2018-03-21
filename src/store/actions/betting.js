@@ -19,3 +19,9 @@ export const addLast3DaysProfit = last3DaysProfit => {
     last3DaysProfit
   };
 };
+
+export const reset = () => {
+  return {
+    type: actionTypes.RESET_BOARD
+  };
+};

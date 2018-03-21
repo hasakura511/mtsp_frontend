@@ -17,11 +17,12 @@ class AccountVerification extends Component {
           response.data.sessiontoken
         );
         this.props.addSuccessToaster();
-        this.props.history.push("/");
+        this.props.history.push(this.props.authRedirect);
+        this.props.clearAuthRedirect();
       })
       .catch(() => {
         this.props.addFailureToaster();
-        this.props.history.push("/");        
+        this.props.history.push("/");
       });
   }
 
@@ -38,31 +39,49 @@ AccountVerification.propTypes = {
   history: PropTypes.object.isRequired,
   addSuccessToaster: PropTypes.func.isRequired,
   addFailureToaster: PropTypes.func.isRequired,
-  authSuccess: PropTypes.func.isRequired
+  authSuccess: PropTypes.func.isRequired,
+  authRedirect: PropTypes.string.isRequired,
+  clearAuthRedirect: PropTypes.func.isRequired
 };
 
 const dispatchToProps = dispatch => {
   return {
-    addSuccessToaster: () => {
+    addSuccessToaster() {
       dispatch(
         actions.addTimedToaster(
-          { id: "verification-success", text: "Account Verified :o)" },
+          {
+            id: "verification-success",
+            text: "Account Verified.",
+            success: true
+          },
           5000
         )
       );
     },
-    addFailureToaster: () => {
+    addFailureToaster() {
       dispatch(
         actions.addTimedToaster(
-          { id: "verification-failure", text: "This link has already been used." },
+          {
+            id: "verification-failure",
+            text: "This link has already been used."
+          },
           5000
         )
       );
     },
-    authSuccess: (user, token) => {
+    authSuccess(user, token) {
       dispatch(actions.authSuccess(user, token));
+    },
+    clearAuthRedirect() {
+      dispatch(actions.clearAuthRedirect());
     }
   };
 };
 
-export default connect(null, dispatchToProps)(AccountVerification);
+const stateToProps = state => {
+  return {
+    authRedirect: state.auth.authRedirect
+  };
+};
+
+export default connect(stateToProps, dispatchToProps)(AccountVerification);

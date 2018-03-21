@@ -14,6 +14,11 @@
   transition: all 0.3s ease-in-out;
 }
 
+.Content {
+  min-height: 80px;
+  padding-top: 20px;
+}
+
 @media (min-width: 600px) {
   .Modal {
     width: 700px;

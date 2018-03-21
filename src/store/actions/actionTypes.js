@@ -21,3 +21,4 @@ export const LOADING_DIALOG = "LOADING_DIALOG";
 export const ADD_BET = "ADD_BET";
 export const MOVE_TO_NEXT_DAY = "MOVE_TO_NEXT_DAY";
 export const ADD_LAST_3_DAYS_PROFIT = "ADD LAST 3 DAYS PROFIT";
+export const RESET_BOARD = "RESET_BOARD";

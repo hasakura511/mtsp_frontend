@@ -114,9 +114,9 @@ class ForgotPassword extends Component {
           <div className={classes.ButtonContainer}>
             <Button disabled={!formElem.valid}>Reset Password</Button>
           </div>
-          <p>
+          {/* <p>
             I remembered, take me back to <Link to="/auth?signin">login!</Link>
-          </p>
+          </p> */}
         </form>
       </Aux>
     );

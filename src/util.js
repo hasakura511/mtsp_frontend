@@ -147,6 +147,9 @@ export const toStringDate = integerDate => {
 };
 
 export const toSlashDate = integerDate => {
+  if (!integerDate) {
+    return undefined;
+  }
   const strDate = integerDate.toString();
   return [strDate.slice(0, 4), strDate.slice(4, 6), strDate.slice(6, 8)].join(
     "/"

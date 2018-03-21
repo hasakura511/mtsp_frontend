@@ -104,7 +104,7 @@ export default class OrderDialog extends Component {
     const systems = Object.values(this.props.slot)
         .map(value => value.column)
         .filter(s => s),
-      { portfolio, accountValue, accountId } = this.props.chip;
+      { portfolio, accountValue, accountId, qty, target } = this.props.chip;
 
     /**
      * Fetch performance charts
@@ -117,7 +117,8 @@ export default class OrderDialog extends Component {
          */
         systems,
         portfolio,
-        target: TARGET,
+        qty,
+        target,
         account: accountValue
       })
       .then(response => {
@@ -132,44 +133,44 @@ export default class OrderDialog extends Component {
         profitObj[accountId] = {
           position: this.props.slot.position,
           "20180201": {
-            changePercent: Number(
-              performance.pnlData.find(pnlObj => pnlObj.date === "20180206")[
-                "changePercent"
+            change: Number(
+              performance.pnlData.find(pnlObj => pnlObj.date === "20180201")[
+                "change"
               ]
             )
           },
           "20180202": {
-            changePercent: Number(
-              performance.pnlData.find(pnlObj => pnlObj.date === "20180206")[
-                "changePercent"
+            change: Number(
+              performance.pnlData.find(pnlObj => pnlObj.date === "20180202")[
+                "change"
               ]
             )
           },
           "20180205": {
-            changePercent: Number(
-              performance.pnlData.find(pnlObj => pnlObj.date === "20180206")[
-                "changePercent"
+            change: Number(
+              performance.pnlData.find(pnlObj => pnlObj.date === "20180205")[
+                "change"
               ]
             )
           },
           "20180206": {
-            changePercent: Number(
+            change: Number(
               performance.pnlData.find(pnlObj => pnlObj.date === "20180206")[
-                "changePercent"
+                "change"
               ]
             )
           },
           "20180207": {
-            changePercent: Number(
+            change: Number(
               performance.pnlData.find(pnlObj => pnlObj.date === "20180207")[
-                "changePercent"
+                "change"
               ]
             )
           },
           "20180208": {
-            changePercent: Number(
+            change: Number(
               performance.pnlData.find(pnlObj => pnlObj.date === "20180208")[
-                "changePercent"
+                "change"
               ]
             )
           }
@@ -266,8 +267,8 @@ export default class OrderDialog extends Component {
       position: slot.position,
       isAnti
     };
-    addBet(bet);
     addLast3DaysProfit(last3DaysProfit);
+    addBet(bet);
     successHandler(chip, slot.position);
     this.toggle();
   };

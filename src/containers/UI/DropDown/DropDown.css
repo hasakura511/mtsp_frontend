@@ -40,7 +40,7 @@
 .DropDown .Items {
   position: absolute;
   top: 100%;
-  max-height: 100px;
+  max-height: 150px;
   -webkit-transition: max-height 0.3s ease-in-out;
   -moz-transition: max-height 0.3s ease-in-out;
   transition: max-height 0.3s ease-in-out;
@@ -67,6 +67,7 @@
   -webkit-transition: margin 0.6s ease;
   -moz-transition: margin 0.6s ease;
   transition: margin 0.6s ease;
+  margin: 0px;
 }
 
 .Items li > a {

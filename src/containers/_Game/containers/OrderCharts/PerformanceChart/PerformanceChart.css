@@ -3,7 +3,7 @@
 }
 
 .ToolTip {
-  width: 200px;
+  width: 230px;
   height: 220px;
   padding: 20px;
   box-sizing: border-box;
@@ -38,7 +38,7 @@
   width: 100%;
 }
 
-.Tab > p {
+.Tab>p {
   margin: 0px;
   color: #919191;
   font-weight: 500;
@@ -46,7 +46,7 @@
   width: fit-content;
 }
 
-.Tab > p.active {
+.Tab>p.active {
   color: black;
   border-bottom: 2px solid black;
 }

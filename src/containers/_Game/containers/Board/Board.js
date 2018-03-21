@@ -11,6 +11,7 @@ import Bettings from "../../BettingConfig";
 import { connect } from "react-redux";
 import * as actions from "../../../../store/actions";
 import PropTypes from "prop-types";
+import { Redirect } from "react-router-dom";
 
 const systems = [];
 for (let key in Config) {
@@ -66,6 +67,14 @@ const insertChip = (systems, column, chip) => {
   });
 };
 
+const stateToProps = state => {
+  return {
+    isAuth: state.auth.token !== null,
+    tosAccepted: state.auth.tosAccepted,
+    rdAccepted: state.auth.rdAccepted
+  };
+};
+
 /**
  *
  * @function dispatchToProps React-redux dispatch to props mapping function
@@ -77,12 +86,15 @@ const dispatchToProps = dispatch => {
   return {
     nextDay: () => {
       dispatch(actions.nextDay());
+    },
+    reset: () => {
+      dispatch(actions.reset());
     }
   };
 };
 
 // @protectedComponent
-@connect(null, dispatchToProps)
+@connect(stateToProps, dispatchToProps)
 
 /**
  * Board component, that encapsulates our board-game, drag-drop-lifecycle
@@ -92,7 +104,12 @@ const dispatchToProps = dispatch => {
  */
 export default class Board extends Component {
   static propTypes = {
-    nextDay: PropTypes.func.isRequired
+    nextDay: PropTypes.func.isRequired,
+    isAuth: PropTypes.bool.isRequired,
+    tosAccepted: PropTypes.bool.isRequired,
+    rdAccepted: PropTypes.bool.isRequired,
+    history: PropTypes.object.isRequired,
+    reset: PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -110,10 +127,9 @@ export default class Board extends Component {
         /**
          * Balance Chips
          */
-        balanceChips: [],
-        /**
+        balanceChips: [] /**
          * Betting Chips
-         */
+         */,
         bettingChips: []
       }
     };
@@ -259,7 +275,18 @@ export default class Board extends Component {
     );
   };
 
+  reset = () => {
+    this.setState({ inGameChips });
+    this.props.reset();
+  };
+
   render() {
+    const { isAuth, rdAccepted, tosAccepted } = this.props;
+    if (isAuth) {
+      if (!(rdAccepted && tosAccepted)) {
+        return <Redirect to="/auth?signin" />;
+      }
+    }
     const {
       leftSystems,
       rightSystems,
@@ -271,17 +298,30 @@ export default class Board extends Component {
       <Aux>
         <Dashboard {...Bettings} />
         <div className={classes.ActionRow}>
-          <button onClick={this.props.nextDay}>Next Day</button>
+          <button
+            onClick={this.props.nextDay}
+            title={"Simulate market close for next available day"}
+          >
+            Simulate Next Day
+          </button>
+          <button
+            onClick={this.reset}
+            title={"Reset the board to the first of February"}
+          >
+            Reset Board
+          </button>
         </div>
         <div
           className={classes.Board}
-          style={{
-            backgroundImage: "url(" + bgBoard + ")",
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "cover",
-            paddingTop: "200px", // marginTop: "5%",
-            paddingBottom: "100px"
-          }}
+          style={
+            {
+              backgroundImage: "url(" + bgBoard + ")",
+              backgroundRepeat: "no-repeat",
+              backgroundSize: "cover",
+              paddingTop: "200px",
+              paddingBottom: "100px"
+            } // marginTop: "5%",
+          }
         >
           <Panel
             leftSystems={leftSystems || []}

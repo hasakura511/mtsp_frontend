@@ -4,7 +4,7 @@ const initialState = {
   token: null,
   error: null,
   loading: false,
-  authRedirect: "/",
+  authRedirect: "/board",
   userId: null,
   firstName: null,
   lastName: null,

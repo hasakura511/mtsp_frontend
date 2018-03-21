@@ -14,31 +14,29 @@ const getSystems = slot => {
 
 const order = props => {
   const { slot, chip, toggleSystem, isAnti } = props;
+  const isNumbered = !isNaN(Number(slot.position));
   return (
     <div className={classes.Order}>
-      <div className={classes.Heading}>
-        <p>Your bet:</p>
-      </div>
       <div className={classes.TitleRow}>
         <div className={classes.Left}>
-          <div className={classes.ElementContainer}>
-            <Chip chip={chip} />
-          </div>
           <div
             className={classes.ElementContainer}
             style={{
               padding: "0px",
-              width: isNaN(Number(slot.position)) ? "150px" : "auto"
+              width: !isNumbered ? "150px" : "auto"
             }}
           >
             <Slot
               {...slot}
               heldChips={[]}
-              width={isNaN(Number(slot.position)) ? "150px" : "60px"}
-              fontSize={isNaN(Number(slot.position)) ? "1.5em" : "2.2em"}
+              width={!isNumbered ? "150px" : "60px"}
+              fontSize={!isNumbered ? "1.5em" : "2.2em"}
             />
           </div>
-          <div className={classes.Systems}>
+          <div
+            className={classes.Systems}
+            style={isNumbered ? {} : { visibility: "hidden" }}
+          >
             <ul>
               {getSystems(slot).map(system => (
                 <li key={`${system.id}${Math.random().toFixed(3)}`}>
@@ -46,6 +44,12 @@ const order = props => {
                 </li>
               ))}
             </ul>
+          </div>
+          <div
+            className={classes.ElementContainer}
+            style={{ paddingTop: "15px" }}
+          >
+            <Chip chip={chip} />
           </div>
           <div className={classes.ElementContainer}>
             <div style={{ display: "flex", width: "100%" }}>
