@@ -13,7 +13,7 @@ const getSystems = slot => {
 };
 
 const order = props => {
-  const { slot, chip, toggleSystem, isAnti } = props;
+  const { slot, chip, toggleSystem, isAnti, submitBetHandler, close } = props;
   const isNumbered = !isNaN(Number(slot.position));
   return (
     <div className={classes.Order}>
@@ -21,10 +21,7 @@ const order = props => {
         <div className={classes.Left}>
           <div
             className={classes.ElementContainer}
-            style={{
-              padding: "0px",
-              width: !isNumbered ? "150px" : "auto"
-            }}
+            style={{ padding: "0px", width: !isNumbered ? "150px" : "auto" }}
           >
             <Slot
               {...slot}
@@ -51,6 +48,9 @@ const order = props => {
           >
             <Chip chip={chip} />
           </div>
+        </div>
+
+        <div className={classes.Right}>
           <div className={classes.ElementContainer}>
             <div style={{ display: "flex", width: "100%" }}>
               <input
@@ -75,7 +75,14 @@ const order = props => {
               </label>
             </div>
           </div>
+          <div className={classes.ActionBar}>
+            <button className={classes.Submit} onClick={submitBetHandler}>
+              Place MOC Order
+            </button>
+            <button onClick={close}>Cancel</button>
+          </div>
         </div>
+
         {/* <div className={classes.Right}>
           <p style={{ color: "#8884d8" }}>System</p>
           <Switch toggle={toggleSystem} />

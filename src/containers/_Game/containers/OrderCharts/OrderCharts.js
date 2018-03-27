@@ -40,9 +40,7 @@ class OrderCharts extends Component {
       rankingData,
       rankingError,
       chip,
-      slot,
-      submitBetHandler,
-      close
+      slot
     } = this.props;
     return (
       <div className={classes.OrderCharts}>
@@ -63,12 +61,7 @@ class OrderCharts extends Component {
               Ranking Chart
             </div>
           </div>
-          <div className={classes.ActionBar}>
-            <button onClick={close}>Cancel</button>
-            <button className={classes.Submit} onClick={submitBetHandler}>
-              Place MOC Order
-            </button>
-          </div>
+          
         </div>
         <div className={classes.Contents}>
           {isPerformance ? (
@@ -108,7 +101,6 @@ OrderCharts.propTypes = {
   rankingError: PropTypes.object,
   chip: PropTypes.object.isRequired,
   slot: PropTypes.object.isRequired,
-  submitBetHandler: PropTypes.func.isRequired,
   close: PropTypes.func.isRequired
 };
 
