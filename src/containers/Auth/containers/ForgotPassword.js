@@ -17,7 +17,7 @@ class ForgotPassword extends Component {
       controls: {
         email: {
           elementType: "input",
-          label: "Email*",
+          // label: "Email*",
           elementConfig: {
             type: "email",
             placeholder: ""

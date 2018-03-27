@@ -18,9 +18,9 @@ import { Link } from "react-router-dom";
 const { firstName, lastName } = Controls;
 
 const { DELETE_TITLE, DELETE_MESSAGE, DELETE_SUCCESS, RECOVER_SUCCESS } = {
-  DELETE_TITLE: `Do you really want to close your account?`,
-  DELETE_MESSAGE: `Are you sure that you want to close your account here? Confirming this will remove your account permanently with immediate effect.`,
-  DELETE_SUCCESS: `Account successfully deactivated.`,
+  DELETE_TITLE: `Do you really want to delete your account?`,
+  DELETE_MESSAGE: `Are you sure that you want to delete your account here? Confirming this will remove your account permanently with immediate effect.`,
+  DELETE_SUCCESS: `Account successfully deleted.`,
   RECOVER_SUCCESS: `Account successfully recovered, welcome back.`
 };
 
@@ -64,7 +64,7 @@ const dispatchToProps = dispatch => {
       dispatch(actions.killDialog());
     },
     logout: () => {
-      dispatch(actions.logout());
+      dispatch(actions.logout(true));
     },
     reactivate: () => {
       dispatch(actions.reactivate());
@@ -79,7 +79,8 @@ export default class Profile extends Component {
   twitterShare = event => {
     event.preventDefault();
     const twitterWindow = window.open(
-      "https://twitter.com/share?url=" + window.location.origin,
+      "https://twitter.com/share?text=I just found how to have fun trading future contracts, come join me!&url=" +
+        window.location.origin,
       "twitter-popup",
       "height=350,width=600"
     );
@@ -215,6 +216,7 @@ export default class Profile extends Component {
           });
         })
         .catch(error => {
+          this.props.logout();
           this.errorHandler(error);
         });
     });
@@ -244,7 +246,8 @@ export default class Profile extends Component {
     this.setState({ loading: false });
     this.props.addTimedToaster({
       id: "profile-update-error",
-      text: error.Message || "Your session expired, please try again after login."
+      text:
+        error.Message || "Your session expired, please try again after login."
     });
   };
 

@@ -183,7 +183,7 @@ class CustomTooltip extends Component {
 }
 
 @connect(stateToProps)
-class PerformanceChart extends Component {
+export default class PerformanceChart extends Component {
   constructor(props) {
     super(props);
 
@@ -230,7 +230,7 @@ class PerformanceChart extends Component {
           </div>
         </div>
         <div className={classes.ChartContainer}>
-          <ResponsiveContainer width="100%" height={440} maxHeight="100%">
+          <ResponsiveContainer width="100%" height={innerHeight - 190} maxHeight="100%">
             <LineChart
               data={mergeChartData(
                 performance,
@@ -280,10 +280,9 @@ class PerformanceChart extends Component {
       </div>
     );
   }
-}
 
-PerformanceChart.propTypes = {
-  /**
+  static propTypes = {
+    /**
    * @example 
    * 
    * performance = {
@@ -534,9 +533,8 @@ PerformanceChart.propTypes = {
     }
    * 
    */
-  performance: PropTypes.object,
-  position: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  simulatedDate: PropTypes.string.isRequired
-};
-
-export default PerformanceChart;
+    performance: PropTypes.object,
+    position: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    simulatedDate: PropTypes.string.isRequired
+  };
+}

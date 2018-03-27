@@ -139,9 +139,9 @@ export const authSuccessSave = (user, token) => {
   return { type: actionTypes.AUTH_SUCCESS, user, token };
 };
 
-export const logout = () => dispatch => {
+export const logout = isClientOnly => dispatch => {
   const token = localStorage.getItem("token");
-  if (!token) {
+  if (!token || isClientOnly) {
     dispatch(logoutSave());
   } else {
     dispatch(authStart());

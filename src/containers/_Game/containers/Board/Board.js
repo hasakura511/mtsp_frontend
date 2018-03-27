@@ -12,6 +12,7 @@ import { connect } from "react-redux";
 import * as actions from "../../../../store/actions";
 import PropTypes from "prop-types";
 import { Redirect } from "react-router-dom";
+import { toWordedDate } from "../../../../util";
 
 const systems = [];
 for (let key in Config) {
@@ -71,7 +72,9 @@ const stateToProps = state => {
   return {
     isAuth: state.auth.token !== null,
     tosAccepted: state.auth.tosAccepted,
-    rdAccepted: state.auth.rdAccepted
+    rdAccepted: state.auth.rdAccepted,
+    currentBets: state.betting.currentBets,
+    simulatedDate: state.betting.simulatedDate
   };
 };
 
@@ -109,7 +112,9 @@ export default class Board extends Component {
     tosAccepted: PropTypes.bool.isRequired,
     rdAccepted: PropTypes.bool.isRequired,
     history: PropTypes.object.isRequired,
-    reset: PropTypes.func.isRequired
+    reset: PropTypes.func.isRequired,
+    currentBets: PropTypes.object.isRequired,
+    simulatedDate: PropTypes.string.isRequired
   };
 
   constructor(props) {
@@ -131,8 +136,25 @@ export default class Board extends Component {
          * Betting Chips
          */,
         bettingChips: []
-      }
+      },
+      animateSimulateButton: false
     };
+  }
+
+  componentWillReceiveProps() {
+    !Object.values(this.props.currentBets)
+      .map(o => o.position)
+      .reduce((acc, o) => {
+        if (o != "off") acc["notoff"] = true;
+        return acc;
+      }, {})["notoff"] && this.setState({ animateSimulateButton: true });
+  }
+
+  componentDidUpdate() {
+    setTimeout(() => {
+      this.state.animateSimulateButton &&
+        this.setState({ animateSimulateButton: false });
+    }, 1000);
   }
 
   componentWillMount() {
@@ -281,7 +303,7 @@ export default class Board extends Component {
   };
 
   render() {
-    const { isAuth, rdAccepted, tosAccepted } = this.props;
+    const { isAuth, rdAccepted, tosAccepted, simulatedDate } = this.props;
     if (isAuth) {
       if (!(rdAccepted && tosAccepted)) {
         return <Redirect to="/auth?signin" />;
@@ -292,7 +314,8 @@ export default class Board extends Component {
       rightSystems,
       topSystems,
       bottomSystems,
-      inGameChips
+      inGameChips,
+      animateSimulateButton
     } = this.state;
     return (
       <Aux>
@@ -300,7 +323,12 @@ export default class Board extends Component {
         <div className={classes.ActionRow}>
           <button
             onClick={this.props.nextDay}
-            title={"Simulate market close for next available day"}
+            title={`Simulate market close for ${toWordedDate(simulatedDate)}`}
+            className={
+              animateSimulateButton
+                ? classes.bounce + " " + classes.animated
+                : ""
+            }
           >
             Simulate Next Day
           </button>

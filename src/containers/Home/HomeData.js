@@ -76,20 +76,20 @@ const HomeData = {
     background: sectionThreeBkg,
     fullBackground: sectionThreeBg,
     map: (() => {
-      let wImg = 1256,
-        hImg = 450;
-      if (innerWidth <= 1346) {
+      let wImg = 1920,
+        hImg = 785;
+      if (innerWidth <= 1920) {
         (wImg = (innerWidth - 2) / 1.07),
-          (hImg = 450 * (innerWidth - 2) / (1256 * 1.07));
+          (hImg = 785 * (innerWidth - 2) / (1920 * 1.07));
       }
       return {
         start: {
-          x: 750 / 1256 * wImg,
-          y: 17 / 45 * hImg
+          x: 1111 / 1920 * wImg,
+          y: 375 / 785 * hImg
         },
         end: {
-          x: 1050 / 1256 * wImg,
-          y: 212 / 450 * hImg
+          x: 1494 / 1920 * wImg,
+          y: 450 / 785 * hImg
         }
       };
     })()
