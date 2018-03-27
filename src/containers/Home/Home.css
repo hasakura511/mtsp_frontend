@@ -157,6 +157,7 @@
 .SectionThree img {
   max-width: 100%;
   /* height: 559px; */
+  cursor: pointer;
 }
 
 .SectionFour {

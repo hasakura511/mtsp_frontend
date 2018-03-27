@@ -102,7 +102,7 @@ class ChangePassword extends Component {
           text: Message || "Password changed.",
           success: true
         });
-        this.props.history.push("/");
+        this.props.history.push("/board");
       })
       .catch(error => {
         this.props.history.push("/");

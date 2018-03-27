@@ -14,7 +14,7 @@ const initialState = {
   // }}
   pastBets: ChipsConfig.map(({ accountId }) => accountId).reduce(
     (acc, curr) => {
-      acc[curr] = null;
+      acc[curr] = { bettingDate: "2018/01/31", position: "off", isAnti: false, change: 0 };
       return acc;
     },
     {}

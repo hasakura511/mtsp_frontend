@@ -21,12 +21,12 @@ const order = props => {
         <div className={classes.Left}>
           <div
             className={classes.ElementContainer}
-            style={{ padding: "0px", width: !isNumbered ? "150px" : "auto" }}
+            style={{ padding: "0px", width: !isNumbered ? "160px" : "auto" }}
           >
             <Slot
               {...slot}
               heldChips={[]}
-              width={!isNumbered ? "150px" : "60px"}
+              width={!isNumbered ? "160px" : "60px"}
               fontSize={!isNumbered ? "1.5em" : "2.2em"}
             />
           </div>
@@ -70,7 +70,7 @@ const order = props => {
                 checked={isAnti}
                 onChange={toggleSystem}
               />
-              <label htmlFor="anti-system-radio" style={{ color: "#e12f48" }}>
+              <label htmlFor="anti-system-radio" style={{ color: "#63a57c" }}>
                 Anti-System
               </label>
             </div>
@@ -86,7 +86,7 @@ const order = props => {
         {/* <div className={classes.Right}>
           <p style={{ color: "#8884d8" }}>System</p>
           <Switch toggle={toggleSystem} />
-          <p style={{ color: "#e12f48" }}>Anti-System</p>
+          <p style={{ color: "#63a57c" }}>Anti-System</p>
         </div> */}
       </div>
       <div className={classes.Content}>

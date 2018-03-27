@@ -43,12 +43,15 @@ const dashboard = props => {
           </tr>
         </thead>
         <tbody>
-          {ChipsConfig.map(({ accountId, display }) => {
+          {ChipsConfig.map(({ accountId, display, accountValue }) => {
             const lpBet = pastBets[accountId];
             const lcBet = currentBets[accountId];
             const account = accounts.find(
               account => accountId === account.accountId
             );
+
+            const cummPercentChange =
+              (account.accountValue - accountValue) / accountValue * 100;
 
             //eslint-disable-next-line
             // if (lpBet) console.log(account.accountValue - lpBet.change);
@@ -80,7 +83,9 @@ const dashboard = props => {
                   <div className={classes.Cell}>
                     {lpBet ? (
                       <p>
-                        <span>{LongShortMap[lpBet.position]}</span>
+                        <span>{`${lpBet.isAnti ? "Anti" : ""} ${
+                          LongShortMap[lpBet.position]
+                        }`}</span>
                         <span>{`MOC(${lpBet.bettingDate.substring(5)})`}</span>
                       </p>
                     ) : null}
@@ -91,16 +96,17 @@ const dashboard = props => {
                     className={classes.Cell}
                     style={{ justifyContent: "center" }}
                   >
-                    {lpBet && lpBet.change ? (
+                    {lpBet !== null ? (
                       <p style={{ width: "auto" }}>
-                        <img
-                          src={
-                            lpBet.change > 0
-                              ? gainIcon
-                              : lpBet.change < 0 ? lossIcon : ""
-                          }
-                          alt="No Image"
-                        />
+                        {lpBet.change ? (
+                          <img
+                            src={
+                              lpBet.change > 0
+                                ? gainIcon
+                                : lpBet.change < 0 ? lossIcon : ""
+                            }
+                          />
+                        ) : null}
                         ${Math.abs(Math.round(lpBet.change)).toLocaleString(
                           "en"
                         )}{" "}
@@ -129,7 +135,17 @@ const dashboard = props => {
                     className={classes.Cell}
                     style={{ justifyContent: "center" }}
                   >
-                    {`$${account.accountValue.toLocaleString("en")}`}
+                    {`$${account.accountValue.toLocaleString("en")}`}&nbsp;
+                    <span
+                      style={{
+                        color:
+                          cummPercentChange > 0
+                            ? "green"
+                            : cummPercentChange < 0 ? "red" : "black"
+                      }}
+                    >
+                      ( {cummPercentChange.toFixed(2)}% )
+                    </span>
                   </div>
                 </td>
                 <td>
@@ -157,9 +173,9 @@ const dashboard = props => {
                 style={{ justifyContent: "center" }}
               >
                 <p style={{ width: "auto" }}>
-                  <img
-                    src={netPnl > 0 ? gainIcon : netPnl < 0 ? lossIcon : ""}
-                  />
+                  {netPnl ? (
+                    <img src={netPnl > 0 ? gainIcon : lossIcon} />
+                  ) : null}
                   ${Math.abs(Math.round(netPnl)).toLocaleString("en")} (
                   <span
                     style={{

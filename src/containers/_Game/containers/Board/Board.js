@@ -141,13 +141,15 @@ export default class Board extends Component {
     };
   }
 
-  componentWillReceiveProps() {
+  componentWillReceiveProps(newProps) {
     !Object.values(this.props.currentBets)
       .map(o => o.position)
       .reduce((acc, o) => {
         if (o != "off") acc["notoff"] = true;
         return acc;
-      }, {})["notoff"] && this.setState({ animateSimulateButton: true });
+      }, {})["notoff"] &&
+      this.props.currentBets !== newProps.currentBets &&
+      this.setState({ animateSimulateButton: true });
   }
 
   componentDidUpdate() {
@@ -298,7 +300,13 @@ export default class Board extends Component {
   };
 
   reset = () => {
-    this.setState({ inGameChips });
+    this.setState({
+      inGameChips,
+      leftSystems,
+      rightSystems,
+      topSystems,
+      bottomSystems
+    });
     this.props.reset();
   };
 

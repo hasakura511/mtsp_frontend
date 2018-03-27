@@ -286,7 +286,7 @@ export default class Panel extends Component {
     } else if (position === "off") {
       showDialog(
         Title({ chip, canDrag: false }),
-        "All positions for this account will be cleared at the market close, your funds will be held in cash",
+        "All positions for this account will be cleared at the market close, your funds will be held in cash.",
         () => {
           // Here you first need to remove the bet in the state so it's location
           // appears correctly on the board
