@@ -340,7 +340,7 @@ export default class Board extends Component {
         <Dashboard {...Bettings} loading={loading} />
         <div className={classes.ActionRow}>
           <button
-            // onClick={this.nextDay()}
+            onClick={this.nextDay}
             title={`Simulate market close for ${toWordedDate(simulatedDate)}`}
             className={
               animateSimulateButton
