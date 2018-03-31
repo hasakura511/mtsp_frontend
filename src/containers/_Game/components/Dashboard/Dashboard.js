@@ -9,6 +9,7 @@ import PropTypes from "prop-types";
 import { LongShortMap } from "../../Config";
 
 import { toSlashDate } from "../../../../util";
+import ClockLoader from "../../../../components/UI/ClockLoader/ClockLoader";
 
 const stateToProps = state => {
   return {
@@ -20,7 +21,7 @@ const stateToProps = state => {
 };
 
 const dashboard = props => {
-  const { currentBets, pastBets, accounts, simulatedDate } = props;
+  const { currentBets, pastBets, accounts, simulatedDate, loading } = props;
   const netPnl = Object.values(pastBets)
       .map(bet => (bet ? bet.change || 0 : 0))
       .reduce((a, c) => a + c, 0),
@@ -30,7 +31,8 @@ const dashboard = props => {
     ),
     netChangePercent = netPnl / netStartAmount * 100;
   return (
-    <div style={{ backgroundColor: "#e0f1f5" }}>
+    <div style={{ backgroundColor: "#e0f1f5", position: "relative" }}>
+      <ClockLoader show={loading} />
       <table className={classes.Table}>
         <thead>
           <tr>
@@ -208,7 +210,8 @@ dashboard.propTypes = {
   currentBets: PropTypes.object.isRequired,
   pastBets: PropTypes.object.isRequired,
   accounts: PropTypes.array.isRequired,
-  simulatedDate: PropTypes.string.isRequired
+  simulatedDate: PropTypes.string.isRequired,
+  loading: PropTypes.bool.isRequired
 };
 
 export default connect(stateToProps)(dashboard);

@@ -13,6 +13,7 @@ export const RD_AGREED = "RD_AGREED";
 
 export const ADD_TOASTER = "ADD_TOASTER";
 export const REMOVE_TOASTER = "REMOVE_TOASTER";
+export const CLEAR_ALL = "CLEAR_ALL"
 
 export const SHOW_DIALOG = "SHOW_DIALOG";
 export const KILL_DIALOG = "KILL_DIALOG";

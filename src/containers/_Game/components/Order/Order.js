@@ -12,6 +12,27 @@ const getSystems = slot => {
     .map(key => slot[key]);
 };
 
+const toSystem = pos => {
+  if (isNaN(Number(pos))) {
+    return pos
+      .replace(/[A-Z]/g, $1 => " " + $1)
+      .replace(/.{1}/, $1 => $1.toUpperCase())
+      .replace("Anti ", "Anti-");
+  } else {
+    return pos;
+  }
+};
+
+const toAntiSystem = pos => {
+  if (isNaN(Number(pos))) {
+    return toSystem(pos).indexOf("Anti-") === -1
+      ? "Anti-" + toSystem(pos)
+      : toSystem(pos).replace("Anti-", "");
+  } else {
+    return "Anti-" + pos;
+  }
+};
+
 const order = props => {
   const { slot, chip, toggleSystem, isAnti, submitBetHandler, close } = props;
   const isNumbered = !isNaN(Number(slot.position));
@@ -60,7 +81,7 @@ const order = props => {
                 onChange={toggleSystem}
               />
               <label htmlFor="system-radio" style={{ color: "#8884d8" }}>
-                System
+                {toSystem(slot.position)}
               </label>
             </div>
             <div style={{ display: "flex", width: "100%" }}>
@@ -71,7 +92,7 @@ const order = props => {
                 onChange={toggleSystem}
               />
               <label htmlFor="anti-system-radio" style={{ color: "#63a57c" }}>
-                Anti-System
+                {toAntiSystem(slot.position)}
               </label>
             </div>
           </div>

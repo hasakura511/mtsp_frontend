@@ -70,18 +70,19 @@ const mergeChartData = (performance, lookback, endDate, position) => {
   const len = pnlData.length,
     chartData = [];
   for (let index = 0; index < len; index++) {
-    chartData.push({
+    const chart = {
       date: Number(pnlData[index].date),
       axisDate: toSlashDate(pnlData[index].date),
-      "P&L": pnlData[index].pnl,
-      "Anti P&L": antiPnlData[index].pnl,
       "S&P 500": benchmarkData[index].pnl,
       "Anti Benchmark": antiBenchmarkData[index].pnl,
       pnlData: convert(pnlData[index]),
       antiPnlData: convert(antiPnlData[index]),
       benchmarkData: convert(benchmarkData[index]),
       position
-    });
+    };
+    chart["Anti " + position] = antiPnlData[index].pnl;
+    chart[position] = pnlData[index].pnl;
+    chartData.push(chart);
   }
   let index = 0;
   chartData.forEach((data, i) => {
@@ -230,7 +231,11 @@ export default class PerformanceChart extends Component {
           </div>
         </div>
         <div className={classes.ChartContainer}>
-          <ResponsiveContainer width="100%" height={innerHeight - 190} maxHeight="100%">
+          <ResponsiveContainer
+            width="100%"
+            height={innerHeight - 190}
+            maxHeight="100%"
+          >
             <LineChart
               data={mergeChartData(
                 performance,
@@ -256,20 +261,20 @@ export default class PerformanceChart extends Component {
                 tickFormatter={value =>
                   `${Math.floor(value).toLocaleString("en")}`
                 }
-                domain={["dataMin", "dataMax"]}
+                domain={[dataMin => dataMin * 0.9, dataMax => dataMax * 1.1]}
               />
-              <CartesianGrid strokeDasharray="3 3" />
+              <CartesianGrid strokeDasharray="3 1" />
               <Tooltip content={<CustomTooltip />} />
               <Legend />
               <Line
                 type="monotone"
-                dataKey="P&L"
+                dataKey={position}
                 stroke={BLUE}
                 // activeDot={{ r: 8 }}
               />
               <Line
                 type="monotone"
-                dataKey="Anti P&L"
+                dataKey={"Anti " + position}
                 stroke={GREEN}
                 // activeDot={{ r: 8 }}
               />

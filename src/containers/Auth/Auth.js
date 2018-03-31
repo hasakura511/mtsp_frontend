@@ -269,8 +269,10 @@ export default withRouter(
       authRedirect: state.auth.authRedirect
     }),
     dispatch => ({
-      onAuth: (firstName, lastName, email, password, isSignup) =>
-        dispatch(actions.auth(firstName, lastName, email, password, isSignup)),
+      onAuth: (firstName, lastName, email, password, isSignup) => {
+        dispatch(actions.auth(firstName, lastName, email, password, isSignup));
+        dispatch(actions.clearAll());
+      },
       clearAuthRedirect: () => dispatch(actions.clearAuthRedirect()),
       addTimedToaster: toaster =>
         dispatch(actions.addTimedToaster(toaster, 5000))

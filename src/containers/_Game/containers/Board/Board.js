@@ -137,7 +137,8 @@ export default class Board extends Component {
          */,
         bettingChips: []
       },
-      animateSimulateButton: false
+      animateSimulateButton: false,
+      loading: false
     };
   }
 
@@ -310,6 +311,14 @@ export default class Board extends Component {
     this.props.reset();
   };
 
+  nextDay = () => {
+    this.setState({ loading: true });
+    setTimeout(() => {
+      this.setState({ loading: false });
+      this.props.nextDay();
+    }, 1000);
+  };
+
   render() {
     const { isAuth, rdAccepted, tosAccepted, simulatedDate } = this.props;
     if (isAuth) {
@@ -323,14 +332,15 @@ export default class Board extends Component {
       topSystems,
       bottomSystems,
       inGameChips,
-      animateSimulateButton
+      animateSimulateButton,
+      loading
     } = this.state;
     return (
       <Aux>
-        <Dashboard {...Bettings} />
+        <Dashboard {...Bettings} loading={loading} />
         <div className={classes.ActionRow}>
           <button
-            onClick={this.props.nextDay}
+            // onClick={this.nextDay()}
             title={`Simulate market close for ${toWordedDate(simulatedDate)}`}
             className={
               animateSimulateButton

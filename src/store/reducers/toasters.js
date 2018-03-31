@@ -12,7 +12,7 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.ADD_TOASTER:
-      return{
+      return {
         ...state,
         toasters: state.toasters.concat([action.toaster])
       };
@@ -22,6 +22,8 @@ const reducer = (state = initialState, action) => {
         toasters: state.toasters.filter(toaster => toaster.id !== action.id)
       };
     }
+    case actionTypes.CLEAR_ALL:
+      return initialState;
     default:
       return state;
   }

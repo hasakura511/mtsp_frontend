@@ -294,12 +294,15 @@ const dispatchToProps = dispatch => {
   return {
     googleAuth: code => {
       dispatch(actions.googleAuth(code));
+      dispatch(actions.clearAll());
     },
     authSuccess: (user, sessiontoken) => {
       dispatch(actions.authSuccess(user, sessiontoken));
+      dispatch(actions.clearAll());
     },
     facebookAuth: (inputToken, user) => {
       dispatch(actions.facebookAuth(inputToken, user));
+      dispatch(actions.clearAll());
     },
     authFail: error => {
       dispatch(actions.authFail(error));

@@ -20,3 +20,7 @@ export const addTimedToaster = (toaster, timeout) => dispatch => {
   //   }, timeout);
   // }
 };
+
+export const clearAll = () => ({
+  type: actionTypes.CLEAR_ALL
+})
