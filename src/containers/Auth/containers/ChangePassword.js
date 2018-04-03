@@ -69,6 +69,10 @@ class ChangePassword extends Component {
       value,
       controls[identifier]["validation"]
     );
+    if (identifier === "password" || identifier === "rePassword") {
+      controls.rePassword.valid =
+        controls.password.value === controls.rePassword.value;
+    }
     let formIsValid = true;
     for (let key in controls) {
       formIsValid = formIsValid && controls[key]["valid"];
