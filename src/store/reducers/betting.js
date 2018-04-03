@@ -14,7 +14,12 @@ const initialState = {
   // }}
   pastBets: ChipsConfig.map(({ accountId }) => accountId).reduce(
     (acc, curr) => {
-      acc[curr] = { bettingDate: "2018/02/01", position: "off", isAnti: false, change: 0 };
+      acc[curr] = {
+        bettingDate: "2018/02/01",
+        position: "off",
+        isAnti: false,
+        change: 0
+      };
       return acc;
     },
     {}
@@ -105,7 +110,7 @@ const reducer = (state = initialState, action) => {
               toIntegerDate(action.bet[accountId].bettingDate).toString()
             ) + 1
           ]
-        ) || toIntegerDate(action.bet[accountId].bettingDate);
+        ) || "2018/02/09";
 
       return {
         ...state,
@@ -180,7 +185,8 @@ const reducer = (state = initialState, action) => {
                   toIntegerDate(modifiedCurrentBets[key].bettingDate).toString()
                 ) + 1
               ]
-            ) || modifiedCurrentBets[key].bettingDate;
+              // ) || modifiedCurrentBets[key].bettingDate;
+            ) || "2018/02/09";
         }
       }
 

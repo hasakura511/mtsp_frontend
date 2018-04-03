@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { toWordedDate, toSlashDate } from "../../../../../util";
 import classes from "./PerformanceChart.css";
-import { LongShortMap } from "../../../Config";
+import { toSystem, toAntiSystem } from "../../../Config";
 import {
   LineChart,
   Line,
@@ -80,8 +80,8 @@ const mergeChartData = (performance, lookback, endDate, position) => {
       benchmarkData: convert(benchmarkData[index]),
       position
     };
-    chart["Anti " + position] = antiPnlData[index].pnl;
-    chart[position] = pnlData[index].pnl;
+    chart[toAntiSystem(position)] = antiPnlData[index].pnl;
+    chart[toSystem(position)] = pnlData[index].pnl;
     chartData.push(chart);
   }
   let index = 0;
@@ -109,7 +109,6 @@ class CustomTooltip extends Component {
         benchmarkData,
         position
       } = payload[0].payload;
-      position = LongShortMap[position];
       // example payload for testing purpose:
       // const date = "20181212",
       // pnlData = { date: "20171221", pnl: "5000", changePercent: "0", cumulative: "0" },
@@ -123,36 +122,36 @@ class CustomTooltip extends Component {
           <hr style={{ width: "100%" }} />
           <div className={classes.Row} style={{ color: BLUE }}>
             <p>
-              <span>{position}:</span> <span>{pnlData.pnl}</span>
+              <span>{toSystem(position)}:</span> <span>{pnlData.pnl}</span>
             </p>
           </div>
           <div className={classes.Row} style={{ color: BLUE }}>
             <p>
-              <span>{position} Daily %Chg.: </span>
+              <span>{toSystem(position)} Daily %Chg.: </span>
               <span>{pnlData.changePercent}%</span>
             </p>
           </div>
           <div className={classes.Row} style={{ color: BLUE }}>
             <p>
-              <span>{position} Cum. %Chg.: </span>
+              <span>{toSystem(position)} Cum. %Chg.: </span>
               <span>{pnlData.cumulative}%</span>
             </p>
           </div>
           <div className={classes.Row} style={{ color: GREEN }}>
             <p>
-              <span>Anti {position}: </span>
+              <span>{toAntiSystem(position)}: </span>
               <span>{antiPnlData.pnl}</span>
             </p>
           </div>
           <div className={classes.Row} style={{ color: GREEN }}>
             <p>
-              <span>Anti {position} Daily %Chg.: </span>
+              <span>{toAntiSystem(position)} Daily %Chg.: </span>
               <span>{antiPnlData.changePercent}%</span>
             </p>
           </div>
           <div className={classes.Row} style={{ color: GREEN }}>
             <p>
-              <span>Anti {position} Cum. %Chg.:</span>{" "}
+              <span>{toAntiSystem(position)} Cum. %Chg.:</span>{" "}
               <span>{antiPnlData.cumulative}%</span>
             </p>
           </div>
@@ -268,13 +267,13 @@ export default class PerformanceChart extends Component {
               <Legend />
               <Line
                 type="monotone"
-                dataKey={position}
+                dataKey={toSystem(position)}
                 stroke={BLUE}
                 // activeDot={{ r: 8 }}
               />
               <Line
                 type="monotone"
-                dataKey={"Anti " + position}
+                dataKey={toAntiSystem(position)}
                 stroke={GREEN}
                 // activeDot={{ r: 8 }}
               />

@@ -5,7 +5,7 @@ import Chip from "../_Chip/_Chip";
 import classes from "./Order.css";
 // import Switch from "../../../../components/UI/Switch/Switch";
 import OrderCharts from "../../containers/OrderCharts/OrderCharts";
-import { LongShortMap } from "../../Config";
+import { toSystem, toAntiSystem } from "../../Config";
 
 const getSystems = slot => {
   return Object.keys(slot)
@@ -13,37 +13,7 @@ const getSystems = slot => {
     .map(key => slot[key]);
 };
 
-const toSystem = pos => {
-  if (isNaN(Number(pos))) {
-    return LongShortMap[pos]
-      // .replace(/[A-Z]/g, $1 => " " + $1)
-      // .replace(/.{1}/, $1 => $1.toUpperCase())
-      .replace("Anti ", "Anti-");
-  } else {
-    return pos;
-  }
-};
 
-const toAntiSystem = pos => {
-  if (pos.toString().toLowerCase() === "riskon") {
-    return toSystem("riskOff");
-  }
-
-  if (pos.toString().toLowerCase() === "riskoff") {
-    return toSystem("riskOn");
-  }
-
-  if (isNaN(Number(pos))) {
-    return toSystem(pos).indexOf("Anti-") === -1 &&
-      toSystem(pos).indexOf("A-") === -1
-      ? "Anti-" + toSystem(pos)
-      : toSystem(pos)
-          .replace("Anti-", "")
-          .replace("A-", "");
-  } else {
-    return "Anti-" + pos;
-  }
-};
 
 const order = props => {
   const { slot, chip, toggleSystem, isAnti, submitBetHandler, close } = props;

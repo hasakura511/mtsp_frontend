@@ -21,7 +21,7 @@ import {
   Label
 } from "recharts";
 
-const DEFAULT_LOOKBACK = "20 Day Cum. %Chg.";
+const DEFAULT_LOOKBACK = "1 Day Cum. %Chg.";
 
 class RankingChart extends Component {
   constructor(props) {
@@ -32,7 +32,7 @@ class RankingChart extends Component {
       //if in future we decide to include filters
       //filters: []
       rankingChartData: [],
-      lookback: "20 Day Cum. %Chg."
+      lookback: "1 Day Cum. %Chg."
     };
   }
 

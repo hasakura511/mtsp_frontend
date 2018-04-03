@@ -6,7 +6,7 @@ import lossIcon from "../../../../assets/images/loss-icon.png";
 import gainIcon from "../../../../assets/images/gain-icon.png";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { LongShortMap } from "../../Config";
+import { toSystem, toAntiSystem } from "../../Config";
 
 import { toSlashDate } from "../../../../util";
 import ClockLoader from "../../../../components/UI/ClockLoader/ClockLoader";
@@ -79,8 +79,10 @@ const dashboard = props => {
                   <div className={classes.Cell}>
                     {lcBet ? (
                       <p>
-                        <span>{`${lcBet.isAnti ? "Anti" : ""} ${
-                          LongShortMap[lcBet.position]
+                        <span>{`${
+                          lcBet.isAnti
+                            ? toAntiSystem(lcBet.position)
+                            : toSystem(lcBet.position)
                         }`}</span>
                         <span>{`MOC (${lcBet.bettingDate.substring(5)})`}</span>
                       </p>
@@ -91,9 +93,11 @@ const dashboard = props => {
                   <div className={classes.Cell}>
                     {lpBet ? (
                       <p>
-                        <span>{`${lpBet.isAnti ? "Anti" : ""} ${
-                          LongShortMap[lpBet.position]
-                        }`}</span>
+                        <span>{`${
+                          lpBet.isAnti
+                            ? toAntiSystem(lpBet.position)
+                            : toSystem(lpBet.position)
+                        }`}</span>&nbsp;
                         <span>{`MOC(${lpBet.bettingDate.substring(5)})`}</span>
                       </p>
                     ) : null}

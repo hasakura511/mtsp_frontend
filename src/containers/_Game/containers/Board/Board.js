@@ -12,7 +12,7 @@ import { connect } from "react-redux";
 import * as actions from "../../../../store/actions";
 import PropTypes from "prop-types";
 import { Redirect } from "react-router-dom";
-import { toWordedDate } from "../../../../util";
+import { toWordedDate, uniq, toStringDate } from "../../../../util";
 
 const systems = [];
 for (let key in Config) {
@@ -74,7 +74,8 @@ const stateToProps = state => {
     tosAccepted: state.auth.tosAccepted,
     rdAccepted: state.auth.rdAccepted,
     currentBets: state.betting.currentBets,
-    simulatedDate: state.betting.simulatedDate
+    simulatedDate: state.betting.simulatedDate,
+    last3DaysProfits: state.betting.last3DaysProfits
   };
 };
 
@@ -114,7 +115,8 @@ export default class Board extends Component {
     history: PropTypes.object.isRequired,
     reset: PropTypes.func.isRequired,
     currentBets: PropTypes.object.isRequired,
-    simulatedDate: PropTypes.string.isRequired
+    simulatedDate: PropTypes.string.isRequired,
+    last3DaysProfits: PropTypes.object.isRequired
   };
 
   constructor(props) {
@@ -320,7 +322,26 @@ export default class Board extends Component {
   };
 
   render() {
-    const { isAuth, rdAccepted, tosAccepted, simulatedDate } = this.props;
+    const {
+      isAuth,
+      rdAccepted,
+      tosAccepted,
+      simulatedDate,
+      last3DaysProfits
+    } = this.props;
+    const dates = uniq(
+      Object.values(last3DaysProfits)
+        // ***hack*** to avoid crash when we dont have pnlData for that particular account
+        // which is possible in tier 0 as the pnlData is fed from performanceData and
+        // that happens when a new bet is placed which only gets performanceData for the account
+        // that particular bet is using.
+        // Remove hack when we have proper data feed for changePercent per account basis
+        .map(profitObj => Object.keys(profitObj || {}))
+        .reduce((acc, curr) => acc.concat(curr), [])
+        .filter(date => !isNaN(Number(date)))
+        .sort((d1, d2) => Number(d1) > Number(d2))
+    );
+    const nextDate = dates[dates.indexOf(simulatedDate) + 1];
     if (isAuth) {
       if (!(rdAccepted && tosAccepted)) {
         return <Redirect to="/auth?signin" />;
@@ -340,8 +361,13 @@ export default class Board extends Component {
         <Dashboard {...Bettings} loading={loading} />
         <div className={classes.ActionRow}>
           <button
+            disabled={!nextDate}
             onClick={this.nextDay}
-            title={`Simulate market close for ${toWordedDate(simulatedDate)}`}
+            title={
+              nextDate
+                ? `Simulate market close for ${toWordedDate(nextDate)}`
+                : ""
+            }
             className={
               animateSimulateButton
                 ? classes.bounce + " " + classes.animated
