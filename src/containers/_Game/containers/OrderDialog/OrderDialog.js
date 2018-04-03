@@ -226,9 +226,9 @@ export default class OrderDialog extends Component {
       history.push("/auth");
       addTimedToaster({
         id: "board-auth-error",
-        text: `Only registered users are allowed to try ${
+        text: `Only signed in users can play ${
           chip.display
-        } account.`
+        } chip. If you don't have an account please sign up first.`
       });
     }
     this._isMounted = true;

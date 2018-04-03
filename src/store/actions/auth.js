@@ -186,13 +186,16 @@ export const checkAuthTimeout = expirationTime => dispatch => {
 
 export const checkAuth = () => dispatch => {
   const token = localStorage.getItem("token"),
-    user = JSON.parse(localStorage.getItem("user")),
-    loginTime = localStorage.getItem("loginTime");
-  const duration = Date.now() - Number(loginTime);
-  if (!token || !user || duration / 1000 >= AUTH_EXPIRY_TIME) {
-    dispatch(logout());
-  } else {
-    dispatch(checkAuthTimeout(AUTH_EXPIRY_TIME - duration / 1000));
+    user = JSON.parse(localStorage.getItem("user"));
+  // const loginTime = localStorage.getItem("loginTime");
+  // const duration = Date.now() - Number(loginTime);
+  // if (!token || !user || duration / 1000 >= AUTH_EXPIRY_TIME) {
+  //   dispatch(logout());
+  // } else {
+  //   dispatch(checkAuthTimeout(AUTH_EXPIRY_TIME - duration / 1000));
+  // }
+
+  if (token && user) {
     dispatch(authSuccess(user, token));
   }
 };

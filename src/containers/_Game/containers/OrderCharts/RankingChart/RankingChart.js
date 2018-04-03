@@ -196,7 +196,11 @@ class RankingChart extends Component {
     const fill = { "20": "#02abca", "1": "#f00155", "5": "#ffde00" };
     return (
       <div className={classes.RankingChart}>
-        <ResponsiveContainer width="100%" height={470}>
+        <ResponsiveContainer
+          width="100%"
+          height={innerHeight - 190}
+          maxHeight="100%"
+        >
           <BarChart
             data={rankingChartData}
             margin={{ top: 5, right: 30, left: 20, bottom: 40 }}

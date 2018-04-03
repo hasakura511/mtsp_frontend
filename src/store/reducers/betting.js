@@ -14,14 +14,14 @@ const initialState = {
   // }}
   pastBets: ChipsConfig.map(({ accountId }) => accountId).reduce(
     (acc, curr) => {
-      acc[curr] = { bettingDate: "2018/01/31", position: "off", isAnti: false, change: 0 };
+      acc[curr] = { bettingDate: "2018/02/01", position: "off", isAnti: false, change: 0 };
       return acc;
     },
     {}
   ),
   currentBets: ChipsConfig.map(({ accountId }) => accountId).reduce(
     (acc, curr) => {
-      acc[curr] = { bettingDate: "2018/02/01", position: "off", isAnti: false };
+      acc[curr] = { bettingDate: "2018/02/02", position: "off", isAnti: false };
       return acc;
     },
     {}
@@ -79,33 +79,33 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.ADD_BET: {
-      // const accountId = Object.keys(action.bet)[0];
+      const accountId = Object.keys(action.bet)[0];
 
-      // const { last3DaysProfits } = state;
+      const { last3DaysProfits } = state;
 
-      // // __TEMPERORY_CODE__
-      // // update the date of this action.bet to be the next market date from current simulated date which is already passsed into the betting object
-      // const dates = uniq(
-      //   Object.values(last3DaysProfits)
-      //     // ***hack*** to avoid crash when we dont have pnlData for that particular account
-      //     // which is possible in tier 0 as the pnlData is fed from performanceData and
-      //     // that happens when a new bet is placed which only gets performanceData for the account
-      //     // that particular bet is using.
-      //     // Remove hack when we have proper data feed for changePercent per account basis
-      //     .map(profitObj => Object.keys(profitObj || {}))
-      //     .reduce((acc, curr) => acc.concat(curr), [])
-      //     .filter(date => !isNaN(Number(date)))
-      //     .sort((d1, d2) => Number(d1) > Number(d2))
-      // );
+      // __TEMPERORY_CODE__
+      // update the date of this action.bet to be the next market date from current simulated date which is already passsed into the betting object
+      const dates = uniq(
+        Object.values(last3DaysProfits)
+          // ***hack*** to avoid crash when we dont have pnlData for that particular account
+          // which is possible in tier 0 as the pnlData is fed from performanceData and
+          // that happens when a new bet is placed which only gets performanceData for the account
+          // that particular bet is using.
+          // Remove hack when we have proper data feed for changePercent per account basis
+          .map(profitObj => Object.keys(profitObj || {}))
+          .reduce((acc, curr) => acc.concat(curr), [])
+          .filter(date => !isNaN(Number(date)))
+          .sort((d1, d2) => Number(d1) > Number(d2))
+      );
 
-      // action.bet[accountId].bettingDate =
-      //   toSlashDate(
-      //     dates[
-      //       dates.indexOf(
-      //         toIntegerDate(action.bet[accountId].bettingDate).toString()
-      //       ) + 1
-      //     ]
-      //   ) || toIntegerDate(action.bet[accountId].bettingDate);
+      action.bet[accountId].bettingDate =
+        toSlashDate(
+          dates[
+            dates.indexOf(
+              toIntegerDate(action.bet[accountId].bettingDate).toString()
+            ) + 1
+          ]
+        ) || toIntegerDate(action.bet[accountId].bettingDate);
 
       return {
         ...state,

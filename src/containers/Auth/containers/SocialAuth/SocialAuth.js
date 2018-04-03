@@ -196,7 +196,7 @@ class SocialAuth extends Component {
         this.props.googleAuth(response.code);
       })
       .catch(() => {
-        this.props.authFail({ Message: "Why you no signin :o(" });
+        // this.props.authFail({ Message: "Please try again." });
       });
   };
 

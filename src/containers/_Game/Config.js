@@ -169,11 +169,11 @@ const Config = {
   ANTI_ZZ_TREND_120D: {
     color: "#FFD966 ",
     position: "right",
-    display: "Anti-Trend120",
+    display: "A-Trend120",
     id: "ANTI_ZZ-TREND_120D",
     column: "antiZz120",
     description: "Bet against the trends as seen from a 120 day perspective.",
-    short: "Anti-Trend120",
+    short: "A-Trend120",
     heldChips: []
   },
   ZZ_MODE_30D: {
@@ -220,12 +220,12 @@ const Config = {
   ANTI_ML_SCALP_ALL: {
     color: "#006256",
     position: "bottom",
-    display: "Anti-All\nScalper",
+    display: "A-ScalpA",
     id: "ANTI_ML-SCALP-ALL",
     column: "antiMlScalpAll",
     description:
       "Bet against prediction models that try to predict the next day.",
-    short: "A-All Scalp",
+    short: "A-ScalpA",
     heldChips: []
   },
   ML_SCALP_BIG_FB: {
@@ -253,23 +253,23 @@ const Config = {
   ML_LAST_BEST_FB: {
     color: "#CE8B8B",
     position: "bottom",
-    display: "Best Mod",
+    display: "BestF",
     id: "ML-LAST-BEST_FB",
     column: "mlLastBestFb",
     description:
       "Bet on the best prediction models based on the previous day’s results.",
-    short: "Best Mod",
+    short: "BestF",
     heldChips: []
   },
   ANTI_ML_LAST_WORST_FW: {
     color: "#C69300",
     position: "bottom",
-    display: "A-Worst",
+    display: "A-WorstF",
     id: "ANTI_ML-LAST-WORST_FW",
     column: "antiMlLastWorstFw",
     description:
       "Bet against the worst prediction models based on the previous day's results.",
-    short: "A-Worst",
+    short: "A-WorstF",
     heldChips: []
   }
 };

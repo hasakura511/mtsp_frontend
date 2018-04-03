@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 class Logout extends Component {
   componentDidMount() {
     this.props.logout();
+    this.props.reset();
   }
 
   render() {
@@ -15,12 +16,15 @@ class Logout extends Component {
 }
 
 Logout.propTypes = {
-  logout: PropTypes.func.isRequired
+  logout: PropTypes.func.isRequired,
+  reset: PropTypes.func.isRequired
 };
 
-export default connect(
-  null,
-  dispatch => ({
-    logout: () => dispatch(actions.logout())
-  })
-)(Logout);
+export default connect(null, dispatch => ({
+  logout() {
+    dispatch(actions.logout());
+  },
+  reset() {
+    dispatch(actions.reset());
+  }
+}))(Logout);

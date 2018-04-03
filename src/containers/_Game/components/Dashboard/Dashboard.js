@@ -30,6 +30,12 @@ const dashboard = props => {
       0
     ),
     netChangePercent = netPnl / netStartAmount * 100;
+
+  const netFinalAmount = accounts
+    .map(({ accountValue }) => accountValue)
+    .reduce((acc, inc) => acc + inc, 0);
+  const netCumChangePercent =
+    (netFinalAmount - netStartAmount) / netStartAmount * 100;
   return (
     <div style={{ backgroundColor: "#e0f1f5", position: "relative" }}>
       <ClockLoader show={loading} />
@@ -192,10 +198,17 @@ const dashboard = props => {
             </td>
             <td>
               <div className={classes.Cell}>
-                {`$${accounts
-                  .map(({ accountValue }) => accountValue)
-                  .reduce((acc, inc) => acc + inc, 0)
-                  .toLocaleString("en")}`}
+                {`$${netFinalAmount.toLocaleString("en")}`}&nbsp;
+                <span
+                  style={{
+                    color:
+                      netCumChangePercent > 0
+                        ? "green"
+                        : netCumChangePercent < 0 ? "red" : "black"
+                  }}
+                >
+                  ( {netCumChangePercent.toFixed(2)}% )
+                </span>
               </div>
             </td>
             <td />
