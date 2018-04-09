@@ -181,8 +181,8 @@ class RankingChart extends Component {
 
   changeLookbackHandler = ({ value }) => {
     this.setState({
-      rankingChartData: this.syncRankingChart(value)
-      // lookback: value
+      rankingChartData: this.syncRankingChart(value),
+      lookback: value
     });
   };
 
