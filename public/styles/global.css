@@ -1,6 +1,19 @@
 .recharts-legend-wrapper .recharts-default-legend .recharts-legend-item {
   cursor: pointer;
 }
+
 .recharts-legend-wrapper .recharts-default-legend .recharts-legend-item:hover {
   opacity: 0.9;
+}
+
+.Ranking .legend-item-0 path {
+  fill: #f00155;
+}
+
+.Ranking .legend-item-1 path {
+  fill: #ffde00;
+}
+
+.Ranking .legend-item-2 path {
+  fill: #02abca;
 }

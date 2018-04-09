@@ -1,12 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classes from "./RankingChart.css";
-import Config from "../../../Config";
-
-const LongShortMap = Object.values(Config).reduce((acc, { column, short }) => {
-  acc[column] = short;
-  return acc;
-}, {});
+import { toSystem, toAntiSystem } from "../../../Config";
 
 import {
   BarChart,
@@ -102,7 +97,7 @@ class RankingChart extends Component {
       // Parse rankign results as required in the ReChart signed-stack-chart package
       .accountResult.map(({ position, result }) => {
         return {
-          name: position,
+          name: toSystem(position),
           "20 Day Cum. %Chg.":
             result.find(r => r.lookback === "20").changePercent * 100,
           "5 Day Cum. %Chg.":
@@ -121,7 +116,7 @@ class RankingChart extends Component {
                 "1 Day Cum. %Chg.": rank["1 Day Cum. %Chg."] * -1,
                 "5 Day Cum. %Chg.": rank["5 Day Cum. %Chg."] * -1,
                 "20 Day Cum. %Chg.": rank["20 Day Cum. %Chg."] * -1,
-                name: "Anti-" + rank.name
+                name: toAntiSystem(rank.name)
               }
             : null;
         })
@@ -136,7 +131,10 @@ class RankingChart extends Component {
 
       //put rank beside the system/slot name
       .map((rankingObj, index) => {
-        return { ...rankingObj, name: `${rankingObj.name} (${index + 1})` };
+        return {
+          ...rankingObj,
+          name: `${rankingObj.name} (${index + 1})`
+        };
       });
 
     return rankingChartData;
@@ -144,8 +142,7 @@ class RankingChart extends Component {
 
   getColor({ x, y, payload }) {
     // tickObj.payload.value will be the string value "1" or "2" or "prev1" etc but with ranks
-    const value = payload.value.split(" ")[0];
-    const rank = payload.value.split(" ")[1];
+    const value = payload.value.split("(")[0].trim();
 
     let color = "black";
     const {
@@ -157,16 +154,16 @@ class RankingChart extends Component {
     } = this.props.slot;
     if (
       [topSystem, leftSystem, rightSystem, bottomSystem]
-        .map(system => system.column)
+        .map(system => system.short)
         .indexOf(value) !== -1
     ) {
       color = "blue";
     }
-    if (position.toString() === value) {
+    if (toSystem(position.toString()) === value) {
       color = "red";
     }
     return (
-      <g transform={`translate(${x},${y})`}>
+      <g transform={`translate(${x - 10},${y})`}>
         <text
           x={0}
           y={0}
@@ -176,7 +173,7 @@ class RankingChart extends Component {
           transform="rotate(-70)"
           fontSize={14}
         >
-          {LongShortMap[value] || value} {rank}
+          {payload.value}
         </text>
       </g>
     );
@@ -184,7 +181,7 @@ class RankingChart extends Component {
 
   changeLookbackHandler = ({ value }) => {
     this.setState({
-      rankingChartData: this.syncRankingChart(value),
+      rankingChartData: this.syncRankingChart(value)
       // lookback: value
     });
   };
@@ -195,7 +192,7 @@ class RankingChart extends Component {
     const [look1, look2] = ["1", "5", "20"].filter(x => x !== look);
     const fill = { "20": "#02abca", "1": "#f00155", "5": "#ffde00" };
     return (
-      <div className={classes.RankingChart}>
+      <div className={"Ranking " + classes.RankingChart}>
         <ResponsiveContainer
           width="100%"
           height={innerHeight - 190}
@@ -226,6 +223,26 @@ class RankingChart extends Component {
               verticalAlign="top"
               wrapperStyle={{ lineHeight: "40px" }}
               onClick={this.changeLookbackHandler}
+              payload={[
+                {
+                  value: "1 Day Cum. %Chg.",
+                  type: "square",
+                  id: "1 Day Cum. %Chg."
+                },
+                {
+                  value: "5 Day Cum. %Chg.",
+                  type: "square",
+                  id: "5 Day Cum. %Chg."
+                },
+                {
+                  value: "20 Day Cum. %Chg.",
+                  type: "square",
+                  id: "20 Day Cum. %Chg."
+                }
+              ]}
+              // content={({ payload }) => {
+              //   return <ul>{payload.map(leg => <li key={leg.id} />)}</ul>;
+              // }}
             />
             <ReferenceLine x={0} stroke="#000" />
             <Bar dataKey={lookback} stackId="stack" fill={fill[look]} />
