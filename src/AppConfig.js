@@ -1,7 +1,7 @@
 let trackId = "UA-XXXXXXXXX-X";
 
-let apiUrl = `http://app.staging.globalsystemsmanagement.net`,
-  origin = "http://staging.globalsystemsmanagement.net",
+let apiUrl = `http://app.globalsystemsmanagement.org`,
+  origin = "http://app.globalsystemsmanagement.org",
   facebookAppId,
   googleClientId,
   googleApiScopes,
