@@ -1,0 +1,133 @@
+.Profile {
+  margin: auto;
+  padding: 10px;
+  /* width: 40%; */
+  box-sizing: border-box;
+  display: flex;
+  flex-flow: row;
+  align-items: start;
+  justify-content: space-between;
+  /* border-radius: 2px;
+  border: 2px solid #cccccc;
+  box-shadow: 1px 1px 2px #cccccc; */
+}
+
+.Heading {
+  margin: auto;
+  padding: 20px;
+  text-align: justify;
+  width: 80%;
+}
+
+.Heading > h2 {
+  font-size: 1.5em;
+  font-weight: 500;
+  color: #1c2791;
+  margin: 0px;
+}
+
+.Profile > span {
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+}
+
+.Profile > span > p {
+  margin: 0px;
+  display: inline;
+}
+
+.Profile h3 {
+  font-weight: 700;
+  font-size: 1.2em;
+  color: #1c2791;
+}
+
+.Profile .Social {
+  width: 70%;
+  height: 30vh;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.Social>span{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.Social button {
+  padding: 10px;
+  font-size: 1em;
+  font-family: "Kanit", "Open Sans", sans-serif;
+  box-sizing: border-box;
+  /* background-color: #0fc6a7;
+  border: 2px solid #0fc6a7; */
+  /* box-shadow: 1px 1px 4px #009297; */
+  border-radius: 4px;
+  cursor: pointer;
+  color: white;
+  width: 200px;
+  outline: none;
+}
+
+button.Facebook {
+  background-color: #3b5998;
+  border-color: #3b5998;
+}
+
+button.Twitter {
+  background-color: #1da1f2;
+  border-color: #1da1f2;
+}
+
+.Facebook > span {
+  color: #3b5998;
+}
+
+.Twitter > span {
+  color: #1da1f2;
+}
+
+.Form {
+  width: 60%;
+  /* display: flex; */
+  flex-flow: column;
+  align-items: center;
+  /* justify-content: space-between; */
+  padding: 20px 20px;
+  box-sizing: border-box;
+}
+
+.Form span{
+  width: 100%;
+}
+
+.DeleteSection{
+  margin: 40px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.DeleteSection button{
+  padding: 5px;
+  background-color: #ff6a6a;
+  border: 2px solid #ff6a6a;
+  box-shadow: 1px 1px 2px #ff6a6a;
+  border-radius: 2px;
+  box-sizing: border-box;
+  color: white;
+  outline: none;
+  font-size: 1em;
+  font-weight: 500;
+  cursor: pointer;
+}
+.DeleteSection button:active{
+  box-shadow: none;
+}

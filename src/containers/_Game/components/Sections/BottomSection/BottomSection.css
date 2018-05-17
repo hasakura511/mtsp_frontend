@@ -1,0 +1,31 @@
+.BottomSection {
+  position: absolute;
+  height: 55px;
+  bottom: -55px;
+  left: 0px;
+  padding: 0px 20px;
+  display: flex;
+  flex-flow: row;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.BottomSection .BottomCell {
+  height: 100%;
+  /* border: 1px solid #aaaaaa; */
+  border-bottom: 5px solid;
+  border-top: 5px solid;
+  box-shadow: 1px 1px 2px #aaaaaa;
+  box-sizing: border-box;
+  margin-right: 20px;
+  width: 140px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* font-size: 1em; */
+  font-weight: 500;
+  background-color: #86dde0;
+  word-break: break-word;
+  position: relative;
+  white-space: pre;
+}

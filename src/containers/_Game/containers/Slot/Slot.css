@@ -1,0 +1,12 @@
+.Slot{
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 0px;
+  margin: 0px;
+  /* box-sizing: border-box; */
+  background-color: transparent;
+  width: 60px;
+  height: 60px;
+}

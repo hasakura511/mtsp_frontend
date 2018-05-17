@@ -1,0 +1,158 @@
+.Order {
+  min-height: 500px;
+  width: 100%;
+  background-color: #d7dde2;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.Heading {
+  width: 100%;
+  margin-left: 15px;
+}
+
+.Heading>p {
+  font-size: 1.2em;
+  margin: 0px;
+}
+
+.Order>.TitleRow {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+.Left, .Right {
+  /* width: 50%; */
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+}
+
+.Right {
+  /* width: 24%; */
+  background-color: #e7ebee;
+}
+
+.Left>p, .Right>p {
+  font-size: 1.5em;
+  font-weight: 400;
+}
+
+.ElementContainer {
+  background-color: #e7ebee;
+  padding: 10px;
+  margin-left: 10px;
+  font-size: 1.5em;
+  height: 80px;
+  box-sizing: border-box;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+}
+
+.ElementContainer input[type="radio"] {
+  height: 20px;
+  width: 20px;
+  margin-top: 5px;
+  cursor: pointer;
+}
+
+.Systems {
+  margin-left: 5px;
+}
+
+.Systems>ul {
+  /* padding: 10px; */
+  padding: 0px;
+  margin: 0px;
+}
+
+.Systems>ul>li {
+  list-style: none;
+}
+
+.Systems>ul>li>p {
+  margin: 0px;
+}
+
+.Order>.Content {
+  min-height: 400px;
+}
+
+.Content {
+  width: 100%;
+}
+
+/* .ActionFooter {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  display: flex;
+  flex-flow: row;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.ActionFooter button {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  padding: 5px;
+  font-size: 1.2em;
+  font-weight: 500;
+  cursor: pointer;
+  color: #17193a;
+  font-family: Kanit;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 28px;
+  letter-spacing: 0.35px;
+}
+
+button.Submit {
+  width: 142px;
+  height: 36px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  background-color: #8dc44c;
+} */
+
+.ActionBar {
+  /* width: 100%; */
+  /* padding: 10px; */
+  box-sizing: border-box;
+  display: flex;
+  flex-flow: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.ActionBar button {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  margin: 5px;
+  font-size: 1.2em;
+  font-weight: 500;
+  cursor: pointer;
+  color: #17193a;
+  font-family: Kanit;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 28px;
+  /* Text style for "P, lace Be" */
+  letter-spacing: 0.35px;
+}
+
+button.Submit {
+  /* Style for "Rectangle" */
+  width: 142px;
+  height: 36px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  background-color: #8dc44c;
+}

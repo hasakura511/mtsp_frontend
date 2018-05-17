@@ -1,0 +1,257 @@
+.Jumbotron {
+  box-sizing: border-box;
+  padding-top: 16vh;
+  width: 100%;
+  height: 80vh;
+  text-align: right;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-position-y: -9vh;
+}
+
+.JumbotronHeading {
+  width: 80%;
+  text-align: right;
+  margin-left: 10%;
+  white-space: pre-line;
+}
+
+.Home .JumbotronHeading h2 {
+  color: #fefefe;
+  font-family: Kanit;
+  font-size: 2.5em;
+  font-weight: 500;
+}
+
+.Home h2 {
+  font-size: 2.5em;
+  color: #1c2791;
+}
+
+.Home hr {
+  border-color: #0fc6a7;
+}
+
+.SectionTwo {
+  margin-top: 5%;
+  padding-top: 20px;
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+}
+
+.SectionTwo .Left {
+  width: 50%;
+  text-align: right;
+}
+
+.SectionTwo .Left h2 {
+  width: 423px;  
+  color: #1c2791;
+  margin-top: 0px;
+  font-size: 2.5em;
+}
+.SectionTwo .Left p {
+  width: 423px;  
+  color: #1c2791;
+  font-size: 2.5em;
+}
+.SectionTwo .Left .Underline {
+  border-color: #0fc6a7;
+}
+
+.SectionTwo .Right {
+  width: calc(50% - 7.32vw);
+  padding-top: 115px;
+  padding-left: 7.32vw;
+}
+
+/* .SectionTwo .Right.Shown {
+  animation: movein 0.5s ease-in 0s forwards;
+}
+
+.SectionTwo .Right.Hidden {
+  transform: translateY(100%);
+  opacity: 0;
+} */
+
+.Card{
+  opacity: 0;
+}
+
+.Card.Shown {
+  animation: movein 0.3s ease-in forwards;
+}
+
+@keyframes moveout {
+  0% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(140%);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes movein {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  /* 80%{
+    transform: translateY(-20%)
+  } */
+  100% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+
+
+
+
+.SectionThree {
+  margin-top: 10%;
+  padding-left: 7%;
+  padding-right: 2px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.SectionThree .Points {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 10%;
+}
+
+.Point{
+  opacity: 0;
+}
+
+.Point.Shown {
+  animation: leftin 0.3s ease-in forwards;
+}
+
+@keyframes leftin {
+  0%{
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  100%{
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+.SectionThree .Container {
+  margin-top: 5%;
+  max-width: 100%;
+}
+
+.SectionThree img {
+  max-width: 100%;
+  /* height: 559px; */
+  cursor: pointer;
+}
+
+.SectionFour {
+  width: 100%;
+  margin-top: 5vh;
+}
+
+.SectionFour h2 {
+  padding-left: 7%;
+  padding-right: 20%;
+  white-space: pre-line;
+}
+.SectionFour hr {
+  margin-right: 20%;
+}
+
+.SectionFour .Container {
+  margin-top: 0;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.SectionFour .Container .Right{
+  width: calc(80% - 663px);
+  text-align: center;
+}
+
+.SectionFour .Container .Right img{
+  width: 87%;
+}
+
+@media (min-width: 1520px){
+  .SectionFour .Container .Right img{
+    width: 450px;
+  } 
+}
+
+@media (max-width: 1400px){
+  .SectionFour .Container .Right img{
+    width: 100%;
+  } 
+}
+/* @media (max-width: 1100px){
+  .SectionFour .Container .Right img{
+    width: 300px;
+  } 
+}
+@media (max-width: 800px){
+  .SectionFour .Container .Right img{
+    width: 250px;
+  } 
+} */
+
+.SectionFive {
+  margin-top: 10%;
+  width: 100%;
+  /* height: 60vh; */
+  background-color: #0fc6a7;
+  padding-top: 10vh;
+  box-sizing: border-box;
+  text-align: right;
+  padding-bottom: 10%;
+}
+
+.SectionFive .Heading {
+  margin: auto;
+  width: 70%;
+  color: white;
+}
+
+.SectionFive h2 {
+  color: white;
+  text-align: center;
+}
+
+.SectionFive button{
+  height: 6vh;
+}
+
+.Home hr{
+  border: 0;
+  height: 3px;
+  background-color: #45cdb7;
+  padding: 0;
+}
+
+@media (max-height: 462px){
+  .Jumbotron{
+    height: 370px;
+    padding-top: 74px;
+  }
+  .SectionFive button{
+    height: 38.5px;
+  }
+}

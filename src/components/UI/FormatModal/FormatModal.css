@@ -1,0 +1,23 @@
+.FormatModal .Title{
+  width: 100%;
+  height: auto;
+  text-align: center;
+  padding: 4px 0px;
+  background-color: #0fc6a7;
+  box-sizing: border-box;
+  color: white;
+}
+
+.FormatModal .Title h2{
+  color: inherit;
+  margin: 0px;
+  padding: 0px;
+  font-size: 1.5em;
+}
+
+.FormatModal .Content{
+  padding: 16px;
+  margin: auto;
+  color: #1b1b1c;
+  font-size: 0.75em;
+}

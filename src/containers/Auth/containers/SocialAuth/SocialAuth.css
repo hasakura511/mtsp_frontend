@@ -1,0 +1,75 @@
+.SocialAuth {
+  width: 500px;
+  padding: 30px;
+  box-sizing: border-box;
+}
+
+.SocialAuth button{
+  font-size: 1em;
+  font-family: 'Kanit', 'Open Sans', sans-serif;
+  padding: 10px;
+  box-sizing: border-box;
+  border: none;
+  color: white;
+  cursor: pointer;
+  outline: none;
+  border-radius: 2px;
+  width: 282px !important;
+}
+
+.SocialAuth button.Twitter {
+  margin-top: 40px;
+  background-color: #1da1f2;
+}
+
+.SocialAuth button.Google {
+  margin-top: 40px;
+  background-color: #4285f4;
+}
+
+.SocialAuth button.Facebook {
+  margin-top: 27px;
+  background-color: #3b5998;
+}
+
+.SocialAuth button.Linkedin {
+  margin-top: 27px;
+  background-color: #0077b7;
+}
+
+button>span {
+  float: left;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  background-color: #fff;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 2px;
+  box-sizing: border-box;
+}
+
+button>span>i{
+  line-height: 0px;
+}
+
+button.Facebook span{
+  color: #3b5998;  
+}
+
+button.Twitter span{
+  color: #1da1f2;
+}
+
+button.Google span{
+  color: #4285F4;
+}
+
+button.Linkedin span{
+  color:  #0077b7;
+}
+
+button:disabled{
+  cursor: not-allowed;
+}

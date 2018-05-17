@@ -1,0 +1,29 @@
+.Point{
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.Point .IndexDiv{
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  border: 2px solid #45cdb7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Point .IndexDiv p{
+  margin: auto;
+}
+
+.Point p{
+  font-size: x-large;
+  font-weight: 500;
+  color: #45cdb7;
+}
+
+.Point .DescDiv p{
+  padding-left: 20px;  
+}

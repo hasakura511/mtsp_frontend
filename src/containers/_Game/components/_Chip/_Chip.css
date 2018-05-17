@@ -1,0 +1,23 @@
+.Chip {
+  /* margin-left: 10px; */
+  width: 28px;
+  height: 28px;
+  border-radius: 28px;
+  padding: 4px;
+  font-size: 14px;
+  font-weight: 200;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  background-image: linear-gradient(to top, #00468c 0%, #2a92fa 100%);
+  border: 6px solid #002040;
+  color: white;
+  cursor: move;
+  outline: none;
+}
+
+.Chip p {
+  outline: none;
+  user-select: none;
+}

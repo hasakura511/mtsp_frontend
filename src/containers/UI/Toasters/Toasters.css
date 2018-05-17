@@ -1,0 +1,16 @@
+.Toasters {
+  position: fixed;
+  bottom: 0px;
+  left: 25%;
+  max-height: 90vh;
+  overflow-y: none;
+  outline: none;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 10px;
+  box-sizing: border-box;
+  width: 50%;
+  padding-bottom: 0px;
+}

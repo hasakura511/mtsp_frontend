@@ -1,0 +1,116 @@
+.Icon {
+  font-weight: bold;
+  padding: 2px;
+  float: right;
+  transform: rotate(0deg);
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+.Icon.Open {
+  transform: rotate(180deg);
+}
+
+.DropDown {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  padding: 4px;
+  /* background-color: #fafafa; */
+}
+
+.DropDown ul {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0px;
+  margin: 0px;
+  width: 100%;
+  list-style: none;
+  height: inherit;
+}
+
+.DropDown li {
+  height: inherit;
+}
+
+.DropDown .Items {
+  position: absolute;
+  top: 100%;
+  max-height: 150px;
+  -webkit-transition: max-height 0.3s ease-in-out;
+  -moz-transition: max-height 0.3s ease-in-out;
+  transition: max-height 0.3s ease-in-out;
+  background-color: #fcfcfc;
+  opacity: 1;
+}
+
+.Items.Hide {
+  max-height: 0px;
+  opacity: 0;
+  -webkit-transition: max-height 0.3s ease;
+  -moz-transition: max-height 0.3s ease;
+  transition: max-height 0.3s ease;
+}
+
+.Items.Hide li {
+  margin: 0px;
+  -webkit-transition: margin 0.6s ease;
+  -moz-transition: margin 0.6s ease;
+  transition: margin 0.6s ease;
+}
+
+.Items li {
+  -webkit-transition: margin 0.6s ease;
+  -moz-transition: margin 0.6s ease;
+  transition: margin 0.6s ease;
+  margin: 0px;
+}
+
+.Items li > a {
+  -webkit-transition: max-height 0.3s ease;
+  -moz-transition: max-height 0.3s ease;
+  transition: max-height 0.3s ease;
+  -webkit-transition: padding 0.3s ease;
+  -moz-transition: padding 0.3s ease;
+  transition: padding 0.3s ease;
+  -webkit-transition: border 0.3s ease;
+  -moz-transition: border 0.3s ease;
+  transition: border 0.3s ease;
+}
+
+.Items.Hide li > a {
+  max-height: 0px;
+  padding: 0px;
+  border: 0px;
+  -webkit-transition: max-height 0.3s ease;
+  -moz-transition: max-height 0.3s ease;
+  transition: max-height 0.3s ease;
+  -webkit-transition: padding 0.3s ease;
+  -moz-transition: padding 0.3s ease;
+  transition: padding 0.3s ease;
+  -webkit-transition: border 0.3s ease;
+  -moz-transition: border 0.3s ease;
+  transition: border 0.3s ease;
+}
+
+.DropDown button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin: 0px;
+  font-family: "Kanit", "Open Sans", sans-serif;
+  font-weight: 800;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.DropDown li > a {
+  padding-top: 6px;
+  padding-bottom: 6px;
+}

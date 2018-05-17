@@ -1,0 +1,19 @@
+.Square {
+  background-color: transparent;
+  height: 100%;
+  width: 100%;
+  background: transparent;
+  border: 5px solid transparent;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: space-around;
+  font-size: 2.2em;
+  font-weight: 200;
+  box-sizing: border-box;
+  /* border: 1px solid #aaaaaa; */
+  box-shadow: 1px 1px 3px 1px #aaaaaa;
+  position: relative;
+  word-break: break-all;
+  line-height: 20px;
+}

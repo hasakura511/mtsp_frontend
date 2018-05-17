@@ -1,0 +1,16 @@
+.Board {
+  margin: auto;
+  display: flex;
+  flex-flow: column;
+  align-items: flex-start;
+  justify-content: space-around;
+  width: 720px;
+  margin-left: calc(50% - 360px);
+}
+
+.Row {
+  display: flex;
+  flex-flow: row;
+  align-items: flex-start;
+  justify-content: space-around;
+}

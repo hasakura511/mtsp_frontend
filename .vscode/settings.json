@@ -1,0 +1,10 @@
+{
+  "javascript.implicitProjectConfig.experimentalDecorators": true,
+  "javascript.validate.enable": false,
+  "typescript.autoImportSuggestions.enabled": false,
+  "prettier.parser": "babylon",
+  "workbench.colorTheme": "Default Dark+",
+  "workbench.iconTheme": "material-icon-theme",
+  "material-icon-theme.activeIconPack": "react",
+  "editor.fontFamily": "Consolas, 'Courier New', monospace",
+}
