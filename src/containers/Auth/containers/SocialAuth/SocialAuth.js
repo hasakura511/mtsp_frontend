@@ -14,7 +14,7 @@ const fbSDK = component => {
      */
   window.fbAsyncInit = () => {
     window.FB.init({
-      appId: "316219935074086",
+      appId: FACEBOOK_APP_ID,
       cookie: true,
       xfbml: true,
       version: "v2.7"
@@ -30,7 +30,7 @@ const fbSDK = component => {
     if (d.getElementById(id)) return;
     js = d.createElement(s);
     js.id = id;
-    js.src = "//connect.facebook.net/en_US/sdk.js";
+    js.src = "https://connect.facebook.net/en_US/sdk.js";
     fjs.parentNode.insertBefore(js, fjs);
   })(document, "script", "facebook-jssdk");
 };
