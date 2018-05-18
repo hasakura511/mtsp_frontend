@@ -51,12 +51,24 @@ export const auth = (
             })
           );
         } else {
-          dispatch(
-            authFail({
-              message: "Email already exist.",
-              status: 203
-            })
-          );
+          const user = response.data.user;
+          const token = response.data.sessiontoken;
+          
+          if (token && user) {
+              dispatch(
+                  authSuccess(
+                    H.keysToCamel(response.data.user),
+                    response.data.sessiontoken
+                  )
+                );
+          } else {        
+              dispatch(
+                authFail({
+                  message: "Email already exist.",
+                  status: 203
+                })
+              );
+         }
         }
       } else {
         dispatch(
