@@ -14,10 +14,10 @@ const fbSDK = component => {
      */
   window.fbAsyncInit = () => {
     window.FB.init({
-      appId: Config.FACEBOOK_APP_ID,
+      appId: "316219935074086",
       cookie: true,
       xfbml: true,
-      version: "v2.1"
+      version: "v2.7"
     });
     if (component.exists) {
       component.setState({ facebookSDK: true });
