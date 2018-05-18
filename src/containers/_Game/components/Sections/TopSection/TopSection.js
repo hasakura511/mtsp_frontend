@@ -23,7 +23,6 @@ const topSection = props => {
         }
       )}
       <ChipsPanel {...props} balanceChips={props.balanceChips} />
-      <Clock />
     </div>
   );
 };

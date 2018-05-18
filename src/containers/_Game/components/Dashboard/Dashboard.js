@@ -11,6 +11,8 @@ import { toSystem, toAntiSystem } from "../../Config";
 import { toSlashDate } from "../../../../util";
 import ClockLoader from "../../../../components/UI/ClockLoader/ClockLoader";
 
+var boardMode='practice';
+
 const stateToProps = state => {
   return {
     currentBets: state.betting.currentBets,
@@ -47,6 +49,10 @@ const dashboard = props => {
             <th>Previous Bet</th>
             <th>Previous Bet Gains/Losses</th>
             <th>Account Values</th>
+            {boardMode == 'live' ? (
+              <th>Lockdown</th>
+            ) : null
+            }
             <th>Last Update</th>
           </tr>
         </thead>
@@ -160,6 +166,17 @@ const dashboard = props => {
                     </span>
                   </div>
                 </td>
+                {boardMode == 'live' ? (
+                <td>
+                <div
+                  className={classes.Cell}
+                  style={{ justifyContent: "center" }}
+                >
+                  {toSlashDate(simulatedDate)} 5PM EST
+                </div>
+              </td>
+              ) : null
+                }
                 <td>
                   <div
                     className={classes.Cell}

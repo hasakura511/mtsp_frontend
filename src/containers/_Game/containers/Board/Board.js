@@ -13,6 +13,7 @@ import * as actions from "../../../../store/actions";
 import PropTypes from "prop-types";
 import { Redirect } from "react-router-dom";
 import { toWordedDate, uniq, toStringDate } from "../../../../util";
+import Clock from "../Clock/Clock";
 
 const systems = [];
 for (let key in Config) {
@@ -91,6 +92,9 @@ const dispatchToProps = dispatch => {
     nextDay: () => {
       dispatch(actions.nextDay());
     },
+    toggleMode: () => {
+      dispatch(actions.toggleMode());
+    },
     reset: () => {
       dispatch(actions.reset());
     }
@@ -109,6 +113,7 @@ const dispatchToProps = dispatch => {
 export default class Board extends Component {
   static propTypes = {
     nextDay: PropTypes.func.isRequired,
+    toggleMode: PropTypes.func.isRequired,
     isAuth: PropTypes.bool.isRequired,
     tosAccepted: PropTypes.bool.isRequired,
     rdAccepted: PropTypes.bool.isRequired,
@@ -321,6 +326,14 @@ export default class Board extends Component {
     }, 1000);
   };
 
+  toggleMode = () => {
+    this.setState({ loading: true });
+    setTimeout(() => {
+      this.setState({ loading: false });
+      this.props.toggleMode();
+    }, 1000);
+  };
+
   render() {
     const {
       isAuth,
@@ -358,8 +371,24 @@ export default class Board extends Component {
     } = this.state;
     return (
       <Aux>
+        
         <Dashboard {...Bettings} loading={loading} />
         <div className={classes.ActionRow}>
+        <input data-switch="true" type="checkbox" onClick={ this.toggleMode } data-on-text="Live Mode" data-handle-width="70" data-off-text="Practice Mode" data-on-color="brand"/>
+        <i className="fa fa-clock-o" style={{"font-size":'3em'}}></i>
+        <button
+            onClick={this.reset}
+            title={"Reset the board to the first of February"}
+          >
+            Reset Board
+          </button>
+        <span style={{'width':'200px'}} className="btn btn-info">
+          Next Lockdown: 01:29.59<br/>
+          29 Markets<br/>
+          @ Mon, 4/23  01:23PM
+
+        </span>
+        <Clock />
           <button
             disabled={!nextDate}
             onClick={this.nextDay}
@@ -376,12 +405,13 @@ export default class Board extends Component {
           >
             Simulate Next Day
           </button>
-          <button
-            onClick={this.reset}
-            title={"Reset the board to the first of February"}
-          >
-            Reset Board
-          </button>
+          <span>
+          <button type="button" className="btn m-btn m-btn--pill m-btn--gradient-from-info m-btn--gradient-to-warning">Heatmap Legend</button>
+          <br/>
+          <center>
+          low risk / high risk
+          </center>
+          </span>
         </div>
         <div
           className={classes.Board}

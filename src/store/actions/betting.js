@@ -6,6 +6,12 @@ export const nextDay = () => {
   };
 };
 
+export const toggleMode = () => {
+  return {
+    type: actionTypes.RESET_BOARD
+  };
+};
+
 export const addBet = bet => {
   return {
     type: actionTypes.ADD_BET,
