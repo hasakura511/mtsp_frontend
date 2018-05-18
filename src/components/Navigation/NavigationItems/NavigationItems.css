@@ -24,8 +24,8 @@
 }
 
 .NavigationItems li > button > a {
-  font-family: "Kanit";
-  font-size: 1em;
+  font-family: "Poppins";
+  font-size: 2em;
   font-weight: 800;
   color: white;
   text-decoration: none;
@@ -77,8 +77,8 @@
     display: flex;
     align-items: center;
     color: #1b1b1c;
-    font-family: 'Kanit', 'Open Sans', sans-serif;
-    font-size: 0.7em;
+    font-family: 'Poppins', 'Open Sans', sans-serif;
+    font-size: 1.3em;
     font-weight: 800;
   }
 

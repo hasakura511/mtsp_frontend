@@ -36,19 +36,19 @@
   color: white;
 }
 
-@media (max-width: 499px){
+@media (max-width: 299px){
     .Toolbar nav {
     display: none;
   }
 }
 
-@media (min-width: 500px){
+@media (min-width: 300px){
   .Toolbar button{
     display: none;
   }
 }
 
-@media (max-height: 550px) {
+@media (max-height: 350px) {
   .Toolbar{
     height: 55px;
   }

@@ -68,6 +68,7 @@ export default class Home extends Component {
   render() {
     return (
       <div className={classes.Home}>
+
         <RouteModal path="/contact" redirectPath="/">
           <Contact />
         </RouteModal>
