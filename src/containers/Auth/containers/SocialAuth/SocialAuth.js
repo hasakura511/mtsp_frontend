@@ -17,7 +17,7 @@ const fbSDK = component => {
       appId: Config.FACEBOOK_APP_ID,
       cookie: true,
       xfbml: true,
-      version: "v2.7"
+      version: "v2.1"
     });
     if (component.exists) {
       component.setState({ facebookSDK: true });
