@@ -11,6 +11,34 @@ import Dialog from "../../components/UI/Modal/Dialog";
 
 // show 0 to show always, 1 for logged out and 2 for logged in users
 const LINKS = [
+  
+  {
+    id: "link5",
+    href: "/profile",
+    target: "_self",
+    active: false,
+    text: "ACCOUNTS",
+    exact: true,
+    show: 2
+  },
+  {
+    id: "link6",
+    href: "/profile",
+    target: "_self",
+    active: false,
+    text: "MARKETS",
+    exact: true,
+    show: 2
+  },
+  {
+    id: "link4",
+    href: "/board",
+    target: "_self",
+    active: false,
+    text: "BOARD",
+    exact: true,
+    show: 0
+  },
   {
     id: "link1",
     href: "/contact",
