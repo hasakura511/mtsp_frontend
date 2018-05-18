@@ -1,7 +1,7 @@
 let trackId = "UA-XXXXXXXXX-X";
 
-let apiUrl = `http://app.globalsystemsmanagement.org`,
-  origin = "http://app.globalsystemsmanagement.org",
+let apiUrl = `https://app.globalsystemsmanagement.org`,
+  origin = "https://web.globalsystemsmanagement.org",
   facebookAppId,
   googleClientId,
   googleApiScopes,
@@ -16,8 +16,8 @@ if (
 )
   trackId = "UA-111295206-1";
 
-  apiUrl = "http://app.globalsystemsmanagement.org";
-  origin = "http://web.globalsystemsmanagement.org";
+  apiUrl = "https://app.globalsystemsmanagement.org";
+  origin = "https://web.globalsystemsmanagement.org";
   googleClientId =
     "230475327404-4dcmdt79d6kgau7h084rm10uj5ri10s5.apps.googleusercontent.com";
   facebookAppId = "316219935074086";
