@@ -14,7 +14,7 @@ const fbSDK = component => {
      */
   window.fbAsyncInit = () => {
     window.FB.init({
-      appId: FACEBOOK_APP_ID,
+      appId: Config.FACEBOOK_APP_ID,
       cookie: true,
       xfbml: true,
       version: "v2.7"
