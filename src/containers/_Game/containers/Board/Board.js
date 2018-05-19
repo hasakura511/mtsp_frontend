@@ -147,9 +147,10 @@ export default class Board extends Component {
         bettingChips: []
       },
       animateSimulateButton: false,
-      loading: false
+      loading: false,
+      boardMode: 'live',
+      toggleActive:true,
     };
-    this.toggleLive();
   
   }
 
@@ -342,15 +343,13 @@ export default class Board extends Component {
   toggleSim = () => {
       $('.isLive').hide();
       $('.isSim').show();
-      this.setState({toggleActive:false});
-      this.setState({boardMode:'practice'});
+      this.setState({toggleActive:false, boardMode:'practice'});
 
   }
   toggleLive = () => {
     $('.isLive').show();
     $('.isSim').hide();
-    this.setState({toggleActive:true});
-    this.setState({boardMode:'live'});
+    this.setState({toggleActive:true,boardMode:'live'});
 
   }
   
@@ -397,7 +396,7 @@ export default class Board extends Component {
       <Aux>
         
         <Dashboard {...Bettings} loading={loading} />
-        <div className={classes.ActionRow}s>
+        <div className={classes.ActionRow}>
         <Toggle
           onClick={this.toggleMode}
           on={<h2>Live Mode</h2>}
@@ -444,10 +443,10 @@ export default class Board extends Component {
           <button style={{width:"200px",height:"25px"}}type="button" className="btn m-btn m-btn--pill m-btn--gradient-from-info m-btn--gradient-to-warning"></button>
           <br/>
           <div>
-            <span style={{"float": "left", "width": "50%", "text-align": "left"}}>
+            <span style={{"float": "left", "width": "50%", "textAlign": "left"}}>
             low risk
             </span>
-            <span style={{"float": "left", "width": "50%", "text-align": "right"}}>
+            <span style={{"float": "left", "width": "50%", "textAlign": "right"}}>
             high risk
             </span>
           </div>
@@ -465,8 +464,8 @@ export default class Board extends Component {
             } // marginTop: "5%",
           }
         >
-            <span style={{"margin-top":"-150px","float": "left", "width": "50%", "text-align": "left", "display": "inline-block","vertical-align": "top"}}>
-            <img src="/images/edit_board_button.png" width="50"/><br/>
+            <span style={{"marginTop":"-150px","float": "left", "width": "50%", "textAlign": "left", "display": "inline-block","verticalAlign": "top"}}>
+            <img src="/images/edit_board_button.png" width="50"/><br/>  
             <img src="/images/leaderboard_button.png" width="50"/><br/>
             </span>
 

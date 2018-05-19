@@ -77,8 +77,8 @@ export default class Clock extends PureComponent {
         <div className={classes.Left}>
             <span className="isLive" >
             <p  style={{ width: "140px", 
-                        "margin-left":"15px",
-                        "line-height":"1" }}>
+                        "marginLeft":"15px",
+                        "lineHeight":"1" }}>
               <font size="1">
               <br/>
             Next Lockdown: 01:29.59<br/>
@@ -89,8 +89,8 @@ export default class Clock extends PureComponent {
             </span>
             <span className="isSim" style={{"display":"none"}}>
             <p  style={{ width: "140px", 
-                        "margin-left":"15px",
-                        "line-height":"1" }}>
+                        "marginLeft":"15px",
+                        "lineHeight":"1" }}>
                     <br/><b>Practice Mode</b>
             </p>
             </span>
