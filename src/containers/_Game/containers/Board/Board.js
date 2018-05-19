@@ -464,10 +464,10 @@ export default class Board extends Component {
               <br/>
               <div>
                 <span style={{"float": "left", "width": "50%", "textAlign": "left"}}>
-                low risk
+                Low Reward / Risk
                 </span>
                 <span style={{"float": "left", "width": "50%", "textAlign": "right"}}>
-                high risk
+                High Reward / Risk
                 </span>
               </div>
             </div>

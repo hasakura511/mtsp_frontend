@@ -80,7 +80,7 @@ const dashboard = props => {
               <tr key={`dashboard-row-${accountId}`}>
                 <td>
                   <div className={classes.Cell + " " + classes.Flex}>
-                    <img src={chipIcon} />
+                    <img src="/images/account_chart_button.png" width="25" />
                     <strong>{display}</strong>
                   </div>
                 </td>
