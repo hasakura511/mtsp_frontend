@@ -1,6 +1,6 @@
 let trackId = "UA-XXXXXXXXX-X";
 
-let apiUrl = `https://app.globalsystemsmanagement.org`,
+let apiUrl = "https://app.globalsystemsmanagement.org",
   origin = "https://web.globalsystemsmanagement.org",
   facebookAppId,
   googleClientId,
