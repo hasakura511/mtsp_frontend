@@ -397,62 +397,87 @@ export default class Board extends Component {
         
         <Dashboard {...Bettings} loading={loading} />
         <div className={classes.ActionRow}>
-        <Toggle
-          onClick={this.toggleMode}
-          on={<h2>Live Mode</h2>}
-          off={<h2>Practice Mode</h2>}
-          size="xs"
-          active={this.state.toggleActive}
-           />
-        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-        <img className="isLive" src="/images/timetable_button.png" width="60"/>
-        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-        <button className="isSim"
-            style={{"display":"none"}}
-            onClick={this.reset}
-            title={"Reset the board to the first of February"}
-          >
-            Reset Board
-          </button>
-          <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-
-        <Clock />
-        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-          <button 
-            style={{"display":"none"}}
-            disabled={!nextDate}
-            onClick={this.nextDay}
-            title={
-              nextDate
-                ? `Simulate market close for ${toWordedDate(nextDate)}`
-                : ""
-            }
-            className={
-              animateSimulateButton
-                ? classes.bounce + " " + classes.animated + " isSim"
-                : "isSim"
-                }
+          <span style={{"float": "left", "width": "30%", "height":"75px", "textAlign": "left", "verticalAlign":"middle"}}>
+            <Toggle
+            onClick={this.toggleMode}
+            on={<h2>Live Mode</h2>}
+            off={<h2>Practice Mode</h2>}
+            size="xs"
+            active={this.state.toggleActive}
             
-          >
-            Simulate Next Day
-          </button>
-          <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-          <span className="isLive">
-          <center><b>Heatmap Legend</b></center>
-          <button style={{width:"200px",height:"25px"}}type="button" className="btn m-btn m-btn--pill m-btn--gradient-from-info m-btn--gradient-to-warning"></button>
-          <br/>
-          <div>
-            <span style={{"float": "left", "width": "50%", "textAlign": "left"}}>
-            low risk
-            </span>
-            <span style={{"float": "left", "width": "50%", "textAlign": "right"}}>
-            high risk
-            </span>
-          </div>
+            />
+            <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <img className="isLive" src="/images/timetable_button.png" width="60"/>
           </span>
-        </div>
-        <div
+          <span  style={{"float": "left", "width": "40%",  "minWidth":"600px", "height":"75px","white-space": "nowrap","textAlign": "left", "verticalAlign":"top"}}>
+            
+            <span  style={{ "float": "left", "width": "20%", "minWidth":"100px", "height":"60px", "textAlign": "left", "verticalAlign":"middle"}}>
+              <button
+                  className="isSim"
+                  style={{"display":"none"}}
+                  onClick={this.reset}
+                  title={"Reset the board to the first of February"}
+                >
+                <font size="2">
+                <b>
+                Reset Board
+                </b>
+                </font>
+              </button>
+            </span>
+            <span  style={{"float": "left", "width": "60%", "height":"75px", "textAlign": "left", "verticalAlign":"top"}}>
+            <Clock />
+            </span>
+            <span style={{"float": "left", "width": "20%", "minWidth":"100px", "height":"60px", "textAlign": "right", "verticalAlign":"middle"}}>
+              <button               
+              style={{"display":"none"}}
+              disabled={!nextDate}
+              onClick={this.nextDay}
+              title={
+                nextDate
+                  ? `Simulate market close for ${toWordedDate(nextDate)}`
+                  : ""
+              }
+              className={
+                animateSimulateButton
+                  ? classes.bounce + " " + classes.animated + " isSim"
+                  : " isSim"
+                  }
+              
+            >
+                <font size="2">
+                <b>
+              Simulate Next Day
+                </b>
+                </font>
+            </button>
+
+
+            </span>
+      </span>
+      <span style={{"float": "left", "width": "30%", "height":"90px", "textAlign": "right", "verticalAlign":"middle"}}>
+          <span style={{"float": "left", "width": "80%", "height":"90px", "textAlign": "left", "verticalAlign":"middle"}}> 
+            <div className="isLive">
+              <center><b>Heatmap Legend</b></center>
+              <button style={{width:"100%",height:"25px"}}type="button" className="btn m-btn m-btn--pill m-btn--gradient-from-info m-btn--gradient-to-warning"></button>
+              <br/>
+              <div>
+                <span style={{"float": "left", "width": "50%", "textAlign": "left"}}>
+                low risk
+                </span>
+                <span style={{"float": "left", "width": "50%", "textAlign": "right"}}>
+                high risk
+                </span>
+              </div>
+            </div>
+         </span>
+         <span style={{"float": "left", "width": "20%", "height":"90px", "textAlign": "right", "verticalAlign":"top"}}>
+            <img src="/images/infotext_button.png" width="22"/>
+         </span>
+      </span>
+    </div>
+    <div
           className={classes.Board}
           style={
             {
@@ -464,11 +489,15 @@ export default class Board extends Component {
             } // marginTop: "5%",
           }
         >
+          <div>
             <span style={{"marginTop":"-150px","float": "left", "width": "50%", "textAlign": "left", "display": "inline-block","verticalAlign": "top"}}>
             <img src="/images/edit_board_button.png" width="50"/><br/>  
             <img src="/images/leaderboard_button.png" width="50"/><br/>
             </span>
-
+            <span style={{"marginTop":"-150px", "float": "right", "width": "50%",  "textAlign": "right",  "display": "inline-block", "verticalAlign":"top"}}>
+              <img src="/images/infotext_button.png" width="22" style={{"margin":"10px"}} />
+            </span>
+          </div>
           <Panel
             leftSystems={leftSystems || []}
             rightSystems={rightSystems || []}

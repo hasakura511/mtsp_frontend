@@ -42,13 +42,21 @@ const dashboard = props => {
       <table className={classes.Table}>
         <thead>
           <tr>
-            <th>Starting Account Values</th>
+            <th>Starting Values</th>
             <th>Current Bet</th>
             <th>Previous Bet</th>
-            <th>Previous Bet Gains/Losses</th>
+            <th>Previous Bet Gains & Losses</th>
             <th>Account Values</th>
             <th className="isLive">Lockdown</th>
-            <th>Last Update</th>
+            <th><span style={{"float": "left", "width": "80%", "textAlign": "left"}}>
+                  Last Update
+                </span>
+                <span style={{"float": "left", "width": "20%", "textAlign": "right"}}>
+                  <img src="/images/infotext_button.png" width="22" style={{"marginRight":"5px"}}/>
+                </span>
+              
+
+            </th>
           </tr>
         </thead>
         <tbody>
