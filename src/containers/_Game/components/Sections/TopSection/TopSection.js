@@ -7,6 +7,7 @@ import Container from "../Container";
 const topSection = props => {
   return (
     <div className={classes.TopSection}>
+
       {props.systems.map(
         ({ id, color, display, description, position, column, heldChips }) => {
           return position ? (

@@ -1,3 +1,4 @@
+
 import React, { Component } from "react";
 import Panel from "../Panel/Panel";
 import classes from "./Board.css";
@@ -14,6 +15,7 @@ import PropTypes from "prop-types";
 import { Redirect } from "react-router-dom";
 import { toWordedDate, uniq, toStringDate } from "../../../../util";
 import Clock from "../Clock/Clock";
+import Toggle from 'react-bootstrap-toggle'
 
 const systems = [];
 for (let key in Config) {
@@ -147,6 +149,8 @@ export default class Board extends Component {
       animateSimulateButton: false,
       loading: false
     };
+    this.toggleLive();
+  
   }
 
   componentWillReceiveProps(newProps) {
@@ -326,14 +330,31 @@ export default class Board extends Component {
     }, 1000);
   };
 
-  toggleMode = () => {
-    this.setState({ loading: true });
-    setTimeout(() => {
-      this.setState({ loading: false });
-      this.props.toggleMode();
-    }, 1000);
-  };
 
+  toggleMode= () => {
+    if (this.state.boardMode == 'live') {
+      this.toggleSim();
+    } else {
+      this.toggleLive();
+
+    }
+  };
+  toggleSim = () => {
+      $('.isLive').hide();
+      $('.isSim').show();
+      this.setState({toggleActive:false});
+      this.setState({boardMode:'practice'});
+
+  }
+  toggleLive = () => {
+    $('.isLive').show();
+    $('.isSim').hide();
+    this.setState({toggleActive:true});
+    this.setState({boardMode:'live'});
+
+  }
+  
+  
   render() {
     const {
       isAuth,
@@ -367,29 +388,40 @@ export default class Board extends Component {
       bottomSystems,
       inGameChips,
       animateSimulateButton,
-      loading
+      loading,
+      boardMode,
+      toggleActive
     } = this.state;
+
     return (
       <Aux>
         
         <Dashboard {...Bettings} loading={loading} />
-        <div className={classes.ActionRow}>
-        <input data-switch="true" type="checkbox" onClick={ this.toggleMode } data-on-text="Live Mode" data-handle-width="70" data-off-text="Practice Mode" data-on-color="brand"/>
-        <i className="fa fa-clock-o" style={{"font-size":'3em'}}></i>
-        <button
+        <div className={classes.ActionRow}s>
+        <Toggle
+          onClick={this.toggleMode}
+          on={<h2>Live Mode</h2>}
+          off={<h2>Practice Mode</h2>}
+          size="xs"
+          active={this.state.toggleActive}
+           />
+        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        <img className="isLive" src="/images/timetable_button.png" width="60"/>
+        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        <button className="isSim"
+            style={{"display":"none"}}
             onClick={this.reset}
             title={"Reset the board to the first of February"}
           >
             Reset Board
           </button>
-        <span style={{'width':'200px'}} className="btn btn-info">
-          Next Lockdown: 01:29.59<br/>
-          29 Markets<br/>
-          @ Mon, 4/23  01:23PM
+          <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 
-        </span>
         <Clock />
-          <button
+        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+          <button 
+            style={{"display":"none"}}
             disabled={!nextDate}
             onClick={this.nextDay}
             title={
@@ -399,18 +431,26 @@ export default class Board extends Component {
             }
             className={
               animateSimulateButton
-                ? classes.bounce + " " + classes.animated
-                : ""
-            }
+                ? classes.bounce + " " + classes.animated + " isSim"
+                : "isSim"
+                }
+            
           >
             Simulate Next Day
           </button>
-          <span>
-          <button type="button" className="btn m-btn m-btn--pill m-btn--gradient-from-info m-btn--gradient-to-warning">Heatmap Legend</button>
+          <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+          <span className="isLive">
+          <center><b>Heatmap Legend</b></center>
+          <button style={{width:"200px",height:"25px"}}type="button" className="btn m-btn m-btn--pill m-btn--gradient-from-info m-btn--gradient-to-warning"></button>
           <br/>
-          <center>
-          low risk / high risk
-          </center>
+          <div>
+            <span style={{"float": "left", "width": "50%", "text-align": "left"}}>
+            low risk
+            </span>
+            <span style={{"float": "left", "width": "50%", "text-align": "right"}}>
+            high risk
+            </span>
+          </div>
           </span>
         </div>
         <div
@@ -420,11 +460,16 @@ export default class Board extends Component {
               backgroundImage: "url(" + bgBoard + ")",
               backgroundRepeat: "no-repeat",
               backgroundSize: "cover",
-              paddingTop: "200px",
+              paddingTop: "150px",
               paddingBottom: "100px"
             } // marginTop: "5%",
           }
         >
+            <span style={{"margin-top":"-150px","float": "left", "width": "50%", "text-align": "left", "display": "inline-block","vertical-align": "top"}}>
+            <img src="/images/edit_board_button.png" width="50"/><br/>
+            <img src="/images/leaderboard_button.png" width="50"/><br/>
+            </span>
+
           <Panel
             leftSystems={leftSystems || []}
             rightSystems={rightSystems || []}

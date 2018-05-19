@@ -8,10 +8,8 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { toSystem, toAntiSystem } from "../../Config";
 
-import { toSlashDate } from "../../../../util";
+import { toSlashDate, toSlashTime } from "../../../../util";
 import ClockLoader from "../../../../components/UI/ClockLoader/ClockLoader";
-
-var boardMode='practice';
 
 const stateToProps = state => {
   return {
@@ -49,10 +47,7 @@ const dashboard = props => {
             <th>Previous Bet</th>
             <th>Previous Bet Gains/Losses</th>
             <th>Account Values</th>
-            {boardMode == 'live' ? (
-              <th>Lockdown</th>
-            ) : null
-            }
+            <th className="isLive">Lockdown</th>
             <th>Last Update</th>
           </tr>
         </thead>
@@ -166,17 +161,14 @@ const dashboard = props => {
                     </span>
                   </div>
                 </td>
-                {boardMode == 'live' ? (
-                <td>
+                <td  className="isLive">
                 <div
                   className={classes.Cell}
                   style={{ justifyContent: "center" }}
                 >
-                  {toSlashDate(simulatedDate)} 5PM EST
+                  17:00:00
                 </div>
-              </td>
-              ) : null
-                }
+                </td>
                 <td>
                   <div
                     className={classes.Cell}
@@ -217,6 +209,7 @@ const dashboard = props => {
                 </p>
               </div>
             </td>
+            
             <td>
               <div className={classes.Cell}>
                 {`$${netFinalAmount.toLocaleString("en")}`}&nbsp;
@@ -231,6 +224,13 @@ const dashboard = props => {
                   ( {netCumChangePercent.toFixed(2)}% )
                 </span>
               </div>
+            </td>
+            <td  className="isLive">
+                <div
+                  className={classes.Cell}
+                  style={{ justifyContent: "center" }}
+                >
+                </div>
             </td>
             <td />
           </tr>
