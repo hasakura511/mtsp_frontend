@@ -16,6 +16,7 @@ import { Redirect } from "react-router-dom";
 import { toWordedDate, uniq, toStringDate } from "../../../../util";
 import Clock from "../Clock/Clock";
 import Toggle from 'react-bootstrap-toggle'
+import axios from "../../../../axios-gsm";
 
 const systems = [];
 for (let key in Config) {
@@ -151,6 +152,31 @@ export default class Board extends Component {
       boardMode: 'live',
       toggleActive:true,
     };
+    axios
+      .post("/utility/initialize_live/", {
+      // .get("https://api.myjson.com/bins/11pqxf", {
+      //only 5k chip for tier 0
+      // accounts: [{ portfolio, target, accountValue }],
+      'username': 'hidemi@gmail.com', 
+      'reinitialize': 'false'
+    })
+    .then(({ data }) => {
+      // eslint-disable-next-line react/no-is-mounted
+        console.log(data);
+        alert(data);
+        this.setState({
+          rankingLoading: false,
+          rankingData: data.rankingData
+        });
+    })
+    .catch(error => {
+      // eslint-disable-next-line react/no-is-mounted
+        this.setState({
+          rankingLoading: false,
+          rankingError: error
+        });
+    });
+
   
   }
 
@@ -410,7 +436,7 @@ export default class Board extends Component {
             <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
             <img className="isLive" src="/images/timetable_button.png" width="60"/>
           </span>
-          <span  style={{"float": "left", "width": "40%",  "minWidth":"600px", "height":"75px","white-space": "nowrap","textAlign": "left", "verticalAlign":"top"}}>
+          <span  style={{"float": "left", "width": "40%",  "minWidth":"600px", "height":"75px","whiteSpace": "nowrap","textAlign": "left", "verticalAlign":"top"}}>
             
             <span  style={{ "float": "left", "width": "20%", "minWidth":"100px", "height":"60px", "textAlign": "left", "verticalAlign":"middle"}}>
               <button
