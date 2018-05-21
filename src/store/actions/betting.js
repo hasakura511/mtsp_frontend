@@ -6,6 +6,26 @@ export const nextDay = () => {
   };
 };
 
+export const updateDate = simdate => {
+  return {
+    type: actionTypes.UPDATE_DATE,
+    simdate
+  };
+};
+
+export const initializeData = data => {
+  return {
+    type: actionTypes.INITIALIZE_DATA,
+    data
+  };
+};
+
+export const toggleMode = () => {
+  return {
+    type: actionTypes.RESET_BOARD
+  };
+};
+
 export const addBet = bet => {
   return {
     type: actionTypes.ADD_BET,

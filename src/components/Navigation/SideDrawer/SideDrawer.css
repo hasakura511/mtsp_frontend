@@ -25,11 +25,11 @@
 }
 
 .Close{
-  transform: translateX(-100%);
+  transform: translateX(0);
 }
 
 
-@media (min-width: 500px) {
+@media (min-width: 300px) {
   .SideDrawer{
     display: none;
   }

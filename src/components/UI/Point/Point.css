@@ -5,9 +5,10 @@
 }
 
 .Point .IndexDiv{
+  font-family: Poppins;
   border-radius: 50%;
-  width: 32px;
-  height: 32px;
+  width: 48px;
+  height: 48px;
   border: 2px solid #45cdb7;
   display: flex;
   justify-content: center;
@@ -15,15 +16,18 @@
 }
 
 .Point .IndexDiv p{
+  font-family: Poppins;
   margin: auto;
 }
 
 .Point p{
+  font-family: Poppins;
   font-size: x-large;
   font-weight: 500;
   color: #45cdb7;
 }
 
 .Point .DescDiv p{
+  font-family: Poppins;
   padding-left: 20px;  
 }

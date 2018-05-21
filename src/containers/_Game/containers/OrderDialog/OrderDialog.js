@@ -222,7 +222,7 @@ export default class OrderDialog extends Component {
 
   componentWillMount() {
     const { chip, history, isAuth, addTimedToaster } = this.props;
-    if (chip.display !== "25K" && !isAuth) {
+    if (chip.display !== "25K" && chip.display !== "50K" && !isAuth) {
       history.push("/auth");
       addTimedToaster({
         id: "board-auth-error",

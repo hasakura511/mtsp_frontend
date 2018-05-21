@@ -19,12 +19,13 @@
 
 .Home .JumbotronHeading h2 {
   color: #fefefe;
-  font-family: Kanit;
+  font-family: Poppins;
   font-size: 2.5em;
   font-weight: 500;
 }
 
 .Home h2 {
+  font-family: Poppins;
   font-size: 2.5em;
   color: #1c2791;
 }
@@ -34,6 +35,7 @@
 }
 
 .SectionTwo {
+  font-family: Poppins;
   margin-top: 5%;
   padding-top: 20px;
   display: flex;
@@ -42,26 +44,31 @@
 }
 
 .SectionTwo .Left {
+  font-family: Poppins;
   width: 50%;
   text-align: right;
 }
 
 .SectionTwo .Left h2 {
+  font-family: Poppins;
   width: 423px;  
   color: #1c2791;
   margin-top: 0px;
   font-size: 2.5em;
 }
 .SectionTwo .Left p {
+  font-family: Poppins;
   width: 423px;  
   color: #1c2791;
   font-size: 2.5em;
 }
 .SectionTwo .Left .Underline {
+  font-family: Poppins;
   border-color: #0fc6a7;
 }
 
 .SectionTwo .Right {
+  font-family: Poppins;
   width: calc(50% - 7.32vw);
   padding-top: 115px;
   padding-left: 7.32vw;

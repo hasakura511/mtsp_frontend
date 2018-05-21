@@ -1,18 +1,23 @@
+
 import React, { Component } from "react";
 import Panel from "../Panel/Panel";
 import classes from "./Board.css";
 import bgBoard from "../../../../assets/images/boardBg.png";
 import Config from "../../Config";
 import ChipsConfig from "../../ChipsConfig";
-// import protectedComponent from "../../../../hoc/ProtectedComponent/ProtectedComponent";
+import protectedComponent from "../../../../hoc/ProtectedComponent/ProtectedComponent";
 import Aux from "../../../../hoc/_Aux/_Aux";
-import Dashboard from "../../components/Dashboard/Dashboard";
+// import Dashboard from "../../components/Dashboard/Dashboard";
+import LiveDashboard from "../LiveDashboard/LiveDashboard";
 import Bettings from "../../BettingConfig";
 import { connect } from "react-redux";
 import * as actions from "../../../../store/actions";
 import PropTypes from "prop-types";
 import { Redirect } from "react-router-dom";
 import { toWordedDate, uniq, toStringDate } from "../../../../util";
+import Clock from "../Clock/Clock";
+import Toggle from 'react-bootstrap-toggle'
+import axios from "../../../../axios-gsm";
 
 const systems = [];
 for (let key in Config) {
@@ -70,12 +75,17 @@ const insertChip = (systems, column, chip) => {
 
 const stateToProps = state => {
   return {
+    email: state.auth.email,
+    firstName: state.auth.firstName,
+    lastName: state.auth.lastName,
     isAuth: state.auth.token !== null,
     tosAccepted: state.auth.tosAccepted,
     rdAccepted: state.auth.rdAccepted,
     currentBets: state.betting.currentBets,
     simulatedDate: state.betting.simulatedDate,
-    last3DaysProfits: state.betting.last3DaysProfits
+    last3DaysProfits: state.betting.last3DaysProfits,
+    accounts:state.betting.accounts,
+    initializeData:state.betting.initializeData,
   };
 };
 
@@ -91,13 +101,28 @@ const dispatchToProps = dispatch => {
     nextDay: () => {
       dispatch(actions.nextDay());
     },
+    toggleMode: () => {
+      dispatch(actions.toggleMode());
+    },
     reset: () => {
       dispatch(actions.reset());
-    }
+    },
+    updateDate: (simdate) => {
+      dispatch(actions.updateDate(simdate));
+
+    },
+    initializeData: (data) => {
+      dispatch(actions.initializeData(data));
+      
+    },
+    authSuccess: (user, token) => {
+      dispatch(actions.authSuccess(user, token));
+    },
+
   };
 };
 
-// @protectedComponent
+@protectedComponent
 @connect(stateToProps, dispatchToProps)
 
 /**
@@ -108,7 +133,15 @@ const dispatchToProps = dispatch => {
  */
 export default class Board extends Component {
   static propTypes = {
+    email: PropTypes.string,
+    firstName: PropTypes.string,
+    lastName: PropTypes.string,
+    authSuccess: PropTypes.func.isRequired,
+    
     nextDay: PropTypes.func.isRequired,
+    updateDate: PropTypes.func.isRequired,
+    initializeData: PropTypes.func.isRequired,
+    toggleMode: PropTypes.func.isRequired,
     isAuth: PropTypes.bool.isRequired,
     tosAccepted: PropTypes.bool.isRequired,
     rdAccepted: PropTypes.bool.isRequired,
@@ -140,8 +173,14 @@ export default class Board extends Component {
         bettingChips: []
       },
       animateSimulateButton: false,
-      loading: false
+      loading: true,
+      boardMode: 'live',
+      toggleActive:true,
+      initializeData:{},
     };
+    
+
+  
   }
 
   componentWillReceiveProps(newProps) {
@@ -173,6 +212,47 @@ export default class Board extends Component {
       bottomSystems,
       inGameChips
     });
+    
+  }
+
+  componentDidMount() {
+
+    
+    console.log(this.props);
+
+    axios
+    .post("/utility/initialize_live/", {
+    // .get("https://api.myjson.com/bins/11pqxf", {
+    //only 5k chip for tier 0
+    // accounts: [{ portfolio, target, accountValue }],
+    'username': this.props.email,
+    'reinitialize': 'false'
+    })
+    .then(({ data }) => {
+    // eslint-disable-next-line react/no-is-mounted
+      console.log(data);
+      //alert(data);
+      
+      this.setState({
+        loading:false,
+        rankingLoading: false,
+        rankingData: data.rankingData,
+      });
+      
+      this.props.updateDate(data.last_date);
+      this.props.initializeData(data);
+     
+    })
+    .catch(error => {
+    // eslint-disable-next-line react/no-is-mounted
+      this.setState({
+        rankingLoading: false,
+        rankingError: error
+      });
+    });
+
+
+
   }
 
   /**
@@ -321,6 +401,38 @@ export default class Board extends Component {
     }, 1000);
   };
 
+
+  updateDate = simdate => {
+    this.setState({ loading: true });
+    setTimeout(() => {
+      this.setState({ loading: false });
+      this.props.updateDate(simdate);
+    }, 1000);
+  };
+
+  toggleMode= () => {
+    if (this.state.boardMode == 'live') {
+      this.toggleSim();
+      
+    } else {
+      this.toggleLive();
+
+    }
+  };
+  toggleSim = () => {
+      $('.isLive').hide();
+      $('.isSim').show();
+      this.setState({toggleActive:false, boardMode:'practice'});
+
+  }
+  toggleLive = () => {
+    $('.isLive').show();
+    $('.isSim').hide();
+    this.setState({toggleActive:true,boardMode:'live'});
+
+  }
+  
+  
   render() {
     const {
       isAuth,
@@ -354,47 +466,118 @@ export default class Board extends Component {
       bottomSystems,
       inGameChips,
       animateSimulateButton,
-      loading
+      loading,
+      boardMode,
+      toggleActive,
     } = this.state;
+
     return (
       <Aux>
-        <Dashboard {...Bettings} loading={loading} />
+        
+        <LiveDashboard 
+           />
         <div className={classes.ActionRow}>
-          <button
-            disabled={!nextDate}
-            onClick={this.nextDay}
-            title={
-              nextDate
-                ? `Simulate market close for ${toWordedDate(nextDate)}`
-                : ""
-            }
-            className={
-              animateSimulateButton
-                ? classes.bounce + " " + classes.animated
-                : ""
-            }
-          >
-            Simulate Next Day
-          </button>
-          <button
-            onClick={this.reset}
-            title={"Reset the board to the first of February"}
-          >
-            Reset Board
-          </button>
-        </div>
-        <div
+          <span style={{"float": "left", "width": "30%", "height":"75px", "textAlign": "left", "verticalAlign":"middle"}}>
+            <Toggle
+            onClick={this.toggleMode}
+            on={<h2>Live Mode</h2>}
+            off={<h2>Practice Mode</h2>}
+            size="xs"
+            active={this.state.toggleActive}
+            
+            />
+            <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <img className="isLive" src="/images/timetable_button.png" width="60"/>
+          </span>
+          <span  style={{"float": "left", "width": "40%",  "minWidth":"600px", "height":"75px","whiteSpace": "nowrap","textAlign": "left", "verticalAlign":"top"}}>
+            
+            <span  style={{ "float": "left", "width": "20%", "minWidth":"100px", "height":"60px", "textAlign": "left", "verticalAlign":"middle"}}>
+              <button
+                  className="isSim"
+                  style={{"display":"none"}}
+                  onClick={this.reset}
+                  title={"Reset the board to the first of February"}
+                >
+                <font size="2">
+                <b>
+                Reset Board
+                </b>
+                </font>
+              </button>
+            </span>
+            <span  style={{"float": "left", "width": "60%", "height":"75px", "textAlign": "left", "verticalAlign":"top"}}>
+            <Clock />
+            </span>
+            <span style={{"float": "left", "width": "20%", "minWidth":"100px", "height":"60px", "textAlign": "right", "verticalAlign":"middle"}}>
+              <button               
+              style={{"display":"none"}}
+              disabled={!nextDate}
+              onClick={this.nextDay}
+              title={
+                nextDate
+                  ? `Simulate market close for ${toWordedDate(nextDate)}`
+                  : ""
+              }
+              className={
+                animateSimulateButton
+                  ? classes.bounce + " " + classes.animated + " isSim"
+                  : " isSim"
+                  }
+              
+            >
+                <font size="2">
+                <b>
+              Simulate Next Day
+                </b>
+                </font>
+            </button>
+
+
+            </span>
+      </span>
+      <span style={{"float": "left", "width": "30%", "height":"90px", "textAlign": "right", "verticalAlign":"middle"}}>
+          <span style={{"float": "left", "width": "80%", "height":"90px", "textAlign": "left", "verticalAlign":"middle"}}> 
+            <div className="isLive">
+              <center><b>Heatmap Legend</b></center>
+              <button style={{width:"100%",height:"25px"}}type="button" className="btn m-btn m-btn--pill m-btn--gradient-from-info m-btn--gradient-to-warning"></button>
+              <br/>
+              <div>
+                <span style={{"float": "left", "width": "50%", "textAlign": "left"}}>
+                Low Reward / Risk
+                </span>
+                <span style={{"float": "left", "width": "50%", "textAlign": "right"}}>
+                High Reward / Risk
+                </span>
+              </div>
+            </div>
+         </span>
+         <span style={{"float": "left", "width": "20%", "height":"90px", "textAlign": "right", "verticalAlign":"top"}}>
+            <img src="/images/infotext_button.png" width="22"/>
+         </span>
+      </span>
+    </div>
+    <div
           className={classes.Board}
           style={
             {
               backgroundImage: "url(" + bgBoard + ")",
               backgroundRepeat: "no-repeat",
               backgroundSize: "cover",
-              paddingTop: "200px",
+              paddingTop: "150px",
               paddingBottom: "100px"
             } // marginTop: "5%",
           }
         >
+          <div>
+            <span style={{"marginTop":"-150px","float": "left", "width": "50%", "textAlign": "left", "display": "inline-block","verticalAlign": "top"}}>
+            <img src="/images/edit_board_button.png" width="50"/><br/>  
+            <img src="/images/leaderboard_button.png" width="50"/><br/>
+            </span>
+            <span style={{"marginTop":"-150px", "float": "right", "width": "50%",  "textAlign": "right",  "display": "inline-block", "verticalAlign":"top"}}>
+              <img src="/images/infotext_button.png" width="22" style={{"margin":"10px"}} />
+            </span>
+          </div>
           <Panel
             leftSystems={leftSystems || []}
             rightSystems={rightSystems || []}

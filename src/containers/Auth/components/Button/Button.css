@@ -1,8 +1,9 @@
 .Button {
   margin: auto;
   padding: 10px;
-  font-size: 1em;
-  font-family: "Kanit", "Open Sans", sans-serif;
+  font-weight: 400;
+  font-family: "Poppins", "Open Sans", sans-serif;
+  font-size: 10em;
   box-sizing: border-box;
   background-color: #0fc6a7;
   border: 2px solid #0fc6a7;
@@ -15,10 +16,14 @@
 
 .Button:active {
   box-shadow: none;
+  font-weight: 800;
+  font-family: "Poppins", "Open Sans", sans-serif;
 }
 
 .Button:disabled {
   box-shadow: none;
-  color: #dddddd;
+  background-color: #dddddd;
   cursor: not-allowed;
+  font-weight: 400;
+  font-family: "Poppins", "Open Sans", sans-serif;
 }

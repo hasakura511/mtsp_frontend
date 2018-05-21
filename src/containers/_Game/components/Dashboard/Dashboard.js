@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { toSystem, toAntiSystem } from "../../Config";
 
-import { toSlashDate } from "../../../../util";
+import { toSlashDate, toSlashTime } from "../../../../util";
 import ClockLoader from "../../../../components/UI/ClockLoader/ClockLoader";
 
 const stateToProps = state => {
@@ -36,18 +36,28 @@ const dashboard = props => {
     .reduce((acc, inc) => acc + inc, 0);
   const netCumChangePercent =
     (netFinalAmount - netStartAmount) / netStartAmount * 100;
+  console.log(accounts);
   return (
     <div style={{ backgroundColor: "#e0f1f5", position: "relative" }}>
       <ClockLoader show={loading} />
       <table className={classes.Table}>
         <thead>
           <tr>
-            <th>Starting Account Values</th>
+            <th>Starting Values</th>
             <th>Current Bet</th>
             <th>Previous Bet</th>
-            <th>Previous Bet Gains/Losses</th>
+            <th>Previous Bet Gains & Losses</th>
             <th>Account Values</th>
-            <th>Last Update</th>
+            <th className="isLive">Lockdown</th>
+            <th><span style={{"float": "left", "width": "80%", "textAlign": "left"}}>
+                  Last Update
+                </span>
+                <span style={{"float": "left", "width": "20%", "textAlign": "right"}}>
+                  <img src="/images/infotext_button.png" width="22" style={{"marginRight":"5px"}}/>
+                </span>
+              
+
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -71,7 +81,7 @@ const dashboard = props => {
               <tr key={`dashboard-row-${accountId}`}>
                 <td>
                   <div className={classes.Cell + " " + classes.Flex}>
-                    <img src={chipIcon} />
+                    <img src="/images/account_chart_button.png" width="25" />
                     <strong>{display}</strong>
                   </div>
                 </td>
@@ -160,6 +170,14 @@ const dashboard = props => {
                     </span>
                   </div>
                 </td>
+                <td  className="isLive">
+                <div
+                  className={classes.Cell}
+                  style={{ justifyContent: "center" }}
+                >
+                  17:00:00
+                </div>
+                </td>
                 <td>
                   <div
                     className={classes.Cell}
@@ -200,6 +218,7 @@ const dashboard = props => {
                 </p>
               </div>
             </td>
+            
             <td>
               <div className={classes.Cell}>
                 {`$${netFinalAmount.toLocaleString("en")}`}&nbsp;
@@ -214,6 +233,13 @@ const dashboard = props => {
                   ( {netCumChangePercent.toFixed(2)}% )
                 </span>
               </div>
+            </td>
+            <td  className="isLive">
+                <div
+                  className={classes.Cell}
+                  style={{ justifyContent: "center" }}
+                >
+                </div>
             </td>
             <td />
           </tr>

@@ -31,10 +31,14 @@ const initialState = {
     },
     {}
   ),
-  accounts: ChipsConfig.map(({ accountId, accountValue }) => ({
+  accounts: {}
+  /* ChipsConfig.map(({ accountId, accountValue }) => ({
     accountId,
-    accountValue
-  })),
+    accountValues
+  })) */
+  ,
+  loading: true,
+  initializeData: {},
   simulatedDate: "20180201",
   /**
    * Last 3 days profit
@@ -83,6 +87,37 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case actionTypes.UPDATE_DATE:
+    {
+        const simulatedDate = action.simdate;
+        return {
+            ...state,
+            simulatedDate
+        };
+    }
+    case actionTypes.INITIALIZE_DATA:
+    {
+        var initializeData =  action.data;
+        const accounts= JSON.parse(action.data.accounts)
+        const heatmap = JSON.parse(action.data.heatmap)
+        const themes = JSON.parse(action.data.themes)
+        const dictionary_strategy = JSON.parse(action.data.dictionary_strategy)
+        const loading=false;
+        initializeData.accounts=accounts;
+        initializeData.heatmap=heatmap;
+        initializeData.themes=themes;
+        initializeData.dictionary_strategy=dictionary_strategy;
+        return {
+            ...state,
+            loading,
+            initializeData,
+            accounts, 
+            heatmap,
+            themes,
+            dictionary_strategy
+
+        };
+    }
     case actionTypes.ADD_BET: {
       const accountId = Object.keys(action.bet)[0];
 
@@ -220,6 +255,7 @@ const reducer = (state = initialState, action) => {
         ...initialState
       };
     }
+    
     default:
       return state;
   }
