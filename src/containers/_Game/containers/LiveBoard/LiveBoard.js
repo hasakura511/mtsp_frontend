@@ -18,6 +18,7 @@ import { toWordedDate, uniq, toStringDate } from "../../../../util";
 import Clock from "../Clock/Clock";
 import Toggle from 'react-bootstrap-toggle'
 import axios from "../../../../axios-gsm";
+import ClockLoader from "../../../../components/UI/ClockLoader/ClockLoader";
 
 /**
  * create dummy balanceChips array
@@ -465,125 +466,138 @@ export default class LiveBoard extends Component {
     console.log(rightSystems)
     console.log(topSystems)
     console.log(bottomSystems)
-    return (
-      <Aux>
+    if (this.state.loading) {
+        return ( 
 
-        <LiveDashboard 
-           />
-        <div className={classes.ActionRow}>
-          <span style={{"float": "left", "width": "30%", "height":"75px", "textAlign": "left", "verticalAlign":"middle"}}>
-            <Toggle
-            onClick={this.toggleMode}
-            on={<h2>Live Mode</h2>}
-            off={<h2>Practice Mode</h2>}
-            size="xs"
-            active={this.state.toggleActive}
+          <Aux>
             
+            <center>
+             <ClockLoader show={loading} />
+            </center>
+          </Aux>
+
+        );
+      } else {
+      return (
+        <Aux>
+
+          <LiveDashboard 
             />
-            <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-            <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-            <img className="isLive" src="/images/timetable_button.png" width="60"/>
-          </span>
-          <span  style={{"float": "left", "width": "40%",  "minWidth":"600px", "height":"75px","whiteSpace": "nowrap","textAlign": "left", "verticalAlign":"top"}}>
-            
-            <span  style={{ "float": "left", "width": "20%", "minWidth":"100px", "height":"60px", "textAlign": "left", "verticalAlign":"middle"}}>
-              <button
-                  className="isSim"
-                  style={{"display":"none"}}
-                  onClick={this.reset}
-                  title={"Reset the board to the first of February"}
-                >
-                <font size="2">
-                <b>
-                Reset Board
-                </b>
-                </font>
-              </button>
-            </span>
-            <span  style={{"float": "left", "width": "60%", "height":"75px", "textAlign": "left", "verticalAlign":"top"}}>
-            <Clock />
-            </span>
-            <span style={{"float": "left", "width": "20%", "minWidth":"100px", "height":"60px", "textAlign": "right", "verticalAlign":"middle"}}>
-              <button               
-              style={{"display":"none"}}
-              disabled={!nextDate}
-              onClick={this.nextDay}
-              title={
-                nextDate
-                  ? `Simulate market close for ${toWordedDate(nextDate)}`
-                  : ""
-              }
-              className={
-                animateSimulateButton
-                  ? classes.bounce + " " + classes.animated + " isSim"
-                  : " isSim"
-                  }
+          <div className={classes.ActionRow}>
+            <span style={{"float": "left", "width": "30%", "height":"75px", "textAlign": "left", "verticalAlign":"middle"}}>
+              <Toggle
+              onClick={this.toggleMode}
+              on={<h2>Live Mode</h2>}
+              off={<h2>Practice Mode</h2>}
+              size="xs"
+              active={this.state.toggleActive}
               
-            >
-                <font size="2">
-                <b>
-              Simulate Next Day
-                </b>
-                </font>
-            </button>
-
-
+              />
+              <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+              <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+              <img className="isLive" src="/images/timetable_button.png" width="60"/>
             </span>
-      </span>
-      <span style={{"float": "left", "width": "30%", "height":"90px", "textAlign": "right", "verticalAlign":"middle"}}>
-          <span style={{"float": "left", "width": "80%", "height":"90px", "textAlign": "left", "verticalAlign":"middle"}}> 
-            <div className="isLive">
-              <center><b>Heatmap Legend</b></center>
-              <button style={{width:"100%",height:"25px"}}type="button" className="btn m-btn m-btn--pill m-btn--gradient-from-info m-btn--gradient-to-warning"></button>
-              <br/>
-              <div>
-                <span style={{"float": "left", "width": "50%", "textAlign": "left"}}>
-                Low Reward / Risk
-                </span>
-                <span style={{"float": "left", "width": "50%", "textAlign": "right"}}>
-                High Reward / Risk
-                </span>
+            <span  style={{"float": "left", "width": "40%",  "minWidth":"600px", "height":"75px","whiteSpace": "nowrap","textAlign": "left", "verticalAlign":"top"}}>
+              
+              <span  style={{ "float": "left", "width": "20%", "minWidth":"100px", "height":"60px", "textAlign": "left", "verticalAlign":"middle"}}>
+                <button
+                    className="isSim"
+                    style={{"display":"none"}}
+                    onClick={this.reset}
+                    title={"Reset the board to the first of February"}
+                  >
+                  <font size="2">
+                  <b>
+                  Reset Board
+                  </b>
+                  </font>
+                </button>
+              </span>
+              <span  style={{"float": "left", "width": "60%", "height":"75px", "textAlign": "left", "verticalAlign":"top"}}>
+              <Clock />
+              </span>
+              <span style={{"float": "left", "width": "20%", "minWidth":"100px", "height":"60px", "textAlign": "right", "verticalAlign":"middle"}}>
+                <button               
+                style={{"display":"none"}}
+                disabled={!nextDate}
+                onClick={this.nextDay}
+                title={
+                  nextDate
+                    ? `Simulate market close for ${toWordedDate(nextDate)}`
+                    : ""
+                }
+                className={
+                  animateSimulateButton
+                    ? classes.bounce + " " + classes.animated + " isSim"
+                    : " isSim"
+                    }
+                
+              >
+                  <font size="2">
+                  <b>
+                Simulate Next Day
+                  </b>
+                  </font>
+              </button>
+
+
+              </span>
+        </span>
+        <span style={{"float": "left", "width": "30%", "height":"90px", "textAlign": "right", "verticalAlign":"middle"}}>
+            <span style={{"float": "left", "width": "80%", "height":"90px", "textAlign": "left", "verticalAlign":"middle"}}> 
+              <div className="isLive">
+                <center><b>Heatmap Legend</b></center>
+                <button style={{width:"100%",height:"25px"}}type="button" className="btn m-btn m-btn--pill m-btn--gradient-from-info m-btn--gradient-to-warning"></button>
+                <br/>
+                <div>
+                  <span style={{"float": "left", "width": "50%", "textAlign": "left"}}>
+                  Low Reward / Risk
+                  </span>
+                  <span style={{"float": "left", "width": "50%", "textAlign": "right"}}>
+                  High Reward / Risk
+                  </span>
+                </div>
               </div>
+          </span>
+          <span style={{"float": "left", "width": "20%", "height":"90px", "textAlign": "right", "verticalAlign":"top"}}>
+              <img src="/images/infotext_button.png" width="22"/>
+          </span>
+        </span>
+      </div>
+      <div
+            className={classes.Board}
+            style={
+              {
+                backgroundImage: "url(" + bgBoard + ")",
+                backgroundRepeat: "no-repeat",
+                backgroundSize: "cover",
+                paddingTop: "150px",
+                paddingBottom: "100px"
+              } // marginTop: "5%",
+            }
+          >
+            <div>
+              <span style={{"marginTop":"-150px","float": "left", "width": "50%", "textAlign": "left", "display": "inline-block","verticalAlign": "top"}}>
+              <img src="/images/edit_board_button.png" width="50"/><br/>  
+              <img src="/images/leaderboard_button.png" width="50"/><br/>
+              </span>
+              <span style={{"marginTop":"-150px", "float": "right", "width": "50%",  "textAlign": "right",  "display": "inline-block", "verticalAlign":"top"}}>
+                <img src="/images/infotext_button.png" width="22" style={{"margin":"10px"}} />
+              </span>
             </div>
-         </span>
-         <span style={{"float": "left", "width": "20%", "height":"90px", "textAlign": "right", "verticalAlign":"top"}}>
-            <img src="/images/infotext_button.png" width="22"/>
-         </span>
-      </span>
-    </div>
-    <div
-          className={classes.Board}
-          style={
-            {
-              backgroundImage: "url(" + bgBoard + ")",
-              backgroundRepeat: "no-repeat",
-              backgroundSize: "cover",
-              paddingTop: "150px",
-              paddingBottom: "100px"
-            } // marginTop: "5%",
-          }
-        >
-          <div>
-            <span style={{"marginTop":"-150px","float": "left", "width": "50%", "textAlign": "left", "display": "inline-block","verticalAlign": "top"}}>
-            <img src="/images/edit_board_button.png" width="50"/><br/>  
-            <img src="/images/leaderboard_button.png" width="50"/><br/>
-            </span>
-            <span style={{"marginTop":"-150px", "float": "right", "width": "50%",  "textAlign": "right",  "display": "inline-block", "verticalAlign":"top"}}>
-              <img src="/images/infotext_button.png" width="22" style={{"margin":"10px"}} />
-            </span>
+            <Panel
+              leftSystems={leftSystems || []}
+              rightSystems={rightSystems || []}
+              bottomSystems={bottomSystems || []}
+              topSystems={topSystems || []}
+              balanceChips={inGameChips.balanceChips || []}
+              bettingChips={inGameChips.bettingChips || []}
+              addBettingChip={this.addBettingChip}
+              moveToBalance={this.moveToBalance}
+            />
           </div>
-          <Panel
-            leftSystems={leftSystems || []}
-            rightSystems={rightSystems || []}
-            bottomSystems={bottomSystems || []}
-            topSystems={topSystems || []}
-            balanceChips={inGameChips.balanceChips || []}
-            bettingChips={inGameChips.bettingChips || []}
-            addBettingChip={this.addBettingChip}
-            moveToBalance={this.moveToBalance}
-          />
-        </div>
-      </Aux>
-    );
+        </Aux>
+      );
+    }
   }
 }
