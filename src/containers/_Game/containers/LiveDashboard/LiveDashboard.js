@@ -109,10 +109,12 @@ export default class LiveDashboard extends Component {
             const account=accounts[key];
             const accountId=account.account_id;
             const accountValue=account.account_value;
-            const lpBet = account.prev_selection;
-            const lcBet = account.last_selection;
             const locktime=account.locktime;
-
+            const lcBet = account.last_selection;
+            const betDate=locktime.substring(5,10)
+            const lpBet = account.prev_selection;
+            const lpBetDate=account.date.substring(5)
+            
             const cummPercentChange =account.pnl_cumpct;
             const display=account.starting_chip_text;
 
@@ -132,13 +134,25 @@ export default class LiveDashboard extends Component {
                 </td>
                 <td>
                   <div className={classes.Cell}>
-                    {lcBet}
+                    {lcBet ? (
+                      <p>
+                        <span>{`${lcBet
+                        }`}</span>
+                        <span>{`MOC (${betDate})`}</span>
+                      </p>
+                    ) : null}
                      
                   </div>
                 </td>
                 <td>
                   <div className={classes.Cell}>
-                    {lpBet}
+                    {lpBet ? (
+                      <p>
+                        <span>{`${lpBet
+                        }`}</span>
+                        <span>{`MOC (${lpBetDate})`}</span>
+                      </p>
+                    ) : null}
                   </div>
                 </td>
                 <td>
