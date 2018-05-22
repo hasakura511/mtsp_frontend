@@ -76,6 +76,8 @@ class Slot extends Component {
       leftSystem.display,
       rightSystem.display
     ].filter(s => s);
+    var ps=(LongShortMap[position] || position);
+    var name="Name: " + ps + "\nFull Name: " + ps + "\nType: Child\nParents: " + titleArray.join(", ")
     return dropTarget(
       <div className={classes.Slot}>
         <Square
@@ -89,7 +91,7 @@ class Slot extends Component {
             width,
             fontSize
           }}
-          title={titleArray.join(", ")}
+          title={name}
         >
           <BettingChips chips={heldChips} />
           {LongShortMap[position] || position}

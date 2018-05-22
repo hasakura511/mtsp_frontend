@@ -10,7 +10,6 @@ import RightSection from "../../components/Sections/RightSection/RightSection";
 import TopSection from "../../components/Sections/TopSection/TopSection";
 import OrderDialog from "../OrderDialog/OrderDialog";
 import axios from "../../../../axios-gsm";
-import ChipsConfig from "../../ChipsConfig";
 import { connect } from "react-redux";
 import * as actions from "../../../../store/actions";
 import { toSlashDate } from "../../../../util";
@@ -173,7 +172,17 @@ export default class Panel extends Component {
    */
 
   componentWillMount() {
-    const { topSystems, bottomSystems, leftSystems, rightSystems } = this.state;
+  }
+
+  componentWillReceiveProps(newProps) {
+    const { topSystems, leftSystems, rightSystems, bottomSystems } = newProps;
+    this.setState({
+      topSystems: topSystems && topSystems.length ? topSystems : [blankSystem],
+      bottomSystems:
+        bottomSystems && bottomSystems.length ? bottomSystems : [blankSystem],
+      leftSystems: leftSystems,
+      rightSystems: rightSystems
+    });
     const slots = [],
       sideSystems = [],
       maxHeight = Math.max(leftSystems.length, rightSystems.length) + 1,
@@ -204,17 +213,7 @@ export default class Panel extends Component {
     });
     this.setState({ slots, maxHeight, maxWidth });
     this._isMounted = true;
-  }
 
-  componentWillReceiveProps(newProps) {
-    const { topSystems, leftSystems, rightSystems, bottomSystems } = newProps;
-    this.setState({
-      topSystems: topSystems && topSystems.length ? topSystems : [blankSystem],
-      bottomSystems:
-        bottomSystems && bottomSystems.length ? bottomSystems : [blankSystem],
-      leftSystems: leftSystems,
-      rightSystems: rightSystems
-    });
   }
 
   /**
@@ -483,7 +482,7 @@ export default class Panel extends Component {
         // .get("https://api.myjson.com/bins/11pqxf", {
         //only 5k chip for tier 0
         // accounts: [{ portfolio, target, accountValue }],
-        accounts: ChipsConfig,
+        accounts: this.props.accounts,
         slots: slots.map(
           ({ position, topSystem, bottomSystem, leftSystem, rightSystem }) => {
             return {
@@ -530,6 +529,7 @@ export default class Panel extends Component {
     rightSystems: PropTypes.array,
     balanceChips: PropTypes.array,
     bettingChips: PropTypes.array,
+    accounts: PropTypes.object.isRequired,
     addBettingChip: PropTypes.func.isRequired,
     addLast3DaysProfit: PropTypes.func.isRequired,
     moveToBalance: PropTypes.func.isRequired,

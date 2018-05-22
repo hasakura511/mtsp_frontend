@@ -142,7 +142,8 @@ export default class Board extends Component {
     firstName: PropTypes.string,
     lastName: PropTypes.string,
     authSuccess: PropTypes.func.isRequired,
-    
+    accounts:PropTypes.object.isRequired,
+
     nextDay: PropTypes.func.isRequired,
     updateDate: PropTypes.func.isRequired,
     initializeData: PropTypes.func.isRequired,
@@ -594,6 +595,7 @@ export default class Board extends Component {
             </span>
           </div>
           <Panel
+            accounts={this.props.accounts || {}}
             leftSystems={leftSystems || []}
             rightSystems={rightSystems || []}
             bottomSystems={bottomSystems || []}

@@ -46,6 +46,7 @@ const initialState = {
     position: "left",
     // display: "Previous\n(10 day)",
     display: "Prev 10",
+    type:"",
     id: "PREVIOUS_10D",
     column: "prev10",
     description: "Bet that the 10 day price change will continue",
@@ -57,6 +58,7 @@ const initialState = {
     position: "left",
     // display: "Previous\n(5 day)",
     display: "Prev 5",
+    type:"",
     id: "PREVIOUS_5D",
     column: "prev5",
     description: "Bet that the 5 day price change will continue",
@@ -68,6 +70,7 @@ const initialState = {
       color: "#FFD966 ",
       position: "right",
       display: "A-Trend120",
+      type:"",
       id: "ANTI_ZZ-TREND_120D",
       column: "antiZz120",
       description: "Bet against the trends as seen from a 120 day perspective.",
@@ -91,6 +94,7 @@ const initialState = {
     color: "#F2F3F4",
     position: "top",
     display: "Risk On",
+    type:"",
     id: "RISK-ON",
     column: "riskOn",
     description: "Bet on risky assets and against government bonds.",
@@ -101,6 +105,7 @@ const initialState = {
     color: "#222222",
     position: "top",
     display: "Risk Off",
+    type:"",
     id: "RISK-OFF",
     column: "riskOff",
     description: "Bet on government bonds and against risky assets.",
@@ -113,6 +118,7 @@ const initialState = {
     color: "#B84E00",
     position: "bottom",
     display: "A-Season",
+    type:"",
     id: "ANTI_SEASONALITY",
     column: "antiSea",
     description: "Bet against long-term seasonal trends.",
@@ -123,6 +129,7 @@ const initialState = {
     color: "#006256",
     position: "bottom",
     display: "A-ScalpA",
+    type:"",
     id: "ANTI_ML-SCALP-ALL",
     column: "antiMlScalpAll",
     description:
@@ -134,6 +141,7 @@ const initialState = {
     color: "#00C256",
     position: "bottom",
     display: "Big Scalp",
+    type:"",
     id: "ML-SCALP-BIG_FB",
     column: "mlScalpBigFb",
     description:
@@ -145,6 +153,7 @@ const initialState = {
     color: "#003773",
     position: "bottom",
     display: "Big Swing",
+    type:"",
     id: "ML-SWING-BIG_FB",
     column: "mlSwingBigFb",
     description:
@@ -156,6 +165,7 @@ const initialState = {
     color: "#CE8B8B",
     position: "bottom",
     display: "BestF",
+    type:"",
     id: "ML-LAST-BEST_FB",
     column: "mlLastBestFb",
     description:
@@ -167,6 +177,7 @@ const initialState = {
     color: "#C69300",
     position: "bottom",
     display: "A-WorstF",
+    type:"",
     id: "ANTI_ML-LAST-WORST_FW",
     column: "antiMlLastWorstFw",
     description:
@@ -255,9 +266,9 @@ const reducer = (state = initialState, action) => {
                 strat=dictionary_strategy[name];
                 strat.heldChips=[];       
                 strat.column=name;
-                strat.display=strat.board_name;         
+                strat.display=name;         
                 strat.id=name;
-                strat.short=strat.type;
+                strat.short=strat.board_name;
                 strat.position="left";
                 leftSystems.push(strat);
               } else if (board_config[key].position == 'right') {
@@ -265,9 +276,9 @@ const reducer = (state = initialState, action) => {
                 strat=dictionary_strategy[name];
                 strat.heldChips=[];       
                 strat.column=name;
-                strat.display=strat.board_name;         
+                strat.display=name;         
                 strat.id=name;
-                strat.short=strat.type;
+                strat.short=strat.board_name;
                 strat.position="right";
                 rightSystems.push(strat);
               } else if (board_config[key].position == 'top') {
@@ -275,9 +286,9 @@ const reducer = (state = initialState, action) => {
                 strat=dictionary_strategy[name];
                 strat.heldChips=[];       
                 strat.column=name;
-                strat.display=strat.board_name;         
+                strat.display=name;         
                 strat.id=name;
-                strat.short=strat.type;
+                strat.short=strat.board_name;
                 strat.position="top";
                 topSystems.push(strat);
               } else if (board_config[key].position == 'bottom') {
@@ -285,9 +296,9 @@ const reducer = (state = initialState, action) => {
                 strat=dictionary_strategy[name];
                 strat.heldChips=[];       
                 strat.column=name;
-                strat.display=strat.board_name;         
+                strat.display=name;         
                 strat.id=name;
-                strat.short=strat.type;
+                strat.short=strat.board_name;
                 strat.position="bottom";
                 bottomSystems.push(strat);
               }  

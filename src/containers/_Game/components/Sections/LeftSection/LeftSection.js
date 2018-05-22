@@ -8,8 +8,8 @@ const leftSection = props => {
   return (
     <div className={classes.LeftSection}>
       {props.systems.map(
-        ({ id, color, display, description, column, heldChips, type }) => {
-          var mesg=" Name: " + id + "\n Full Name: " + display + "\n Type: " + type + "\n Description: " + description;
+        ({ id, color, display, description, column, heldChips, short, type }) => {
+          var mesg=" Name: " + id + "\n Full Name: " + short + "\n Type: " + type + "\n Description: " + description;
 
           return (
             <div

@@ -8,8 +8,8 @@ const bottomSection = props => {
   return (
     <div className={classes.BottomSection}>
       {props.systems.map(
-        ({ id, color, display, description, position, column, heldChips, type }) => {
-          var mesg=" Name: " + id + "\n Full Name: " + display + "\n Type: " + type + "\n Description: " + description;
+        ({ id, color, display, description, position, column, heldChips, short, type }) => {
+          var mesg=" Name: " + id + "\n Full Name: " + short + "\n Type: " + type + "\n Description: " + description;
 
           return position ? (
             <div
