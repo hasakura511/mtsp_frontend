@@ -100,8 +100,8 @@ const reducer = (state = initialState, action) => {
         var initializeData =  action.data;
         const accounts= JSON.parse(action.data.accounts)
         const heatmap = JSON.parse(action.data.heatmap)
-        const themes = JSON.parse(action.data.themes)
         const dictionary_strategy = JSON.parse(action.data.dictionary_strategy)
+        const themes = action.data.themes
         const loading=false;
         initializeData.accounts=accounts;
         initializeData.heatmap=heatmap;
