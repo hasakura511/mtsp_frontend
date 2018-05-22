@@ -98,10 +98,10 @@ const reducer = (state = initialState, action) => {
     case actionTypes.INITIALIZE_DATA:
     {
         var initializeData =  action.data;
-        const accounts= action.data.account; //JSON.parse(action.data.accounts)
-        const heatmap = action.data.heatmap; //JSON.parse(action.data.heatmap)
-        const themes = action.data.themes; //JSON.parse(action.data.themes)
-        const dictionary_strategy = action.data.dictionary_strategy; //JSON.parse(action.data.dictionary_strategy)
+        const accounts= JSON.parse(action.data.accounts)
+        const heatmap = JSON.parse(action.data.heatmap)
+        const themes = JSON.parse(action.data.themes)
+        const dictionary_strategy = JSON.parse(action.data.dictionary_strategy)
         const loading=false;
         initializeData.accounts=accounts;
         initializeData.heatmap=heatmap;
