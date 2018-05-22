@@ -4,21 +4,33 @@ import classes from "./TopSection.css";
 import Clock from "../../../containers/Clock/Clock";
 import ChipsPanel from "../../ChipsPanel/ChipsPanel";
 import Container from "../Container";
+
 const topSection = props => {
   return (
     <div className={classes.TopSection}>
 
       {props.systems.map(
-        ({ id, color, display, description, position, column, heldChips }) => {
+        ({ id, color, display, description, position, column, heldChips, type }) => {
+          var mesg=" Name: " + id + "\n Full Name: " + display + "\n Type: " + type + "\n Description: " + description;
+          
           return position ? (
+
             <div
               key={"top-" + id}
               className={classes.TopCell}
               style={{ borderTopColor: color }}
-              title={description}
-            >
+              title={mesg}
+              
+              >
+              
+              
+
               <Container {...props} column={column} heldChips={heldChips} />
+
               {display}
+
+              
+              
             </div>
           ) : null;
         }

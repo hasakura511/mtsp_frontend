@@ -7,13 +7,15 @@ const rightSection = props => {
   return (
     <div className={classes.RightSection}>
       {props.systems.map(
-        ({ id, color, display, description, column, heldChips }) => {
+        ({ id, color, display, description, column, heldChips, type }) => {
+          var mesg=" Name: " + id + "\n Full Name: " + display + "\n Type: " + type + "\n Description: " + description;
+
           return (
             <div
               key={"right-" + id}
               className={classes.RightCell}
               style={{ borderRightColor: color, borderLeftColor: color }}
-              title={description}
+              title={mesg}
             >
               <Container {...props} column={column} heldChips={heldChips} />
               {display}

@@ -8,13 +8,15 @@ const leftSection = props => {
   return (
     <div className={classes.LeftSection}>
       {props.systems.map(
-        ({ id, color, display, description, column, heldChips }) => {
+        ({ id, color, display, description, column, heldChips, type }) => {
+          var mesg=" Name: " + id + "\n Full Name: " + display + "\n Type: " + type + "\n Description: " + description;
+
           return (
             <div
               key={"left-" + id}
               className={classes.LeftCell}
               style={{ borderLeftColor: color, borderRightColor: color }}
-              title={description}
+              title={mesg}
             >
               <Container {...props} column={column} heldChips={heldChips} />
               {display}
