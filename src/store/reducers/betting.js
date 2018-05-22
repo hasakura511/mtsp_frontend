@@ -40,6 +40,141 @@ const initialState = {
   loading: true,
   initializeData: {},
   simulatedDate: "20180201",
+  leftSystems: [
+    {
+    color: "#FF0000",
+    position: "left",
+    // display: "Previous\n(10 day)",
+    display: "Prev 10",
+    id: "PREVIOUS_10D",
+    column: "prev10",
+    description: "Bet that the 10 day price change will continue",
+    short: "Prev 10",
+    heldChips: []
+    },
+    {
+    color: "#BE0032",
+    position: "left",
+    // display: "Previous\n(5 day)",
+    display: "Prev 5",
+    id: "PREVIOUS_5D",
+    column: "prev5",
+    description: "Bet that the 5 day price change will continue",
+    short: "Prev 5",
+    heldChips: []
+    }],
+  rightSystems: [
+    {
+      color: "#FFD966 ",
+      position: "right",
+      display: "A-Trend120",
+      id: "ANTI_ZZ-TREND_120D",
+      column: "antiZz120",
+      description: "Bet against the trends as seen from a 120 day perspective.",
+      short: "A-Trend120",
+      heldChips: []
+    },
+    {
+      color: "#9D67D1",
+      position: "right",
+      display: "Mode 30",
+      id: "ZZ-MODE_30D",
+      column: "zz30",
+      description:
+        "Bet on recent market swings as seen from a 30 day perspective.",
+      short: "Mode 30",
+      heldChips: []
+    },
+  ],
+  topSystems: [
+    {
+    color: "#F2F3F4",
+    position: "top",
+    display: "Risk On",
+    id: "RISK-ON",
+    column: "riskOn",
+    description: "Bet on risky assets and against government bonds.",
+    short: "Risk On",
+    heldChips: []
+    },
+    {
+    color: "#222222",
+    position: "top",
+    display: "Risk Off",
+    id: "RISK-OFF",
+    column: "riskOff",
+    description: "Bet on government bonds and against risky assets.",
+    short: "Risk Off",
+    heldChips: []
+    },
+  ],
+  bottomSystems: [ 
+    {
+    color: "#B84E00",
+    position: "bottom",
+    display: "A-Season",
+    id: "ANTI_SEASONALITY",
+    column: "antiSea",
+    description: "Bet against long-term seasonal trends.",
+    short: "A-Season",
+    heldChips: []
+    },
+    {
+    color: "#006256",
+    position: "bottom",
+    display: "A-ScalpA",
+    id: "ANTI_ML-SCALP-ALL",
+    column: "antiMlScalpAll",
+    description:
+      "Bet against prediction models that try to predict the next day.",
+    short: "A-ScalpA",
+    heldChips: []
+    },
+    {
+    color: "#00C256",
+    position: "bottom",
+    display: "Big Scalp",
+    id: "ML-SCALP-BIG_FB",
+    column: "mlScalpBigFb",
+    description:
+      "Bet on prediction models that try to predict days with big price movements.",
+    short: "Big Scalp",
+    heldChips: []
+    },
+    {
+    color: "#003773",
+    position: "bottom",
+    display: "Big Swing",
+    id: "ML-SWING-BIG_FB",
+    column: "mlSwingBigFb",
+    description:
+      "Bet on prediction models that try to predict multi-day swings in the market.",
+    short: "Big Swing",
+    heldChips: []
+    },
+    {
+    color: "#CE8B8B",
+    position: "bottom",
+    display: "BestF",
+    id: "ML-LAST-BEST_FB",
+    column: "mlLastBestFb",
+    description:
+      "Bet on the best prediction models based on the previous day’s results.",
+    short: "BestF",
+    heldChips: []
+    },
+    {
+    color: "#C69300",
+    position: "bottom",
+    display: "A-WorstF",
+    id: "ANTI_ML-LAST-WORST_FW",
+    column: "antiMlLastWorstFw",
+    description:
+      "Bet against the worst prediction models based on the previous day's results.",
+    short: "A-WorstF",
+    heldChips: []
+    },
+  ],
   /**
    * Last 3 days profit
    * __TEMPERORY__CODE__
@@ -98,15 +233,78 @@ const reducer = (state = initialState, action) => {
     case actionTypes.INITIALIZE_DATA:
     {
         var initializeData =  action.data;
-        const accounts= JSON.parse(action.data.accounts)
+        var accounts= JSON.parse(action.data.accounts)
         const heatmap = JSON.parse(action.data.heatmap)
         const dictionary_strategy = JSON.parse(action.data.dictionary_strategy)
         const themes = action.data.themes
         const loading=false;
+        var hasSystem=false;
+        var leftSystems= [],
+        rightSystems= [],
+        topSystems =[],
+        bottomSystems= [];
+  
+        Object.keys(accounts).map(function(key) { 
+          const board_config=JSON.parse(accounts[key].board_config_fe);
+          accounts[key].board_config_fe=board_config;
+          if (!hasSystem) {
+            Object.keys(board_config).map(function(key) {
+              var name, strat;
+              if (board_config[key].position == 'left') {
+                name=board_config[key].id;
+                strat=dictionary_strategy[name];
+                strat.heldChips=[];       
+                strat.column=name;
+                strat.display=strat.board_name;         
+                strat.id=name;
+                strat.short=strat.type;
+                strat.position="left";
+                leftSystems.push(strat);
+              } else if (board_config[key].position == 'right') {
+                name=board_config[key].id;
+                strat=dictionary_strategy[name];
+                strat.heldChips=[];       
+                strat.column=name;
+                strat.display=strat.board_name;         
+                strat.id=name;
+                strat.short=strat.type;
+                strat.position="right";
+                rightSystems.push(strat);
+              } else if (board_config[key].position == 'top') {
+                name=board_config[key].id;
+                strat=dictionary_strategy[name];
+                strat.heldChips=[];       
+                strat.column=name;
+                strat.display=strat.board_name;         
+                strat.id=name;
+                strat.short=strat.type;
+                strat.position="top";
+                topSystems.push(strat);
+              } else if (board_config[key].position == 'bottom') {
+                name=board_config[key].id;
+                strat=dictionary_strategy[name];
+                strat.heldChips=[];       
+                strat.column=name;
+                strat.display=strat.board_name;         
+                strat.id=name;
+                strat.short=strat.type;
+                strat.position="bottom";
+                bottomSystems.push(strat);
+              }  
+
+            });
+            hasSystem=true;
+          }
+        });
         initializeData.accounts=accounts;
         initializeData.heatmap=heatmap;
         initializeData.themes=themes;
         initializeData.dictionary_strategy=dictionary_strategy;
+        console.log(leftSystems);
+        console.log(rightSystems);
+        console.log(topSystems);
+        console.log(bottomSystems);
+        
         return {
             ...state,
             loading,
@@ -114,7 +312,11 @@ const reducer = (state = initialState, action) => {
             accounts, 
             heatmap,
             themes,
-            dictionary_strategy
+            dictionary_strategy,
+            leftSystems,
+            rightSystems,
+            topSystems,
+            bottomSystems
 
         };
     }

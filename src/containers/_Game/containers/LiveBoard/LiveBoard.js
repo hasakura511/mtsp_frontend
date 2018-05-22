@@ -1,7 +1,7 @@
 
 import React, { Component } from "react";
 import Panel from "../Panel/Panel";
-import classes from "./Board.css";
+import classes from "./LiveBoard.css";
 import bgBoard from "../../../../assets/images/boardBg.png";
 import Config from "../../Config";
 import ChipsConfig from "../../ChipsConfig";
@@ -19,29 +19,6 @@ import Clock from "../Clock/Clock";
 import Toggle from 'react-bootstrap-toggle'
 import axios from "../../../../axios-gsm";
 
-const systems = [];
-for (let key in Config) {
-  systems.push({
-    id: key,
-    ...Config[key]
-  });
-}
-
-/**
- * create dummy systems arrays
- */
-const { leftSystems, rightSystems, bottomSystems, topSystems } = systems.reduce(
-  (acc, system) => {
-    if (acc[system["position"] + "Systems"]) {
-      acc[system["position"] + "Systems"].push(system);
-    } else {
-      acc[system["position"] + "Systems"] = [system];
-    }
-    return acc;
-  },
-  {}
-);
-
 /**
  * create dummy balanceChips array
  */
@@ -53,6 +30,7 @@ const inGameChips = {
   }),
   bettingChips: []
 };
+
 
 // Inserts or removes chip into system
 const insertChip = (systems, column, chip) => {
@@ -136,7 +114,7 @@ const dispatchToProps = dispatch => {
  * @class Board
  * @extends {Component}
  */
-export default class Board extends Component {
+export default class LiveBoard extends Component {
   static propTypes = {
     email: PropTypes.string,
     firstName: PropTypes.string,
@@ -154,7 +132,12 @@ export default class Board extends Component {
     reset: PropTypes.func.isRequired,
     currentBets: PropTypes.object.isRequired,
     simulatedDate: PropTypes.string.isRequired,
-    last3DaysProfits: PropTypes.object.isRequired
+    last3DaysProfits: PropTypes.object.isRequired,
+
+    leftSystems:PropTypes.array.isRequired,
+    topSystems:PropTypes.array.isRequired,
+    rightSystems:PropTypes.array.isRequired,
+    bottomSystems:PropTypes.array.isRequired,
   };
 
   constructor(props) {
@@ -164,10 +147,7 @@ export default class Board extends Component {
       /**
        * Systems on four sides, left/right/top/bottom
        */
-      leftSystems: [],
-      rightSystems: [],
-      topSystems: [],
-      bottomSystems: [],
+
       inGameChips: {
         /**
          * Balance Chips
@@ -211,10 +191,6 @@ export default class Board extends Component {
      * set initial state
      */
     this.setState({
-      leftSystems,
-      rightSystems,
-      topSystems,
-      bottomSystems,
       inGameChips
     });
     
@@ -445,12 +421,18 @@ export default class Board extends Component {
   
   render() {
     const {
+      
       isAuth,
       rdAccepted,
       tosAccepted,
       simulatedDate,
-      last3DaysProfits
+      last3DaysProfits,
+      leftSystems,
+      rightSystems,
+      topSystems,
+      bottomSystems,
     } = this.props;
+    console.log(this.props);
     const dates = uniq(
       Object.values(last3DaysProfits)
         // ***hack*** to avoid crash when we dont have pnlData for that particular account
@@ -470,10 +452,7 @@ export default class Board extends Component {
       }
     }
     const {
-      leftSystems,
-      rightSystems,
-      topSystems,
-      bottomSystems,
+     
       inGameChips,
       animateSimulateButton,
       loading,
