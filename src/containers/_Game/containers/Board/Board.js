@@ -227,23 +227,28 @@ export default class Board extends Component {
     // accounts: [{ portfolio, target, accountValue }],
     'username': this.props.email,
     'reinitialize': 'false'
-    })
+    },{timeout: 600000})
     .then(({ data }) => {
-    // eslint-disable-next-line react/no-is-mounted
+      console.log('received initialize_live data')
+      // eslint-disable-next-line react/no-is-mounted
       console.log(data);
-      //alert(data);
-      
       this.setState({
         loading:false,
         rankingLoading: false,
         rankingData: data.rankingData,
       });
       
-      this.props.updateDate(data.last_date);
       this.props.initializeData(data);
+      
+      this.props.updateDate(data.last_date);
+
+
+
      
     })
     .catch(error => {
+      console.log('error initializing')
+      console.log(error)
     // eslint-disable-next-line react/no-is-mounted
       this.setState({
         rankingLoading: false,
