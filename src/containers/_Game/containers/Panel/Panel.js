@@ -183,13 +183,16 @@ export default class Panel extends Component {
       leftSystems: leftSystems,
       rightSystems: rightSystems
     });
-    const slots = [],
+    var slots = [],
       sideSystems = [],
-      maxHeight = Math.max(leftSystems.length, rightSystems.length) + 1,
+      maxHeight = Math.max(leftSystems.length, rightSystems.length),
       maxWidth =
         topSystems.length * bottomSystems.length ||
         topSystems.length ||
         bottomSystems.length;
+
+    if (maxHeight < 3) maxHeight+=1;
+    
     for (let i = 0; i < maxHeight; i++) {
       sideSystems.push({
         left: leftSystems[i] || blankSystem,
@@ -218,7 +221,7 @@ export default class Panel extends Component {
 
   /**
    *
-   * @function moveChipToSlot Puts the betting of size of the chip on a particular position
+     * @function moveChipToSlot Puts the betting of size of the chip on a particular position
    * @param {{accountId: string, display: string}} chip
    * @param {int|string} slotNumber
    *
