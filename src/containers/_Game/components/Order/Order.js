@@ -16,7 +16,7 @@ const getSystems = slot => {
 
 
 const order = props => {
-  const { slot, chip, toggleSystem, isAnti, submitBetHandler, close } = props;
+  const { slot, chip, toggleSystem, isAnti, submitBetHandler, close, isLive } = props;
   const isNumbered = !isNaN(Number(slot.position));
   return (
     <div className={classes.Order}>
@@ -92,17 +92,26 @@ const order = props => {
           <p style={{ color: "#63a57c" }}>Anti-System</p>
         </div> */}
       </div>
-      <div className={classes.Content}>
-        <OrderCharts position={slot.position} {...props} />
-        {/* // performance={performance}
-        // rankingError={rankingError}
-        // rankingLoading={rankingLoading}
-        // rankingData={rankingData}
-        // chip={chip}
-        // slot={slot}
-        // submitBetHandler={submitBetHandler}
-        // close={close} */}
-      </div>
+      {isLive ? (
+
+        <div className={classes.Content}>
+        </div>
+
+
+      ) :  (
+          <div className={classes.Content}>
+            <OrderCharts position={slot.position} {...props} />
+            {/* // performance={performance}
+            // rankingError={rankingError}
+            // rankingLoading={rankingLoading}
+            // rankingData={rankingData}
+            // chip={chip}
+            // slot={slot}
+            // submitBetHandler={submitBetHandler}
+            // close={close} */}
+          </div>
+      ) 
+      }
       {/* <div className={classes.ActionFooter}>
         <button onClick={close}>Cancel</button>
         <button className={classes.Submit} onClick={submitBetHandler}>
@@ -116,7 +125,8 @@ const order = props => {
 order.propTypes = {
   slot: PropTypes.object.isRequired,
   chip: PropTypes.object.isRequired,
-  performance: PropTypes.object.isRequired,
+  isLive: PropTypes.bool.isRequired,
+  performance: PropTypes.object,
   toggleSystem: PropTypes.func.isRequired,
   rankingError: PropTypes.object,
   rankingData: PropTypes.array,

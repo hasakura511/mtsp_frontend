@@ -13,7 +13,8 @@ import { withRouter } from "react-router-dom";
 const stateToProps = state => {
   return {
     simulatedDate: state.betting.simulatedDate,
-    isAuth: state.auth.token !== null
+    isAuth: state.auth.token !== null,
+    isLive: state.betting.isLive
   };
 };
 
@@ -109,85 +110,92 @@ export default class OrderDialog extends Component {
     /**
      * Fetch performance charts
      */
-    axios
-      .post("/utility/charts/", {
-        /**
-         * @example {"portfolio": ["TU", "BO"], "systems": ["prev1", "prev5"], "target": 500, "account": 5000}
-         *
-         */
-        systems,
-        portfolio,
-        qty,
-        target,
-        account: accountValue
-      })
-      .then(response => {
-        /**
-         * @namespace {Performance}
-         */
-        const performance = response.data;
+    if (!this.props.isLive) {
+      axios
+        .post("/utility/charts/", {
+          /**
+           * @example {"portfolio": ["TU", "BO"], "systems": ["prev1", "prev5"], "target": 500, "account": 5000}
+           *
+           */
+          systems,
+          portfolio,
+          qty,
+          target,
+          account: accountValue
+        })
+        .then(response => {
+          /**
+           * @namespace {Performance}
+           */
+          const performance = response.data;
 
-        // Adding last 3 days profit for simulation
-        // __TEMPERORY__CODE__
-        const profitObj = {};
-        profitObj[accountId] = {
-          position: this.props.slot.position,
-          "20180201": {
-            change: Number(
-              performance.pnlData.find(pnlObj => pnlObj.date === "20180201")[
-                "change"
-              ]
-            )
-          },
-          "20180202": {
-            change: Number(
-              performance.pnlData.find(pnlObj => pnlObj.date === "20180202")[
-                "change"
-              ]
-            )
-          },
-          "20180205": {
-            change: Number(
-              performance.pnlData.find(pnlObj => pnlObj.date === "20180205")[
-                "change"
-              ]
-            )
-          },
-          "20180206": {
-            change: Number(
-              performance.pnlData.find(pnlObj => pnlObj.date === "20180206")[
-                "change"
-              ]
-            )
-          },
-          "20180207": {
-            change: Number(
-              performance.pnlData.find(pnlObj => pnlObj.date === "20180207")[
-                "change"
-              ]
-            )
-          },
-          "20180208": {
-            change: Number(
-              performance.pnlData.find(pnlObj => pnlObj.date === "20180208")[
-                "change"
-              ]
-            )
-          }
-        };
-        this._isMounted &&
+          // Adding last 3 days profit for simulation
+          // __TEMPERORY__CODE__
+          const profitObj = {};
+          profitObj[accountId] = {
+            position: this.props.slot.position,
+            "20180201": {
+              change: Number(
+                performance.pnlData.find(pnlObj => pnlObj.date === "20180201")[
+                  "change"
+                ]
+              )
+            },
+            "20180202": {
+              change: Number(
+                performance.pnlData.find(pnlObj => pnlObj.date === "20180202")[
+                  "change"
+                ]
+              )
+            },
+            "20180205": {
+              change: Number(
+                performance.pnlData.find(pnlObj => pnlObj.date === "20180205")[
+                  "change"
+                ]
+              )
+            },
+            "20180206": {
+              change: Number(
+                performance.pnlData.find(pnlObj => pnlObj.date === "20180206")[
+                  "change"
+                ]
+              )
+            },
+            "20180207": {
+              change: Number(
+                performance.pnlData.find(pnlObj => pnlObj.date === "20180207")[
+                  "change"
+                ]
+              )
+            },
+            "20180208": {
+              change: Number(
+                performance.pnlData.find(pnlObj => pnlObj.date === "20180208")[
+                  "change"
+                ]
+              )
+            }
+          };
+          this._isMounted &&
+            this.setState({
+              last3DaysProfit: profitObj,
+              performanceLoading: false,
+              performance
+            });
+        })
+        .catch(performanceError => {
           this.setState({
-            last3DaysProfit: profitObj,
             performanceLoading: false,
-            performance
+            performanceError: performanceError
           });
-      })
-      .catch(performanceError => {
+        });
+      } else {
+
         this.setState({
           performanceLoading: false,
-          performanceError: performanceError
         });
-      });
+      }
   }
 
   /**
@@ -301,6 +309,7 @@ export default class OrderDialog extends Component {
         ) : (
           <Order
             {...this.props}
+            isLive={this.props.isLive}
             performance={performance}
             toggleSystem={this.toggleSystem}
             rankingData={rankingData}
@@ -327,6 +336,7 @@ export default class OrderDialog extends Component {
     addLast3DaysProfit: PropTypes.func.isRequired,
     addBet: PropTypes.func.isRequired,
     isAuth: PropTypes.bool.isRequired,
+    isLive: PropTypes.bool.isRequired,
     history: PropTypes.object.isRequired,
     addTimedToaster: PropTypes.func.isRequired
   };

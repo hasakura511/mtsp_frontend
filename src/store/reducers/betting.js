@@ -36,6 +36,7 @@ const initialState = {
     accountValue
   })),
   loading: true,
+  isLive:false,
   initializeData: {},
   simulatedDate: "20180201",
   leftSystems: [
@@ -323,7 +324,7 @@ const reducer = (state = initialState, action) => {
         //console.log(topSystems);
         //console.log(bottomSystems);
         accounts=account_list;
-        
+        const isLive=true;
         return {
             ...state,
             initializeData,
@@ -336,7 +337,7 @@ const reducer = (state = initialState, action) => {
             topSystems,
             bottomSystems,
             loading,
-
+            isLive
         };
     }
     case actionTypes.ADD_BET: {
