@@ -254,31 +254,78 @@ export default class OrderDialog extends Component {
    */
   submitBetHandler = event => {
     event.preventDefault();
-    const {
-      slot,
-      simulatedDate,
-      addBet,
-      chip,
-      addLast3DaysProfit,
-      successHandler
-    } = this.props;
-    const { isAnti, last3DaysProfit } = this.state;
-    const bet = new Object();
-    // example bet:
-    // {"5K_0_1516105730": {
-    //   bettingDate: "2018/01/06",
-    //   position: "1",
-    //   bettingTime: null,
-    // }}
-    bet[chip.accountId] = {
-      bettingDate: toSlashDate(simulatedDate),
-      position: slot.position,
-      isAnti
-    };
-    addLast3DaysProfit(last3DaysProfit);
-    addBet(bet);
-    successHandler(chip, slot.position);
-    this.toggle();
+    if (!this.props.isLive) {
+        const {
+          slot,
+          simulatedDate,
+          addBet,
+          chip,
+          addLast3DaysProfit,
+          successHandler
+        } = this.props;
+        const { isAnti, last3DaysProfit } = this.state;
+        const bet = new Object();
+        // example bet:
+        // {"5K_0_1516105730": {
+        //   bettingDate: "2018/01/06",
+        //   position: "1",
+        //   bettingTime: null,
+        // }}
+        bet[chip.accountId] = {
+          bettingDate: toSlashDate(simulatedDate),
+          position: slot.position,
+          isAnti
+        };
+        addLast3DaysProfit(last3DaysProfit);
+        addBet(bet);
+        successHandler(chip, slot.position);
+        this.toggle();
+    } else {
+      const {
+        slot,
+        simulatedDate,
+        addBet,
+        chip,
+        successHandler
+      } = this.props;
+      console.log(chip);
+      console.log(slot);
+
+      const { isAnti } = this.state;
+      const bet = new Object();
+      bet[chip.accountId] = {
+        bettingDate: toSlashDate(simulatedDate),
+        position: slot.position,
+        isAnti
+      };
+      addBet(bet);
+      successHandler(chip, slot.position);
+      this.toggle();
+    
+      axios
+      .post("/utility/update_bet_live/", {
+      // .get("https://api.myjson.com/bins/11pqxf", {
+      //only 5k chip for tier 0
+      // accounts: [{ portfolio, target, accountValue }],
+      'account_id': chip.accountId,
+      'chip_id':chip.chip_id,
+      'strategy':slot.position,
+      },{timeout: 600000})
+      .then(({ data }) => {
+       
+      })
+      .catch(error => {
+        console.log('error initializing')
+        console.log(error)
+      // eslint-disable-next-line react/no-is-mounted
+        this.setState({
+          rankingLoading: false,
+          rankingError: error
+        });
+      });
+  
+  
+    }
   };
 
   /**

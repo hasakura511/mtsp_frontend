@@ -24,13 +24,6 @@ import ClockLoader from "../../../../components/UI/ClockLoader/ClockLoader";
  * create dummy balanceChips array
  */
 
-const inGameChips = {
-  balanceChips: ChipsConfig.map(chip => {
-    chip["count"] = 1;
-    return chip;
-  }),
-  bettingChips: []
-};
 
 
 // Inserts or removes chip into system
@@ -58,6 +51,7 @@ const stateToProps = state => {
     firstName: state.auth.firstName,
     lastName: state.auth.lastName,
     isAuth: state.auth.token !== null,
+    inGameChips:state.betting.inGameChips,
     tosAccepted: state.auth.tosAccepted,
     rdAccepted: state.auth.rdAccepted,
     currentBets: state.betting.currentBets,
@@ -134,7 +128,7 @@ export default class LiveBoard extends Component {
     currentBets: PropTypes.object.isRequired,
     simulatedDate: PropTypes.string.isRequired,
     last3DaysProfits: PropTypes.object.isRequired,
-
+    inGameChips:PropTypes.object.isRequired,
     leftSystems:PropTypes.array.isRequired,
     topSystems:PropTypes.array.isRequired,
     rightSystems:PropTypes.array.isRequired,
@@ -191,9 +185,6 @@ export default class LiveBoard extends Component {
     /**
      * set initial state
      */
-    this.setState({
-      inGameChips
-    });
     
   }
 
@@ -462,11 +453,6 @@ export default class LiveBoard extends Component {
       toggleActive,
     } = this.state;
 
-    console.log('render')
-    console.log(leftSystems)
-    console.log(rightSystems)
-    console.log(topSystems)
-    console.log(bottomSystems)
     if (this.state.loading) {
         return ( 
 
@@ -592,8 +578,8 @@ export default class LiveBoard extends Component {
               rightSystems={rightSystems || []}
               bottomSystems={bottomSystems || []}
               topSystems={topSystems || []}
-              balanceChips={inGameChips.balanceChips || []}
-              bettingChips={inGameChips.bettingChips || []}
+              balanceChips={this.props.inGameChips.balanceChips || []}
+              bettingChips={this.props.inGameChips.bettingChips || []}
               addBettingChip={this.addBettingChip}
               moveToBalance={this.moveToBalance}
             />

@@ -39,6 +39,13 @@ const initialState = {
   isLive:false,
   initializeData: {},
   simulatedDate: "20180201",
+  inGameChips: {
+    balanceChips: ChipsConfig.map(chip => {
+      chip["count"] = 1;
+      return chip;
+    }),
+    bettingChips: [],
+  },  
   leftSystems: [
     {
     color: "#FF0000",
@@ -262,10 +269,22 @@ const reducer = (state = initialState, action) => {
         topSystems =[],
         bottomSystems= [];
         var account_list=[];
+        var balanceChips=[];
         Object.keys(accounts).map(function(key) {
-          account_list.push(accounts[key]); 
           const board_config=JSON.parse(accounts[key].board_config_fe);
           accounts[key].board_config_fe=board_config;
+          accounts[key].accountId=accounts[key].account_id;
+          accounts[key].accountValue=accounts[key].accountValue;
+          
+          var chip=accounts[key];
+          chip['chip_id']=key;
+          chip['count']=1;
+          chip['qty']={};
+          chip['display']=chip.account_chip_text;
+          
+          balanceChips.push(chip);
+          account_list.push(accounts[key]); 
+          
           if (!hasSystem) {
             Object.keys(board_config).map(function(key) {
               var name, strat;
@@ -315,6 +334,11 @@ const reducer = (state = initialState, action) => {
             hasSystem=true;
           }
         });
+      
+        var inGameChips = {
+          balanceChips: balanceChips,
+          bettingChips: []
+        }
         initializeData.accounts=account_list;
         initializeData.heatmap=heatmap;
         initializeData.themes=themes;
@@ -324,6 +348,7 @@ const reducer = (state = initialState, action) => {
         //console.log(topSystems);
         //console.log(bottomSystems);
         accounts=account_list;
+       
         const isLive=true;
         return {
             ...state,
@@ -337,38 +362,42 @@ const reducer = (state = initialState, action) => {
             topSystems,
             bottomSystems,
             loading,
-            isLive
+            isLive,
+            inGameChips
         };
     }
     case actionTypes.ADD_BET: {
       const accountId = Object.keys(action.bet)[0];
+      const { isLive } = state;
+      if (!isLive) {
+        const { last3DaysProfits } = state;
 
-      const { last3DaysProfits } = state;
+        // __TEMPERORY_CODE__
+        // update the date of this action.bet to be the next market date from current simulated date which is already passsed into the betting object
+        const dates = uniq(
+          Object.values(last3DaysProfits)
+            // ***hack*** to avoid crash when we dont have pnlData for that particular account
+            // which is possible in tier 0 as the pnlData is fed from performanceData and
+            // that happens when a new bet is placed which only gets performanceData for the account
+            // that particular bet is using.
+            // Remove hack when we have proper data feed for changePercent per account basis
+            .map(profitObj => Object.keys(profitObj || {}))
+            .reduce((acc, curr) => acc.concat(curr), [])
+            .filter(date => !isNaN(Number(date)))
+            .sort((d1, d2) => Number(d1) > Number(d2))
+        );
 
-      // __TEMPERORY_CODE__
-      // update the date of this action.bet to be the next market date from current simulated date which is already passsed into the betting object
-      const dates = uniq(
-        Object.values(last3DaysProfits)
-          // ***hack*** to avoid crash when we dont have pnlData for that particular account
-          // which is possible in tier 0 as the pnlData is fed from performanceData and
-          // that happens when a new bet is placed which only gets performanceData for the account
-          // that particular bet is using.
-          // Remove hack when we have proper data feed for changePercent per account basis
-          .map(profitObj => Object.keys(profitObj || {}))
-          .reduce((acc, curr) => acc.concat(curr), [])
-          .filter(date => !isNaN(Number(date)))
-          .sort((d1, d2) => Number(d1) > Number(d2))
-      );
-
-      action.bet[accountId].bettingDate =
-        toSlashDate(
-          dates[
-            dates.indexOf(
-              toIntegerDate(action.bet[accountId].bettingDate).toString()
-            ) + 1
-          ]
-        ) || "2018/02/09";
-
+        action.bet[accountId].bettingDate =
+          toSlashDate(
+            dates[
+              dates.indexOf(
+                toIntegerDate(action.bet[accountId].bettingDate).toString()
+              ) + 1
+            ]
+          ) || "2018/02/09";
+        } else {
+          action.bet[accountId].bettingDate = "";          
+        }
       return {
         ...state,
         currentBets: {
