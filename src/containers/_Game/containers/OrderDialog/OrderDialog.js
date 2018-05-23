@@ -301,7 +301,8 @@ export default class OrderDialog extends Component {
       addBet(bet);
       successHandler(chip, slot.position);
       this.toggle();
-    
+      
+      var strat=slot.position + "";
       axios
       .post("/utility/update_bet_live/", {
       // .get("https://api.myjson.com/bins/11pqxf", {
@@ -309,7 +310,7 @@ export default class OrderDialog extends Component {
       // accounts: [{ portfolio, target, accountValue }],
       'account_id': chip.accountId,
       'chip_id':chip.chip_id,
-      'strategy':slot.position,
+      'strategy':strat,
       },{timeout: 600000})
       .then(({ data }) => {
        
