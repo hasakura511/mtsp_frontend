@@ -19,6 +19,7 @@ import Clock from "../Clock/Clock";
 import Toggle from 'react-bootstrap-toggle'
 import axios from "../../../../axios-gsm";
 import ClockLoader from "../../../../components/UI/ClockLoader/ClockLoader";
+import { toSystem, toAntiSystem } from "../../Config";
 
 /**
  * create dummy balanceChips array
@@ -326,9 +327,10 @@ export default class LiveBoard extends Component {
                 }
               : c;
           });
-          var strat=position + "";
-          if (isAnti)
-            strat="Anti-" + strat;
+          
+          var strat=toSystem(position);
+          if (isAnti) 
+            strat=toAntiSystem(strat);
 
           var rev_accounts2 = accounts.map(account => {
             return account.accountId === chip.accountId

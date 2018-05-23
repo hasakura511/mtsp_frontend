@@ -9,6 +9,7 @@ import { connect } from "react-redux";
 import * as actions from "../../../../store/actions";
 import { toSlashDate } from "../../../../util";
 import { withRouter } from "react-router-dom";
+import { toSystem, toAntiSystem } from "../../Config";
 
 const stateToProps = state => {
   return {
@@ -299,10 +300,10 @@ export default class OrderDialog extends Component {
         isAnti
       };
       
-      var strat=slot.position + "";
+      var strat=toSystem(slot.position);
       if (isAnti) 
-        strat="Anti-" + strat;
-
+        strat=toAntiSystem(strat);
+        
       addBet(bet);
       successHandler(chip, slot.position, isAnti);
       this.toggle();
