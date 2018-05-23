@@ -45,7 +45,7 @@ export default class LiveDashboard extends Component {
    static propTypes = {
     currentBets: PropTypes.object.isRequired,
     pastBets: PropTypes.object.isRequired,
-    accounts: PropTypes.object.isRequired,
+    accounts: PropTypes.array.isRequired,
     simulatedDate: PropTypes.string.isRequired,
     loading: PropTypes.bool.isRequired,
     initializeData:PropTypes.object.isRequired,
@@ -74,10 +74,10 @@ export default class LiveDashboard extends Component {
     var netPnl = 0;
     var netStartAmount = 0;
     var netFinalAmount =  0; 
-    Object.keys(accounts).map(function(key) { 
-      netPnl += accounts[key].last_pnl;
-      netStartAmount+=accounts[key].starting_value;
-      netFinalAmount+=accounts[key].account_value;
+    accounts.map(function(account) { 
+      netPnl +=account.last_pnl;
+      netStartAmount+=account.starting_value;
+      netFinalAmount+=account.account_value;
     });
 
     var netChangePercent = netPnl / netStartAmount * 100;
@@ -105,131 +105,134 @@ export default class LiveDashboard extends Component {
           </tr>
         </thead>
         <tbody>
-          {Object.keys(accounts).map(function(key) { 
-            const account=accounts[key];
-            const accountId=account.account_id;
-            const accountValue=account.account_value;
-            var locktime=account.locktime;
-            const lcBet = account.last_selection;
-            const betDate=locktime.substring(5,10).replace('-','/')
-            const lpBet = account.prev_selection;
-            const lpBetDate=account.date.substring(5).replace('-','/')
-            
-            const cummPercentChange =account.pnl_cumpct;
-            const display=account.starting_chip_text;
-            locktime=locktime.substring(5).replace('-','/');
-            //eslint-disable-next-line
-            // if (lpBet) console.log(account.accountValue - lpBet.change);
+          {accounts.map(function(account) { 
+            console.log(account);
+            if (account.locktime) { 
 
-            //eslint-disable-next-line
-            // console.log(account.accountValue);
+              const accountId=account.account_id;
+              const accountValue=account.account_value;
+              var locktime=account.locktime;
+              const lcBet = account.last_selection;
+              const betDate=locktime.substring(5,10).replace('-','/')
+              const lpBet = account.prev_selection;
+              const lpBetDate=account.date.substring(5).replace('-','/')
+              
+              const cummPercentChange =account.pnl_cumpct;
+              const display=account.starting_chip_text;
+              locktime=locktime.substring(5).replace('-','/');
+              //eslint-disable-next-line
+              // if (lpBet) console.log(account.accountValue - lpBet.change);
 
-            return (
-              <tr key={`dashboard-row-${accountId}`}>
-                <td>
-                  <div className={classes.Cell + " " + classes.Flex}>
-                    <img src="/images/account_chart_button.png" width="25" />
-                    <strong>{display}</strong>
-                  </div>
-                </td>
-                <td>
-                  <div className={classes.Cell}>
-                    {lcBet ? (
-                      <p>
-                        <span>{`${lcBet
-                        }`}</span>
-                        <span>{`MOC (${betDate})`}</span>
-                      </p>
-                    ) : null}
-                     
-                  </div>
-                </td>
-                <td>
-                  <div className={classes.Cell}>
-                    {lpBet ? (
-                      <p>
-                        <span>{`${lpBet
-                        }`}</span>
-                        <span>{`MOC (${lpBetDate})`}</span>
-                      </p>
-                    ) : null}
-                  </div>
-                </td>
-                <td>
-                  <div
-                    className={classes.Cell}
-                    style={{ justifyContent: "center" }}
-                  >
-                    
+              //eslint-disable-next-line
+              // console.log(account.accountValue);
 
-                    {account.last_pnl !== null ? (
-                      <p style={{ width: "auto" }}>
-                        {account.pnl_pct ? (
-                          <img
-                            src={
-                              account.pnl_pct > 0
-                                ? gainIcon
-                                : account.pnl_pct < 0 ? lossIcon : ""
-                            }
-                          />
-                        ) : null}
-                        ${Math.abs(Math.round(account.last_pnl)).toLocaleString(
-                          "en"
-                        )}{" "}
-                        (
-                        <span
-                          style={{
-                            color:
-                            account.pnl_pct > 0
-                                ? "green"
-                                : account.pnl_pct < 0 ? "red" : "black"
-                          }}
-                        >
-                          {(
-                            account.pnl_pct
-                          ).toFixed(2)}%
-                        </span>
-                        )
-                      </p>
-                    ) : null}
-                  </div>
-                </td>
-                <td>
-                  <div
-                    className={classes.Cell}
-                    style={{ justifyContent: "center" }}
-                  >
-                    {`$${account.account_value.toLocaleString("en")}`}&nbsp;
-                    ( <span
-                      style={{
-                        color:
-                          cummPercentChange > 0
-                            ? "green"
-                            : cummPercentChange < 0 ? "red" : "black"
-                      }}
+              return (
+                <tr key={`dashboard-row-${accountId}`}>
+                  <td>
+                    <div className={classes.Cell + " " + classes.Flex}>
+                      <img src="/images/account_chart_button.png" width="25" />
+                      <strong>{display}</strong>
+                    </div>
+                  </td>
+                  <td>
+                    <div className={classes.Cell}>
+                      {lcBet ? (
+                        <p>
+                          <span>{`${lcBet
+                          }`}</span>
+                          <span>{`MOC (${betDate})`}</span>
+                        </p>
+                      ) : null}
+                      
+                    </div>
+                  </td>
+                  <td>
+                    <div className={classes.Cell}>
+                      {lpBet ? (
+                        <p>
+                          <span>{`${lpBet
+                          }`}</span>
+                          <span>{`MOC (${lpBetDate})`}</span>
+                        </p>
+                      ) : null}
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      className={classes.Cell}
+                      style={{ justifyContent: "center" }}
                     >
-                       {cummPercentChange.toFixed(2)}% 
-                    </span> )
-                  </div>
-                </td>
-                <td  className="isLive">
-                <div
-                  className={classes.Cell}
-                  style={{ justifyContent: "center" }}
-                >
-                  {locktime}
-                </div>
-                </td>
-                <td>
+                      
+
+                      {account.last_pnl !== null ? (
+                        <p style={{ width: "auto" }}>
+                          {account.pnl_pct ? (
+                            <img
+                              src={
+                                account.pnl_pct > 0
+                                  ? gainIcon
+                                  : account.pnl_pct < 0 ? lossIcon : ""
+                              }
+                            />
+                          ) : null}
+                          ${Math.abs(Math.round(account.last_pnl)).toLocaleString(
+                            "en"
+                          )}{" "}
+                          (
+                          <span
+                            style={{
+                              color:
+                              account.pnl_pct > 0
+                                  ? "green"
+                                  : account.pnl_pct < 0 ? "red" : "black"
+                            }}
+                          >
+                            {(
+                              account.pnl_pct
+                            ).toFixed(2)}%
+                          </span>
+                          )
+                        </p>
+                      ) : null}
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      className={classes.Cell}
+                      style={{ justifyContent: "center" }}
+                    >
+                      {`$${account.account_value.toLocaleString("en")}`}&nbsp;
+                      ( <span
+                        style={{
+                          color:
+                            cummPercentChange > 0
+                              ? "green"
+                              : cummPercentChange < 0 ? "red" : "black"
+                        }}
+                      >
+                        {cummPercentChange.toFixed(2)}% 
+                      </span> )
+                    </div>
+                  </td>
+                  <td  className="isLive">
                   <div
                     className={classes.Cell}
                     style={{ justifyContent: "center" }}
                   >
-                  {account.update_date}
+                    {locktime}
                   </div>
-                </td>
-              </tr>
-            );
+                  </td>
+                  <td>
+                    <div
+                      className={classes.Cell}
+                      style={{ justifyContent: "center" }}
+                    >
+                    {account.update_date}
+                    </div>
+                  </td>
+                </tr>
+              );
+            }
           })}
           <tr className={classes.LastRow}>
             <th>

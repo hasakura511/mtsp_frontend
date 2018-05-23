@@ -196,6 +196,24 @@ export default [
   // }
 ];
 
+export const accounts = {
+    '0' : {
+      accountId: "25K_0_1516006972",
+      display: "25K",
+      accountValue: 25000,
+    },
+    '1': {
+        accountId: "50K_0_1516105887",
+        display: "50K",
+        accountValue: 50000.0,
+    },
+    '2': {
+        accountId: "100K_0_1516105902",
+        display: "0.1M",
+        accountValue: 100000.0,
+    }
+}
+
 export const description = {
   AD: "Australian Dollar",
   BO: "Soybean Oil",

@@ -31,12 +31,10 @@ const initialState = {
     },
     {}
   ),
-  accounts: {}
-  /* ChipsConfig.map(({ accountId, accountValue }) => ({
+  accounts: ChipsConfig.map(({ accountId, accountValue }) => ({
     accountId,
-    accountValues
-  })) */
-  ,
+    accountValue
+  })),
   loading: true,
   initializeData: {},
   simulatedDate: "20180201",
@@ -233,6 +231,14 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case actionTypes.FINISH_LOADING:
+    {
+      const loading=false;
+      return {
+        ...state,
+        loading
+      };
+    }
     case actionTypes.UPDATE_DATE:
     {
         const simulatedDate = action.simdate;
@@ -254,8 +260,9 @@ const reducer = (state = initialState, action) => {
         rightSystems= [],
         topSystems =[],
         bottomSystems= [];
-  
-        Object.keys(accounts).map(function(key) { 
+        var account_list=[];
+        Object.keys(accounts).map(function(key) {
+          account_list.push(accounts[key]); 
           const board_config=JSON.parse(accounts[key].board_config_fe);
           accounts[key].board_config_fe=board_config;
           if (!hasSystem) {
@@ -307,18 +314,18 @@ const reducer = (state = initialState, action) => {
             hasSystem=true;
           }
         });
-        initializeData.accounts=accounts;
+        initializeData.accounts=account_list;
         initializeData.heatmap=heatmap;
         initializeData.themes=themes;
         initializeData.dictionary_strategy=dictionary_strategy;
-        console.log(leftSystems);
-        console.log(rightSystems);
-        console.log(topSystems);
-        console.log(bottomSystems);
+        //console.log(leftSystems);
+        //console.log(rightSystems);
+        //console.log(topSystems);
+        //console.log(bottomSystems);
+        accounts=account_list;
         
         return {
             ...state,
-            loading,
             initializeData,
             accounts, 
             heatmap,
@@ -327,7 +334,8 @@ const reducer = (state = initialState, action) => {
             leftSystems,
             rightSystems,
             topSystems,
-            bottomSystems
+            bottomSystems,
+            loading,
 
         };
     }

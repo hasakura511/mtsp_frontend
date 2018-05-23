@@ -172,10 +172,26 @@ export default class Panel extends Component {
    */
 
   componentWillMount() {
+    this.makeBoard(this.props);
   }
 
   componentWillReceiveProps(newProps) {
-    const { topSystems, leftSystems, rightSystems, bottomSystems } = newProps;
+    this.makeBoard(newProps);
+
+  }
+
+  /**
+   *
+     * @function moveChipToSlot Puts the betting of size of the chip on a particular position
+   * @param {{accountId: string, display: string}} chip
+   * @param {int|string} slotNumber
+   *
+   *
+   *
+   */
+
+  makeBoard = (propData) => {
+    const { topSystems, leftSystems, rightSystems, bottomSystems } = propData;
     this.setState({
       topSystems: topSystems && topSystems.length ? topSystems : [blankSystem],
       bottomSystems:
@@ -216,19 +232,7 @@ export default class Panel extends Component {
     });
     this.setState({ slots, maxHeight, maxWidth });
     this._isMounted = true;
-
   }
-
-  /**
-   *
-     * @function moveChipToSlot Puts the betting of size of the chip on a particular position
-   * @param {{accountId: string, display: string}} chip
-   * @param {int|string} slotNumber
-   *
-   *
-   *
-   */
-
   moveChipToSlot = (chip, position) => {
     // Open order dialogue
     const {
@@ -532,7 +536,7 @@ export default class Panel extends Component {
     rightSystems: PropTypes.array,
     balanceChips: PropTypes.array,
     bettingChips: PropTypes.array,
-    accounts: PropTypes.object.isRequired,
+    accounts: PropTypes.array.isRequired,
     addBettingChip: PropTypes.func.isRequired,
     addLast3DaysProfit: PropTypes.func.isRequired,
     moveToBalance: PropTypes.func.isRequired,

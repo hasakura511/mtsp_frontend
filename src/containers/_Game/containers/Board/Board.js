@@ -8,7 +8,7 @@ import ChipsConfig from "../../ChipsConfig";
 import protectedComponent from "../../../../hoc/ProtectedComponent/ProtectedComponent";
 import Aux from "../../../../hoc/_Aux/_Aux";
 // import Dashboard from "../../components/Dashboard/Dashboard";
-import LiveDashboard from "../LiveDashboard/LiveDashboard";
+import Dashboard from "../../components/Dashboard/Dashboard";
 import Bettings from "../../BettingConfig";
 import { connect } from "react-redux";
 import * as actions from "../../../../store/actions";
@@ -123,6 +123,9 @@ const dispatchToProps = dispatch => {
     authSuccess: (user, token) => {
       dispatch(actions.authSuccess(user, token));
     },
+    finishLoading: () => {
+      dispatch(actions.finishLoading());
+    }
 
   };
 };
@@ -142,8 +145,8 @@ export default class Board extends Component {
     firstName: PropTypes.string,
     lastName: PropTypes.string,
     authSuccess: PropTypes.func.isRequired,
-    accounts:PropTypes.object.isRequired,
-
+    accounts:PropTypes.array.isRequired,
+    finishLoading:PropTypes.func.isRequired,
     nextDay: PropTypes.func.isRequired,
     updateDate: PropTypes.func.isRequired,
     initializeData: PropTypes.func.isRequired,
@@ -180,8 +183,8 @@ export default class Board extends Component {
       },
       animateSimulateButton: false,
       loading: true,
-      boardMode: 'live',
-      toggleActive:true,
+      boardMode: 'practice',
+      toggleActive:false,
       initializeData:{},
     };
     
@@ -225,43 +228,7 @@ export default class Board extends Component {
 
     
     console.log(this.props);
-
-    axios
-    .post("/utility/initialize_live/", {
-    // .get("https://api.myjson.com/bins/11pqxf", {
-    //only 5k chip for tier 0
-    // accounts: [{ portfolio, target, accountValue }],
-    'username': this.props.email,
-    'reinitialize': 'false'
-    },{timeout: 600000})
-    .then(({ data }) => {
-      console.log('received initialize_live data')
-      // eslint-disable-next-line react/no-is-mounted
-      console.log(data);
-      this.setState({
-        loading:false,
-        rankingLoading: false,
-        rankingData: data.rankingData,
-      });
-      
-      this.props.initializeData(data);
-      
-      this.props.updateDate(data.last_date);
-
-
-
-     
-    })
-    .catch(error => {
-      console.log('error initializing')
-      console.log(error)
-    // eslint-disable-next-line react/no-is-mounted
-      this.setState({
-        rankingLoading: false,
-        rankingError: error
-      });
-    });
-
+    this.props.finishLoading();
 
 
   }
@@ -426,6 +393,7 @@ export default class Board extends Component {
       this.toggleSim();
       
     } else {
+      window.location.href='/board';
       this.toggleLive();
 
     }
@@ -482,15 +450,11 @@ export default class Board extends Component {
       toggleActive,
     } = this.state;
 
-    console.log('render')
-    console.log(leftSystems)
-    console.log(rightSystems)
-    console.log(topSystems)
-    console.log(bottomSystems)
+    
     return (
       <Aux>
 
-        <LiveDashboard 
+        <Dashboard 
            />
         <div className={classes.ActionRow}>
           <span style={{"float": "left", "width": "30%", "height":"75px", "textAlign": "left", "verticalAlign":"middle"}}>

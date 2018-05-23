@@ -20,6 +20,12 @@ export const initializeData = data => {
   };
 };
 
+export const finishLoading = () => {
+  return {
+    type: actionTypes.FINISH_LOADING
+  };
+};
+
 export const toggleMode = () => {
   return {
     type: actionTypes.RESET_BOARD

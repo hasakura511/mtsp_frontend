@@ -26,3 +26,5 @@ export const RESET_BOARD = "RESET_BOARD";
 export const TOGGLE_BOARD_MODE = "TOGGLE_BOARD_MODE";
 export const UPDATE_DATE = "UPDATE_DATE";
 export const INITIALIZE_DATA = "INITIALIZE_DATA";
+
+export const FINISH_LOADING = "FINISH_LOADING";

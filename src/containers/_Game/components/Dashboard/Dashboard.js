@@ -16,7 +16,8 @@ const stateToProps = state => {
     currentBets: state.betting.currentBets,
     pastBets: state.betting.pastBets,
     accounts: state.betting.accounts,
-    simulatedDate: state.betting.simulatedDate
+    simulatedDate: state.betting.simulatedDate,
+    loading:state.betting.loading,
   };
 };
 
@@ -48,7 +49,6 @@ const dashboard = props => {
             <th>Previous Bet</th>
             <th>Previous Bet Gains & Losses</th>
             <th>Account Values</th>
-            <th className="isLive">Lockdown</th>
             <th><span style={{"float": "left", "width": "80%", "textAlign": "left"}}>
                   Last Update
                 </span>
@@ -170,14 +170,6 @@ const dashboard = props => {
                     </span>
                   </div>
                 </td>
-                <td  className="isLive">
-                <div
-                  className={classes.Cell}
-                  style={{ justifyContent: "center" }}
-                >
-                  17:00:00
-                </div>
-                </td>
                 <td>
                   <div
                     className={classes.Cell}
@@ -233,13 +225,6 @@ const dashboard = props => {
                   ( {netCumChangePercent.toFixed(2)}% )
                 </span>
               </div>
-            </td>
-            <td  className="isLive">
-                <div
-                  className={classes.Cell}
-                  style={{ justifyContent: "center" }}
-                >
-                </div>
             </td>
             <td />
           </tr>
