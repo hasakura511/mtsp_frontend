@@ -109,7 +109,7 @@ export default class LiveDashboard extends Component {
             const account=accounts[key];
             const accountId=account.account_id;
             const accountValue=account.account_value;
-            const locktime=account.locktime;
+            var locktime=account.locktime;
             const lcBet = account.last_selection;
             const betDate=locktime.substring(5,10).replace('-','/')
             const lpBet = account.prev_selection;
@@ -117,7 +117,7 @@ export default class LiveDashboard extends Component {
             
             const cummPercentChange =account.pnl_cumpct;
             const display=account.starting_chip_text;
-
+            locktime=locktime.substring(5).replace('-','/');
             //eslint-disable-next-line
             // if (lpBet) console.log(account.accountValue - lpBet.change);
 
