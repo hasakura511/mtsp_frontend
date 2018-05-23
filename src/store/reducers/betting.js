@@ -255,6 +255,22 @@ const reducer = (state = initialState, action) => {
             simulatedDate
         };
     }
+    case actionTypes.UPDATE_BET:
+    {
+        const topSystems=action.topSystems;
+        const bottomSystems=action.bottomSystems;
+        const leftSystems=action.leftSystems;
+        const rightSystems=action.rightSystems;
+        const inGameChips=action.inGameChips;
+        return {
+          ...state,
+          topSystems,
+          bottomSystems,
+          leftSystems,
+          rightSystems,
+          inGameChips
+        };
+    }
     case actionTypes.INITIALIZE_DATA:
     {
         var initializeData =  action.data;
@@ -275,7 +291,7 @@ const reducer = (state = initialState, action) => {
           accounts[key].board_config_fe=board_config;
           accounts[key].accountId=accounts[key].account_id;
           accounts[key].accountValue=accounts[key].accountValue;
-          
+
           var chip=accounts[key];
           chip['chip_id']=key;
           chip['count']=1;

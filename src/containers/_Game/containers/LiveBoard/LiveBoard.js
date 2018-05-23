@@ -96,6 +96,17 @@ const dispatchToProps = dispatch => {
     authSuccess: (user, token) => {
       dispatch(actions.authSuccess(user, token));
     },
+    updateBet: (topSystems,
+      bottomSystems,
+      leftSystems,
+      rightSystems,
+      inGameChips) => {
+        dispatch(actions.updateBet(topSystems,
+          bottomSystems,
+          leftSystems,
+          rightSystems,
+          inGameChips));
+      },
 
   };
 };
@@ -117,6 +128,7 @@ export default class LiveBoard extends Component {
     authSuccess: PropTypes.func.isRequired,
     accounts:PropTypes.array.isRequired,
     nextDay: PropTypes.func.isRequired,
+    updateBet: PropTypes.func.isRequired,
     updateDate: PropTypes.func.isRequired,
     initializeData: PropTypes.func.isRequired,
     toggleMode: PropTypes.func.isRequired,
@@ -241,14 +253,19 @@ export default class LiveBoard extends Component {
    * @todo find a better way to handle position of the bet.
    */
   addBettingChip = (chip, position) => {
-    this.setState(
-      ({
-        topSystems,
-        bottomSystems,
-        leftSystems,
-        rightSystems,
-        inGameChips
-      }) => {
+        var {
+          topSystems,
+          bottomSystems,
+          leftSystems,
+          rightSystems,
+          inGameChips
+        } = this.props;
+
+        console.log("inGameChips")
+        console.log(inGameChips);
+
+        console.log("topSystems")
+        console.log(topSystems);
         // In case the chip is dropped on a system
         // we push it in system's heldChips in the inserChip method.
         if (chip.position) {
@@ -264,25 +281,26 @@ export default class LiveBoard extends Component {
                 }
               : c;
           });
-          return {
-            inGameChips: { balanceChips, bettingChips },
-            topSystems: insertChip(topSystems, position, {
+          this.props.updateBet(
+            insertChip(topSystems, position, {
               ...chip,
               position
             }),
-            bottomSystems: insertChip(bottomSystems, position, {
+            insertChip(bottomSystems, position, {
               ...chip,
               position
             }),
-            leftSystems: insertChip(leftSystems, position, {
+            insertChip(leftSystems, position, {
               ...chip,
               position
             }),
-            rightSystems: insertChip(rightSystems, position, {
+            insertChip(rightSystems, position, {
               ...chip,
               position
-            })
-          };
+            }),
+            { balanceChips, bettingChips },
+            
+          );
         } else {
           /**
            * When chip is moved from off location to a betting position.
@@ -299,28 +317,26 @@ export default class LiveBoard extends Component {
             ...inGameChips.bettingChips,
             { ...chip, position }
           ];
-          return {
-            inGameChips: { balanceChips, bettingChips },
-            topSystems: insertChip(topSystems, position, {
+          this.props.updateBet(
+            insertChip(topSystems, position, {
               ...chip,
               position
             }),
-            bottomSystems: insertChip(bottomSystems, position, {
+            insertChip(bottomSystems, position, {
               ...chip,
               position
             }),
-            leftSystems: insertChip(leftSystems, position, {
+            insertChip(leftSystems, position, {
               ...chip,
               position
             }),
-            rightSystems: insertChip(rightSystems, position, {
+            insertChip(rightSystems, position, {
               ...chip,
               position
-            })
-          };
+            }),
+            { balanceChips, bettingChips },
+          );
         }
-      }
-    );
   };
 
   /**
@@ -330,14 +346,14 @@ export default class LiveBoard extends Component {
    * @param {any} chip
    */
   moveToBalance = chip => {
-    this.setState(
-      ({
+    
+      var {
         topSystems,
         bottomSystems,
         leftSystems,
         rightSystems,
         inGameChips
-      }) => {
+      } = this.props;
         /**
          * When chip is moved to off location from some betting position.
          */
@@ -349,25 +365,17 @@ export default class LiveBoard extends Component {
         const bettingChips = inGameChips.bettingChips.filter(
           c => c.accountId !== chip.accountId
         );
-        return {
-          inGameChips: { bettingChips, balanceChips },
-          topSystems: insertChip(topSystems, "off", chip),
-          bottomSystems: insertChip(bottomSystems, "off", chip),
-          leftSystems: insertChip(leftSystems, "off", chip),
-          rightSystems: insertChip(rightSystems, "off", chip)
-        };
-      }
-    );
+        
+        this.props.updateBet(
+          insertChip(topSystems, "off", chip),
+          insertChip(bottomSystems, "off", chip),
+          insertChip(leftSystems, "off", chip),
+          insertChip(rightSystems, "off", chip),
+          { bettingChips, balanceChips },
+        );
   };
 
   reset = () => {
-    this.setState({
-      inGameChips,
-      leftSystems,
-      rightSystems,
-      topSystems,
-      bottomSystems
-    });
     this.props.reset();
   };
 
@@ -424,6 +432,7 @@ export default class LiveBoard extends Component {
       rightSystems,
       topSystems,
       bottomSystems,
+      inGameChips
     } = this.props;
     console.log(this.props);
     const dates = uniq(
@@ -445,8 +454,6 @@ export default class LiveBoard extends Component {
       }
     }
     const {
-     
-      inGameChips,
       animateSimulateButton,
       loading,
       boardMode,

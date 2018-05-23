@@ -20,6 +20,21 @@ export const initializeData = data => {
   };
 };
 
+export const updateBet = ( topSystems,
+  bottomSystems,
+  leftSystems,
+  rightSystems,
+  inGameChips) => {
+  return {
+    type: actionTypes.UPDATE_BET,
+    topSystems,
+    bottomSystems,
+    leftSystems,
+    rightSystems,
+    inGameChips
+  };
+};
+
 export const finishLoading = () => {
   return {
     type: actionTypes.FINISH_LOADING
