@@ -111,9 +111,9 @@ export default class LiveDashboard extends Component {
             const accountValue=account.account_value;
             const locktime=account.locktime;
             const lcBet = account.last_selection;
-            const betDate=locktime.substring(5,10)
+            const betDate=locktime.substring(5,10).replace('-','/')
             const lpBet = account.prev_selection;
-            const lpBetDate=account.date.substring(5)
+            const lpBetDate=account.date.substring(5).replace('-','/')
             
             const cummPercentChange =account.pnl_cumpct;
             const display=account.starting_chip_text;
@@ -200,7 +200,7 @@ export default class LiveDashboard extends Component {
                     style={{ justifyContent: "center" }}
                   >
                     {`$${account.account_value.toLocaleString("en")}`}&nbsp;
-                    <span
+                    ( <span
                       style={{
                         color:
                           cummPercentChange > 0
@@ -208,8 +208,8 @@ export default class LiveDashboard extends Component {
                             : cummPercentChange < 0 ? "red" : "black"
                       }}
                     >
-                      ( {cummPercentChange.toFixed(2)}% )
-                    </span>
+                       {cummPercentChange.toFixed(2)}% 
+                    </span> )
                   </div>
                 </td>
                 <td  className="isLive">
@@ -264,7 +264,7 @@ export default class LiveDashboard extends Component {
             <td>
               <div className={classes.Cell}>
                 {`$${netFinalAmount.toLocaleString("en")}`}&nbsp;
-                <span
+                ( <span
                   style={{
                     color:
                       netCumChangePercent > 0
@@ -272,8 +272,8 @@ export default class LiveDashboard extends Component {
                         : netCumChangePercent < 0 ? "red" : "black"
                   }}
                 >
-                  ( {netCumChangePercent.toFixed(2)}% )
-                </span>
+                   {netCumChangePercent.toFixed(2)}% 
+                </span> )
               </div>
             </td>
             <td  className="isLive">

@@ -35,7 +35,7 @@ const navigationItems = props => {
   }));
   const ddnLinks = _ddnLinks.map(ddnLink => (
     <li key={ddnLink.id}>
-      <NavLink to={ddnLink.href}>
+      <NavLink style={{fontSize: '0.5em'}} to={ddnLink.href}>
         {ddnLink.text}
       </NavLink>
     </li>
@@ -78,7 +78,7 @@ const navigationItems = props => {
       ))}
       {props.isAuth ? (
         <li>
-          <DropDown btnStyle={{fontSize: '0.7em'}} name={props.firstName} items={ddnLinks} />
+          <DropDown btnStyle={{fontSize: '0.5em'}} name={props.firstName} items={ddnLinks} />
         </li>
       ) : null}
     </ul>
