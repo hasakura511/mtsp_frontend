@@ -148,22 +148,22 @@ const Config = {
     color: "#FF0000",
     position: "left",
     // display: "Previous\n(10 day)",
-    display: "Prev 10",
+    display: "Prev10",
     id: "PREVIOUS_10D",
     column: "prev10",
     description: "Bet that the 10 day price change will continue",
-    short: "Prev 10",
+    short: "Prev10",
     heldChips: []
   },
   PREVIOUS_5D: {
     color: "#BE0032",
     position: "left",
     // display: "Previous\n(5 day)",
-    display: "Prev 5",
+    display: "Prev5",
     id: "PREVIOUS_5D",
     column: "prev5",
     description: "Bet that the 5 day price change will continue",
-    short: "Prev 5",
+    short: "Prev5",
     heldChips: []
   },
   ANTI_ZZ_TREND_120D: {
@@ -179,32 +179,32 @@ const Config = {
   ZZ_MODE_30D: {
     color: "#9D67D1",
     position: "right",
-    display: "Mode 30",
+    display: "Mode30",
     id: "ZZ-MODE_30D",
     column: "zz30",
     description:
       "Bet on recent market swings as seen from a 30 day perspective.",
-    short: "Mode 30",
+    short: "Mode30",
     heldChips: []
   },
   RISK_ON: {
     color: "#F2F3F4",
     position: "top",
-    display: "Risk On",
+    display: "RiskOn",
     id: "RISK-ON",
     column: "riskOn",
     description: "Bet on risky assets and against government bonds.",
-    short: "Risk On",
+    short: "RiskOn",
     heldChips: []
   },
   RISK_OFF: {
     color: "#222222",
     position: "top",
-    display: "Risk Off",
+    display: "RiskOff",
     id: "RISK-OFF",
     column: "riskOff",
     description: "Bet on government bonds and against risky assets.",
-    short: "Risk Off",
+    short: "RiskOff",
     heldChips: []
   },
   ANTI_SEASONALITY: {
@@ -231,23 +231,23 @@ const Config = {
   ML_SCALP_BIG_FB: {
     color: "#00C256",
     position: "bottom",
-    display: "Big Scalp",
+    display: "BigScalp",
     id: "ML-SCALP-BIG_FB",
     column: "mlScalpBigFb",
     description:
       "Bet on prediction models that try to predict days with big price movements.",
-    short: "Big Scalp",
+    short: "BigScalp",
     heldChips: []
   },
   ML_SWING_BIG_FB: {
     color: "#003773",
     position: "bottom",
-    display: "Big Swing",
+    display: "BigSwing",
     id: "ML-SWING-BIG_FB",
     column: "mlSwingBigFb",
     description:
       "Bet on prediction models that try to predict multi-day swings in the market.",
-    short: "Big Swing",
+    short: "BigSwing",
     heldChips: []
   },
   ML_LAST_BEST_FB: {
@@ -289,7 +289,7 @@ export const LongShortMap = LSM;
 
 export const toSystem = pos => {
   if (pos in LSM == false) {
-    return pos;
+    return pos.toString().replace(' ','');
   } else {
     if (isNaN(Number(pos))) {
       if (!LSM[pos]) {
@@ -302,7 +302,7 @@ export const toSystem = pos => {
           .replace("Anti ", "Anti-")
       );
     } else {
-      return pos;
+      return pos.toString().replace(' ','');
     }
   }
 };
