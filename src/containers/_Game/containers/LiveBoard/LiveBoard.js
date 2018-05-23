@@ -254,7 +254,7 @@ export default class LiveBoard extends Component {
    * @param {any} position position of the bet, that could be a number or a system.
    * @todo find a better way to handle position of the bet.
    */
-  addBettingChip = (chip, position) => {
+  addBettingChip = (chip, position, isAnti) => {
         var {
           topSystems,
           bottomSystems,
@@ -326,11 +326,15 @@ export default class LiveBoard extends Component {
                 }
               : c;
           });
+          var strat=position + "";
+          if (isAnti)
+            strat="Anti-" + strat;
+
           var rev_accounts2 = accounts.map(account => {
             return account.accountId === chip.accountId
               ? {
                   ...account,
-                  last_selection: position + ""
+                  last_selection: strat,
                 }
               : account;
           });

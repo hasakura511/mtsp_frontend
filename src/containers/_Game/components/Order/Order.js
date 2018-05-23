@@ -17,6 +17,7 @@ const getSystems = slot => {
 
 const order = props => {
   const { slot, chip, toggleSystem, isAnti, submitBetHandler, close, isLive } = props;
+  console.log(slot);
   const isNumbered = !isNaN(Number(slot.position));
   return (
     <div className={classes.Order}>
@@ -62,9 +63,17 @@ const order = props => {
                 checked={!isAnti}
                 onChange={toggleSystem}
               />
-              <label htmlFor="system-radio" style={{ color: "#8884d8" }}>
-                {toSystem(slot.position)}
-              </label>
+              {isLive ? (
+
+                  <label htmlFor="system-radio" style={{ color: "#8884d8" }}>
+                    {toSystem(slot.position)}
+                  </label>
+
+                  ) : (
+                  <label htmlFor="system-radio" style={{ color: "#8884d8" }}>
+                    {toSystem(slot.position)}
+                  </label>
+                  )}
             </div>
             <div style={{ display: "flex", width: "100%" }}>
               <input
@@ -73,9 +82,15 @@ const order = props => {
                 checked={isAnti}
                 onChange={toggleSystem}
               />
-              <label htmlFor="anti-system-radio" style={{ color: "#63a57c" }}>
-                {toAntiSystem(slot.position)}
-              </label>
+              {isLive ? (
+                <label htmlFor="anti-system-radio" style={{ color: "#63a57c" }}>
+                  {toAntiSystem(slot.position)}
+                </label>
+              ) : (
+                <label htmlFor="anti-system-radio" style={{ color: "#63a57c" }}>
+                  {toAntiSystem(slot.position)}
+                </label>
+              )}
             </div>
           </div>
           <div className={classes.ActionBar}>

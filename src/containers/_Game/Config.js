@@ -288,18 +288,22 @@ LSM["off"] = "Off";
 export const LongShortMap = LSM;
 
 export const toSystem = pos => {
-  if (isNaN(Number(pos))) {
-    if (!LSM[pos]) {
-      console.log(pos);
-    }
-    return (
-      LSM[pos]
-        // .replace(/[A-Z]/g, $1 => " " + $1)
-        // .replace(/.{1}/, $1 => $1.toUpperCase())
-        .replace("Anti ", "Anti-")
-    );
-  } else {
+  if (pos in LSM == false) {
     return pos;
+  } else {
+    if (isNaN(Number(pos))) {
+      if (!LSM[pos]) {
+        console.log(pos);
+      }
+      return (
+        LSM[pos]
+          // .replace(/[A-Z]/g, $1 => " " + $1)
+          // .replace(/.{1}/, $1 => $1.toUpperCase())
+          .replace("Anti ", "Anti-")
+      );
+    } else {
+      return pos;
+    }
   }
 };
 
@@ -323,5 +327,6 @@ export const toAntiSystem = pos => {
     return "Anti-" + pos;
   }
 };
+
 
 export default Config;

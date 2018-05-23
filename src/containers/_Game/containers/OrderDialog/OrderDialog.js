@@ -278,7 +278,7 @@ export default class OrderDialog extends Component {
         };
         addLast3DaysProfit(last3DaysProfit);
         addBet(bet);
-        successHandler(chip, slot.position);
+        successHandler(chip, slot.position, isAnti);
         this.toggle();
     } else {
       const {
@@ -298,11 +298,15 @@ export default class OrderDialog extends Component {
         position: slot.position,
         isAnti
       };
-      addBet(bet);
-      successHandler(chip, slot.position);
-      this.toggle();
       
       var strat=slot.position + "";
+      if (isAnti) 
+        strat="Anti-" + strat;
+
+      addBet(bet);
+      successHandler(chip, slot.position, isAnti);
+      this.toggle();
+  
       axios
       .post("/utility/update_bet_live/", {
       // .get("https://api.myjson.com/bins/11pqxf", {
