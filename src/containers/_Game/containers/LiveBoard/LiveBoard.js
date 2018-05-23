@@ -100,12 +100,14 @@ const dispatchToProps = dispatch => {
       bottomSystems,
       leftSystems,
       rightSystems,
-      inGameChips) => {
+      inGameChips,
+      accounts) => {
         dispatch(actions.updateBet(topSystems,
           bottomSystems,
           leftSystems,
           rightSystems,
-          inGameChips));
+          inGameChips,
+          accounts));
       },
 
   };
@@ -258,7 +260,8 @@ export default class LiveBoard extends Component {
           bottomSystems,
           leftSystems,
           rightSystems,
-          inGameChips
+          inGameChips, 
+          accounts
         } = this.props;
 
         console.log("inGameChips")
@@ -281,6 +284,15 @@ export default class LiveBoard extends Component {
                 }
               : c;
           });
+          var rev_accounts = accounts.map(account => {
+            return account.accountId === chip.accountId
+              ? {
+                  ...account,
+                  last_selection: position + ""
+                }
+              : account;
+          });
+          accounts=rev_accounts;
           this.props.updateBet(
             insertChip(topSystems, position, {
               ...chip,
@@ -299,6 +311,7 @@ export default class LiveBoard extends Component {
               position
             }),
             { balanceChips, bettingChips },
+            accounts
             
           );
         } else {
@@ -313,6 +326,15 @@ export default class LiveBoard extends Component {
                 }
               : c;
           });
+          var rev_accounts2 = accounts.map(account => {
+            return account.accountId === chip.accountId
+              ? {
+                  ...account,
+                  last_selection: position + ""
+                }
+              : account;
+          });
+          accounts=rev_accounts2;
           const bettingChips = [
             ...inGameChips.bettingChips,
             { ...chip, position }
@@ -335,6 +357,7 @@ export default class LiveBoard extends Component {
               position
             }),
             { balanceChips, bettingChips },
+            accounts
           );
         }
   };
@@ -352,7 +375,8 @@ export default class LiveBoard extends Component {
         bottomSystems,
         leftSystems,
         rightSystems,
-        inGameChips
+        inGameChips, 
+        accounts
       } = this.props;
         /**
          * When chip is moved to off location from some betting position.
@@ -372,6 +396,7 @@ export default class LiveBoard extends Component {
           insertChip(leftSystems, "off", chip),
           insertChip(rightSystems, "off", chip),
           { bettingChips, balanceChips },
+          accounts
         );
   };
 

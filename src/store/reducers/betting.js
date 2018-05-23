@@ -262,13 +262,15 @@ const reducer = (state = initialState, action) => {
         const leftSystems=action.leftSystems;
         const rightSystems=action.rightSystems;
         const inGameChips=action.inGameChips;
+        const accounts=action.accounts;
         return {
           ...state,
           topSystems,
           bottomSystems,
           leftSystems,
           rightSystems,
-          inGameChips
+          inGameChips,
+          accounts
         };
     }
     case actionTypes.INITIALIZE_DATA:

@@ -24,14 +24,16 @@ export const updateBet = ( topSystems,
   bottomSystems,
   leftSystems,
   rightSystems,
-  inGameChips) => {
+  inGameChips, 
+  accounts) => {
   return {
     type: actionTypes.UPDATE_BET,
     topSystems,
     bottomSystems,
     leftSystems,
     rightSystems,
-    inGameChips
+    inGameChips,
+    accounts
   };
 };
 

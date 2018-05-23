@@ -5,6 +5,7 @@ import { DragSource } from "react-dnd";
 import imgSource_25K from "../../../../assets/images/chip-drag-25K.png";
 import imgSource_50K from "../../../../assets/images/chip-drag-50K.png";
 import imgSource_100K from "../../../../assets/images/chip-drag-0.1M.png";
+import imgSource_blank from "../../../../assets/images/practice_chip.png";
 import { replaceSymbols } from "../../ChipsConfig";
 
 const chip = props => {
@@ -30,9 +31,14 @@ const chip = props => {
     default:
       break;
   }
-  dragPreview(img);
+
   const title =
     "Portfolio: " + JSON.stringify(chip.qty).replace(/\{|\}|\'|\"/gi, "");
+  dragPreview(
+    <div className={classes.Chip} title={replaceSymbols(title)}>
+      <p>{chip.display}</p>
+    </div>
+  );
   return dragSource(
     <div className={classes.Chip} title={replaceSymbols(title)}>
       <p>{chip.display}</p>
