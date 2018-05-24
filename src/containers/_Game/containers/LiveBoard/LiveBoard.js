@@ -219,7 +219,7 @@ export default class LiveBoard extends Component {
     // .get("https://api.myjson.com/bins/11pqxf", {
     //only 5k chip for tier 0
     // accounts: [{ portfolio, target, accountValue }],
-    'username': "hidemi@gmail.com", //this.props.email,
+    'username':  this.props.email,
     'reinitialize': 'false'
     },{timeout: 600000})
     .then(({ data }) => {
