@@ -410,7 +410,7 @@ const reducer = (state = initialState, action) => {
                       position=parseInt(position.replace('Anti-',''))
 
                   } else if (position.match(/^\d+$/)) {
-                      positio=parseInt(position);
+                      position=parseInt(position);
                   }
 
                   var bettingChips = [
