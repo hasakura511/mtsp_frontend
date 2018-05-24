@@ -16,7 +16,7 @@ export const updateDate = simdate => {
 export const initializeData = data => {
   return {
     type: actionTypes.INITIALIZE_DATA,
-    data
+    data,
   };
 };
 

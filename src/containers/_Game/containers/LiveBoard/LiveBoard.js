@@ -237,7 +237,7 @@ export default class LiveBoard extends Component {
       this.props.updateDate(data.last_date);
 
 
-
+      
      
     })
     .catch(error => {
