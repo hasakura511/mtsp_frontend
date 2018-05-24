@@ -39,12 +39,14 @@ const Formatter = Intl.DateTimeFormat(["en-GB"], {
 
 @connect(state => {
   return {
-    simulatedDate: state.betting.simulatedDate
+    simulatedDate: state.betting.simulatedDate,
+    isLive:state.betting.isLive
   };
 })
 export default class Clock extends PureComponent {
   static propTypes = {
-    simulatedDate: PropTypes.string.isRequired
+    simulatedDate: PropTypes.string.isRequired,
+    isLive:PropTypes.bool.isRequired
   };
 
   constructor(props) {
@@ -75,6 +77,7 @@ export default class Clock extends PureComponent {
     return (
       <div className={classes.Widget}>
         <div className={classes.Left}>
+          {this.props.isLive ? (
             <span className="isLive" >
             <p  style={{ width: "140px", 
                         "marginLeft":"15px",
@@ -87,13 +90,16 @@ export default class Clock extends PureComponent {
               </font>
             </p>
             </span>
-            <span className="isSim" style={{"display":"none"}}>
+          ) : (
+            <span className="isSim">
             <p  style={{ width: "140px", 
                         "marginLeft":"15px",
-                        "lineHeight":"1" }}>
-                    <br/><b>Practice Mode</b>
+                        "lineHeight":"1" }} 
+                        align="center">
+                    <br/><b><img src="/favicon.png"/></b>
             </p>
             </span>
+          )}
         </div>
         <div className={classes.Saperation} />
         <div className={classes.Right}>

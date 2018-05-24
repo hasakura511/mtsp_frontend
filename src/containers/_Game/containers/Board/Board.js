@@ -369,6 +369,7 @@ export default class Board extends Component {
       bottomSystems
     });
     this.props.reset();
+    this.props.finishLoading();
   };
 
   nextDay = () => {
@@ -399,14 +400,14 @@ export default class Board extends Component {
     }
   };
   toggleSim = () => {
-      $('.isLive').hide();
-      $('.isSim').show();
+      //$('.isLive').hide();
+      //$('.isSim').show();
       this.setState({toggleActive:false, boardMode:'practice'});
 
   }
   toggleLive = () => {
-    $('.isLive').show();
-    $('.isSim').hide();
+    //$('.isLive').show();
+    //$('.isSim').hide();
     this.setState({toggleActive:true,boardMode:'live'});
 
   }
@@ -468,14 +469,12 @@ export default class Board extends Component {
             />
             <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
             <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-            <img className="isLive" src="/images/timetable_button.png" width="60"/>
           </span>
           <span  style={{"float": "left", "width": "40%",  "minWidth":"600px", "height":"75px","whiteSpace": "nowrap","textAlign": "left", "verticalAlign":"top"}}>
             
             <span  style={{ "float": "left", "width": "20%", "minWidth":"100px", "height":"60px", "textAlign": "left", "verticalAlign":"middle"}}>
               <button
                   className="isSim"
-                  style={{"display":"none"}}
                   onClick={this.reset}
                   title={"Reset the board to the first of February"}
                 >
@@ -491,7 +490,6 @@ export default class Board extends Component {
             </span>
             <span style={{"float": "left", "width": "20%", "minWidth":"100px", "height":"60px", "textAlign": "right", "verticalAlign":"middle"}}>
               <button               
-              style={{"display":"none"}}
               disabled={!nextDate}
               onClick={this.nextDay}
               title={
@@ -518,19 +516,7 @@ export default class Board extends Component {
       </span>
       <span style={{"float": "left", "width": "30%", "height":"90px", "textAlign": "right", "verticalAlign":"middle"}}>
           <span style={{"float": "left", "width": "80%", "height":"90px", "textAlign": "left", "verticalAlign":"middle"}}> 
-            <div className="isLive">
-              <center><b>Heatmap Legend</b></center>
-              <button style={{width:"100%",height:"25px"}}type="button" className="btn m-btn m-btn--pill m-btn--gradient-from-info m-btn--gradient-to-warning"></button>
-              <br/>
-              <div>
-                <span style={{"float": "left", "width": "50%", "textAlign": "left"}}>
-                Low Reward / Risk
-                </span>
-                <span style={{"float": "left", "width": "50%", "textAlign": "right"}}>
-                High Reward / Risk
-                </span>
-              </div>
-            </div>
+            
          </span>
          <span style={{"float": "left", "width": "20%", "height":"90px", "textAlign": "right", "verticalAlign":"top"}}>
             <img src="/images/infotext_button.png" width="22"/>
