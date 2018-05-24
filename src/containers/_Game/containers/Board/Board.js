@@ -537,8 +537,6 @@ export default class Board extends Component {
         >
           <div>
             <span style={{"marginTop":"-150px","float": "left", "width": "50%", "textAlign": "left", "display": "inline-block","verticalAlign": "top"}}>
-            <img src="/images/edit_board_button.png" width="50"/><br/>  
-            <img src="/images/leaderboard_button.png" width="50"/><br/>
             </span>
             <span style={{"marginTop":"-150px", "float": "right", "width": "50%",  "textAlign": "right",  "display": "inline-block", "verticalAlign":"top"}}>
               <img src="/images/infotext_button.png" width="22" style={{"margin":"10px"}} />
