@@ -240,7 +240,7 @@ export default class Board extends Component {
    * @param {any} position position of the bet, that could be a number or a system.
    * @todo find a better way to handle position of the bet.
    */
-  addBettingChip = (chip, position) => {
+  addBettingChip = (chip, position, isAnti, strat) => {
     this.setState(
       ({
         topSystems,

@@ -219,7 +219,7 @@ export default class LiveBoard extends Component {
     // .get("https://api.myjson.com/bins/11pqxf", {
     //only 5k chip for tier 0
     // accounts: [{ portfolio, target, accountValue }],
-    'username': this.props.email,
+    'username': "hidemi@gmail.com", //this.props.email,
     'reinitialize': 'false'
     },{timeout: 600000})
     .then(({ data }) => {
@@ -261,7 +261,7 @@ export default class LiveBoard extends Component {
    * @param {any} position position of the bet, that could be a number or a system.
    * @todo find a better way to handle position of the bet.
    */
-  addBettingChip = (chip, position, isAnti) => {
+  addBettingChip = (chip, position, isAnti, strat) => {
         var {
           topSystems,
           bottomSystems,
@@ -334,9 +334,9 @@ export default class LiveBoard extends Component {
               : c;
           });
           
-          var strat=toSystem(position);
-          if (isAnti) 
-            strat=toAntiSystem(strat);
+          //var strat=toSystem(position);
+          //if (isAnti) 
+          //  strat=toAntiSystem(strat);
 
           var rev_accounts2 = accounts.map(account => {
             return account.accountId === chip.accountId
@@ -372,6 +372,29 @@ export default class LiveBoard extends Component {
             accounts
           );
         }
+        axios
+          .post("/utility/update_bet_live/", {
+          // .get("https://api.myjson.com/bins/11pqxf", {
+          //only 5k chip for tier 0
+          // accounts: [{ portfolio, target, accountValue }],
+          'account_id': chip.accountId,
+          'chip_id':chip.chip_id,
+          'strategy':strat,
+          },{timeout: 600000})
+          .then(({ data }) => {
+          
+          })
+          .catch(error => {
+            console.log('error initializing')
+            console.log(error)
+          // eslint-disable-next-line react/no-is-mounted
+            this.setState({
+              rankingLoading: false,
+              rankingError: error
+            });
+          });
+      
+  
   };
 
   /**
@@ -421,6 +444,28 @@ export default class LiveBoard extends Component {
           { bettingChips, balanceChips },
           accounts
         );
+
+        axios
+          .post("/utility/update_bet_live/", {
+          // .get("https://api.myjson.com/bins/11pqxf", {
+          //only 5k chip for tier 0
+          // accounts: [{ portfolio, target, accountValue }],
+          'account_id': chip.accountId,
+          'chip_id':chip.chip_id,
+          'strategy':strat,
+          },{timeout: 600000})
+          .then(({ data }) => {
+          
+          })
+          .catch(error => {
+            console.log('error initializing')
+            console.log(error)
+          // eslint-disable-next-line react/no-is-mounted
+            this.setState({
+              rankingLoading: false,
+              rankingError: error
+            });
+          });
   };
 
   reset = () => {

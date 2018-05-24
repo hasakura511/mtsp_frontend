@@ -279,7 +279,7 @@ export default class OrderDialog extends Component {
         };
         addLast3DaysProfit(last3DaysProfit);
         addBet(bet);
-        successHandler(chip, slot.position, isAnti);
+        successHandler(chip, slot.position, isAnti, strat);
         this.toggle();
     } else {
       const {
@@ -305,30 +305,8 @@ export default class OrderDialog extends Component {
         strat=toAntiSystem(strat);
         
       addBet(bet);
-      successHandler(chip, slot.position, isAnti);
+      successHandler(chip, slot.position, isAnti, strat);
       this.toggle();
-  
-      axios
-      .post("/utility/update_bet_live/", {
-      // .get("https://api.myjson.com/bins/11pqxf", {
-      //only 5k chip for tier 0
-      // accounts: [{ portfolio, target, accountValue }],
-      'account_id': chip.accountId,
-      'chip_id':chip.chip_id,
-      'strategy':strat,
-      },{timeout: 600000})
-      .then(({ data }) => {
-       
-      })
-      .catch(error => {
-        console.log('error initializing')
-        console.log(error)
-      // eslint-disable-next-line react/no-is-mounted
-        this.setState({
-          rankingLoading: false,
-          rankingError: error
-        });
-      });
   
   
     }
