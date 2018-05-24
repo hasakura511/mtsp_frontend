@@ -445,6 +445,8 @@ export default class LiveBoard extends Component {
           accounts
         );
 
+        if (strat == 'off') 
+          strat="Off";
         axios
           .post("/utility/update_bet_live/", {
           // .get("https://api.myjson.com/bins/11pqxf", {
