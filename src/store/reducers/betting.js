@@ -35,7 +35,8 @@ const initialState = {
     accountId,
     accountValue
   })),
-  themes: {'live':{'heatmap':{'heatmap_cold':'#000000','heatmap_hot':'#FFFFFF'}}},
+  themes: {'live':{'heatmap':{'heatmap_cold':'#000000','heatmap_hot':'#FFFFFF'},
+                   'background':{'bottom':'#000000', 'middle':'#FFFFFF'}}},
   loading: true,
   isLive:false,
   initializeData: {},

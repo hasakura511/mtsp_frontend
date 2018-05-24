@@ -523,6 +523,7 @@ export default class LiveBoard extends Component {
         );
       } else {
       var themes_bg="linear-gradient(90deg," + this.props.themes.live.heatmap.heatmap_cold + ", " + this.props.themes.live.heatmap.heatmap_hot + ")";
+      var board_bg="linear-gradient(180deg," + this.props.themes.live.background.middle + ", " + this.props.themes.live.background.middle + ", " + this.props.themes.live.background.bottom + ")";
       console.log(themes_bg);
       return (
 
@@ -621,7 +622,8 @@ export default class LiveBoard extends Component {
             className={classes.Board}
             style={
               {
-                backgroundImage: "url(" + bgBoard + ")",
+                background: board_bg,
+                //backgroundImage: "url(" + bgBoard + ")",
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "cover",
                 paddingTop: "150px",
