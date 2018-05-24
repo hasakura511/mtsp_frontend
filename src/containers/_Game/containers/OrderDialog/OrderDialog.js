@@ -277,6 +277,7 @@ export default class OrderDialog extends Component {
           position: slot.position,
           isAnti
         };
+        console.log(bet[chip.accountId]);
         addLast3DaysProfit(last3DaysProfit);
         addBet(bet);
         successHandler(chip, slot.position, isAnti, strat);

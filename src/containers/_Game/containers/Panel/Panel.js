@@ -4,6 +4,7 @@ import classes from "./Panel.css";
 import Slot from "../Slot/Slot";
 import RiskStrip from "../../components/_RiskStrip/_RiskStrip";
 import Config from "../../Config";
+import ChipsConfig from "../../ChipsConfig";
 import BottomSection from "../../components/Sections/BottomSection/BottomSection";
 import LeftSection from "../../components/Sections/LeftSection/LeftSection";
 import RightSection from "../../components/Sections/RightSection/RightSection";
@@ -493,7 +494,7 @@ export default class Panel extends Component {
           // .get("https://api.myjson.com/bins/11pqxf", {
           //only 5k chip for tier 0
           // accounts: [{ portfolio, target, accountValue }],
-          accounts: this.props.accounts,
+          accounts: ChipsConfig,
           slots: slots.map(
             ({ position, topSystem, bottomSystem, leftSystem, rightSystem }) => {
               return {

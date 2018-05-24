@@ -458,7 +458,7 @@ const reducer = (state = initialState, action) => {
     }
     case actionTypes.ADD_BET: {
       const accountId = Object.keys(action.bet)[0];
-      const { isLive } = state;
+      const { isLive,simulatedDate } = state;
       if (!isLive) {
         const { last3DaysProfits } = state;
 
@@ -477,7 +477,8 @@ const reducer = (state = initialState, action) => {
             .sort((d1, d2) => Number(d1) > Number(d2))
         );
 
-        action.bet[accountId].bettingDate =
+        action.bet[accountId].bettingDate =  toSlashDate(simulatedDate);
+        /*=
           toSlashDate(
             dates[
               dates.indexOf(
@@ -485,8 +486,9 @@ const reducer = (state = initialState, action) => {
               ) + 1
             ]
           ) || "2018/02/09";
+          */
         } else {
-          action.bet[accountId].bettingDate = "";          
+          action.bet[accountId].bettingDate = ""; 
         }
       return {
         ...state,

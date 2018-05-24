@@ -221,6 +221,16 @@ export default class Board extends Component {
       bottomSystems,
       inGameChips
     });
+    var date=new Date();
+    var day = date.getDate().toString();
+    if (day.length == 1)
+      day = "0" + day;
+    var monthIndex = date.getMonth().toString();
+    if (monthIndex.length == 1)
+      monthIndex="0" + monthIndex;
+    var year = date.getFullYear();
+    var datestr=year.toString()+monthIndex.toString()+day.toString();
+    this.props.updateDate(datestr);
     
   }
 
