@@ -33,7 +33,11 @@ const dispatchToProps = dispatch => {
     },
     reset: () => {
       dispatch(actions.reset());
-    }
+    },
+    addTimedToaster: toaster => {
+      dispatch(actions.addTimedToaster(toaster, 5000))
+    },
+    
   };
 };
 
@@ -49,12 +53,24 @@ export default class LiveDashboard extends Component {
     simulatedDate: PropTypes.string.isRequired,
     loading: PropTypes.bool.isRequired,
     initializeData:PropTypes.object.isRequired,
+    addTimedToaster:PropTypes.func.isRequired,
+    
   };
     
   constructor(props) {
     super(props);
     //this.state = {initializeData:this.props.initializeData}
     
+  }
+  notice = msg => {
+    this.props.addTimedToaster(
+      {
+        id: "dashboard_notice_" + Math.random().toFixed(3),
+        text: msg
+      },
+      5000
+    );
+
   }
   componentDidMount() {
   }

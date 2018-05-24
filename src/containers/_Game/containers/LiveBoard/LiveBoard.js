@@ -64,6 +64,7 @@ const stateToProps = state => {
     topSystems:state.betting.topSystems,
     rightSystems:state.betting.rightSystems,
     bottomSystems:state.betting.bottomSystems,
+    themes:state.betting.themes,
     
   };
 };
@@ -96,6 +97,9 @@ const dispatchToProps = dispatch => {
     },
     authSuccess: (user, token) => {
       dispatch(actions.authSuccess(user, token));
+    },
+    addTimedToaster: toaster => {
+        dispatch(actions.addTimedToaster(toaster, 5000))
     },
     updateBet: (topSystems,
       bottomSystems,
@@ -133,6 +137,7 @@ export default class LiveBoard extends Component {
     nextDay: PropTypes.func.isRequired,
     updateBet: PropTypes.func.isRequired,
     updateDate: PropTypes.func.isRequired,
+    addTimedToaster:PropTypes.func.isRequired,
     initializeData: PropTypes.func.isRequired,
     toggleMode: PropTypes.func.isRequired,
     isAuth: PropTypes.bool.isRequired,
@@ -148,6 +153,7 @@ export default class LiveBoard extends Component {
     topSystems:PropTypes.array.isRequired,
     rightSystems:PropTypes.array.isRequired,
     bottomSystems:PropTypes.array.isRequired,
+    themes:PropTypes.object.isRequired
   };
 
   constructor(props) {
@@ -438,18 +444,28 @@ export default class LiveBoard extends Component {
     }
   };
   toggleSim = () => {
-      $('.isLive').hide();
-      $('.isSim').show();
+      //$('.isLive').hide();
+      //$('.isSim').show();
       this.setState({toggleActive:false, boardMode:'practice'});
 
   }
   toggleLive = () => {
-    $('.isLive').show();
-    $('.isSim').hide();
+    //$('.isLive').show();
+    //$('.isSim').hide();
     this.setState({toggleActive:true,boardMode:'live'});
 
   }
   
+  sendNotice = msg => {
+    this.props.addTimedToaster(
+      {
+        id: "board_notice_" + Math.random().toFixed(3),
+        text: msg
+      },
+      5000
+    );
+
+  }
   
   render() {
     const {
@@ -463,7 +479,8 @@ export default class LiveBoard extends Component {
       rightSystems,
       topSystems,
       bottomSystems,
-      inGameChips
+      inGameChips,
+      themes
     } = this.props;
     console.log(this.props);
     const dates = uniq(
@@ -498,12 +515,17 @@ export default class LiveBoard extends Component {
             
             <center>
              <ClockLoader show={loading} />
+             <br/><br/>
+             <b>Please wait while we load your board.</b>
             </center>
           </Aux>
 
         );
       } else {
+      var themes_bg="linear-gradient(90deg," + this.props.themes.live.heatmap.heatmap_cold + ", " + this.props.themes.live.heatmap.heatmap_hot + ")";
+      console.log(themes_bg);
       return (
+
         <Aux>
 
           <LiveDashboard 
@@ -572,8 +594,14 @@ export default class LiveBoard extends Component {
             <span style={{"float": "left", "width": "80%", "height":"90px", "textAlign": "left", "verticalAlign":"middle"}}> 
               <div className="isLive">
                 <center><b>Heatmap Legend</b></center>
-                <button style={{width:"100%",height:"25px"}}type="button" className="btn m-btn m-btn--pill m-btn--gradient-from-info m-btn--gradient-to-warning"></button>
-                <br/>
+                <div style={{  "border": "1px solid",
+                                "background": themes_bg,
+                                 "width":"100%",
+                                 "height":"45px",  
+                              }}>
+                              &nbsp;
+                              <br/>
+                </div>
                 <div>
                   <span style={{"float": "left", "width": "50%", "textAlign": "left"}}>
                   Low Reward / Risk
