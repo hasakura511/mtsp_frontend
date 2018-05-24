@@ -387,52 +387,56 @@ const reducer = (state = initialState, action) => {
         //console.log(topSystems);
         //console.log(bottomSystems);
         accounts=account_list;
+        var seen={};
         accounts.map(function(account) {
-          if (account.last_selection) {
-            balanceChips.map(function (chip) {
-              if (account.accountId === chip.accountId) {
-                const balanceChips = inGameChips.balanceChips.map(c => {
-                  return c.accountId === chip.accountId
-                    ? {
-                        ...c,
-                        count: c.count - 1
-                      }
-                    : c;
-                });
-                var position=account.last_selection;
-                var strat=account.last_selection;
-      
-                if (position.match(/Anti-\d+/)) {
-                    position=parseInt(position.replace('Anti-',''))
+          if (account.last_selection && account.last_selection.toLowerCase() != 'off') {
+            if (!(account.last_selection in seen)) {
+              seen[account.last_selection]=true;
+            
+              balanceChips.map(function (chip) {
+                if (account.accountId === chip.accountId) {
+                  const balanceChips = inGameChips.balanceChips.map(c => {
+                    return c.accountId === chip.accountId
+                      ? {
+                          ...c,
+                          count: c.count - 1
+                        }
+                      : c;
+                  });
+                  var position=account.last_selection;
+                  var strat=account.last_selection;
+        
+                  if (position.match(/Anti-\d+/)) {
+                      position=parseInt(position.replace('Anti-',''))
 
-                } else if (position.match(/^\d+$/)) {
-                    positio=parseInt(position);
-                }
+                  } else if (position.match(/^\d+$/)) {
+                      positio=parseInt(position);
+                  }
 
-                var bettingChips = [
-                  ...inGameChips.bettingChips,
-                  { ...chip, position }
-                ];
-                  insertChip(topSystems, position, {
-                    ...chip,
-                    position
-                  });
-                  insertChip(bottomSystems, position, {
-                    ...chip,
-                    position
-                  });
-                  insertChip(leftSystems, position, {
-                    ...chip,
-                    position
-                  });
-                  insertChip(rightSystems, position, {
-                    ...chip,
-                    position
-                  });
-                  inGameChips={ balanceChips, bettingChips };
-
-              }
-            });
+                  var bettingChips = [
+                    ...inGameChips.bettingChips,
+                    { ...chip, position }
+                  ];
+                    insertChip(topSystems, position, {
+                      ...chip,
+                      position
+                    });
+                    insertChip(bottomSystems, position, {
+                      ...chip,
+                      position
+                    });
+                    insertChip(leftSystems, position, {
+                      ...chip,
+                      position
+                    });
+                    insertChip(rightSystems, position, {
+                      ...chip,
+                      position
+                    });
+                    inGameChips={ balanceChips, bettingChips };
+                  }
+              });
+            }
           }
         });
         const isLive=true;

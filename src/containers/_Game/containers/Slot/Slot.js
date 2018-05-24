@@ -77,7 +77,12 @@ class Slot extends Component {
       rightSystem.display
     ].filter(s => s);
     var ps=(LongShortMap[position] || position);
-    var name="Name: " + ps + "\nFull Name: " + ps + "\nType: Child\nParents: " + titleArray.join(", ")
+    var name="";
+    if (ps.toString().match(/^\d+$/)) {
+      name="Name: " + ps + "\nFull Name: " + ps + "\nType: Child\nParents: " + titleArray.join(", ")
+    } else {
+      name="Name: " + ps + "\nFull Name: " + ps + "\nType: Parent\nDescription: " + titleArray.join(", ")
+    }    
     return dropTarget(
       <div className={classes.Slot}>
         <Square

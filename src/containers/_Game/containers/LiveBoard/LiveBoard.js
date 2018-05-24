@@ -402,6 +402,17 @@ export default class LiveBoard extends Component {
           c => c.accountId !== chip.accountId
         );
         
+        var strat=chip.position;
+        var rev_accounts2 = accounts.map(account => {
+          return account.accountId === chip.accountId
+            ? {
+                ...account,
+                last_selection: strat,
+              }
+            : account;
+        });
+        accounts=rev_accounts2;
+
         this.props.updateBet(
           insertChip(topSystems, "off", chip),
           insertChip(bottomSystems, "off", chip),

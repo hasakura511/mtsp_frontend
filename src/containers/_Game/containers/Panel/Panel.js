@@ -296,22 +296,24 @@ export default class Panel extends Component {
         () => {
           // Here you first need to remove the bet in the state so it's location
           // appears correctly on the board
+          chip.position="off";
           moveToBalance(chip);
 
           // Then we need to reflect this in our redux store:
           // 1. add default off location's last3DaysProfit (basically 0 changePercent)
-          const profitObj = {};
-          profitObj[chip.accountId] = {
-            position: "off",
-            "20180201": { changePercent: 0 },
-            "20180202": { changePercent: 0 },
-            "20180205": { changePercent: 0 },
-            "20180206": { changePercent: 0 },
-            "20180207": { changePercent: 0 },
-            "20180208": { changePercent: 0 }
-          };
-          addLast3DaysProfit(profitObj);
-
+          if (!this.props.isLive) {
+            const profitObj = {};
+            profitObj[chip.accountId] = {
+              position: "off",
+              "20180201": { changePercent: 0 },
+              "20180202": { changePercent: 0 },
+              "20180205": { changePercent: 0 },
+              "20180206": { changePercent: 0 },
+              "20180207": { changePercent: 0 },
+              "20180208": { changePercent: 0 }
+            };
+            addLast3DaysProfit(profitObj);
+          }
           // 2. append a new currentBet on off location
           const bet = {};
           bet[chip.accountId] = {
