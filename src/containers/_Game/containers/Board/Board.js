@@ -130,7 +130,7 @@ const dispatchToProps = dispatch => {
   };
 };
 
-@protectedComponent
+// @protectedComponent
 @connect(stateToProps, dispatchToProps)
 
 /**
