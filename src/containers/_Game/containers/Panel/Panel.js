@@ -482,42 +482,45 @@ export default class Panel extends Component {
     //   "lookback": 23
     // }
     const { slots } = this.state;
-    this.setState({ rankingLoading: true });
-    // const { portfolio, target, accountValue } = ChipsConfig[0];
-    axios
-      .post("/utility/ranking_charts/", {
-        // .get("https://api.myjson.com/bins/11pqxf", {
-        //only 5k chip for tier 0
-        // accounts: [{ portfolio, target, accountValue }],
-        accounts: this.props.accounts,
-        slots: slots.map(
-          ({ position, topSystem, bottomSystem, leftSystem, rightSystem }) => {
-            return {
-              position: position.toString(),
-              systems: [topSystem, bottomSystem, leftSystem, rightSystem]
-                .map(system => system.column)
-                .filter(system => system)
-            };
-          }
-        ),
-        lookback: 23
-      })
-      .then(({ data }) => {
-        // eslint-disable-next-line react/no-is-mounted
-        this._isMounted &&
-          this.setState({
-            rankingLoading: false,
-            rankingData: data.rankingData
-          });
-      })
-      .catch(error => {
-        // eslint-disable-next-line react/no-is-mounted
-        this._isMounted &&
-          this.setState({
-            rankingLoading: false,
-            rankingError: error
-          });
-      });
+    if (!this.props.isLive) {
+      this.setState({ rankingLoading: true });
+      // const { portfolio, target, accountValue } = ChipsConfig[0];
+
+      axios
+        .post("/utility/ranking_charts/", {
+          // .get("https://api.myjson.com/bins/11pqxf", {
+          //only 5k chip for tier 0
+          // accounts: [{ portfolio, target, accountValue }],
+          accounts: this.props.accounts,
+          slots: slots.map(
+            ({ position, topSystem, bottomSystem, leftSystem, rightSystem }) => {
+              return {
+                position: position.toString(),
+                systems: [topSystem, bottomSystem, leftSystem, rightSystem]
+                  .map(system => system.column)
+                  .filter(system => system)
+              };
+            }
+          ),
+          lookback: 23
+        })
+        .then(({ data }) => {
+          // eslint-disable-next-line react/no-is-mounted
+          this._isMounted &&
+            this.setState({
+              rankingLoading: false,
+              rankingData: data.rankingData
+            });
+        })
+        .catch(error => {
+          // eslint-disable-next-line react/no-is-mounted
+          this._isMounted &&
+            this.setState({
+              rankingLoading: false,
+              rankingError: error
+            });
+        });
+      }
   }
 
   /**
@@ -544,6 +547,8 @@ export default class Panel extends Component {
     simulatedDate: PropTypes.string.isRequired,
     showDialog: PropTypes.func.isRequired,
     killDialog: PropTypes.func.isRequired,
-    addTimedToaster: PropTypes.func.isRequired
+    addTimedToaster: PropTypes.func.isRequired,
+    isLive:PropTypes.bool.isRequired
+
   };
 }

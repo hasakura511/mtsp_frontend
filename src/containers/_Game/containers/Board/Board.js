@@ -559,6 +559,7 @@ export default class Board extends Component {
             </span>
           </div>
           <Panel
+            isLive={false}
             accounts={this.props.accounts || {}}
             leftSystems={leftSystems || []}
             rightSystems={rightSystems || []}

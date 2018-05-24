@@ -641,6 +641,7 @@ export default class LiveBoard extends Component {
               </span>
             </div>
             <Panel
+              isLive={true}
               accounts={this.props.accounts || {}}
               leftSystems={leftSystems || []}
               rightSystems={rightSystems || []}
