@@ -335,10 +335,6 @@ export default class LiveBoard extends Component {
               : c;
           });
           
-          //var strat=toSystem(position);
-          //if (isAnti) 
-          //  strat=toAntiSystem(strat);
-
           var rev_accounts2 = accounts.map(account => {
             return account.accountId === chip.accountId
               ? {

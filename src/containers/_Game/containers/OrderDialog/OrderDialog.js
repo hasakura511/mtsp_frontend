@@ -9,13 +9,14 @@ import { connect } from "react-redux";
 import * as actions from "../../../../store/actions";
 import { toSlashDate } from "../../../../util";
 import { withRouter } from "react-router-dom";
-import { toSystem, toAntiSystem } from "../../Config";
+import { toSystem } from "../../Config";
 
 const stateToProps = state => {
   return {
     simulatedDate: state.betting.simulatedDate,
     isAuth: state.auth.token !== null,
-    isLive: state.betting.isLive
+    isLive: state.betting.isLive,
+    dictionary_strategy: state.betting.dictionary_strategy
   };
 };
 
@@ -261,6 +262,32 @@ export default class OrderDialog extends Component {
     }
   };
 
+  toAntiSystem = pos => {
+    if (pos in this.props.dictionary_strategy) {
+      console.log(this.props.dictionary_strategy[pos]);
+      return this.props.dictionary_strategy[pos].anti_tile_name;
+    }
+  
+    if (pos.toString().toLowerCase() === "riskon") {
+      return toSystem("riskOff");
+    }
+  
+    if (pos.toString().toLowerCase() === "riskoff") {
+      return toSystem("riskOn");
+    }
+  
+    if (isNaN(Number(pos))) {
+      return toSystem(pos).indexOf("Anti-") === -1 &&
+        toSystem(pos).indexOf("A-") === -1
+        ? "Anti-" + toSystem(pos)
+        : toSystem(pos)
+            .replace("Anti-", "")
+            .replace("A-", "");
+    } else {
+      return "Anti-" + pos;
+    }
+  };
+  
   /**
    * @function submitBetHandler
    * Handles the order dialogue's submission event,
@@ -310,7 +337,7 @@ export default class OrderDialog extends Component {
 
       var strat=toSystem(slot.position);
       if (this.state.isAnti) 
-        strat=toAntiSystem(strat);
+        strat=this.toAntiSystem(strat);
         chip.board_config_fe.map(function (s) {
           if (s.id == strat) {
             slot.position=strat;
@@ -371,6 +398,7 @@ export default class OrderDialog extends Component {
             rankingError={rankingError}
             rankingLoading={rankingLoading}
             submitBetHandler={this.submitBetHandler}
+            toAntiSystem={this.toAntiSystem}
             close={this.toggle}
             isAnti={isAnti}
           />
@@ -392,6 +420,7 @@ export default class OrderDialog extends Component {
     addBet: PropTypes.func.isRequired,
     isAuth: PropTypes.bool.isRequired,
     isLive: PropTypes.bool.isRequired,
+    dictionary_strategy:PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
     addTimedToaster: PropTypes.func.isRequired,
   };

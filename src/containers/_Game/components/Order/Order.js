@@ -5,7 +5,7 @@ import Chip from "../_Chip/_Chip";
 import classes from "./Order.css";
 // import Switch from "../../../../components/UI/Switch/Switch";
 import OrderCharts from "../../containers/OrderCharts/OrderCharts";
-import { toSystem, toAntiSystem } from "../../Config";
+import { toSystem  } from "../../Config";
 
 const getSystems = slot => {
   return Object.keys(slot)
@@ -16,7 +16,7 @@ const getSystems = slot => {
 
 
 const order = props => {
-  const { slot, chip, setAnti, setNotAnti, isAnti, submitBetHandler, close, isLive } = props;
+  const { slot, chip, setAnti, setNotAnti, isAnti, toAntiSystem, submitBetHandler, close, isLive } = props;
   console.log(slot);
   const isNumbered = !isNaN(Number(slot.position));
   return (
@@ -144,6 +144,7 @@ order.propTypes = {
   performance: PropTypes.object,
   setAnti: PropTypes.func.isRequired,
   setNotAnti: PropTypes.func.isRequired,
+  toAntiSystem: PropTypes.func.isRequired,
   rankingError: PropTypes.object,
   rankingData: PropTypes.array,
   rankingLoading: PropTypes.bool.isRequired,

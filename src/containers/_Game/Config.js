@@ -1,3 +1,4 @@
+
 // export default {
 //   /** Systems configuration
 //    * @field color
@@ -142,6 +143,7 @@ export const TARGET = 500;
 // 4) Last Best Filtered: Allowing the system to select the system for you is interesting, but without visibility of which system it selected on a daily/market basis, I wonder if this might be too much of a black box. Can keep it filtered or unfiltered
 // 5) Last Worst Filtered: As above but showing the alternate view. My understanding of this is based on how it's built, it wouldn't necessarily have the same results as Anti-Last Best
 // 6) Seasonality or Adjusted Seasonality: Tbh I'm not entirely sure how these two work but would rather show this than the "Overall Best/Worst" systems as they are too close conceptually to Last Best/Worst. If you feel Overall is a stronger proposition could do those instead of Last Best/Worst as well.
+
 
 const Config = {
   PREVIOUS_10D: {
