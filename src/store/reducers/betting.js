@@ -1,6 +1,7 @@
 import * as actionTypes from "../actions/actionTypes";
 import ChipsConfig from "../../containers/_Game/ChipsConfig";
 import { clone, toSlashDate, uniq, toIntegerDate, clean, getOffsetDate, getOffsetSlashDate,getDemoPnL, getSimDate } from "../../util";
+var moment = require('moment-timezone');
 
 const insertChip = (systems, column, chip) => {
   return systems.map(system => {
@@ -23,15 +24,13 @@ const insertChip = (systems, column, chip) => {
 const checkChipsLock = (chips, liveDate) => {
   var newChips=[];
   chips.map(function (chip) {
-    var locktime=new Date();
-    locktime.setTime(Date.parse(chip.locktime));
-    var unlocktime=new Date();
-    unlocktime.setTime(Date.parse(chip.unlocktime));
+    var locktime=new moment.tz(chip.locktime.replace(' EST',''),"US/Eastern");
+    var unlocktime=new moment.tz(chip.unlocktime.replace(' EST',''),"US/Eastern");
     chip['lockdown']=locktime;
     if (locktime > liveDate || liveDate > unlocktime) {
       chip['status']='unlocked';
     } else {
-      chip['status']='unlocked';
+      chip['status']='locked';
     }
     newChips.push(chip);
   });
@@ -86,7 +85,7 @@ const initialState = {
   isLive:false,
   initializeData: {},
   simulatedDate: getOffsetDate(1),
-  liveDate: new Date(),
+  liveDate: new moment(),
   inGameChips: {
     balanceChips: ChipsConfig.map(chip => {
       chip["count"] = 1;
@@ -102,7 +101,8 @@ const initialState = {
     lockdown_text: {
       markets:"",
       next_lockdown:"",
-      next_trigger:""
+      next_trigger:"",
+      next_lockdown_text:""
     }
     
   },
@@ -289,9 +289,8 @@ const reducer = (state = initialState, action) => {
     }
     case actionTypes.UPDATE_DATE:
     {
-        var date=new Date();
-        date.setTime(Date.parse(action.simdate));
-        //const simulatedDate = getSimDate(date);
+        var date = new moment.tz(action.simdate, "US/Eastern");
+        console.log(date.format('hh:mm:ss A'));
         const liveDate = date;
 
         var chips=state.inGameChips;
@@ -360,9 +359,10 @@ const reducer = (state = initialState, action) => {
         const themes = action.data.themes
         var dashboard_totals=action.data.dashboard_totals;
         dashboard_totals.lockdown_text=action.data.lockdown_text;
-        var lockdown_time=new Date();
-        lockdown_time.setTime(Date.parse(dashboard_totals.lockdown_text.next_lockdown));
+        var lockdown_time=new moment.tz(dashboard_totals.lockdown_text.next_lockdown,"US/Eastern");
         dashboard_totals.lockdown_text.next_lockdown_time=lockdown_time;
+        dashboard_totals.lockdown_text.next_lockdown_text=lockdown_time.format("hh:mm:ss A");
+        
         const loading=false;
         var hasSystem=false;
         var leftSystems= [],
@@ -384,16 +384,17 @@ const reducer = (state = initialState, action) => {
           chip['qty']={};
           chip['display']=chip.account_chip_text;
           chip['chip_styles']=themes.chip_styles;
-          var locktime=new Date();
-          locktime.setTime(Date.parse(chip.locktime));
-          var unlocktime=new Date();
-          unlocktime.setTime(Date.parse(chip.unlocktime));
+
+          var locktime=new moment.tz(chip.locktime.replace(' EST',''),"US/Eastern");
+          var unlocktime=new moment.tz(chip.unlocktime.replace(' EST',''),"US/Eastern");
           chip['lockdown']=locktime;
+          chip['lockdown_text']=locktime.format('hh:mm:ss A');
           if (locktime > state.liveDate || state.liveDate > unlocktime) {
             chip['status']='unlocked';
           } else {
             chip['status']='locked';
           }
+
           balanceChips.push(chip);
           account_list.push(accounts[key]); 
           

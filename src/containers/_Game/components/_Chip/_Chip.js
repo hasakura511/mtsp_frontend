@@ -35,7 +35,7 @@ const chip = props => {
   var title = "";
   if (chip.tier != undefined) {
     title="Tier: " + chip.tier.toString() + "\n"; 
-    title+="Lockdown: " + chip.locktime.toString() + "\n"; 
+    title+="Lockdown: " + chip.lockdown_text.toString() + "\n"; 
     title+="Account Value: " + chip.account_value.toString() + "\n"; 
     title+="Cum. % Chg: " + chip.pnl_cumpct.toString() + "\n";
     title+="Markets in Portfolio: " + chip.num_markets.toString() + "\n"; 
