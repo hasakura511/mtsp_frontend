@@ -230,7 +230,7 @@ export default class Board extends Component {
       monthIndex="0" + monthIndex;
     var year = date.getFullYear();
     var datestr=year.toString()+monthIndex.toString()+day.toString();
-    this.props.updateDate(datestr);
+    //this.props.updateDate(datestr);
     
   }
 
@@ -529,7 +529,6 @@ export default class Board extends Component {
             
          </span>
          <span style={{"float": "left", "width": "20%", "height":"90px", "textAlign": "right", "verticalAlign":"top"}}>
-            <img src="/images/infotext_button.png" width="22"/>
          </span>
       </span>
     </div>
@@ -549,7 +548,6 @@ export default class Board extends Component {
             <span style={{"marginTop":"-150px","float": "left", "width": "50%", "textAlign": "left", "display": "inline-block","verticalAlign": "top"}}>
             </span>
             <span style={{"marginTop":"-150px", "float": "right", "width": "50%",  "textAlign": "right",  "display": "inline-block", "verticalAlign":"top"}}>
-              <img src="/images/infotext_button.png" width="22" style={{"margin":"10px"}} />
             </span>
           </div>
           <Panel

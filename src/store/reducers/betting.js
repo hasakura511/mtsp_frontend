@@ -1,6 +1,6 @@
 import * as actionTypes from "../actions/actionTypes";
 import ChipsConfig from "../../containers/_Game/ChipsConfig";
-import { clone, toSlashDate, uniq, toIntegerDate, clean } from "../../util";
+import { clone, toSlashDate, uniq, toIntegerDate, clean, getOffsetDate, getOffsetSlashDate,getDemoPnL } from "../../util";
 
 const insertChip = (systems, column, chip) => {
   return systems.map(system => {
@@ -34,7 +34,7 @@ const initialState = {
   pastBets: ChipsConfig.map(({ accountId }) => accountId).reduce(
     (acc, curr) => {
       acc[curr] = {
-        bettingDate: "2018/02/01",
+        bettingDate: getOffsetSlashDate(0),
         position: "off",
         isAnti: false,
         change: 0
@@ -45,7 +45,7 @@ const initialState = {
   ),
   currentBets: ChipsConfig.map(({ accountId }) => accountId).reduce(
     (acc, curr) => {
-      acc[curr] = { bettingDate: "2018/02/02", position: "off", isAnti: false };
+      acc[curr] = { bettingDate: getOffsetSlashDate(1), position: "off", isAnti: false };
       return acc;
     },
     {}
@@ -60,7 +60,7 @@ const initialState = {
   loading: true,
   isLive:false,
   initializeData: {},
-  simulatedDate: "20180201",
+  simulatedDate: getOffsetDate(1),
   inGameChips: {
     balanceChips: ChipsConfig.map(chip => {
       chip["count"] = 1;
@@ -232,27 +232,7 @@ const initialState = {
    */
   last3DaysProfits: ChipsConfig.map(({ accountId }) => accountId).reduce(
     (acc, curr) => {
-      acc[curr] = {
-        "20180201": {
-          change: 0
-        },
-        "20180202": {
-          change: 0
-        },
-        "20180205": {
-          change: 0
-        },
-        "20180206": {
-          change: 0
-        },
-        "20180207": {
-          change: 0
-        },
-        "20180208": {
-          change: 0
-        },
-        position: "off"
-      };
+      acc[curr] = getDemoPnL(100);
       return acc;
     },
     {}
@@ -478,8 +458,8 @@ const reducer = (state = initialState, action) => {
             .sort((d1, d2) => Number(d1) > Number(d2))
         );
 
-        action.bet[accountId].bettingDate =  toSlashDate(simulatedDate);
-        /*=
+        action.bet[accountId].bettingDate = toSlashDate(simulatedDate);
+        /*
           toSlashDate(
             dates[
               dates.indexOf(
@@ -520,7 +500,7 @@ const reducer = (state = initialState, action) => {
         Object.values(last3DaysProfits)
           // ***hack*** to avoid crash when we dont have pnlData for that particular account
           // which is possible in tier 0 as the pnlData is fed from performanceData and
-          // that happens when a new bet is placed which only gets performanceData for the account
+          // that happens when a new bet is placed which only gets performanceData for the account02
           // that particular bet is using.
           // Remove hack when we have proper data feed for changePercent per account basis
           .map(profitObj => Object.keys(profitObj || {}))
@@ -529,7 +509,6 @@ const reducer = (state = initialState, action) => {
           .sort((d1, d2) => Number(d1) > Number(d2))
       );
 
-      // console.log(dates);
 
       if (dates.indexOf(simulatedDate) === dates.length - 1) {
         return state;
@@ -537,6 +516,9 @@ const reducer = (state = initialState, action) => {
 
       // Taking today's date:
       const newDate = dates[dates.indexOf(simulatedDate) + 1] || simulatedDate;
+
+      console.log("Demo: Last3DayProfits");
+      console.log(last3DaysProfits);
 
       // loop this currentBets object `for` all the accounts
       for (let key in modifiedPastBets) {
@@ -546,18 +528,29 @@ const reducer = (state = initialState, action) => {
         // that particular bet is using.
         // Remove hack when we have proper data feed for change per account basis
 
+        
         if (
           last3DaysProfits[key] &&
           last3DaysProfits[key][newDate] &&
           modifiedPastBets[key] !== null
         ) {
+          console.log("Calculating Demo Profit");
+          console.log(last3DaysProfits);
+          console.log(modifiedPastBets);
+
+          console.log(last3DaysProfits[key]);
+          console.log(modifiedPastBets[key]);
           const isAnti = modifiedPastBets[key].isAnti;
 
-          modifiedPastBets[key].change =
-            (last3DaysProfits[key][newDate].change || 0) * (isAnti ? -1 : 1);
-
+          if (modifiedPastBets[key].position && modifiedPastBets[key].position.toString().toLowerCase() != 'off')
+            modifiedPastBets[key].change =
+              (last3DaysProfits[key][newDate].change || 0) * (isAnti ? -1 : 1);
+          else
+            modifiedPastBets[key].change = 0;
+            
           // moving the date to next trading day in currentBets
-          modifiedCurrentBets[key].bettingDate =
+          modifiedCurrentBets[key].bettingDate = toSlashDate(newDate);
+          /*
             toSlashDate(
               dates[
                 dates.indexOf(
@@ -566,6 +559,7 @@ const reducer = (state = initialState, action) => {
               ]
               // ) || modifiedCurrentBets[key].bettingDate;
             ) || "2018/02/09";
+            */
         }
       }
 
@@ -577,6 +571,10 @@ const reducer = (state = initialState, action) => {
         };
       });
 
+      console.log("Calculated PnL for " + newDate)
+      console.log(modifiedAccounts)
+      console.log(modifiedCurrentBets)
+      console.log(modifiedPastBets)
       return {
         ...state,
         accounts: modifiedAccounts,

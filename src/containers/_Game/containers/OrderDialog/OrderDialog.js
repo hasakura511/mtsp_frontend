@@ -7,7 +7,7 @@ import axios from "../../../../axios-gsm";
 import { TARGET } from "../../Config";
 import { connect } from "react-redux";
 import * as actions from "../../../../store/actions";
-import { toSlashDate } from "../../../../util";
+import { toSlashDate, getDemoProfitObj } from "../../../../util";
 import { withRouter } from "react-router-dom";
 import { toSystem } from "../../Config";
 
@@ -109,11 +109,11 @@ export default class OrderDialog extends Component {
         .filter(s => s),
       { portfolio, accountValue, accountId, qty, target } = this.props.chip;
 
-    /**
-     * Fetch performance charts
-     */
-    if (!this.props.isLive) {
-      axios
+      /**
+       * Fetch performance charts
+       */
+      if (!this.props.isLive) {
+        axios
         .post("/utility/charts/", {
           /**
            * @example {"portfolio": ["TU", "BO"], "systems": ["prev1", "prev5"], "target": 500, "account": 5000}
@@ -133,52 +133,8 @@ export default class OrderDialog extends Component {
 
           // Adding last 3 days profit for simulation
           // __TEMPERORY__CODE__
-          const profitObj = {};
-          profitObj[accountId] = {
-            position: this.props.slot.position,
-            "20180201": {
-              change: Number(
-                performance.pnlData.find(pnlObj => pnlObj.date === "20180201")[
-                  "change"
-                ]
-              )
-            },
-            "20180202": {
-              change: Number(
-                performance.pnlData.find(pnlObj => pnlObj.date === "20180202")[
-                  "change"
-                ]
-              )
-            },
-            "20180205": {
-              change: Number(
-                performance.pnlData.find(pnlObj => pnlObj.date === "20180205")[
-                  "change"
-                ]
-              )
-            },
-            "20180206": {
-              change: Number(
-                performance.pnlData.find(pnlObj => pnlObj.date === "20180206")[
-                  "change"
-                ]
-              )
-            },
-            "20180207": {
-              change: Number(
-                performance.pnlData.find(pnlObj => pnlObj.date === "20180207")[
-                  "change"
-                ]
-              )
-            },
-            "20180208": {
-              change: Number(
-                performance.pnlData.find(pnlObj => pnlObj.date === "20180208")[
-                  "change"
-                ]
-              )
-            }
-          };
+          var profitObj = getDemoProfitObj(100, performance, this.props.slot.position);
+          
           this._isMounted &&
             this.setState({
               last3DaysProfit: profitObj,
@@ -306,7 +262,7 @@ export default class OrderDialog extends Component {
           addLast3DaysProfit,
           successHandler,
         } = this.props;
-        const { last3DaysProfit } = this.state;
+        var { last3DaysProfit } = this.state;
         const bet = new Object();
         // example bet:
         // {"5K_0_1516105730": {
@@ -319,6 +275,7 @@ export default class OrderDialog extends Component {
           position: slot.position,
           isAnti: this.state.isAnti
         };
+        last3DaysProfit[chip.accountId]=last3DaysProfit;
         //console.log(bet[chip.accountId]);
         addLast3DaysProfit(last3DaysProfit);
         addBet(bet);

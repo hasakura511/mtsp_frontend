@@ -53,7 +53,6 @@ const dashboard = props => {
                   Last Update
                 </span>
                 <span style={{"float": "left", "width": "20%", "textAlign": "right"}}>
-                  <img src="/images/infotext_button.png" width="22" style={{"marginRight":"5px"}}/>
                 </span>
               
 
@@ -76,12 +75,13 @@ const dashboard = props => {
 
             //eslint-disable-next-line
             // console.log(account.accountValue);
-
+            console.log(lpBet);
+            console.log(lcBet)
             return (
               <tr key={`dashboard-row-${accountId}`}>
                 <td>
                   <div className={classes.Cell + " " + classes.Flex}>
-                    <img src="/images/account_chart_button.png" width="25" />
+                    <img src={chipIcon} width="25" />
                     <strong>{display}</strong>
                   </div>
                 </td>
