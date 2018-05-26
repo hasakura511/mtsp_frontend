@@ -468,7 +468,7 @@ export default class Board extends Component {
         <Dashboard 
            />
         <div className={classes.ActionRow}>
-          <span style={{"float": "left", "width": "30%", "height":"75px", "textAlign": "left", "verticalAlign":"middle"}}>
+          <span style={{"float": "left", "width": "20%", "height":"75px", "textAlign": "left", "verticalAlign":"middle"}}>
             <Toggle
             onClick={this.toggleMode}
             on={<h2>Live Mode</h2>}
@@ -478,11 +478,10 @@ export default class Board extends Component {
             
             />
             <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-            <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
           </span>
-          <span  style={{"float": "left", "width": "40%",  "minWidth":"600px", "height":"75px","whiteSpace": "nowrap","textAlign": "left", "verticalAlign":"top"}}>
+          <span  style={{"float": "left", "width": "80%",  "minWidth":"600px", "height":"75px","whiteSpace": "nowrap","textAlign": "left", "verticalAlign":"top"}}>
             
-            <span  style={{ "float": "left", "width": "20%", "minWidth":"100px", "height":"60px", "textAlign": "left", "verticalAlign":"middle"}}>
+            <span  style={{ "float": "left", "width": "20%", "minWidth":"100px", "height":"60px", "textAlign": "right", "verticalAlign":"middle"}}>
               <button
                   className="isSim"
                   onClick={this.reset}
@@ -495,10 +494,10 @@ export default class Board extends Component {
                 </font>
               </button>
             </span>
-            <span  style={{"float": "left", "width": "60%", "height":"75px", "textAlign": "left", "verticalAlign":"top"}}>
+            <span  style={{"float": "left", "width": "450px", "height":"75px", "textAlign": "left", "verticalAlign":"top"}}>
             <Clock />
             </span>
-            <span style={{"float": "left", "width": "20%", "minWidth":"100px", "height":"60px", "textAlign": "right", "verticalAlign":"middle"}}>
+            <span style={{"float": "left", "width": "20%", "minWidth":"100px", "height":"60px", "textAlign": "left", "verticalAlign":"middle"}}>
               <button               
               disabled={!nextDate}
               onClick={this.nextDay}
@@ -524,13 +523,7 @@ export default class Board extends Component {
 
             </span>
       </span>
-      <span style={{"float": "left", "width": "30%", "height":"90px", "textAlign": "right", "verticalAlign":"middle"}}>
-          <span style={{"float": "left", "width": "80%", "height":"90px", "textAlign": "left", "verticalAlign":"middle"}}> 
-            
-         </span>
-         <span style={{"float": "left", "width": "20%", "height":"90px", "textAlign": "right", "verticalAlign":"top"}}>
-         </span>
-      </span>
+     
     </div>
     <div
           className={classes.Board}

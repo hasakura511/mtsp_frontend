@@ -604,59 +604,16 @@ export default class LiveBoard extends Component {
               onClick={this.toggleMode}
               on={<h2>Live Mode</h2>}
               off={<h2>Practice Mode</h2>}
-              size="xs"
+              size="sm"
               active={this.state.toggleActive}
               
               />
               <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-              <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
             </span>
             <span  style={{"float": "left", "width": "40%",  "minWidth":"600px", "height":"75px","whiteSpace": "nowrap","textAlign": "left", "verticalAlign":"top"}}>
               
-              <span  style={{ "float": "left", "width": "20%", "minWidth":"100px", "height":"60px", "textAlign": "left", "verticalAlign":"middle"}}>
-                <button
-                    className="isSim"
-                    style={{"display":"none"}}
-                    onClick={this.reset}
-                    title={"Reset the board to the first of February"}
-                  >
-                  <font size="2">
-                  <b>
-                  Reset Board
-                  </b>
-                  </font>
-                </button>
-              </span>
-              <span  style={{"float": "left", "width": "60%", "height":"75px", "textAlign": "left", "verticalAlign":"top"}}>
               <Clock />
-              </span>
-              <span style={{"float": "left", "width": "20%", "minWidth":"100px", "height":"60px", "textAlign": "right", "verticalAlign":"middle"}}>
-                <button               
-                style={{"display":"none"}}
-                disabled={!nextDate}
-                onClick={this.nextDay}
-                title={
-                  nextDate
-                    ? `Simulate market close for ${toWordedDate(nextDate)}`
-                    : ""
-                }
-                className={
-                  animateSimulateButton
-                    ? classes.bounce + " " + classes.animated + " isSim"
-                    : " isSim"
-                    }
-                
-              >
-                  <font size="2">
-                  <b>
-                Simulate Next Day
-                  </b>
-                  </font>
-              </button>
-
-
-              </span>
-        </span>
+            </span>
         <span style={{"float": "left", "width": "30%", "height":"90px", "textAlign": "right", "verticalAlign":"middle"}}>
             <span style={{"float": "left", "width": "80%", "height":"90px", "textAlign": "left", "verticalAlign":"middle"}}> 
               <div className="isLive">

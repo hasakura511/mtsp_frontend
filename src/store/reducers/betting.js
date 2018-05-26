@@ -74,6 +74,11 @@ const initialState = {
     accounts_pct:0,
     currpnl_total:0,
     currpnl_pct:0,
+    lockdown_text: {
+      markets:"",
+      next_lockdown:"",
+      next_trigger:""
+    }
     
   },
   leftSystems: [
@@ -261,11 +266,11 @@ const reducer = (state = initialState, action) => {
     {
         var date=new Date();
         date.setTime(Date.parse(action.simdate));
-        const simulatedDate = getSimDate(date);
+        //const simulatedDate = getSimDate(date);
         const liveDate = date;
         return {
             ...state,
-            simulatedDate,
+            //simulatedDate,
             liveDate
         };
     }
@@ -295,6 +300,7 @@ const reducer = (state = initialState, action) => {
         const dictionary_strategy = JSON.parse(action.data.dictionary_strategy)
         const themes = action.data.themes
         var dashboard_totals=action.data.dashboard_totals;
+        dashboard_totals.lockdown_text=action.data.lockdown_text;
         const loading=false;
         var hasSystem=false;
         var leftSystems= [],
@@ -303,6 +309,7 @@ const reducer = (state = initialState, action) => {
         bottomSystems= [];
         var account_list=[];
         var balanceChips=[];
+        var systemCheck={};
         Object.keys(accounts).map(function(key) {
           const board_config=JSON.parse(accounts[key].board_config_fe);
           accounts[key].board_config_fe=board_config;
@@ -321,6 +328,7 @@ const reducer = (state = initialState, action) => {
           if (!hasSystem) {
             Object.keys(board_config).map(function(key) {
               var name, strat;
+              
               if (board_config[key].position == 'left') {
                 name=board_config[key].id;
                 strat=dictionary_strategy[name];
@@ -397,10 +405,11 @@ const reducer = (state = initialState, action) => {
                         }
                       : c;
                   });
-                  var position=account.last_selection;
+                
+                  var position=account.chip_location;
                   var strat=account.last_selection;
         
-                  if (position.match(/Anti-\d+/)) {
+                  if (position.match(/^Anti-\d+$/)) {
                       position=parseInt(position.replace('Anti-',''))
 
                   } else if (position.match(/^\d+$/)) {

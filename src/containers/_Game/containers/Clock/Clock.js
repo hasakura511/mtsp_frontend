@@ -45,6 +45,7 @@ const Formatter = Intl.DateTimeFormat(["en-GB"], {
 const stateToProps = state => {
   return {
     //simulatedDate: state.betting.simulatedDate,
+    dashboard_totals:state.betting.dashboard_totals,
     isLive:state.betting.isLive,
     //liveDate:state.betting.liveDate,
   };
@@ -66,6 +67,7 @@ export default class Clock extends PureComponent {
     //simulatedDate: PropTypes.string.isRequired,
     isLive:PropTypes.bool.isRequired,
     //liveDate: PropTypes.instanceOf(Date).isRequired,
+    dashboard_totals:PropTypes.object.isRequired,
     updateDate:PropTypes.func.isRequired
   };
 
@@ -93,26 +95,26 @@ export default class Clock extends PureComponent {
 
   render() {
     this.clockTime = this.state.estTime.split(/\s/);
-    const { updateDate } = this.props;
+    const { updateDate,dashboard_totals } = this.props;
     return (
       <div className={classes.Widget}>
         <div className={classes.Left}>
           {this.props.isLive ? (
             <span className="isLive" >
-            <p  style={{ width: "140px", 
+            <p  style={{ width: "180px", 
                         "marginLeft":"15px",
                         "lineHeight":"1" }}>
               <font size="1">
               <br/>
-            Next Lockdown: 01:29.59<br/>
-            29 Markets<br/>
-            @ Mon, 4/23  01:23PM<br/>
+            Next Lockdown: { dashboard_totals.lockdown_text.next_lockdown }<br/>
+            { dashboard_totals.lockdown_text.markets }<br/>
+            { dashboard_totals.lockdown_text.next_trigger }<br/>
               </font>
             </p>
             </span>
           ) : (
             <span className="isSim">
-            <p  style={{ width: "150px", 
+            <p  style={{ width: "180px", 
                         "marginLeft":"15px",
                         "lineHeight":"1" }} 
                         align="center">
@@ -123,7 +125,7 @@ export default class Clock extends PureComponent {
         </div>
         <div className={classes.Saperation} />
         <div className={classes.Right}>
-          <span sytle={{"margin-left":"5px"}}>
+          <span sytle={{"marginLeft":"25px"}}>
             <br/>
             <br/>
             <br/>
@@ -132,13 +134,13 @@ export default class Clock extends PureComponent {
             <h3>
             <LiveClock format={'HH:mm:ss A '} ticking={true} timezone={'US/Eastern'} />
             &nbsp;
-            </h3>
+            </h3> EST
             <br/>
           </span>
           <span>
             <p>
-            <LiveClock format={'dddd, DD MMM YYYY'} ticking={true} timezone={'US/Eastern'} /> EST
-            <Moment onChange={(val) => { console.log(val); updateDate(val); }} interval={1000} tz="US/Eastern" style={{"display":"none"}} className="datetime" aria-hidden={true}/>
+            <LiveClock format={'dddd, DD MMM YYYY'} ticking={true} timezone={'US/Eastern'} /> 
+            <Moment onChange={(val) => { console.log(val); updateDate(val); }} interval={30000} tz="US/Eastern" style={{"display":"none"}} className="datetime" aria-hidden={true}/>
             </p>
           </span>
         </div>
