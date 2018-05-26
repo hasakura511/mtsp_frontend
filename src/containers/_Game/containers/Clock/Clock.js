@@ -3,6 +3,7 @@ import classes from "./Clock.css";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { toSlashDate } from "../../../../util";
+import LiveClock from 'react-live-clock';
 
 export const DAYS = [
   "Sunday",
@@ -92,7 +93,7 @@ export default class Clock extends PureComponent {
             </span>
           ) : (
             <span className="isSim">
-            <p  style={{ width: "140px", 
+            <p  style={{ width: "150px", 
                         "marginLeft":"15px",
                         "lineHeight":"1" }} 
                         align="center">
@@ -109,12 +110,16 @@ export default class Clock extends PureComponent {
             <br/>
             <br/>
             <br/>
-            <h3 style={{ width: "95px" }}>{this.clockTime[0]}</h3>
-            <h3 style={{ width: "45px" }}>{this.clockTime[1]}</h3>
-            <p>EST</p>
+            <h3>
+            <LiveClock format={'HH:mm:ss A '} ticking={true} timezone={'US/Eastern'} />
+            &nbsp;
+            </h3>
+            <br/>
           </span>
           <span>
-            <p>{Formatter.format(new Date(toSlashDate(simulatedDate)))}</p>
+            <p>
+            <LiveClock format={'dddd, DD MMM YYYY'} ticking={true} timezone={'US/Eastern'} /> EST
+            </p>
           </span>
         </div>
       </div>
