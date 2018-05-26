@@ -395,10 +395,19 @@ export default class Panel extends Component {
       const column = [];
       for (let yIndex = 0; yIndex < maxHeight; yIndex++) {
         slot = slots[xIndex * maxHeight + yIndex];
+        var slotHeatmap={};
+
+        if (heatmap_selection.length > 0) {
+            slotHeatmap['color_fill']=heatmap[heatmap_selection].color_fill[slot.position.toString()];
+            slotHeatmap['color_text']=heatmap[heatmap_selection].color_text[slot.position.toString()];
+            slotHeatmap['rank']=heatmap[heatmap_selection].rank[slot.position.toString()];
+            slotHeatmap['score']=heatmap[heatmap_selection].score[slot.position.toString()];
+        }
         column.push(
           <Slot
             key={"slot-" + xIndex + "-" + yIndex}
             position={slot.position}
+            slotHeatmap={slotHeatmap}
             topSystem={slot.topSystem}
             bottomSystem={slot.bottomSystem}
             leftSystem={slot.leftSystem}
@@ -419,7 +428,6 @@ export default class Panel extends Component {
 
     const panel = (
       <div className={classes.Panel}>
-        Heatmap: {heatmap_selection}
 
         {slotsGrid}
         <BottomSection

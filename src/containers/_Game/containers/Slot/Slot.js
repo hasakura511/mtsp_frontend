@@ -69,7 +69,8 @@ class Slot extends Component {
       children,
       width,
       fontSize,
-      dictionary_strategy
+      dictionary_strategy,
+      slotHeatmap
     } = this.props;
     const titleArray = [
       bottomSystem.display,
@@ -96,6 +97,14 @@ class Slot extends Component {
       name="Name: " + ps + "\nFull Name: " + fullname + "\nType: " + type + "\nDescription: " + desc;
 
     }    
+    var bgColor="#d0f4a6";
+    var textColor="#000000";
+    if (slotHeatmap != undefined && slotHeatmap.color_fill != undefined) {
+      bgColor=slotHeatmap.color_fill;
+    }
+    if (slotHeatmap != undefined && slotHeatmap.color_text != undefined) {
+      textColor=slotHeatmap.color_text;
+    }
     return dropTarget(
       <div className={classes.Slot}>
         <Square
@@ -104,8 +113,9 @@ class Slot extends Component {
             borderTopColor: topSystem.color,
             borderLeftColor: leftSystem.color,
             borderRightColor: rightSystem.color,
-            backgroundColor: canDrop ? "#d0f4a6" : "transparent",
-            opacity: canDrop ? (isOver ? 0.8 : 0.5) : 1,
+            backgroundColor: canDrop ? bgColor : "transparent",
+            color: textColor,
+            opacity: canDrop ? (isOver ? 0.9 : 0.7) : 1,
             width,
             fontSize
           }}
@@ -134,7 +144,8 @@ Slot.propTypes = {
   children: PropTypes.any,
   moveChipToSlot: PropTypes.func,
   width: PropTypes.string,
-  fontSize: PropTypes.string
+  fontSize: PropTypes.string,
+  slotHeatmap:PropTypes.object
 };
 
 export default DropTarget("chip", slotTarget, collect)(Slot);
