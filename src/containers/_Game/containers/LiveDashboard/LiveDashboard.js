@@ -128,7 +128,10 @@ export default class LiveDashboard extends Component {
               const accountId=account.account_id;
               const accountValue=account.account_value;
               var locktime=account.locktime;
-              const lcBet = account.last_selection;
+              var lcBet = account.last_selection;
+              if (lcBet.toLowerCase() == 'off') {
+                lcBet="Off";
+              }
               const betDate=locktime.substring(5,10).replace('-','/')
               const lpBet = account.prev_selection;
               const lpBetDate=account.date.substring(5).replace('-','/')

@@ -363,10 +363,10 @@ const reducer = (state = initialState, action) => {
         initializeData.heatmap=heatmap;
         initializeData.themes=themes;
         initializeData.dictionary_strategy=dictionary_strategy;
-        //console.log(leftSystems);
-        //console.log(rightSystems);
-        //console.log(topSystems);
-        //console.log(bottomSystems);
+        ////console.log(leftSystems);
+        ////console.log(rightSystems);
+        ////console.log(topSystems);
+        ////console.log(bottomSystems);
         accounts=account_list;
         var seen={};
         accounts.map(function(account) {
@@ -392,25 +392,24 @@ const reducer = (state = initialState, action) => {
 
                   } else if (position.match(/^\d+$/)) {
                       position=parseInt(position);
-                  }
-
+                  } 
                   var bettingChips = [
                     ...inGameChips.bettingChips,
                     { ...chip, position }
                   ];
-                    insertChip(topSystems, position, {
+                  topSystems=insertChip(topSystems, position, {
                       ...chip,
                       position
                     });
-                    insertChip(bottomSystems, position, {
+                  bottomSystems=insertChip(bottomSystems, position, {
                       ...chip,
                       position
                     });
-                    insertChip(leftSystems, position, {
+                  leftSystems=insertChip(leftSystems, position, {
                       ...chip,
                       position
                     });
-                    insertChip(rightSystems, position, {
+                  rightSystems=insertChip(rightSystems, position, {
                       ...chip,
                       position
                     });
@@ -517,8 +516,8 @@ const reducer = (state = initialState, action) => {
       // Taking today's date:
       const newDate = dates[dates.indexOf(simulatedDate) + 1] || simulatedDate;
 
-      console.log("Demo: Last3DayProfits");
-      console.log(last3DaysProfits);
+      //console.log("Demo: Last3DayProfits");
+      //console.log(last3DaysProfits);
 
       // loop this currentBets object `for` all the accounts
       for (let key in modifiedPastBets) {
@@ -534,12 +533,12 @@ const reducer = (state = initialState, action) => {
           last3DaysProfits[key][newDate] &&
           modifiedPastBets[key] !== null
         ) {
-          console.log("Calculating Demo Profit");
-          console.log(last3DaysProfits);
-          console.log(modifiedPastBets);
+          //console.log("Calculating Demo Profit");
+          //console.log(last3DaysProfits);
+          //console.log(modifiedPastBets);
 
-          console.log(last3DaysProfits[key]);
-          console.log(modifiedPastBets[key]);
+          //console.log(last3DaysProfits[key]);
+          //console.log(modifiedPastBets[key]);
           const isAnti = modifiedPastBets[key].isAnti;
 
           if (modifiedPastBets[key].position && modifiedPastBets[key].position.toString().toLowerCase() != 'off')
@@ -571,10 +570,10 @@ const reducer = (state = initialState, action) => {
         };
       });
 
-      console.log("Calculated PnL for " + newDate)
-      console.log(modifiedAccounts)
-      console.log(modifiedCurrentBets)
-      console.log(modifiedPastBets)
+      //console.log("Calculated PnL for " + newDate)
+      //console.log(modifiedAccounts)
+      //console.log(modifiedCurrentBets)
+      //console.log(modifiedPastBets)
       return {
         ...state,
         accounts: modifiedAccounts,
