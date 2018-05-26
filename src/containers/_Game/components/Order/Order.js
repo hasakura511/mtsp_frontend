@@ -16,7 +16,7 @@ const getSystems = slot => {
 
 
 const order = props => {
-  const { slot, chip, setAnti, setNotAnti, isAnti, toAntiSystem, submitBetHandler, close, isLive } = props;
+  const { slot, chip, setAnti, setNotAnti, isAnti, toAntiSystem, submitBetHandler, close, isLive,  dictionary_strategy } = props;
   console.log(slot);
   const isNumbered = !isNaN(Number(slot.position));
   return (
@@ -29,6 +29,7 @@ const order = props => {
           >
             <Slot
               {...slot}
+              dictionary_strategy={ dictionary_strategy}
               heldChips={[]}
               width={!isNumbered ? "160px" : "60px"}
               fontSize={!isNumbered ? "1.5em" : "2.2em"}
@@ -150,7 +151,8 @@ order.propTypes = {
   rankingLoading: PropTypes.bool.isRequired,
   submitBetHandler: PropTypes.func.isRequired,
   isAnti: PropTypes.bool.isRequired,
-  close: PropTypes.func.isRequired
+  close: PropTypes.func.isRequired,
+  dictionary_strategy:PropTypes.object.isRequired,
 };
 
 export default order;

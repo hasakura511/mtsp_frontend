@@ -390,6 +390,7 @@ export default class OrderDialog extends Component {
         ) : (
           <Order
             {...this.props}
+            dictionary_strategy={this.props.dictionary_strategy}
             isLive={this.props.isLive}
             performance={performance}
             setAnti={this.setAnti}

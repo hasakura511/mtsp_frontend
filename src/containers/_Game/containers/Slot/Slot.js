@@ -68,7 +68,8 @@ class Slot extends Component {
       heldChips,
       children,
       width,
-      fontSize
+      fontSize,
+      dictionary_strategy
     } = this.props;
     const titleArray = [
       bottomSystem.display,
@@ -81,7 +82,19 @@ class Slot extends Component {
     if (ps.toString().match(/^\d+$/)) {
       name="Name: " + ps + "\nFull Name: " + ps + "\nType: Child\nParents: " + titleArray.join(", ")
     } else {
-      name="Name: " + ps + "\nFull Name: " + ps + "\nType: Parent\nDescription: " + titleArray.join(", ")
+      var fullname=ps;
+      var desc=titleArray.join(", ");
+      var type="Parent";
+      if ( dictionary_strategy !== undefined) {
+        if (ps in dictionary_strategy) {
+            fullname=dictionary_strategy[ps].board_name;
+            desc=dictionary_strategy[ps].description;
+            type=dictionary_strategy[ps].type;
+            
+        }
+      }
+      name="Name: " + ps + "\nFull Name: " + fullname + "\nType: " + type + "\nDescription: " + desc;
+
     }    
     return dropTarget(
       <div className={classes.Slot}>
@@ -113,8 +126,8 @@ Slot.propTypes = {
   leftSystem: PropTypes.any,
   rightSystem: PropTypes.any,
   heldChips: PropTypes.array,
-  position: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-    .isRequired,
+  position: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  dictionary_strategy:PropTypes.object,
   dropTarget: PropTypes.func,
   isOver: PropTypes.bool,
   canDrop: PropTypes.bool,
