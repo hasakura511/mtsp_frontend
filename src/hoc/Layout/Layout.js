@@ -37,16 +37,7 @@ const LINKS = [
     active: false,
     text: "BOARD",
     exact: true,
-    show: 0
-  },
-  {
-    id: "link1",
-    href: "/contact",
-    target: "_self",
-    active: false,
-    text: "CONTACT",
-    exact: true,
-    show: 0
+    show: 2
   },
   {
     id: "link2",

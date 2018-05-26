@@ -59,6 +59,7 @@ const stateToProps = state => {
     simulatedDate: state.betting.simulatedDate,
     last3DaysProfits: state.betting.last3DaysProfits,
     accounts:state.betting.accounts,
+    dashboard_totals:state.betting.dashboard_totals,
     initializeData:state.betting.initializeData,
     leftSystems:state.betting.leftSystems,
     topSystems:state.betting.topSystems,
@@ -134,6 +135,7 @@ export default class LiveBoard extends Component {
     lastName: PropTypes.string,
     authSuccess: PropTypes.func.isRequired,
     accounts:PropTypes.array.isRequired,
+    dashboard_totals:PropTypes.object.isRequired,
     nextDay: PropTypes.func.isRequired,
     updateBet: PropTypes.func.isRequired,
     updateDate: PropTypes.func.isRequired,
@@ -588,7 +590,7 @@ export default class LiveBoard extends Component {
         );
       } else {
       var themes_bg="linear-gradient(90deg," + this.props.themes.live.heatmap.heatmap_cold + ", " + this.props.themes.live.heatmap.heatmap_hot + ")";
-      var board_bg="linear-gradient(180deg," + this.props.themes.live.background.middle + ", " + this.props.themes.live.background.middle + ", " + this.props.themes.live.background.bottom + ")";
+      var board_bg="linear-gradient(180deg," + this.props.themes.live.background.top + ", " + this.props.themes.live.background.middle + ", " + this.props.themes.live.background.bottom + ")";
       console.log(themes_bg);
       return (
 

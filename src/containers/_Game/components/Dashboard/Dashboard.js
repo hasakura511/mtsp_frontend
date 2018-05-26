@@ -45,9 +45,9 @@ const dashboard = props => {
         <thead>
           <tr>
             <th>Starting Values</th>
+            <th>Next Bet</th>
             <th>Current Bet</th>
-            <th>Previous Bet</th>
-            <th>Previous Bet Gains & Losses</th>
+            <th>Current PnL</th>
             <th>Account Values</th>
             <th><span style={{"float": "left", "width": "80%", "textAlign": "left"}}>
                   Last Update

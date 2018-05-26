@@ -20,6 +20,7 @@ const stateToProps = state => {
     simulatedDate: state.betting.simulatedDate,
     initializeData:state.betting.initializeData,
     loading:state.betting.loading,
+    dashboard_totals:state.betting.dashboard_totals,
   };
 };
 
@@ -50,6 +51,7 @@ export default class LiveDashboard extends Component {
     currentBets: PropTypes.object.isRequired,
     pastBets: PropTypes.object.isRequired,
     accounts: PropTypes.array.isRequired,
+    dashboard_totals:PropTypes.object.isRequired,
     simulatedDate: PropTypes.string.isRequired,
     loading: PropTypes.bool.isRequired,
     initializeData:PropTypes.object.isRequired,
@@ -84,7 +86,7 @@ export default class LiveDashboard extends Component {
   }
   render() {
     //const initializeData=this.props.initializeData;
-    const { currentBets, pastBets, accounts, simulatedDate, loading, initializeData } = this.props;
+    const { currentBets, pastBets, accounts, simulatedDate, loading, initializeData, dashboard_totals } = this.props;
     //console.log(this.state);
     //console.log(this.props);
     var netPnl = 0;
@@ -105,11 +107,10 @@ export default class LiveDashboard extends Component {
       <table className={classes.Table}>
         <thead>
           <tr>
-            <th>Starting Values</th>
+            <th>Accounts</th>
+            <th>Next Bet</th>
             <th>Current Bet</th>
-            <th>Previous Bet</th>
-            <th>Previous Bet Gains & Losses</th>
-            <th>Account Values</th>
+            <th>Current PnL</th>
             <th className="isLive">Lockdown</th>
             <th><span style={{"float": "left", "width": "80%", "textAlign": "left"}}>
                   Last Update
@@ -137,7 +138,7 @@ export default class LiveDashboard extends Component {
               const lpBetDate=account.date.substring(5).replace('-','/')
               
               const cummPercentChange =account.pnl_cumpct;
-              const display=account.starting_chip_text;
+              const display=account.account_chip_text;
               locktime=locktime.substring(5).replace('-','/');
               //eslint-disable-next-line
               // if (lpBet) console.log(account.accountValue - lpBet.change);
@@ -149,8 +150,19 @@ export default class LiveDashboard extends Component {
                 <tr key={`dashboard-row-${accountId}`}>
                   <td>
                     <div className={classes.Cell + " " + classes.Flex}>
-                      <img src="/images/account_chart_button.png" width="25" />
+                      $&nbsp;<img src="/images/account_chart_button.png" width="25" />
                       <strong>{display}</strong>
+                      &nbsp;  
+                      ( <span
+                        style={{
+                          color:
+                            cummPercentChange > 0
+                              ? "green"
+                              : cummPercentChange < 0 ? "red" : "black"
+                        }}
+                      >
+                        {cummPercentChange.toFixed(2)}% 
+                      </span> )
                     </div>
                   </td>
                   <td>
@@ -183,31 +195,31 @@ export default class LiveDashboard extends Component {
                     >
                       
 
-                      {account.last_pnl !== null ? (
+                      {account.current_pnl !== null ? (
                         <p style={{ width: "auto" }}>
-                          {account.pnl_pct ? (
+                          {account.current_pct ? (
                             <img
                               src={
-                                account.pnl_pct > 0
+                                account.current_pct > 0
                                   ? gainIcon
                                   : account.pnl_pct < 0 ? lossIcon : ""
                               }
                             />
                           ) : null}
-                          ${Math.abs(Math.round(account.last_pnl)).toLocaleString(
+                          ${Math.abs(Math.round(account.current_pnl)).toLocaleString(
                             "en"
                           )}{" "}
                           (
                           <span
                             style={{
                               color:
-                              account.pnl_pct > 0
+                              account.current_pct > 0
                                   ? "green"
-                                  : account.pnl_pct < 0 ? "red" : "black"
+                                  : account.current_pct < 0 ? "red" : "black"
                             }}
                           >
                             {(
-                              account.pnl_pct
+                              account.current_pct
                             ).toFixed(2)}%
                           </span>
                           )
@@ -215,24 +227,7 @@ export default class LiveDashboard extends Component {
                       ) : null}
                     </div>
                   </td>
-                  <td>
-                    <div
-                      className={classes.Cell}
-                      style={{ justifyContent: "center" }}
-                    >
-                      {`$${account.account_value.toLocaleString("en")}`}&nbsp;
-                      ( <span
-                        style={{
-                          color:
-                            cummPercentChange > 0
-                              ? "green"
-                              : cummPercentChange < 0 ? "red" : "black"
-                        }}
-                      >
-                        {cummPercentChange.toFixed(2)}% 
-                      </span> )
-                    </div>
-                  </td>
+                 
                   <td  className="isLive">
                   <div
                     className={classes.Cell}
@@ -256,7 +251,18 @@ export default class LiveDashboard extends Component {
           <tr className={classes.LastRow}>
             <th>
               <div className={classes.Cell}>
-                Total: ${netStartAmount.toLocaleString("en")}
+                <b>Total</b>: ${dashboard_totals.accounts_total.toLocaleString("en")}
+                &nbsp;
+                ( <span
+                  style={{
+                    color:
+                      dashboard_totals.accounts_pct > 0
+                        ? "green"
+                        : dashboard_totals.accounts_pct < 0 ? "red" : "black"
+                  }}
+                >
+                   {dashboard_totals.accounts_pct.toFixed(2)}% 
+                </span> )
               </div>
             </th>
             <td />
@@ -267,37 +273,22 @@ export default class LiveDashboard extends Component {
                 style={{ justifyContent: "center" }}
               >
                 <p style={{ width: "auto" }}>
-                  {netPnl ? (
-                    <img src={netPnl > 0 ? gainIcon : lossIcon} />
+                  {dashboard_totals.currpnl_total ? (
+                    <img src={dashboard_totals.currpnl_total > 0 ? gainIcon : lossIcon} />
                   ) : null}
-                  ${Math.abs(Math.round(netPnl)).toLocaleString("en")} (
+                  ${Math.abs(Math.round(dashboard_totals.currpnl_total)).toLocaleString("en")} (
                   <span
                     style={{
-                      color: netPnl > 0 ? "green" : netPnl < 0 ? "red" : "black"
+                      color: dashboard_totals.currpnl_total > 0 ? "green" : dashboard_totals.currpnl_total < 0 ? "red" : "black"
                     }}
                   >
-                    {netChangePercent.toFixed(2)}%
+                    {dashboard_totals.currpnl_pct.toFixed(2)}%
                   </span>
                   )
                 </p>
               </div>
             </td>
             
-            <td>
-              <div className={classes.Cell}>
-                {`$${netFinalAmount.toLocaleString("en")}`}&nbsp;
-                ( <span
-                  style={{
-                    color:
-                      netCumChangePercent > 0
-                        ? "green"
-                        : netCumChangePercent < 0 ? "red" : "black"
-                  }}
-                >
-                   {netCumChangePercent.toFixed(2)}% 
-                </span> )
-              </div>
-            </td>
             <td  className="isLive">
                 <div
                   className={classes.Cell}

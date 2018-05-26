@@ -68,6 +68,13 @@ const initialState = {
     }),
     bettingChips: [],
   },  
+  dashboard_totals: {
+    accounts_total:"0",
+    accounts_pct:0,
+    currpnl_total:0,
+    currpnl_pct:0,
+    
+  },
   leftSystems: [
     {
     color: "#FF0000",
@@ -282,6 +289,7 @@ const reducer = (state = initialState, action) => {
         const heatmap = JSON.parse(action.data.heatmap)
         const dictionary_strategy = JSON.parse(action.data.dictionary_strategy)
         const themes = action.data.themes
+        var dashboard_totals=action.data.dashboard_totals;
         const loading=false;
         var hasSystem=false;
         var leftSystems= [],
@@ -433,7 +441,8 @@ const reducer = (state = initialState, action) => {
             bottomSystems,
             loading,
             isLive,
-            inGameChips
+            inGameChips,
+            dashboard_totals
         };
     }
     case actionTypes.ADD_BET: {
