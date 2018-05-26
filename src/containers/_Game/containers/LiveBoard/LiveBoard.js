@@ -380,11 +380,16 @@ export default class LiveBoard extends Component {
           },{timeout: 600000})
           .then(({ data }) => {
             this.sendNotice(strat + ' Bet Placed' + JSON.stringify(data));
+            if (data.message && data.message.match(/ERROR/)) {
+              chip.position="off";
+              this.moveToBalance(chip);
 
+            }
           })
           .catch(error => {
             this.sendNotice('Error Placing Bet' + JSON.stringify(error));
-
+            chip.position="off";
+            this.moveToBalance(chip);
             console.log('error initializing')
             console.log(error)
           // eslint-disable-next-line react/no-is-mounted
