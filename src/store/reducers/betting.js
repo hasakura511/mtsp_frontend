@@ -20,6 +20,23 @@ const insertChip = (systems, column, chip) => {
   });
 };
 
+const checkChipsLock = (chips, liveDate) => {
+  var newChips=[];
+  chips.map(function (chip) {
+    var locktime=new Date();
+    locktime.setTime(Date.parse(chip.locktime));
+    var unlocktime=new Date();
+    unlocktime.setTime(Date.parse(chip.unlocktime));
+    chip['lockdown']=locktime;
+    if (locktime > liveDate || liveDate > unlocktime) {
+      chip['status']='unlocked';
+    } else {
+      chip['status']='unlocked';
+    }
+    newChips.push(chip);
+  });
+  return newChips;
+}
 
 const initialState = {
   // example bet:
@@ -56,7 +73,15 @@ const initialState = {
   })),
   dictionary_strategy:{},
   themes: {'live':{'heatmap':{'heatmap_cold':'#000000','heatmap_hot':'#FFFFFF'},
-                   'background':{'top':'#000000','bottom':'#000000', 'middle':'#FFFFFF'}}},
+                   'background':{'top':'#000000','bottom':'#000000', 'middle':'#FFFFFF'}
+            },
+            'chip_styles':{
+              'locked': {'color_fill':'#C000000', 'color_text':'#FFFFFF'},
+              'unlocked': {'color_fill':'#375623', 'color_text':'#FFFFFF'},
+              'mixed': {'color_fill':'#833C0C', 'color_text':'#FFFFFF'},
+              'practice': {'color_fill':'#002060', 'color_text':'#FFFFFF'},
+            }
+  },
   loading: true,
   isLive:false,
   initializeData: {},
@@ -268,10 +293,44 @@ const reducer = (state = initialState, action) => {
         date.setTime(Date.parse(action.simdate));
         //const simulatedDate = getSimDate(date);
         const liveDate = date;
+
+        var chips=state.inGameChips;
+        var tSys = state.topSystems;
+        var lSys = state.leftSystems;
+        var rSys = state.rightSystems;
+        var bSys = state.bottomSystems;
+        if (state.isLive) {
+          chips.balanceChips=checkChipsLock(chips.balanceChips, liveDate);
+          chips.bettingChips=checkChipsLock(chips.bettingChips, liveDate);
+          tSys = state.topSystems.map(system => {
+            system.heldChips=checkChipsLock(system.heldChips, liveDate);
+            return system;
+          });
+          lSys = state.leftSystems.map(system => {
+            system.heldChips=checkChipsLock(system.heldChips, liveDate);
+            return system;
+          });
+          rSys = state.rightSystems.map(system => {
+            system.heldChips=checkChipsLock(system.heldChips, liveDate);
+            return system;
+          });
+          bSys = state.bottomSystems.map(system => {
+            system.heldChips=checkChipsLock(system.heldChips, liveDate);
+            return system;
+          });
+          console.log(chips);
+        }
+        /*
+          */
         return {
             ...state,
             //simulatedDate,
-            liveDate
+            liveDate,
+            inGameChips:chips,  
+            topSystems:tSys,
+            leftSystems:lSys,
+            rightSystems:rSys,
+            bottomSystems:bSys,
         };
     }
     case actionTypes.UPDATE_BET:
@@ -301,6 +360,9 @@ const reducer = (state = initialState, action) => {
         const themes = action.data.themes
         var dashboard_totals=action.data.dashboard_totals;
         dashboard_totals.lockdown_text=action.data.lockdown_text;
+        var lockdown_time=new Date();
+        lockdown_time.setTime(Date.parse(dashboard_totals.lockdown_text.next_lockdown));
+        dashboard_totals.lockdown_text.next_lockdown_time=lockdown_time;
         const loading=false;
         var hasSystem=false;
         var leftSystems= [],
@@ -321,7 +383,17 @@ const reducer = (state = initialState, action) => {
           chip['count']=1;
           chip['qty']={};
           chip['display']=chip.account_chip_text;
-          
+          chip['chip_styles']=themes.chip_styles;
+          var locktime=new Date();
+          locktime.setTime(Date.parse(chip.locktime));
+          var unlocktime=new Date();
+          unlocktime.setTime(Date.parse(chip.unlocktime));
+          chip['lockdown']=locktime;
+          if (locktime > state.liveDate || state.liveDate > unlocktime) {
+            chip['status']='unlocked';
+          } else {
+            chip['status']='locked';
+          }
           balanceChips.push(chip);
           account_list.push(accounts[key]); 
           

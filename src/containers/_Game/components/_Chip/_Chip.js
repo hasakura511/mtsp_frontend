@@ -32,15 +32,34 @@ const chip = props => {
       break;
   }
 
-  const title =
-    "Portfolio: " + JSON.stringify(chip.qty).replace(/\{|\}|\'|\"/gi, "");
+  var title = "";
+  if (chip.tier != undefined) {
+    title="Tier: " + chip.tier.toString() + "\n"; 
+    title+="Lockdown: " + chip.locktime.toString() + "\n"; 
+    title+="Account Value: " + chip.account_value.toString() + "\n"; 
+    title+="Cum. % Chg: " + chip.pnl_cumpct.toString() + "\n";
+    title+="Markets in Portfolio: " + chip.num_markets.toString() + "\n"; 
+    title+="Age: " + chip.age.toString() + "\n";
+    title+="Current Bet: " + chip.last_selection.toString() + "\n";
+    title+="Status: " + chip.status.toString();
+  }
+
+  var chipStyle={ "backgroundImage": "linear-gradient(to top, #00468c 0%, #2a92fa 100%)" };
+  if (chip.status != undefined) {
+    if (chip.status == 'locked') {
+      chipStyle={ "backgroundImage": "linear-gradient(" + chip.chip_styles.locked.color_fill.toString() + ", " + chip.chip_styles.locked.color_fill.toString() + "," +  chip.chip_styles.locked.color_text.toString() + ")" };
+    } else {
+      chipStyle={ "backgroundImage": "linear-gradient(" + chip.chip_styles.unlocked.color_fill.toString() + ", " + chip.chip_styles.unlocked.color_fill.toString() + "," +  chip.chip_styles.unlocked.color_text.toString() + ")" };
+      
+    }
+  }
   dragPreview(
-    <div className={classes.Chip} title={replaceSymbols(title)}>
+    <div className={classes.Chip} style={chipStyle} title={title}>
       <p>{chip.display}</p>
     </div>
   );
   return dragSource(
-    <div className={classes.Chip} title={replaceSymbols(title)}>
+    <div className={classes.Chip} style={chipStyle} title={title}>
       <p>{chip.display}</p>
     </div>
   );
@@ -66,6 +85,9 @@ const chipSource = {
     return chip;
   },
   canDrag(props) {
+    const { chip } = props;
+    if (chip.status != undefined && chip.status == 'locked')
+      return false;
     return props.canDrag;
   }
 };
