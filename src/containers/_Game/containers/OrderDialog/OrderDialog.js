@@ -243,8 +243,22 @@ export default class OrderDialog extends Component {
     this._isMounted = true;
   }
 
-  toggleSystem = () => {
+  toggleSystem = event => {
     this.setState(prevState => ({ isAnti: !prevState.isAnti }));
+  };
+
+  setNotAnti = event=> {
+    console.log(event.target.id);
+    if (event.target.id == 'system-radio') {
+      this.setState({ isAnti: false});
+    }
+  };
+
+  setAnti = event => {
+    console.log(event.target.id);
+    if (event.target.id == 'anti-system-radio') {
+        this.setState({ isAnti: true});
+    }
   };
 
   /**
@@ -255,6 +269,7 @@ export default class OrderDialog extends Component {
    */
   submitBetHandler = event => {
     event.preventDefault();
+    //alert(this.state.isAnti);
     if (!this.props.isLive) {
         const {
           slot,
@@ -262,9 +277,9 @@ export default class OrderDialog extends Component {
           addBet,
           chip,
           addLast3DaysProfit,
-          successHandler
+          successHandler,
         } = this.props;
-        const { isAnti, last3DaysProfit } = this.state;
+        const { last3DaysProfit } = this.state;
         const bet = new Object();
         // example bet:
         // {"5K_0_1516105730": {
@@ -275,12 +290,12 @@ export default class OrderDialog extends Component {
         bet[chip.accountId] = {
           bettingDate: toSlashDate(simulatedDate),
           position: slot.position,
-          isAnti
+          isAnti: this.state.isAnti
         };
-        console.log(bet[chip.accountId]);
+        //console.log(bet[chip.accountId]);
         addLast3DaysProfit(last3DaysProfit);
         addBet(bet);
-        successHandler(chip, slot.position, isAnti, strat);
+        successHandler(chip, slot.position, this.state.isAnti, strat);
         this.toggle();
     } else {
       const {
@@ -288,25 +303,32 @@ export default class OrderDialog extends Component {
         simulatedDate,
         addBet,
         chip,
-        successHandler
+        successHandler,
       } = this.props;
-      console.log(chip);
-      console.log(slot);
+      //console.log(chip);
+      //console.log(slot);
 
-      const { isAnti } = this.state;
+      var strat=toSystem(slot.position);
+      if (this.state.isAnti) 
+        strat=toAntiSystem(strat);
+        chip.board_config_fe.map(function (s) {
+          if (s.id == strat) {
+            slot.position=strat;
+          }
+        });
+
+      
+      //alert(slot.position);
+      //alert(strat);
       const bet = new Object();
       bet[chip.accountId] = {
         bettingDate: toSlashDate(simulatedDate),
         position: slot.position,
-        isAnti
+        isAnti: this.state.isAnti
       };
       
-      var strat=toSystem(slot.position);
-      if (isAnti) 
-        strat=toAntiSystem(strat);
-        
       addBet(bet);
-      successHandler(chip, slot.position, isAnti, strat);
+      successHandler(chip, slot.position, this.state.isAnti, strat);
       this.toggle();
   
   
@@ -343,7 +365,8 @@ export default class OrderDialog extends Component {
             {...this.props}
             isLive={this.props.isLive}
             performance={performance}
-            toggleSystem={this.toggleSystem}
+            setAnti={this.setAnti}
+            setNotAnti={this.setNotAnti}
             rankingData={rankingData}
             rankingError={rankingError}
             rankingLoading={rankingLoading}
@@ -370,6 +393,6 @@ export default class OrderDialog extends Component {
     isAuth: PropTypes.bool.isRequired,
     isLive: PropTypes.bool.isRequired,
     history: PropTypes.object.isRequired,
-    addTimedToaster: PropTypes.func.isRequired
+    addTimedToaster: PropTypes.func.isRequired,
   };
 }

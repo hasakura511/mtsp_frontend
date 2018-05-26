@@ -16,7 +16,7 @@ const getSystems = slot => {
 
 
 const order = props => {
-  const { slot, chip, toggleSystem, isAnti, submitBetHandler, close, isLive } = props;
+  const { slot, chip, setAnti, setNotAnti, isAnti, submitBetHandler, close, isLive } = props;
   console.log(slot);
   const isNumbered = !isNaN(Number(slot.position));
   return (
@@ -61,7 +61,7 @@ const order = props => {
                 type="radio"
                 id="system-radio"
                 checked={!isAnti}
-                onChange={toggleSystem}
+                onChange={setNotAnti}
               />
               {isLive ? (
 
@@ -80,7 +80,7 @@ const order = props => {
                 type="radio"
                 id="anti-system-radio"
                 checked={isAnti}
-                onChange={toggleSystem}
+                onChange={setAnti}
               />
               {isLive ? (
                 <label htmlFor="anti-system-radio" style={{ color: "#63a57c" }}>
@@ -142,7 +142,8 @@ order.propTypes = {
   chip: PropTypes.object.isRequired,
   isLive: PropTypes.bool.isRequired,
   performance: PropTypes.object,
-  toggleSystem: PropTypes.func.isRequired,
+  setAnti: PropTypes.func.isRequired,
+  setNotAnti: PropTypes.func.isRequired,
   rankingError: PropTypes.object,
   rankingData: PropTypes.array,
   rankingLoading: PropTypes.bool.isRequired,

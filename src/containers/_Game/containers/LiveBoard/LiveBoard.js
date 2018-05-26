@@ -237,10 +237,11 @@ export default class LiveBoard extends Component {
       this.props.updateDate(data.last_date);
 
 
-      
+      //this.sendNotice('Account Data Received');
      
     })
     .catch(error => {
+      this.sendNotice('Account Data not received: ' + JSON.stringify(error));
       console.log('error initializing')
       console.log(error)
     // eslint-disable-next-line react/no-is-mounted
@@ -295,7 +296,7 @@ export default class LiveBoard extends Component {
             return account.accountId === chip.accountId
               ? {
                   ...account,
-                  last_selection: position + ""
+                  last_selection: strat
                 }
               : account;
           });
@@ -382,9 +383,12 @@ export default class LiveBoard extends Component {
           'strategy':strat,
           },{timeout: 600000})
           .then(({ data }) => {
-          
+            this.sendNotice(strat + ' Bet Placed' + JSON.stringify(data));
+
           })
           .catch(error => {
+            this.sendNotice('Error Placing Bet' + JSON.stringify(error));
+
             console.log('error initializing')
             console.log(error)
           // eslint-disable-next-line react/no-is-mounted
@@ -457,9 +461,11 @@ export default class LiveBoard extends Component {
           'strategy':strat,
           },{timeout: 600000})
           .then(({ data }) => {
-          
+            this.sendNotice(strat + ' Bet Placed' + JSON.stringify(data));
+
           })
           .catch(error => {
+            this.sendNotice('Error Placing Bet' + JSON.stringify(error));
             console.log('error initializing')
             console.log(error)
           // eslint-disable-next-line react/no-is-mounted
