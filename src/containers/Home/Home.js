@@ -8,8 +8,6 @@ import {
   SectionFour,
   SectionFive
 } from "./HomeData";
-import RouteModal from "../../hoc/RouteModal/RouteModal";
-import Contact from "./Contact/Contact";
 // import * as actions from "../../store/actions";
 // import { connect } from "react-redux";
 
