@@ -277,12 +277,8 @@ export const getNextBusinessDate = d => {
   return d;
 }
 
-export const getOffsetDate = (offset) => {
-  //var date=new Date();
-  var date=new Date(2018, 1, 1, 17, 0, 0, 0);
 
-  date=businessDaysFromDate(date, offset);
-
+export const getSimDate = (date) => {
   var day = date.getDate().toString();
   if (day.length == 1)
     day = "0" + day;
@@ -293,6 +289,15 @@ export const getOffsetDate = (offset) => {
   var year = date.getFullYear();
   var datestr=year.toString()+monthIndex.toString()+day.toString();
   return datestr;
+
+}
+
+export const getOffsetDate = (offset) => {
+  //var date=new Date();
+  var date=new Date(2018, 1, 1, 17, 0, 0, 0);
+
+  date=businessDaysFromDate(date, offset);
+  return getSimDate(date);
 }
 
 export const getOffsetSlashDate = (offset) => {

@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { toSlashDate } from "../../../../util";
 import LiveClock from 'react-live-clock';
+import Moment from 'react-moment';
+import * as actions from "../../../../store/actions";
 
 export const DAYS = [
   "Sunday",
@@ -38,16 +40,33 @@ const Formatter = Intl.DateTimeFormat(["en-GB"], {
   weekday: "long"
 });
 
-@connect(state => {
+
+
+const stateToProps = state => {
   return {
-    simulatedDate: state.betting.simulatedDate,
-    isLive:state.betting.isLive
+    //simulatedDate: state.betting.simulatedDate,
+    isLive:state.betting.isLive,
+    //liveDate:state.betting.liveDate,
   };
-})
+};
+
+const dispatchToProps = dispatch => {
+  return {
+    updateDate: date => {
+      dispatch(actions.updateDate(date));
+    },
+  };
+};
+
+@connect(stateToProps, dispatchToProps)
+
+
 export default class Clock extends PureComponent {
   static propTypes = {
-    simulatedDate: PropTypes.string.isRequired,
-    isLive:PropTypes.bool.isRequired
+    //simulatedDate: PropTypes.string.isRequired,
+    isLive:PropTypes.bool.isRequired,
+    //liveDate: PropTypes.instanceOf(Date).isRequired,
+    updateDate:PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -74,7 +93,7 @@ export default class Clock extends PureComponent {
 
   render() {
     this.clockTime = this.state.estTime.split(/\s/);
-    const { simulatedDate } = this.props;
+    const { updateDate } = this.props;
     return (
       <div className={classes.Widget}>
         <div className={classes.Left}>
@@ -119,6 +138,7 @@ export default class Clock extends PureComponent {
           <span>
             <p>
             <LiveClock format={'dddd, DD MMM YYYY'} ticking={true} timezone={'US/Eastern'} /> EST
+            <Moment onChange={(val) => { console.log(val); updateDate(val); }} interval={1000} tz="US/Eastern" style={{"display":"none"}} className="datetime" aria-hidden={true}/>
             </p>
           </span>
         </div>

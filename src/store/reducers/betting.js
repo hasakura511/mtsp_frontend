@@ -1,6 +1,6 @@
 import * as actionTypes from "../actions/actionTypes";
 import ChipsConfig from "../../containers/_Game/ChipsConfig";
-import { clone, toSlashDate, uniq, toIntegerDate, clean, getOffsetDate, getOffsetSlashDate,getDemoPnL } from "../../util";
+import { clone, toSlashDate, uniq, toIntegerDate, clean, getOffsetDate, getOffsetSlashDate,getDemoPnL, getSimDate } from "../../util";
 
 const insertChip = (systems, column, chip) => {
   return systems.map(system => {
@@ -61,6 +61,7 @@ const initialState = {
   isLive:false,
   initializeData: {},
   simulatedDate: getOffsetDate(1),
+  liveDate: new Date(),
   inGameChips: {
     balanceChips: ChipsConfig.map(chip => {
       chip["count"] = 1;
@@ -258,10 +259,14 @@ const reducer = (state = initialState, action) => {
     }
     case actionTypes.UPDATE_DATE:
     {
-        const simulatedDate = action.simdate;
+        var date=new Date();
+        date.setTime(Date.parse(action.simdate));
+        const simulatedDate = getSimDate(date);
+        const liveDate = date;
         return {
             ...state,
-            simulatedDate
+            simulatedDate,
+            liveDate
         };
     }
     case actionTypes.UPDATE_BET:
