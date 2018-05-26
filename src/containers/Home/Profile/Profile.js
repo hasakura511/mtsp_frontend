@@ -301,8 +301,9 @@ export default class Profile extends Component {
                 }
               />
             ))}
-            <div style={{ textAlign: "center", marginTop: "20px" }}>
+            <div style={{ textAlign: "center" }}>
               <Button
+                style={{fontSize:'1em'}}
                 disabled={!formIsValid}
                 onClick={this.profileUpdateHandler}
               >

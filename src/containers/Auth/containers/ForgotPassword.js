@@ -112,7 +112,7 @@ class ForgotPassword extends Component {
           <p>Enter your email address which is linked to your account</p>
           <FormInput {...{ ...this, formElem }} />
           <div className={classes.ButtonContainer}>
-            <Button disabled={!formElem.valid}>Reset Password</Button>
+            <Button style={{ fontSize:'1em' }} disabled={!formElem.valid}>Reset Password</Button>
           </div>
           {/* <p>
             I remembered, take me back to <Link to="/auth?signin">login!</Link>

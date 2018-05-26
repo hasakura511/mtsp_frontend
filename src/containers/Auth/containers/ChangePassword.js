@@ -149,7 +149,7 @@ class ChangePassword extends Component {
             errorMessage={formElem.errorMessage}
           />
         ))}
-        <Button disabled={!this.state.formIsValid}>Submit</Button>
+        <Button  style={{ fontSize:'1em' }}  disabled={!this.state.formIsValid}>Submit</Button>
       </form>
     );
   }

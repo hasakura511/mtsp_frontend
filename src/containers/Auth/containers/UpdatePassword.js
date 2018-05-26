@@ -115,8 +115,8 @@ export default class UpdatePassword extends Component {
           />
         ))}
         <div className={classes.ButtonContainer}>
-          <Button disabled={!this.state.formIsValid}>Submit</Button>
-          <Button type="button" onClick={() => this.props.history.goBack()}>
+          <Button   style={{ fontSize:'1em' }} disabled={!this.state.formIsValid}>Submit</Button>
+          <Button  style={{ fontSize:'1em' }} type="button" onClick={() => this.props.history.goBack()}>
             Back
           </Button>
         </div>
