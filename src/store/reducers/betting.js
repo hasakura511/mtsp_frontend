@@ -81,6 +81,7 @@ const initialState = {
               'practice': {'color_fill':'#002060', 'color_text':'#FFFFFF'},
             }
   },
+  heatmap:{},
   loading: true,
   isLive:false,
   initializeData: {},
@@ -93,6 +94,8 @@ const initialState = {
     }),
     bettingChips: [],
   },  
+  heatmap_selection:""
+  ,
   dashboard_totals: {
     accounts_total:"0",
     accounts_pct:0,
@@ -279,6 +282,14 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case actionTypes.SHOW_HEATMAP:
+    {
+      const heatmap_selection=action.id;
+      return {
+        ...state,
+        heatmap_selection
+      };
+    }
     case actionTypes.FINISH_LOADING:
     {
       const loading=false;
@@ -354,7 +365,7 @@ const reducer = (state = initialState, action) => {
     {
         var initializeData =  action.data;
         var accounts= JSON.parse(action.data.accounts)
-        const heatmap = JSON.parse(action.data.heatmap)
+        var heatmap = JSON.parse(action.data.heatmap)
         const dictionary_strategy = JSON.parse(action.data.dictionary_strategy)
         const themes = action.data.themes
         var dashboard_totals=action.data.dashboard_totals;
@@ -372,6 +383,10 @@ const reducer = (state = initialState, action) => {
         var account_list=[];
         var balanceChips=[];
         var systemCheck={};
+        Object.keys(heatmap).map(function(key) {
+          heatmap[key]=JSON.parse(heatmap[key]);
+        });
+
         Object.keys(accounts).map(function(key) {
           const board_config=JSON.parse(accounts[key].board_config_fe);
           accounts[key].board_config_fe=board_config;
@@ -515,6 +530,7 @@ const reducer = (state = initialState, action) => {
           }
         });
         const isLive=true;
+        console.log(initializeData);
         return {
             ...state,
             initializeData,

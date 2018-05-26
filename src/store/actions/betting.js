@@ -13,6 +13,13 @@ export const updateDate = simdate => {
   };
 };
 
+export const showHeatmap = id => {
+  return {
+    type: actionTypes.SHOW_HEATMAP,
+    id
+  };
+};
+
 export const initializeData = data => {
   return {
     type: actionTypes.INITIALIZE_DATA,

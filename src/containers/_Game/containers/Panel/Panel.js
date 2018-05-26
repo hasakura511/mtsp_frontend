@@ -22,7 +22,9 @@ import Title from "../OrderDialog/OffOrderDialogTitle";
  * @returns {Object} props enhancement object
  */
 const stateToProps = state => {
-  return { simulatedDate: state.betting.simulatedDate };
+  return { simulatedDate: state.betting.simulatedDate,
+           heatmap:state.betting.heatmap,
+           heatmap_selection:state.betting.heatmap_selection };
 };
 
 /**
@@ -47,7 +49,11 @@ const dispatchToProps = dispatch => {
     },
     addTimedToaster(toaster) {
       dispatch(actions.addTimedToaster(toaster, -1));
+    },
+    showHeatmap(id) {
+      dispatch(actions.showHeatmap(id));
     }
+
   };
 };
 
@@ -375,9 +381,14 @@ export default class Panel extends Component {
       orderChip,
       rankingLoading,
       rankingData,
-      rankingError
+      rankingError,
     } = this.state;
 
+    const {
+      heatmap_selection,
+      heatmap,
+      showHeatmap
+    } = this.props;
     let slot = null;
 
     for (let xIndex = 0; xIndex < maxWidth; xIndex++) {
@@ -394,19 +405,22 @@ export default class Panel extends Component {
             rightSystem={slot.rightSystem}
             heldChips={this.heldChips(yIndex + maxHeight * xIndex + 1)}
             moveChipToSlot={this.moveChipToSlot}
+           
           />
         );
       }
       slotsGrid.push(
         <div key={"slotColumn-" + xIndex} className={classes.Column}>
           <RiskStrip system={topSystems[xIndex % topSystems.length]} />
-          {column}
+          {column} 
         </div>
       );
     }
 
     const panel = (
       <div className={classes.Panel}>
+        Heatmap: {heatmap_selection}
+
         {slotsGrid}
         <BottomSection
           systems={this.state.bottomSystems}
@@ -551,7 +565,9 @@ export default class Panel extends Component {
     showDialog: PropTypes.func.isRequired,
     killDialog: PropTypes.func.isRequired,
     addTimedToaster: PropTypes.func.isRequired,
-    isLive:PropTypes.bool.isRequired
-
+    isLive:PropTypes.bool.isRequired,
+    heatmap:PropTypes.object.isRequired,
+    showHeatmap:PropTypes.func.isRequired,
+    heatmap_selection:PropTypes.string.isRequired
   };
 }

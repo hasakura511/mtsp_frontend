@@ -14,4 +14,14 @@ export {
 } from "./auth";
 export { addToaster, removeToaster, addTimedToaster, clearAll } from "./toasters";
 export { killDialog, showDialog, loadingDialog } from "./modal";
-export { addBet, nextDay, toggleMode, addLast3DaysProfit, reset, updateDate, initializeData, finishLoading, updateBet } from "./betting";
+export { addBet, 
+         nextDay, 
+         toggleMode, 
+         addLast3DaysProfit, 
+         reset, 
+         updateDate, 
+         initializeData, 
+         finishLoading, 
+         updateBet, 
+         showHeatmap 
+      } from "./betting";
