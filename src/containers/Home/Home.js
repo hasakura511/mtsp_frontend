@@ -69,9 +69,6 @@ export default class Home extends Component {
     return (
       <div className={classes.Home}>
 
-        <RouteModal path="/contact" redirectPath="/">
-          <Contact />
-        </RouteModal>
         {Jumbotron}
         {/* <button onClick={this.showToaster}>Show</button> */}
         <SectionTwo

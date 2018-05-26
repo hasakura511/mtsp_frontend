@@ -14,7 +14,7 @@ import * as actions from "../../../store/actions";
 import Spinner from "../../../components/UI/Spinner/Spinner";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
 import { Link } from "react-router-dom";
-
+import Contact from "../Contact/Contact";
 const { firstName, lastName } = Controls;
 
 const { DELETE_TITLE, DELETE_MESSAGE, DELETE_SUCCESS, RECOVER_SUCCESS } = {
@@ -282,6 +282,7 @@ export default class Profile extends Component {
     ) : (
       <Aux>
         <Heading title={title} heading={heading} />
+
         <div className={classes.Profile}>
           <form className={classes.Form}>
             <div style={{ margin: "10px" }}>

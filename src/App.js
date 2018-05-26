@@ -10,6 +10,7 @@ import Extras from "./components/Extras/Extras";
 // import GameBoard from "./containers/GameBoard/GameBoard";
 
 import Auth, {
+  
   AccountVerification,
   ForgotPassword,
   ChangePassword,
@@ -19,7 +20,7 @@ import Auth, {
 import LiveBoard from "./containers/_Game/containers/LiveBoard/LiveBoard";
 import Board from "./containers/_Game/containers/Board/Board";
 import Profile from "./containers/Home/Profile/Profile";
-
+import Contact from "./containers/Home/Contact/Contact";
 import { DragDropContext } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 
@@ -113,7 +114,7 @@ class App extends Component<PropType, { showSideDrawer: boolean }> {
       >
         <Switch>
           <Route path="/logout" component={Logout} />
-          <Route path="/contact" component={Home} />
+          <Route path="/contact" component={Contact} />
           <Route exact path="/profile" component={Profile} />
           <Route
             exact

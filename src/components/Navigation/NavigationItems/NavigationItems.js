@@ -16,7 +16,7 @@ const _ddnLinks = [
   {
     id: "ddn-2",
     href: "/contact ",
-    text: "Contact"
+    text: "Contact",
   },
   {
     id: "ddn-3",
