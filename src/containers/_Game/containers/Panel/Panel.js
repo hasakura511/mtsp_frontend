@@ -426,6 +426,11 @@ export default class Panel extends Component {
       );
     }
 
+    var sectionHeatmap={};
+
+    if (heatmap_selection.length > 0) {
+      sectionHeatmap=heatmap[heatmap_selection];
+    }
     const panel = (
       <div className={classes.Panel}>
 
@@ -434,6 +439,7 @@ export default class Panel extends Component {
           systems={this.state.bottomSystems}
           topSystems={this.state.topSystems}
           moveChipToSlot={this.moveChipToSlot}
+          sectionHeatmap={sectionHeatmap}
         />
         <LeftSection
           systems={this.state.leftSystems}

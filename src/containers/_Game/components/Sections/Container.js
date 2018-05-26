@@ -45,14 +45,24 @@ const collect = (connect, monitor) => {
  * @returns {Object} ReactElement
  */
 const container = props => {
-  const { dropTarget, isOver, canDrop, heldChips } = props;
+  const { dropTarget, isOver, canDrop, heldChips, slotHeatmap } = props;
+  var bgColor="#d0f4a6";
+    var textColor="#000000";
+    if (slotHeatmap != undefined && slotHeatmap.color_fill != undefined) {
+      bgColor=slotHeatmap.color_fill;
+    }
+    if (slotHeatmap != undefined && slotHeatmap.color_text != undefined) {
+      textColor=slotHeatmap.color_text;
+    }
+
   return dropTarget(
     <div
       className={classes.Container}
       style={{
         backgroundColor: heldChips.length
           ? "#86dde0"
-          : canDrop ? "#d0f4a6" : "transparent",
+          : canDrop ? bgColor : "transparent",
+        color: textColor,
         opacity: canDrop ? (isOver ? 0.8 : 0.5) : 1
       }}
     >
