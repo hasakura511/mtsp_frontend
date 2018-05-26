@@ -56,7 +56,7 @@ const initialState = {
   })),
   dictionary_strategy:{},
   themes: {'live':{'heatmap':{'heatmap_cold':'#000000','heatmap_hot':'#FFFFFF'},
-                   'background':{'bottom':'#000000', 'middle':'#FFFFFF'}}},
+                   'background':{'top':'#000000','bottom':'#000000', 'middle':'#FFFFFF'}}},
   loading: true,
   isLive:false,
   initializeData: {},

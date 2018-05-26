@@ -610,7 +610,6 @@ export default class LiveBoard extends Component {
               />
               <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
               <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-              <img className="isLive" src="/images/timetable_button.png" width="60"/>
             </span>
             <span  style={{"float": "left", "width": "40%",  "minWidth":"600px", "height":"75px","whiteSpace": "nowrap","textAlign": "left", "verticalAlign":"top"}}>
               
