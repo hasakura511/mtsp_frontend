@@ -148,7 +148,7 @@ class Slot extends Component {
         }
           <span style={{
             "marginTop": "0px",
-            width: "60px",
+            minWidth: "60px",
             backgroundColor: canDrop ? bgColor : "transparent",
             color: textColor,
             opacity: 1,
