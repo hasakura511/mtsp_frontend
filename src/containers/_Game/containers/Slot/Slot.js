@@ -99,14 +99,33 @@ class Slot extends Component {
     }    
     var bgColor="#d0f4a6";
     var textColor="#000000";
+    var rank="";
+    var score="";
+
     if (slotHeatmap != undefined && slotHeatmap.color_fill != undefined) {
       bgColor=slotHeatmap.color_fill;
     }
     if (slotHeatmap != undefined && slotHeatmap.color_text != undefined) {
       textColor=slotHeatmap.color_text;
     }
+    if (slotHeatmap != undefined && slotHeatmap.rank != undefined) {
+      rank="Rank: " + slotHeatmap.rank.toString();
+    }
+    if (slotHeatmap != undefined && slotHeatmap.score != undefined) {
+      score="Score: " + slotHeatmap.score.toString();
+    }
     return dropTarget(
       <div className={classes.Slot}>
+          {rank ? (
+            <span style={{
+              width: "60px",
+              "marginTop": "-10px",
+              backgroundColor: canDrop ? bgColor : "transparent",
+              color: textColor,
+              opacity: 1,
+              textAlign: "center"
+          }}><font size="1">{rank}</font></span>
+          ) : null}
         <Square
           style={{
             borderBottomColor: bottomSystem.color,
@@ -121,10 +140,36 @@ class Slot extends Component {
           }}
           title={name}
         >
+        {canDrop ?
+          null :
+          (
           <BettingChips chips={heldChips} />
-          {LongShortMap[position] || position}
-          {children}
+          )
+        }
+          <span style={{
+            "marginTop": "0px",
+            width: "60px",
+            backgroundColor: canDrop ? bgColor : "transparent",
+            color: textColor,
+            opacity: 1,
+            textAlign: "center"
+
+              }}>
+            {LongShortMap[position] || position}
+            {children}
+          </span>
         </Square>
+        {score ? (
+            <span style={{
+                          width: "60px",
+                          "marginTop": "0px",
+                          backgroundColor: canDrop ? bgColor : "transparent",
+                          color: textColor,
+                          opacity: 1,
+                          textAlign: "center"
+
+            }}><font size="1">{score}</font></span>
+          ) : null}
       </div>
     );
   }
