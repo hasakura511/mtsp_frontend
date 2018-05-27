@@ -122,6 +122,7 @@ class Slot extends Component {
               "marginTop": "-10px",
               backgroundColor: canDrop ? bgColor : "transparent",
               color: textColor,
+              "whiteSpace": "nowrap",
               opacity: 1,
               textAlign: "center"
           }}
@@ -170,6 +171,7 @@ class Slot extends Component {
                           backgroundColor: canDrop ? bgColor : "transparent",
                           color: textColor,
                           opacity: 1,
+                          "whiteSpace": "nowrap",
                           textAlign: "center"
 
             }}>

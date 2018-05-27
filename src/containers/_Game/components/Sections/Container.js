@@ -84,6 +84,7 @@ const container = props => {
               "paddingTop": "5px",
               "paddingBottom": "5px",
               "marginLeft": "-50%",
+              "whiteSpace": "nowrap",
               backgroundColor: canDrop ? bgColor : "transparent",
               color: textColor,
               opacity: 1,
