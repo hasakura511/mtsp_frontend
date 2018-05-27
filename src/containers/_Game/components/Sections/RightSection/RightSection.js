@@ -28,11 +28,15 @@ const rightSection = props => {
             <div
               key={"right-" + id}
               className={classes.RightCell}
-              style={{ borderRightColor: color, borderLeftColor: color }}
+              style={{ borderRightColor: color, 
+                borderLeftColor: color, 
+                backgroundColor: bgColor,
+                text: textColor,
+              }}
               title={mesg}
             >
               <Container {...props}  slotHeatmap={slotHeatmap} column={column} heldChips={heldChips} />
-              {display}
+              <font color={textColor}>{display}</font>
             </div>
           );
         }

@@ -34,7 +34,10 @@ const topSection = props => {
             <div
               key={"top-" + id}
               className={classes.TopCell}
-              style={{ borderTopColor: color }}
+              style={{ borderTopColor: color,
+                backgroundColor: bgColor,
+                text: textColor,
+              }}
               title={mesg}
               
               >
@@ -43,8 +46,7 @@ const topSection = props => {
 
               <Container {...props}  slotHeatmap={slotHeatmap} column={column} heldChips={heldChips} />
 
-              {display}
-
+                <font color={textColor}>{display}</font>
               
               
             </div>

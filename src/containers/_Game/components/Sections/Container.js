@@ -63,7 +63,7 @@ const container = props => {
           ? "#86dde0"
           : canDrop ? bgColor : "transparent",
         color: textColor,
-        opacity: canDrop ? (isOver ? 0.5 : 0) : 1
+        opacity: canDrop ? (isOver ? 0.9 : 0) : 1
       }}
     >
       <BettingChips chips={heldChips} />
