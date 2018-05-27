@@ -45,28 +45,85 @@ const collect = (connect, monitor) => {
  * @returns {Object} ReactElement
  */
 const container = props => {
-  const { dropTarget, isOver, canDrop, heldChips, slotHeatmap } = props;
+  const { dropTarget, isOver, canDrop, heldChips, slotHeatmap, column } = props;
     var bgColor="#d0f4a6";
     var textColor="#000000";
+    var chipBgColor="#86dde0";
+    var display=column;
+    var rank="";
+    var score="";
+
     if (slotHeatmap != undefined && slotHeatmap.color_fill != undefined) {
       bgColor=slotHeatmap.color_fill;
+      chipBgColor=bgColor;
     }
     if (slotHeatmap != undefined && slotHeatmap.color_text != undefined) {
       textColor=slotHeatmap.color_text;
     }
-
-  return dropTarget(
+    if (slotHeatmap != undefined && slotHeatmap.rank != undefined) {
+      rank="Rank: " + slotHeatmap.rank.toString();
+    }
+    if (slotHeatmap != undefined && slotHeatmap.score != undefined) {
+      score="Score: " + slotHeatmap.score.toString();
+    }
+     return dropTarget(
     <div
       className={classes.Container}
       style={{
         backgroundColor: heldChips.length
-          ? "#86dde0"
+          ? chipBgColor
           : canDrop ? bgColor : "transparent",
         color: textColor,
-        opacity: canDrop ? (isOver ? 0.9 : 0) : 1
+        opacity: canDrop ? (isOver ? 1:1) : 1,
+        textAlign: "center",
       }}
     >
-      <BettingChips chips={heldChips} />
+        {rank ? (
+            <span style={{
+              "marginTop": "-5px",
+              "paddingBottom": "5px",
+              "marginLeft": "-50%",
+              backgroundColor: canDrop ? bgColor : "transparent",
+              color: textColor,
+              opacity: 1,
+              position:"absolute",
+              textAlign: "center",
+              width:"100%"
+          }}>
+          <font size="1">{rank}</font>
+          <br/>
+          <font color={textColor}>{display}</font>
+          <br/>
+          <font size="1">{score}</font>
+          </span>
+          ) : null}
+
+        {!rank && (canDrop || heldChips.length) ? 
+              (
+                <span style={{
+                  "marginTop": "-5px",
+                  "paddingBottom": "5px",
+                  "marginLeft": "-50%",
+                  opacity: 1,
+                  position:"absolute",
+                  textAlign: "center",
+                  width:"100%"
+              }}>
+              <br/>
+              <font color={textColor}>{display}</font>
+              <br/>
+              </span>
+              ) : null
+            }
+
+        {canDrop ?
+          null :
+          (
+
+          <BettingChips chips={heldChips} />
+          )
+        }
+
     </div>
   );
 };

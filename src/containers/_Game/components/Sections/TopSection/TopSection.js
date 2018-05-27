@@ -42,8 +42,6 @@ const topSection = props => {
               
               >
               
-              
-
               <Container {...props}  slotHeatmap={slotHeatmap} column={column} heldChips={heldChips} />
 
                 <font color={textColor}>{display}</font>

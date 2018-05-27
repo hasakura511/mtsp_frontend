@@ -16,6 +16,8 @@ const bottomSection = props => {
 
           var textColor="#000000";
           var bgColor="#86dde0";
+          var score="";
+          var rank="";
           if (sectionHeatmap != undefined && sectionHeatmap.color_fill != undefined) {
               slotHeatmap['color_fill']=sectionHeatmap.color_fill[column.toString()];
               slotHeatmap['color_text']=sectionHeatmap.color_text[column.toString()];
@@ -23,6 +25,8 @@ const bottomSection = props => {
               slotHeatmap['score']=sectionHeatmap.score[column.toString()];
               textColor=slotHeatmap['color_text'];
               bgColor=slotHeatmap['color_fill'];
+              rank="Rank: " + slotHeatmap['rank'].toString();
+              score="Score: " + slotHeatmap['score'].toString();
           }
           return position ? (
             <div
@@ -33,12 +37,15 @@ const bottomSection = props => {
                 borderTopColor: color,
                 backgroundColor: bgColor,
                 text: textColor,
-                width: WIDTH > 0 ? WIDTH : 60
+                width: WIDTH > 0 ? WIDTH : 60,
+                textAlign: "center",
               }}
               title={mesg}
             >
+
               <Container {...props} slotHeatmap={slotHeatmap} column={column} heldChips={heldChips} />
               <font color={textColor}>{display}</font>
+
             </div>
           ) : null;
         }
