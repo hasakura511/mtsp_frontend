@@ -124,7 +124,11 @@ class Slot extends Component {
               color: textColor,
               opacity: 1,
               textAlign: "center"
-          }}><font size="1">{rank}</font></span>
+          }}
+          >
+              <span style={{ "fontSize":"0.81em" }}>{rank}</span>
+
+          </span>
           ) : null}
         <Square
           style={{
@@ -168,7 +172,10 @@ class Slot extends Component {
                           opacity: 1,
                           textAlign: "center"
 
-            }}><font size="1">{score}</font></span>
+            }}>
+            <span style={{ "fontSize":"0.81em" }}>{score}</span>
+
+            </span>
           ) : null}
       </div>
     );

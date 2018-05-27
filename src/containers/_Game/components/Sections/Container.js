@@ -91,11 +91,11 @@ const container = props => {
               textAlign: "center",
               width:"100%"
           }}>
-          <font size="1">{rank}</font>
-          <br/>
           <font color={textColor}>{display}</font>
           <br/>
-          <font size="1">{score}</font>
+          <span style={{ "fontSize":"0.81em" }}>{rank}</span>
+          <br/>
+          <span style={{ "fontSize":"0.81em" }}>{score}</span>
           </span>
           ) : null}
 
