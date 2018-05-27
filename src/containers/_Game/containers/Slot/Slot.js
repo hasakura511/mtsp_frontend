@@ -115,7 +115,7 @@ class Slot extends Component {
             borderRightColor: rightSystem.color,
             backgroundColor: canDrop ? bgColor : "transparent",
             color: textColor,
-            opacity: canDrop ? (isOver ? 0.9 : 0.7) : 1,
+            opacity: canDrop ? (isOver ? 0.99 : 0.8) : 1,
             width,
             fontSize
           }}

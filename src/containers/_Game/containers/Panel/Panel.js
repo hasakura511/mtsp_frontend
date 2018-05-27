@@ -397,11 +397,15 @@ export default class Panel extends Component {
         slot = slots[xIndex * maxHeight + yIndex];
         var slotHeatmap={};
 
-        if (heatmap_selection.length > 0) {
+        var textColor="#000000";
+        var bgColor="#86dde0";
+        if (heatmap_selection && heatmap_selection.length > 0) {
             slotHeatmap['color_fill']=heatmap[heatmap_selection].color_fill[slot.position.toString()];
             slotHeatmap['color_text']=heatmap[heatmap_selection].color_text[slot.position.toString()];
             slotHeatmap['rank']=heatmap[heatmap_selection].rank[slot.position.toString()];
             slotHeatmap['score']=heatmap[heatmap_selection].score[slot.position.toString()];
+            textColor=slotHeatmap['color_text'];
+            bgColor=slotHeatmap['color_fill'];
         }
         column.push(
           <Slot
@@ -414,7 +418,10 @@ export default class Panel extends Component {
             rightSystem={slot.rightSystem}
             heldChips={this.heldChips(yIndex + maxHeight * xIndex + 1)}
             moveChipToSlot={this.moveChipToSlot}
-           
+            style={{
+              backgroundColor: bgColor,
+              text: textColor,
+            }}
           />
         );
       }
@@ -428,7 +435,7 @@ export default class Panel extends Component {
 
     var sectionHeatmap={};
 
-    if (heatmap_selection.length > 0) {
+    if (heatmap_selection && heatmap_selection.length > 0) {
       sectionHeatmap=heatmap[heatmap_selection];
     }
     const panel = (
@@ -585,6 +592,6 @@ export default class Panel extends Component {
     isLive:PropTypes.bool.isRequired,
     heatmap:PropTypes.object.isRequired,
     showHeatmap:PropTypes.func.isRequired,
-    heatmap_selection:PropTypes.string.isRequired
+    heatmap_selection:PropTypes.string
   };
 }
