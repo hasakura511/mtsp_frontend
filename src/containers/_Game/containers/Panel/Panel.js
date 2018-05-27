@@ -444,15 +444,18 @@ export default class Panel extends Component {
         <LeftSection
           systems={this.state.leftSystems}
           moveChipToSlot={this.moveChipToSlot}
+          sectionHeatmap={sectionHeatmap}
         />
         <RightSection
           systems={this.state.rightSystems}
           moveChipToSlot={this.moveChipToSlot}
+          sectionHeatmap={sectionHeatmap}
         />
         <TopSection
           systems={this.state.topSystems}
           balanceChips={this.props.balanceChips}
           moveChipToSlot={this.moveChipToSlot}
+          sectionHeatmap={sectionHeatmap}
         />
         {showOrderDialog ? (
           <OrderDialog

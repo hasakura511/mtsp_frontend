@@ -13,6 +13,22 @@ const topSection = props => {
         ({ id, color, display, description, position, column, heldChips, short, type }) => {
           var mesg=" Name: " + id + "\n Full Name: " + short + "\n Type: " + type + "\n Description: " + description;
           
+
+          var sectionHeatmap=props.sectionHeatmap;
+          var slotHeatmap={};
+
+          var textColor="#000000";
+          var bgColor="#86dde0";
+          if (sectionHeatmap != undefined && sectionHeatmap.color_fill != undefined) {
+              slotHeatmap['color_fill']=sectionHeatmap.color_fill[column.toString()];
+              slotHeatmap['color_text']=sectionHeatmap.color_text[column.toString()];
+              slotHeatmap['rank']=sectionHeatmap.rank[column.toString()];
+              slotHeatmap['score']=sectionHeatmap.score[column.toString()];
+              textColor=slotHeatmap['color_text'];
+              bgColor=slotHeatmap['color_fill'];
+          }
+
+
           return position ? (
 
             <div
@@ -25,7 +41,7 @@ const topSection = props => {
               
               
 
-              <Container {...props} column={column} heldChips={heldChips} />
+              <Container {...props}  slotHeatmap={slotHeatmap} column={column} heldChips={heldChips} />
 
               {display}
 
@@ -42,6 +58,8 @@ const topSection = props => {
 topSection.propTypes = {
   systems: PropTypes.array,
   balanceChips: PropTypes.array,
-  moveChipToSlot: PropTypes.func.isRequired
+  moveChipToSlot: PropTypes.func.isRequired,
+  sectionHeatmap: PropTypes.object
+
 };
 export default topSection;

@@ -46,7 +46,7 @@ const collect = (connect, monitor) => {
  */
 const container = props => {
   const { dropTarget, isOver, canDrop, heldChips, slotHeatmap } = props;
-  var bgColor="#d0f4a6";
+    var bgColor="#d0f4a6";
     var textColor="#000000";
     if (slotHeatmap != undefined && slotHeatmap.color_fill != undefined) {
       bgColor=slotHeatmap.color_fill;
@@ -63,7 +63,7 @@ const container = props => {
           ? "#86dde0"
           : canDrop ? bgColor : "transparent",
         color: textColor,
-        opacity: canDrop ? (isOver ? 0.8 : 0.5) : 1
+        opacity: canDrop ? (isOver ? 0.5 : 0) : 1
       }}
     >
       <BettingChips chips={heldChips} />
