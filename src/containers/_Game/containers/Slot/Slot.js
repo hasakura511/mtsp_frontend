@@ -148,7 +148,7 @@ class Slot extends Component {
         {canDrop ?
           null :
           (
-          <BettingChips chips={heldChips} />
+            <BettingChips chips={heldChips} />
           )
         }
           <span style={{

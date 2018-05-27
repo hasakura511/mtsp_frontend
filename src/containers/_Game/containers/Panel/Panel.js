@@ -13,7 +13,7 @@ import OrderDialog from "../OrderDialog/OrderDialog";
 import axios from "../../../../axios-gsm";
 import { connect } from "react-redux";
 import * as actions from "../../../../store/actions";
-import { toSlashDate } from "../../../../util";
+import { toSlashDate,  getDateNowStr  } from "../../../../util";
 import Title from "../OrderDialog/OffOrderDialogTitle";
 /**
  * returns state to `Props` mapping object with keys that would later become props.
@@ -24,7 +24,9 @@ import Title from "../OrderDialog/OffOrderDialogTitle";
 const stateToProps = state => {
   return { simulatedDate: state.betting.simulatedDate,
            heatmap:state.betting.heatmap,
-           heatmap_selection:state.betting.heatmap_selection };
+           heatmap_selection:state.betting.heatmap_selection 
+           
+          };
 };
 
 /**
@@ -35,6 +37,7 @@ const stateToProps = state => {
  */
 const dispatchToProps = dispatch => {
   return {
+
     addLast3DaysProfit(last3DaysProfit) {
       dispatch(actions.addLast3DaysProfit(last3DaysProfit));
     },
@@ -267,6 +270,7 @@ export default class Panel extends Component {
     // __TEMPERORY_CODE__
     // disallow multiple chip on same position
     const betChip = this.props.bettingChips.find(c => c.position === position);
+    /*
     if (betChip) {
       addTimedToaster({
         id: "move-chip-error",
@@ -275,7 +279,7 @@ export default class Panel extends Component {
       });
       return undefined;
     }
-
+    */
     if (slot) {
       this.setState({
         showOrderDialog: true,
@@ -297,43 +301,57 @@ export default class Panel extends Component {
         orderSlot: systemToSlot
       });
     } else if (position === "off") {
-      showDialog(
-        Title({ chip, canDrag: false }),
-        "All positions for this account will be cleared at the market close, your funds will be held in cash.",
-        () => {
-          // Here you first need to remove the bet in the state so it's location
-          // appears correctly on the board
-          chip.position="off";
-          moveToBalance(chip);
+        showDialog(
+          Title({ chip, canDrag: false }),
+          "All positions for this account will be cleared at the market close, your funds will be held in cash.",
+          () => {
+            // Here you first need to remove the bet in the state so it's location
+            // appears correctly on the board
+            chip.position="off";
+            moveToBalance(chip);
 
-          // Then we need to reflect this in our redux store:
-          // 1. add default off location's last3DaysProfit (basically 0 changePercent)
-          if (!this.props.isLive) {
-            const profitObj = {};
-            profitObj[chip.accountId] = {
-              position: "off",
-              "20180201": { changePercent: 0 },
-              "20180202": { changePercent: 0 },
-              "20180205": { changePercent: 0 },
-              "20180206": { changePercent: 0 },
-              "20180207": { changePercent: 0 },
-              "20180208": { changePercent: 0 }
-            };
-            addLast3DaysProfit(profitObj);
-          }
-          // 2. append a new currentBet on off location
-          const bet = {};
-          bet[chip.accountId] = {
-            bettingDate: toSlashDate(simulatedDate),
-            position: "off",
-            isAnti: false
-          };
-          addBet(bet);
-          killDialog();
-        },
-        null,
-        "Clear all positions",
-        "Cancel"
+            // Then we need to reflect this in our redux store:
+            // 1. add default off location's last3DaysProfit (basically 0 changePercent)
+            if (!this.props.isLive) {
+              const profitObj = {};
+              profitObj[chip.accountId] = {
+                position: "off",
+                "20180201": { changePercent: 0 },
+                "20180202": { changePercent: 0 },
+                "20180205": { changePercent: 0 },
+                "20180206": { changePercent: 0 },
+                "20180207": { changePercent: 0 },
+                "20180208": { changePercent: 0 }
+              };
+              addLast3DaysProfit(profitObj);
+              const bet = {};
+              bet[chip.accountId] = {
+                bettingDate: toSlashDate(simulatedDate),
+                position: "off",
+                isAnti: false
+              };
+
+              // 2. append a new currentBet on off location
+              addBet(bet);
+              killDialog();
+  
+            } else {
+
+              const bet = {};
+              bet[chip.accountId] = {
+                bettingDate: toSlashDate(getDateNowStr()),
+                position: "off",
+                isAnti: false
+              };
+
+              // 2. append a new currentBet on off location
+              addBet(bet);
+              killDialog();
+            }
+          },
+          null,
+          "Clear all positions",
+          "Cancel"
       );
     }
   };
@@ -370,6 +388,7 @@ export default class Panel extends Component {
    */
 
   render() {
+
     const slotsGrid = [];
     const {
       maxWidth,

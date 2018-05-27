@@ -1,6 +1,6 @@
 import * as actionTypes from "../actions/actionTypes";
 import ChipsConfig from "../../containers/_Game/ChipsConfig";
-import { clone, toSlashDate, uniq, toIntegerDate, clean, getOffsetDate, getOffsetSlashDate,getDemoPnL, getSimDate } from "../../util";
+import { clone, toSlashDate, uniq, toIntegerDate, clean, getOffsetDate, getOffsetSlashDate,getDemoPnL, getSimDate, getDateNowStr } from "../../util";
 var moment = require('moment-timezone');
 
 const insertChip = (systems, column, chip) => {
@@ -579,9 +579,9 @@ const reducer = (state = initialState, action) => {
             ]
           ) || "2018/02/09";
           */
-        } else {
-          action.bet[accountId].bettingDate = ""; 
-        }
+      } else {
+        action.bet[accountId].bettingDate = toSlashDate(getDateNowStr());
+      }
       return {
         ...state,
         currentBets: {

@@ -39,7 +39,7 @@ const chipSource = {
    * @param {Object} props Component's actual props without influence of DragSource Decorator
    */
   beginDrag(props, monitor, component) {
-    console.log(props);
+    //console.log(props);
     props.showHeatmap(props.chip.chip_id);
     return props.chip;
   },
@@ -78,7 +78,7 @@ const collect = (connect, monitor) => {
 @connect(stateToProps, dispatchToProps)
 @DragSource("chip", chipSource,  collect)
 
-export default class chip extends PureComponent {
+export default class Chip extends PureComponent {
   static propTypes = {
     chip: PropTypes.object.isRequired,
     dragSource: PropTypes.func,

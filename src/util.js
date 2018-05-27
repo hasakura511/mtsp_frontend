@@ -1,3 +1,5 @@
+var moment = require('moment-timezone');
+
 export const toQueryString = obj => {
   let arr = [];
   for (let key in obj) {
@@ -291,6 +293,14 @@ export const getSimDate = (date) => {
   return datestr;
 
 }
+
+
+
+export const getDateNowStr = ()=> {
+  var date=new moment();
+  return date.format('YYYYMMDD');
+}
+
 
 export const getOffsetDate = (offset) => {
   //var date=new Date();
