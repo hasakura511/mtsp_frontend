@@ -80,7 +80,8 @@ const container = props => {
     >
         {rank ? (
             <span style={{
-              "marginTop": "-5px",
+              "marginTop": "-15px",
+              "paddingTop": "5px",
               "paddingBottom": "5px",
               "marginLeft": "-50%",
               backgroundColor: canDrop ? bgColor : "transparent",
