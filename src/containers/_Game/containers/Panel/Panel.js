@@ -483,6 +483,8 @@ export default class Panel extends Component {
           sectionHeatmap={sectionHeatmap}
         />
         {showOrderDialog ? (
+          <div             id={"modalDialog"}>
+
           <OrderDialog
             slot={orderSlot}
             chip={orderChip}
@@ -492,6 +494,7 @@ export default class Panel extends Component {
             rankingData={rankingData}
             rankingError={rankingError}
           />
+          </div>
         ) : null}
       </div>
     );

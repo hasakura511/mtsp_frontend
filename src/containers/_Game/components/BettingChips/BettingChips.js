@@ -14,7 +14,8 @@ export default class BettingChips extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false
+      open: false,
+
     };
     this.myRef = React.createRef();
 
@@ -22,6 +23,8 @@ export default class BettingChips extends Component {
   
   handleClick(e) {
     this.setState({open: !this.state.open});
+                
+
   }
  
   handleClose(e) {
@@ -40,7 +43,7 @@ export default class BettingChips extends Component {
       return (
         <div className={classes.BettingChips}
             style={{"overflowX": "visible"}}>
-          <Chip chip={chips[0]} canDrag={true} />
+          <Chip  key={"chip-" + chips[0].chip_id } chip={chips[0]} canDrag={true} />
         </div>
       );
 
@@ -71,10 +74,11 @@ export default class BettingChips extends Component {
           }
           total+=row.account_value;
           chipHtml.push(
-            <span style={{ "position":"absolute",
-                         
+            <span key={"chiploc-" + row.chip_id }
+                  style={{ "position":"absolute",
+                          
                           "marginLeft": margin + "px" 
-                          }}><Chip chip={row} canDrag={true} /></span>
+                          }}><Chip chip={row} key={"chip-" + row.chip_id } canDrag={true} /></span>
           );
           margin += 48;
         }
@@ -109,13 +113,13 @@ export default class BettingChips extends Component {
           onClick={this.handleClick.bind(this)}>
               <span style={{"position":"absolute","marginTop":"-15px", "marginLeft":"-15px", 
                 "background":"transparent",
-                "fontSize":"1em",
+                "fontSize":"12px",
                 "color":textColor}}>{chips.length} x </span>
               <span style={{"position":"absolute","marginTop":"-15px", "marginLeft":"15px",  "background":"transparent", 
                 "color":textColor}}><img width="25" height="25" src={chipImg} /></span>
               <br/>
               <span style={{"position":"absolute","marginTop":"15px",  
-                          "fontSize":"1em",
+                          "fontSize":"12px",
                           "width": "50px",
                           "border": "0px solid black",
                           "textAlign":"center",
@@ -140,11 +144,14 @@ export default class BettingChips extends Component {
             "width":margin+"px"}}
           >
           <div className={classes.MultiChips}
-          style={{"width":margin + "px",
-          "marginTop": "-12px",
-          "marginLeft": "-12px",
-          background: bgColor,
-          color:textColor,
+          style={{
+            "width":margin + "px",
+            "marginTop": "-12px",
+            "marginLeft": "-12px",
+            "zIndex": 500,
+            
+            background: bgColor,
+            color:textColor,
         }}
                 
           > { chipHtml  }</div>
