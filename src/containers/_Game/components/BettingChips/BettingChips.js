@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from "prop-types";
 import Chip from "../_Chip/_Chip";
 import classes from "./BettingChips.css";
-import Popover from 'react-simple-popover';
+import Popover from 'react-tiny-popover'
+//import Popover from 'react-simple-popover';
 
 
 export default class BettingChips extends Component {
@@ -15,6 +16,7 @@ export default class BettingChips extends Component {
     super(props);
     this.state = {
       open: false,
+      isPopoverOpen:false,
 
     };
     this.myRef = React.createRef();
@@ -23,12 +25,13 @@ export default class BettingChips extends Component {
   
   handleClick(e) {
     this.setState({open: !this.state.open});
-                
+    this.setState({ isPopoverOpen: !this.state.isPopoverOpen })
 
   }
  
   handleClose(e) {
     this.setState({open: false});
+    this.setState({ isPopoverOpen: !this.state.isPopoverOpen })
   }
 
   render() {
@@ -94,22 +97,56 @@ export default class BettingChips extends Component {
         if (status == 'mixed')
         chipImg="/images/mixed_multi.png";
     
-      
-
+  
 
       return (
         <div className={classes.BettingChips}
             style={{"overflowX": "visible",
                     "overflowY": "visible",
                    }}>
-             <a
-          href="#"
+             
+             
+        <Popover
+          position='top'
+          content={
+            (          
+              <div className={classes.MSquare}
+                    style={{
+                      "width":margin + "px",
+                      "height": "60px",
+                      /*
+                      "marginTop": "-12px",
+                      "marginLeft": "-12px",
+                      */   
+                      "zIndex":10000000,                   
+                      background: bgColor,
+                      color:textColor,
+                  }}
+                          
+                    >  { chipHtml  } </div>
+              )
+          }
+          /*container={this}
+          target={this.myRef.target}
+          onHide={this.handleClose.bind(this)} 
+          style={{
+            "position":"absolute",
+            "transform": "translate(-25%, 0%)",
+            "height":'60px',
+            "width":margin+"px"}}
+          */
+          isOpen={this.state.isPopoverOpen}
+          onClickOutside={this.handleClose.bind(this)} 
+          >
+          <a
           className={classes.MSquare}
           ref={this.myRef.target}
           style={{
             background: bgColor,
             color:textColor,
           }}
+          href={"#"}
+          onHover={this.handleClick.bind(this)}
           onClick={this.handleClick.bind(this)}>
               <span style={{"position":"absolute","marginTop":"-15px", "marginLeft":"-15px", 
                 "background":"transparent",
@@ -129,32 +166,6 @@ export default class BettingChips extends Component {
               {Math.round(total/1000)}K
               </span>
           </a>
-        <Popover
-          placement='bottom'
-          
-          container={this}
-          target={this.myRef.target}
-          show={this.state.open}
-          onHide={this.handleClose.bind(this)} 
-          hideWithOutsideClick={true}
-          style={{
-            "position":"absolute",
-            "transform": "translate(-25%, 0%)",
-            "height":'60px',
-            "width":margin+"px"}}
-          >
-          <div className={classes.MultiChips}
-          style={{
-            "width":margin + "px",
-            "marginTop": "-12px",
-            "marginLeft": "-12px",
-            "zIndex": 500,
-            
-            background: bgColor,
-            color:textColor,
-        }}
-                
-          > { chipHtml  }</div>
         </Popover>
 
         </div>
