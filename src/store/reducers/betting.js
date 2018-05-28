@@ -481,7 +481,7 @@ const reducer = (state = initialState, action) => {
         accounts.map(function(account) {
           if (account.last_selection && account.last_selection.toLowerCase() != 'off') {
             if (!(account.last_selection in seen)) {
-              seen[account.last_selection]=true;
+              //seen[account.last_selection]=true;
             
               balanceChips.map(function (chip) {
                 if (account.accountId === chip.accountId) {

@@ -107,7 +107,7 @@ export default class BettingChips extends Component {
              
              
         <Popover
-          position='top'
+          position='right'
           content={
             (          
               <div className={classes.MSquare}
@@ -116,10 +116,11 @@ export default class BettingChips extends Component {
                       "height": "60px",
                       /*
                       "marginTop": "-12px",
-                      "marginLeft": "-12px",
+                     "marginLeft": "-50%",
+                     "transform": "translate(-50%, 0%)",
                       */   
-                      "zIndex":10000000,                   
-                      background: bgColor,
+                     "zIndex":10000000,                   
+                     background: bgColor,
                       color:textColor,
                   }}
                           
@@ -142,6 +143,7 @@ export default class BettingChips extends Component {
           className={classes.MSquare}
           ref={this.myRef.target}
           style={{
+            "zIndex":500,                   
             background: bgColor,
             color:textColor,
           }}
