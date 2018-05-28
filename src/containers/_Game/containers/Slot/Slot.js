@@ -53,6 +53,7 @@ class Slot extends Component {
     super(props);
 
     this.state = {};
+    this.myRef = React.createRef();
   }
 
   render() {
@@ -139,6 +140,7 @@ class Slot extends Component {
             borderRightColor: rightSystem.color,
             backgroundColor: canDrop ? bgColor : "transparent",
             color: textColor,
+            zIndex: "1",
             opacity: canDrop ? (isOver ? 0.99 : 0.8) : 1,
             width,
             fontSize
@@ -148,9 +150,12 @@ class Slot extends Component {
         {canDrop ?
           null :
           (
-            <BettingChips chips={heldChips} />
+            <BettingChips   
+                            parent={this.myRef} 
+                            chips={heldChips} />
           )
         }
+                            
           <span style={{
             "marginTop": "0px",
             minWidth: "60px",

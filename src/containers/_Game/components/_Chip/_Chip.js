@@ -131,7 +131,23 @@ export default class Chip extends PureComponent {
       title+="Status: " + chip.status.toString();
     }
 
+    var status=chip.status;
+
+    var chipImg="/images/unlocked_chip.png";
+    if (chip.status != undefined) {
+      if (status == 'locked')
+        chipImg="/images/locked_chip.png";
+      if (status == 'mixed')
+        chipImg="/images/mixed_chip.png";
+    }
     var chipStyle={ "backgroundImage": "linear-gradient(to top, #00468c 0%, #2a92fa 100%)" };
+    if (chipImg)
+      chipStyle={  "backgroundImage": "url(" + chipImg + ")" 
+      ,
+      "backgroundSize": "48px 48px",
+      "backgroundPosition": "-3px -3px"
+      };
+    /*
     if (chip.status != undefined) {
       if (chip.status == 'locked') {
         chipStyle={ "backgroundImage": "linear-gradient(" + chip.chip_styles.locked.color_fill.toString() + ", " + chip.chip_styles.locked.color_fill.toString() + "," +  chip.chip_styles.locked.color_text.toString() + ")" };
@@ -140,6 +156,7 @@ export default class Chip extends PureComponent {
         
       }
     }
+    */
     dragPreview(
       <div className={classes.Chip} style={chipStyle} title={title}>
         <p>{chip.display}</p>

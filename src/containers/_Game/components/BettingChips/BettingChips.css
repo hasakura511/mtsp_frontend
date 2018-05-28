@@ -7,10 +7,8 @@
 }
 
 .MultiChips {
-  background-image: linear-gradient(blue,white,navy);
   min-height: 60px;
   min-width: 60px;
-  background:linear-gradient(blue,white,navy);
   opacity:1;
   border: 1px solid black;
   display: flex;
@@ -45,10 +43,8 @@
 }
 
 .MSquare {
-  background-image:linear-gradient(blue,white,navy);
   height: 60px;
   width: 60px;
-  background: linear-gradient(blue,white,navy);
   opacity:1;
   border: 1px solid black;
   display: flex;
@@ -57,7 +53,6 @@
   justify-content: space-around;
   font-size: 0.4em;
   font-weight: 200;
-  color:white;
   box-sizing: border-box;
   box-shadow: 1px 1px 3px 1px black;
   position: relative;

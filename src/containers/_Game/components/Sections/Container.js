@@ -1,4 +1,5 @@
-import React from "react";
+import React, { PureComponent } from "react";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import classes from "./Container.css";
 import { DropTarget } from "react-dnd";
@@ -38,14 +39,37 @@ const collect = (connect, monitor) => {
   };
 };
 
+@DropTarget("chip", systemTarget, collect)
+
+
 /**
  * Container react functional component
  * @function container
  * @param {Object} props
  * @returns {Object} ReactElement
  */
-const container = props => {
-  const { dropTarget, isOver, canDrop, heldChips, slotHeatmap, column } = props;
+export default class Container extends PureComponent {
+
+  
+  static propTypes = {
+    dropTarget: PropTypes.func.isRequired,
+    isOver: PropTypes.bool.isRequired,
+    canDrop: PropTypes.bool.isRequired,
+    moveChipToSlot: PropTypes.func.isRequired,
+    column: PropTypes.string.isRequired,
+    heldChips: PropTypes.array.isRequired,
+    slotHeatmap:PropTypes.any
+  };
+  
+  constructor(props) {
+    super(props);
+
+    this.myRef = React.createRef();
+  }
+
+  
+  render() {
+    const { dropTarget, isOver, canDrop, heldChips, slotHeatmap, column } = this.props;
     var bgColor="#d0f4a6";
     var textColor="#000000";
     var chipBgColor="#86dde0";
@@ -67,76 +91,68 @@ const container = props => {
       score="Score: " + slotHeatmap.score.toString();
     }
      return dropTarget(
-    <div
-      className={classes.Container}
-      style={{
-        backgroundColor: heldChips.length
-          ? chipBgColor
-          : canDrop ? bgColor : "transparent",
-        color: textColor,
-        opacity: canDrop ? (isOver ? 1:1) : 1,
-        textAlign: "center",
-      }}
-    >
-        {rank ? (
-            <span style={{
-              "marginTop": "-15px",
-              "paddingTop": "5px",
-              "paddingBottom": "5px",
-              "marginLeft": "-50%",
-              "whiteSpace": "nowrap",
-              backgroundColor: canDrop ? bgColor : "transparent",
-              color: textColor,
-              opacity: 1,
-              position:"absolute",
-              textAlign: "center",
-              width:"100%"
-          }}>
-          <font color={textColor}>{display}</font>
-          <br/>
-          <span style={{ "fontSize":"0.81em" }}>{rank}</span>
-          <br/>
-          <span style={{ "fontSize":"0.81em" }}>{score}</span>
-          </span>
-          ) : null}
+      <div
+        className={classes.Container}
+        style={{
+          backgroundColor: heldChips.length
+            ? chipBgColor
+            : canDrop ? bgColor : "transparent",
+          color: textColor,
+          opacity: canDrop ? (isOver ? 1:1) : 1,
+          textAlign: "center",
+        }}
+      >
+          {rank ? (
+              <span style={{
+                "marginTop": "-15px",
+                "paddingTop": "5px",
+                "paddingBottom": "5px",
+                "marginLeft": "-50%",
+                "whiteSpace": "nowrap",
+                backgroundColor: canDrop ? bgColor : "transparent",
+                color: textColor,
+                opacity: 1,
+                position:"absolute",
+                textAlign: "center",
+                width:"100%"
+            }}>
+            <font color={textColor}>{display}</font>
+            <br/>
+            <span style={{ "fontSize":"0.81em" }}>{rank}</span>
+            <br/>
+            <span style={{ "fontSize":"0.81em" }}>{score}</span>
+            </span>
+            ) : null}
 
-        {!rank && (canDrop || heldChips.length) ? 
-              (
-                <span style={{
-                  "marginTop": "-5px",
-                  "paddingBottom": "5px",
-                  "marginLeft": "-50%",
-                  opacity: 1,
-                  position:"absolute",
-                  textAlign: "center",
-                  width:"100%"
-              }}>
-              <br/>
-              <font color={textColor}>{display}</font>
-              <br/>
-              </span>
-              ) : null
-            }
+          {!rank && (canDrop || heldChips.length) ? 
+                (
+                  <span style={{
+                    "marginTop": "-5px",
+                    "paddingBottom": "5px",
+                    "marginLeft": "-50%",
+                    opacity: 1,
+                    position:"absolute",
+                    textAlign: "center",
+                    width:"100%"
+                }}>
+                <br/>
+                <font color={textColor}>{display}</font>
+                <br/>
+                </span>
+                ) : null
+              }
 
-        {canDrop ?
-          null :
-          (
+          {canDrop ?
+            null :
+            (
 
-          <BettingChips chips={heldChips} />
-          )
-        }
+          
+            <BettingChips parent={this.myRef} ref={this.myRef.sq} chips={heldChips} />
+            
+            )
+          }
 
-    </div>
-  );
-};
-
-container.propTypes = {
-  dropTarget: PropTypes.func.isRequired,
-  isOver: PropTypes.bool.isRequired,
-  canDrop: PropTypes.bool.isRequired,
-  moveChipToSlot: PropTypes.func.isRequired,
-  column: PropTypes.string.isRequired,
-  heldChips: PropTypes.array.isRequired
-};
-
-export default DropTarget("chip", systemTarget, collect)(container);
+      </div>
+    );
+  }
+}

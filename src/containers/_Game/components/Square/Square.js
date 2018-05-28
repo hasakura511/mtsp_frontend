@@ -15,7 +15,7 @@ square.propTypes = {
     borderLeftColor: PropTypes.string,
     borderRightColor: PropTypes.string,
     borderTopColor: PropTypes.string,
-    borderBottomColor: PropTypes.string
+    borderBottomColor: PropTypes.string,
   }).isRequired,
   title: PropTypes.string
 };

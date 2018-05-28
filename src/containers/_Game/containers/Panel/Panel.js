@@ -270,16 +270,14 @@ export default class Panel extends Component {
     // __TEMPERORY_CODE__
     // disallow multiple chip on same position
     const betChip = this.props.bettingChips.find(c => c.position === position);
-    /*
-    if (betChip) {
+    if (betChip && !this.props.isLive)  {
       addTimedToaster({
         id: "move-chip-error",
         text: `This strategy is already in use for ${betChip.display} account.
-          Feature to support multiple accounts on one strategy is under development.`
+               Multiple accounts on one strategy is available only in Live Mode.`
       });
       return undefined;
     }
-    */
     if (slot) {
       this.setState({
         showOrderDialog: true,
@@ -440,6 +438,7 @@ export default class Panel extends Component {
             style={{
               backgroundColor: bgColor,
               text: textColor,
+              zIndex:1,
             }}
           />
         );
