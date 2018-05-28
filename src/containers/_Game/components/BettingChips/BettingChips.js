@@ -146,7 +146,8 @@ export default class BettingChips extends Component {
             color:textColor,
           }}
           href={"#"}
-          onHover={this.handleClick.bind(this)}
+          onMouseEnter={this.handleClick.bind(this)}
+          
           onClick={this.handleClick.bind(this)}>
               <span style={{"position":"absolute","marginTop":"-15px", "marginLeft":"-15px", 
                 "background":"transparent",
