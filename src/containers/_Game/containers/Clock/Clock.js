@@ -71,14 +71,17 @@ export default class Clock extends PureComponent {
     isLive:PropTypes.bool.isRequired,
     //liveDate: PropTypes.instanceOf(Date).isRequired,
     dashboard_totals:PropTypes.object.isRequired,
-    updateDate:PropTypes.func.isRequired
+    updateDate:PropTypes.func.isRequired,
+    initializeLive:PropTypes.func.isRequired
   };
 
   constructor(props) {
     super(props);
 
     this.state = {
-      estTime: "5:00:00 PM"
+      estTime: "5:00:00 PM",
+      refreshing:false,
+
     };
   }
 
@@ -108,28 +111,49 @@ export default class Clock extends PureComponent {
                         "marginLeft":"15px",
                         "lineHeight":"1",
                         "fontSize" : "12px" }}>
-              <div>
               <br/>
             Next Lockdown: &nbsp;<span id={"countdown_time"}></span><br/>
             <Moment 
              style={{"display":"none"}}
              interval={1000} 
              onChange={(val) => {  const ts=dashboard_totals.lockdown_text.next_lockdown_time.countdown();
-                                   const hour=ts.hours;
-                                   const minutes=ts.minutes;
-                                   const seconds=ts.seconds;
+                                   var hour=ts.hours;
+                                   var minutes=ts.minutes;
+                                   var seconds=ts.seconds;
+                                   if (dashboard_totals.lockdown_text.next_lockdown_time < new moment().tz("US/Eastern")) {
+                                     if (this.props.isLive &&  !this.state.refreshing) {
+                                       if (seconds < 10) {
+                                         this.setState({refreshing:true});
+                                         this.props.initializeLive();
+                                         
+                                       } else if (seconds > 50) {
+                                         this.setState({refreshing:false});
+
+                                       }
+                                       
+
+                                     }
+                                    }
+
+                                   if (minutes < 10)
+                                    minutes="0" + minutes;
+                                   if (hour < 10)
+                                     hour="0" + hour;
+                                   if (seconds < 10)
+                                     seconds="0" + seconds;
+
                                    var diff=hour + ":" + minutes + ":" + seconds
                                    if (dashboard_totals.lockdown_text.next_lockdown_time < new moment().tz("US/Eastern")) {
                                       diff="-" + diff;
 
                                    }
                                    $('#countdown_time').html(diff);
+
                                    
                                   }} 
             ></Moment>
             { dashboard_totals.lockdown_text.markets }<br/>
             { dashboard_totals.lockdown_text.next_trigger }<br/>
-              </div>
             </p>
             </span>
           ) : (

@@ -311,6 +311,7 @@ const reducer = (state = initialState, action) => {
         console.log(date.format('HH:mm:ss A'));
         const liveDate = date;
 
+        
         var chips=state.inGameChips;
         var tSys = state.topSystems;
         var lSys = state.leftSystems;

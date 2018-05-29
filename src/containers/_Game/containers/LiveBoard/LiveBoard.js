@@ -211,9 +211,9 @@ export default class LiveBoard extends Component {
     
   }
 
-  componentDidMount() {
+  initializeLive=() => {
 
-    
+        
     //console.log(this.props);
 
     axios
@@ -254,6 +254,11 @@ export default class LiveBoard extends Component {
     });
 
 
+  }
+
+  componentDidMount() {
+
+      this.initializeLive();
 
   }
 
@@ -612,7 +617,7 @@ export default class LiveBoard extends Component {
               </span>
               <span  style={{"float": "left", "width": "40%",  "minWidth":"600px", "height":"75px","whiteSpace": "nowrap","textAlign": "left", "verticalAlign":"top"}}>
                 
-                <Clock />
+                <Clock  initializeLive={this.initializeLive} />
               </span>
               <span style={{"float": "left", "width": "30%", "height":"90px", "textAlign": "right", "verticalAlign":"middle"}}>
                   <span style={{"float": "left", "width": "80%", "height":"90px", "textAlign": "left", "verticalAlign":"middle"}}> 
