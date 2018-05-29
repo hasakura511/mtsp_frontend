@@ -5,6 +5,9 @@ import PropTypes from "prop-types";
 import { toSlashDate } from "../../../../util";
 import LiveClock from 'react-live-clock';
 import Moment from 'react-moment';
+import momentCountdown from 'moment-countdown';
+import moment from 'moment-timezone';
+
 import * as actions from "../../../../store/actions";
 
 export const DAYS = [
@@ -103,13 +106,30 @@ export default class Clock extends PureComponent {
             <span className="isLive" >
             <p  style={{ width: "180px", 
                         "marginLeft":"15px",
-                        "lineHeight":"1" }}>
-              <font size="1">
+                        "lineHeight":"1",
+                        "fontSize" : "12px" }}>
+              <div>
               <br/>
-            Next Lockdown: { dashboard_totals.lockdown_text.next_lockdown_text }<br/>
+            Next Lockdown: &nbsp;<span id={"countdown_time"}></span><br/>
+            <Moment 
+             style={{"display":"none"}}
+             interval={1000} 
+             onChange={(val) => {  const ts=dashboard_totals.lockdown_text.next_lockdown_time.countdown();
+                                   const hour=ts.hours;
+                                   const minutes=ts.minutes;
+                                   const seconds=ts.seconds;
+                                   var diff=hour + ":" + minutes + ":" + seconds
+                                   if (dashboard_totals.lockdown_text.next_lockdown_time < new moment().tz("US/Eastern")) {
+                                      diff="-" + diff;
+
+                                   }
+                                   $('#countdown_time').html(diff);
+                                   
+                                  }} 
+            ></Moment>
             { dashboard_totals.lockdown_text.markets }<br/>
             { dashboard_totals.lockdown_text.next_trigger }<br/>
-              </font>
+              </div>
             </p>
             </span>
           ) : (

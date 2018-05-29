@@ -381,7 +381,7 @@ const reducer = (state = initialState, action) => {
         dashboard_totals.lockdown_text=action.data.lockdown_text;
         var lockdown_time=new moment.tz(dashboard_totals.lockdown_text.next_lockdown,"US/Eastern");
         dashboard_totals.lockdown_text.next_lockdown_time=lockdown_time;
-        dashboard_totals.lockdown_text.next_lockdown_text=lockdown_time.format("HH:mm:ss A");
+        dashboard_totals.lockdown_text.next_lockdown_text=lockdown_time.format("MM/DD HH:mm:ss A");
         
         const loading=false;
         var hasSystem=false;
