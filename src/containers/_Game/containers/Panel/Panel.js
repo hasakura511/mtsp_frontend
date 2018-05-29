@@ -24,7 +24,8 @@ import Title from "../OrderDialog/OffOrderDialogTitle";
 const stateToProps = state => {
   return { simulatedDate: state.betting.simulatedDate,
            heatmap:state.betting.heatmap,
-           heatmap_selection:state.betting.heatmap_selection 
+           heatmap_selection:state.betting.heatmap_selection,
+           themes:state.betting.themes
            
           };
 };
@@ -438,6 +439,16 @@ export default class Panel extends Component {
     } = this.props;
     let slot = null;
 
+    var panelBgColor="#86dde0";
+    var panelTextColor="#000000";
+    
+    if (this.props.themes != undefined && this.props.themes.live.board) {
+      if (this.props.themes.live.board.background)
+        panelBgColor=this.props.themes.live.board.background;
+      if (this.props.themes.live.board.text)
+        panelTextColor=this.props.themes.live.board.text;
+        
+    }
     for (let xIndex = 0; xIndex < maxWidth; xIndex++) {
       const column = [];
       for (let yIndex = 0; yIndex < maxHeight; yIndex++) {
@@ -465,6 +476,8 @@ export default class Panel extends Component {
             rightSystem={slot.rightSystem}
             heldChips={this.heldChips(yIndex + maxHeight * xIndex + 1)}
             moveChipToSlot={this.moveChipToSlot}
+            bgColor={panelBgColor}
+            textColor={panelTextColor}
             style={{
               backgroundColor: bgColor,
               text: textColor,
@@ -487,16 +500,7 @@ export default class Panel extends Component {
       sectionHeatmap=heatmap[heatmap_selection];
     }
 
-    var panelBgColor="#86dde0";
-    var panelTextColor="#000000";
 
-    if (this.props.themes != undefined && this.props.themes.live.board) {
-      if (this.props.themes.live.board.background)
-        panelBgColor=this.props.themes.board.background;
-      if (this.props.themes.live.board.text)
-        panelTextColor=this.props.themes.board.text;
-        
-    }
     const panel = (
       <div className={classes.Panel} style={{"background": panelBgColor, "text":panelTextColor}}>
 

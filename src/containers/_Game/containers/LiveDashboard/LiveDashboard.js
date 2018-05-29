@@ -105,18 +105,20 @@ export default class LiveDashboard extends Component {
     var bgColor="black";
     var bgText="white";
     var bdColor="green";
+    var bhColor="pink";
     if (this.props.themes.live.dashboard != undefined) {
       bgColor=this.props.themes.live.dashboard.background;
       bgText=this.props.themes.live.dashboard.text;
       bdColor=this.props.themes.live.dashboard.lines;
+      bhColor=this.props.themes.live.dashboard.lines_horizontal_middle;
     }
-    var tableStyle={ background: bgColor, color:bgText, borderLeft: "1px solid " + bdColor, borderRight: "1px solid " + bdColor, borderTop: "0.1px solid #ccc", borderBottom: "0.1px solid #ccc"};
+    var tableStyle={ background: bgColor, color:bgText, borderLeft: "1px solid " + bdColor, borderRight: "1px solid " + bdColor, borderTop: "0.1px solid " + bhColor, borderBottom: "0.1px solid " + bhColor};
     
     return (
     <div style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor,position: "relative" }}>
       <ClockLoader show={loading} />
       <table className={classes.Table} style={tableStyle}>
-        <thead  style={tableStyle}>
+        <thead  style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}>
           <tr style={tableStyle}>
             <th style={tableStyle}>Accounts</th>
             <th style={tableStyle}>Next Bet</th>

@@ -57,7 +57,7 @@ class Slot extends Component {
   }
 
   render() {
-    const {
+    var {
       dropTarget,
       isOver,
       canDrop,
@@ -71,7 +71,9 @@ class Slot extends Component {
       width,
       fontSize,
       dictionary_strategy,
-      slotHeatmap
+      slotHeatmap,
+      bgColor,
+      textColor
     } = this.props;
     const titleArray = [
       bottomSystem.display,
@@ -98,16 +100,14 @@ class Slot extends Component {
       name="Name: " + ps + "\nFull Name: " + fullname + "\nType: " + type + "\nDescription: " + desc;
 
     }    
-    var bgColor="#d0f4a6";
-    var textColor="#000000";
     var rank="";
     var score="";
-
+    var highlightTextColor=textColor;
     if (slotHeatmap != undefined && slotHeatmap.color_fill != undefined) {
       bgColor=slotHeatmap.color_fill;
     }
     if (slotHeatmap != undefined && slotHeatmap.color_text != undefined) {
-      textColor=slotHeatmap.color_text;
+      highlightTextColor=slotHeatmap.color_text;
     }
     if (slotHeatmap != undefined && slotHeatmap.rank != undefined) {
       rank="Rank: " + slotHeatmap.rank.toString();
@@ -122,7 +122,7 @@ class Slot extends Component {
               width: "60px",
               "marginTop": "-10px",
               backgroundColor: canDrop ? bgColor : "transparent",
-              color: textColor,
+              color: highlightTextColor,
               "whiteSpace": "nowrap",
               opacity: 1,
               textAlign: "center"
@@ -174,7 +174,7 @@ class Slot extends Component {
                           width: "60px",
                           "marginTop": "0px",
                           backgroundColor: canDrop ? bgColor : "transparent",
-                          color: textColor,
+                          color: highlightTextColor,
                           opacity: 1,
                           "whiteSpace": "nowrap",
                           textAlign: "center"
@@ -204,7 +204,9 @@ Slot.propTypes = {
   moveChipToSlot: PropTypes.func,
   width: PropTypes.string,
   fontSize: PropTypes.string,
-  slotHeatmap:PropTypes.object
+  slotHeatmap:PropTypes.object,
+  bgColor:PropTypes.string,
+  textColor:PropTypes.string
 };
 
 export default DropTarget("chip", slotTarget, collect)(Slot);

@@ -625,7 +625,7 @@ export default class LiveBoard extends Component {
                 size="sm"
                 active={this.state.toggleActive}
                 style={{background:switchBg, color:switchTxt, height:"75px", lineHeight:"10px", verticalAlign:"middle"}}
-                onstyle={{background:switchBg, color:switchTxt, height:"75px"}}
+                onstyle={"{background:" + switchBg + ", color:" + switchTxt + "}"}
                 />
                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
               </span>
@@ -693,7 +693,6 @@ export default class LiveBoard extends Component {
               bettingChips={this.props.inGameChips.bettingChips || []}
               addBettingChip={this.addBettingChip}
               moveToBalance={this.moveToBalance}
-              themes={this.themes}
             />
           </div>
         </Aux>
