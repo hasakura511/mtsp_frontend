@@ -284,6 +284,7 @@ export default class LiveBoard extends Component {
 
         console.log("topSystems")
         console.log(topSystems);
+        chip.last_selection=strat;
         // In case the chip is dropped on a system
         // we push it in system's heldChips in the inserChip method.
         if (chip.position) {
@@ -597,21 +598,34 @@ export default class LiveBoard extends Component {
       var themes_bg="linear-gradient(90deg," + this.props.themes.live.heatmap.heatmap_cold + ", " + this.props.themes.live.heatmap.heatmap_hot + ")";
       var board_bg="linear-gradient(180deg," + this.props.themes.live.background.top + ", " + this.props.themes.live.background.middle + ", " + this.props.themes.live.background.bottom + ")";
       //console.log(themes_bg);
+      var actionBg="white";
+      var heatmapTxt="black";
+      var switchBg="purple";
+      var switchTxt="white";
+      if (this.props.themes.live.action_row != undefined) {
+        actionBg=this.props.themes.live.action_row.background;
+        heatmapTxt=this.props.themes.live.heatmap.text;
+        switchBg=this.props.themes.live.action_row.switch_fill;
+        switchTxt=this.props.themes.live.action_row.switch_text;
+
+      }
+      
       return (
 
         <Aux>
 
           <LiveDashboard 
             />
-          <div className={classes.ActionRow}>
-              <span style={{"float": "left", "width": "30%", "height":"75px", "textAlign": "left", "verticalAlign":"middle"}}>
+          <div className={classes.ActionRow} style={{background:actionBg, color:heatmapTxt}}>
+              <span style={{color:switchTxt, "float": "left", "width": "30%", "height":"75px", "textAlign": "left", "verticalAlign":"middle"}}>
                 <Toggle
                 onClick={this.toggleMode}
-                on={<h2>Live Mode</h2>}
+                on={<h2 style={{marginTop:"12px"}}>Live Mode</h2>}
                 off={<h2>Practice Mode</h2>}
                 size="sm"
                 active={this.state.toggleActive}
-                
+                style={{background:switchBg, color:switchTxt, height:"75px", lineHeight:"10px", verticalAlign:"middle"}}
+                onstyle={{background:switchBg, color:switchTxt, height:"75px"}}
                 />
                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
               </span>
@@ -622,7 +636,7 @@ export default class LiveBoard extends Component {
               <span style={{"float": "left", "width": "30%", "height":"90px", "textAlign": "right", "verticalAlign":"middle"}}>
                   <span style={{"float": "left", "width": "80%", "height":"90px", "textAlign": "left", "verticalAlign":"middle"}}> 
                     <div className="isLive">
-                      <center><b>Heatmap Legend</b></center>
+                      <center><b style={{color:heatmapTxt}}>Heatmap Legend</b></center>
                       <div style={{  "border": "1px solid",
                                       "background": themes_bg,
                                       "width":"100%",
@@ -632,10 +646,10 @@ export default class LiveBoard extends Component {
                                     <br/>
                       </div>
                       <div>
-                        <span style={{"float": "left", "width": "50%", "textAlign": "left"}}>
+                        <span style={{"float": "left", "width": "50%", "textAlign": "left", color:heatmapTxt}}>
                         Low Reward / Risk
                         </span>
-                        <span style={{"float": "left", "width": "50%", "textAlign": "right"}}>
+                        <span style={{"float": "left", "width": "50%", "textAlign": "right", color:heatmapTxt}}>
                         High Reward / Risk
                         </span>
                       </div>

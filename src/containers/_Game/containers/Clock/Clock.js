@@ -50,6 +50,7 @@ const stateToProps = state => {
     //simulatedDate: state.betting.simulatedDate,
     dashboard_totals:state.betting.dashboard_totals,
     isLive:state.betting.isLive,
+    themes:state.betting.themes,
     //liveDate:state.betting.liveDate,
   };
 };
@@ -72,7 +73,8 @@ export default class Clock extends PureComponent {
     //liveDate: PropTypes.instanceOf(Date).isRequired,
     dashboard_totals:PropTypes.object.isRequired,
     updateDate:PropTypes.func.isRequired,
-    initializeLive:PropTypes.func.isRequired
+    initializeLive:PropTypes.func.isRequired,
+    themes:PropTypes.object
   };
 
   constructor(props) {
@@ -101,9 +103,22 @@ export default class Clock extends PureComponent {
 
   render() {
     this.clockTime = this.state.estTime.split(/\s/);
+
+    var clockTop="#347da6";
+    var clockMid="#4797bc";
+    var clockBot="#347da6";
+    var clockText="#fafafa";
+    if (this.props.themes.live.action_row) {
+      clockTop=this.props.themes.live.action_row.clock_top;
+      clockMid=this.props.themes.live.action_row.clock_middle;
+      clockBot=this.props.themes.live.action_row.clock_bottom;
+      clockText=this.props.themes.live.action_row.clock_text;      
+    }
+    var bgStyle={ "background" : "linear-gradient(" + clockTop + "," + clockMid + "," + clockBot + ")",
+                  "color" : clockText};
     const { updateDate,dashboard_totals } = this.props;
     return (
-      <div className={classes.Widget}>
+      <div className={classes.Widget} style={bgStyle}>
         <div className={classes.Left}>
           {this.props.isLive ? (
             <span className="isLive" >

@@ -1,27 +1,16 @@
 td,
 th {
-  border-right: 1px solid black;
-  border-left: 1px solid black;
-  border-bottom: 1px solid #d6d6d6;
-  border-top: 1px solid #d6d6d6;
   box-sizing: border-box;
   width: 220px;
   text-align: left;
   padding-left: 20px;
 }
 
-thead th {
-  border-bottom: 1px solid #111;
-}
 
-.LastRow td, .LastRow th {
-  border-top: 2px solid #111;
-}
 
 .Table {
   width: 100%;
   margin: auto;
-  background-color: #e0f1f5;
   border-collapse: collapse;
 }
 

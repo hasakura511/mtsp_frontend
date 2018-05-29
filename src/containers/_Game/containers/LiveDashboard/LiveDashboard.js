@@ -21,6 +21,7 @@ const stateToProps = state => {
     initializeData:state.betting.initializeData,
     loading:state.betting.loading,
     dashboard_totals:state.betting.dashboard_totals,
+    themes:state.betting.themes,
   };
 };
 
@@ -56,7 +57,7 @@ export default class LiveDashboard extends Component {
     loading: PropTypes.bool.isRequired,
     initializeData:PropTypes.object.isRequired,
     addTimedToaster:PropTypes.func.isRequired,
-    
+    themes:PropTypes.object
   };
     
   constructor(props) {
@@ -86,7 +87,7 @@ export default class LiveDashboard extends Component {
   }
   render() {
     //const initializeData=this.props.initializeData;
-    const { currentBets, pastBets, accounts, simulatedDate, loading, initializeData, dashboard_totals } = this.props;
+    const { currentBets, pastBets, accounts, simulatedDate, loading, initializeData, dashboard_totals, themes } = this.props;
     //console.log(this.state);
     //console.log(this.props);
     var netPnl = 0;
@@ -101,18 +102,26 @@ export default class LiveDashboard extends Component {
     var netChangePercent = netPnl / netStartAmount * 100;
     var netCumChangePercent = (netFinalAmount - netStartAmount) / netStartAmount * 100;
 
+    var bgColor="black";
+    var bgText="white";
+    var bdColor="green";
+    if (this.props.themes.live.dashboard != undefined) {
+      bgColor=this.props.themes.live.dashboard.background;
+      bgText=this.props.themes.live.dashboard.text;
+      bdColor=this.props.themes.live.dashboard.lines;
+    }
     return (
-    <div style={{ backgroundColor: "#e0f1f5", position: "relative" }}>
+    <div style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor,position: "relative" }}>
       <ClockLoader show={loading} />
-      <table className={classes.Table}>
-        <thead>
-          <tr>
-            <th>Accounts</th>
-            <th>Next Bet</th>
-            <th>Current Bet</th>
-            <th>Current PnL</th>
-            <th className="isLive">Lockdown</th>
-            <th><span style={{"float": "left", "width": "80%", "textAlign": "left"}}>
+      <table className={classes.Table} style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}>
+        <thead  style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}>
+          <tr style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}>
+            <th style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}>Accounts</th>
+            <th style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}>Next Bet</th>
+            <th style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}>Current Bet</th>
+            <th style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}>Current PnL</th>
+            <th style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}} className="isLive">Lockdown</th>
+            <th style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}><span style={{"float": "left", "width": "80%", "textAlign": "left"}}>
                   Last Update
                 </span>
                 <span style={{"float": "left", "width": "20%", "textAlign": "right"}}>
@@ -121,7 +130,7 @@ export default class LiveDashboard extends Component {
             </th>
           </tr>
         </thead>
-        <tbody>
+        <tbody  style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}>
           {accounts.map(function(account) { 
             console.log(account);
             if (account.locktime) { 
@@ -147,8 +156,8 @@ export default class LiveDashboard extends Component {
               // console.log(account.accountValue);
 
               return (
-                <tr key={`dashboard-row-${accountId}`}>
-                  <td>
+                <tr key={`dashboard-row-${accountId}`} style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}>
+                  <td style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}>
                     <div className={classes.Cell + " " + classes.Flex}>
                       $&nbsp;<img src="/images/account_chart_button.png" width="25" />
                       <strong>{display}</strong>
@@ -165,7 +174,7 @@ export default class LiveDashboard extends Component {
                       </span> )
                     </div>
                   </td>
-                  <td>
+                  <td style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}>
                     <div className={classes.Cell}>
                       {lcBet ? (
                         <p>
@@ -177,7 +186,7 @@ export default class LiveDashboard extends Component {
                       
                     </div>
                   </td>
-                  <td>
+                  <td style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}>
                     <div className={classes.Cell}>
                       {lpBet ? (
                         <p>
@@ -188,7 +197,7 @@ export default class LiveDashboard extends Component {
                       ) : null}
                     </div>
                   </td>
-                  <td>
+                  <td style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}>
                     <div
                       className={classes.Cell}
                       style={{ justifyContent: "center" }}
@@ -228,7 +237,7 @@ export default class LiveDashboard extends Component {
                     </div>
                   </td>
                  
-                  <td  className="isLive">
+                  <td  className="isLive" style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}>
                   <div
                     className={classes.Cell}
                     style={{ justifyContent: "center" }}
@@ -236,7 +245,7 @@ export default class LiveDashboard extends Component {
                     {locktime}
                   </div>
                   </td>
-                  <td>
+                  <td style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}>
                     <div
                       className={classes.Cell}
                       style={{ justifyContent: "center" }}
@@ -248,8 +257,8 @@ export default class LiveDashboard extends Component {
               );
             }
           })}
-          <tr className={classes.LastRow}>
-            <th>
+          <tr style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}} className={classes.LastRow}>
+            <th style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}>
               <div className={classes.Cell}>
                 <b>Total</b>: ${dashboard_totals.accounts_total.toLocaleString("en")}
                 &nbsp;
@@ -264,10 +273,10 @@ export default class LiveDashboard extends Component {
                    {dashboard_totals.accounts_pct.toFixed(2)}% 
                 </span> )
               </div>
-            </th>
-            <td />
-            <td />
-            <td>
+            </th> 
+            <td style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}/>
+            <td style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}/>
+            <td style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}>
               <div
                 className={classes.Cell}
                 style={{ justifyContent: "center" }}
@@ -289,14 +298,14 @@ export default class LiveDashboard extends Component {
               </div>
             </td>
             
-            <td  className="isLive">
+            <td style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}} className="isLive">
                 <div
                   className={classes.Cell}
                   style={{ justifyContent: "center" }}
                 >
                 </div>
             </td>
-            <td />
+            <td style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}} />
           </tr>
         </tbody>
       </table>
