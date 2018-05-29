@@ -498,7 +498,7 @@ export default class Panel extends Component {
         
     }
     const panel = (
-      <div className={classes.Panel} style={{"backgroundColor": panelBgColor, "text":panelTextColor}}>
+      <div className={classes.Panel} style={{"background": panelBgColor, "text":panelTextColor}}>
 
         {slotsGrid}
         <BottomSection
@@ -506,22 +506,30 @@ export default class Panel extends Component {
           topSystems={this.state.topSystems}
           moveChipToSlot={this.moveChipToSlot}
           sectionHeatmap={sectionHeatmap}
+          bgColor={panelBgColor}
+          textColor={panelTextColor}
         />
         <LeftSection
           systems={this.state.leftSystems}
           moveChipToSlot={this.moveChipToSlot}
           sectionHeatmap={sectionHeatmap}
+          bgColor={panelBgColor}
+          textColor={panelTextColor}
         />
         <RightSection
           systems={this.state.rightSystems}
           moveChipToSlot={this.moveChipToSlot}
           sectionHeatmap={sectionHeatmap}
+          bgColor={panelBgColor}
+          textColor={panelTextColor}
         />
         <TopSection
           systems={this.state.topSystems}
           balanceChips={this.props.balanceChips}
           moveChipToSlot={this.moveChipToSlot}
           sectionHeatmap={sectionHeatmap}
+          bgColor={panelBgColor}
+          textColor={panelTextColor}
         />
         {showOrderDialog ? (
           <div             id={"modalDialog"}>

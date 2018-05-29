@@ -13,8 +13,9 @@ const rightSection = props => {
           var sectionHeatmap=props.sectionHeatmap;
           var slotHeatmap={};
 
-          var textColor="#000000";
-          var bgColor="#86dde0";
+          var bgColor=props.bgColor;
+          var textColor=props.textColor;
+
           if (sectionHeatmap != undefined && sectionHeatmap.color_fill != undefined) {
               slotHeatmap['color_fill']=sectionHeatmap.color_fill[column.toString()];
               slotHeatmap['color_text']=sectionHeatmap.color_text[column.toString()];
@@ -35,7 +36,10 @@ const rightSection = props => {
               }}
               title={mesg}
             >
-              <Container {...props}  slotHeatmap={slotHeatmap} column={column} heldChips={heldChips} />
+              <Container {...props}  slotHeatmap={slotHeatmap} column={column} heldChips={heldChips} 
+                bgColor={bgColor}
+                textColor={textColor}              
+              />
               <font color={textColor}>{display}</font>
             </div>
           );
@@ -46,7 +50,9 @@ const rightSection = props => {
 };
 rightSection.propTypes = {
   systems: PropTypes.array,
-  sectionHeatmap: PropTypes.object
+  sectionHeatmap: PropTypes.object,
+  bgColor:PropTypes.string,
+  textColor:PropTypes.string
 
 };
 export default rightSection;

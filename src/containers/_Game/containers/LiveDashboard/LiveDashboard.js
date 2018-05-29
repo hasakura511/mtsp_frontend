@@ -110,18 +110,20 @@ export default class LiveDashboard extends Component {
       bgText=this.props.themes.live.dashboard.text;
       bdColor=this.props.themes.live.dashboard.lines;
     }
+    var tableStyle={ background: bgColor, color:bgText, borderLeft: "1px solid " + bdColor, borderRight: "1px solid " + bdColor, borderTop: "0.1px solid #ccc", borderBottom: "0.1px solid #ccc"};
+    
     return (
     <div style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor,position: "relative" }}>
       <ClockLoader show={loading} />
-      <table className={classes.Table} style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}>
-        <thead  style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}>
-          <tr style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}>
-            <th style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}>Accounts</th>
-            <th style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}>Next Bet</th>
-            <th style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}>Current Bet</th>
-            <th style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}>Current PnL</th>
-            <th style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}} className="isLive">Lockdown</th>
-            <th style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}><span style={{"float": "left", "width": "80%", "textAlign": "left"}}>
+      <table className={classes.Table} style={tableStyle}>
+        <thead  style={tableStyle}>
+          <tr style={tableStyle}>
+            <th style={tableStyle}>Accounts</th>
+            <th style={tableStyle}>Next Bet</th>
+            <th style={tableStyle}>Current Bet</th>
+            <th style={tableStyle}>Current PnL</th>
+            <th style={tableStyle} className="isLive">Lockdown</th>
+            <th style={tableStyle}><span style={{"float": "left", "width": "80%", "textAlign": "left"}}>
                   Last Update
                 </span>
                 <span style={{"float": "left", "width": "20%", "textAlign": "right"}}>
@@ -130,7 +132,7 @@ export default class LiveDashboard extends Component {
             </th>
           </tr>
         </thead>
-        <tbody  style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}>
+        <tbody  style={tableStyle}>
           {accounts.map(function(account) { 
             console.log(account);
             if (account.locktime) { 
@@ -154,10 +156,9 @@ export default class LiveDashboard extends Component {
 
               //eslint-disable-next-line
               // console.log(account.accountValue);
-
               return (
-                <tr key={`dashboard-row-${accountId}`} style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}>
-                  <td style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}>
+                <tr key={`dashboard-row-${accountId}`} style={tableStyle}>
+                  <td style={tableStyle}>
                     <div className={classes.Cell + " " + classes.Flex}>
                       $&nbsp;<img src="/images/account_chart_button.png" width="25" />
                       <strong>{display}</strong>
@@ -174,7 +175,7 @@ export default class LiveDashboard extends Component {
                       </span> )
                     </div>
                   </td>
-                  <td style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}>
+                  <td style={tableStyle}>
                     <div className={classes.Cell}>
                       {lcBet ? (
                         <p>
@@ -186,7 +187,7 @@ export default class LiveDashboard extends Component {
                       
                     </div>
                   </td>
-                  <td style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}>
+                  <td style={tableStyle}>
                     <div className={classes.Cell}>
                       {lpBet ? (
                         <p>
@@ -197,7 +198,7 @@ export default class LiveDashboard extends Component {
                       ) : null}
                     </div>
                   </td>
-                  <td style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}>
+                  <td style={tableStyle}>
                     <div
                       className={classes.Cell}
                       style={{ justifyContent: "center" }}
@@ -237,7 +238,7 @@ export default class LiveDashboard extends Component {
                     </div>
                   </td>
                  
-                  <td  className="isLive" style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}>
+                  <td  className="isLive" style={tableStyle}>
                   <div
                     className={classes.Cell}
                     style={{ justifyContent: "center" }}
@@ -245,7 +246,7 @@ export default class LiveDashboard extends Component {
                     {locktime}
                   </div>
                   </td>
-                  <td style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}>
+                  <td style={tableStyle}>
                     <div
                       className={classes.Cell}
                       style={{ justifyContent: "center" }}
@@ -257,8 +258,8 @@ export default class LiveDashboard extends Component {
               );
             }
           })}
-          <tr style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}} className={classes.LastRow}>
-            <th style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}>
+          <tr style={tableStyle} className={classes.LastRow}>
+            <th style={tableStyle}>
               <div className={classes.Cell}>
                 <b>Total</b>: ${dashboard_totals.accounts_total.toLocaleString("en")}
                 &nbsp;
@@ -274,9 +275,9 @@ export default class LiveDashboard extends Component {
                 </span> )
               </div>
             </th> 
-            <td style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}/>
-            <td style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}/>
-            <td style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}>
+            <td style={tableStyle}/>
+            <td style={tableStyle}/>
+            <td style={tableStyle}>
               <div
                 className={classes.Cell}
                 style={{ justifyContent: "center" }}
@@ -298,14 +299,14 @@ export default class LiveDashboard extends Component {
               </div>
             </td>
             
-            <td style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}} className="isLive">
+            <td style={tableStyle} className="isLive">
                 <div
                   className={classes.Cell}
                   style={{ justifyContent: "center" }}
                 >
                 </div>
             </td>
-            <td style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}} />
+            <td style={tableStyle} />
           </tr>
         </tbody>
       </table>

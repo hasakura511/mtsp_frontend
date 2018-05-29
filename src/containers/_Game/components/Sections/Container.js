@@ -58,7 +58,9 @@ export default class Container extends PureComponent {
     moveChipToSlot: PropTypes.func.isRequired,
     column: PropTypes.string.isRequired,
     heldChips: PropTypes.array.isRequired,
-    slotHeatmap:PropTypes.any
+    slotHeatmap:PropTypes.any,
+    bgColor:PropTypes.string,
+    textColor:PropTypes.string
   };
   
   constructor(props) {
@@ -70,9 +72,9 @@ export default class Container extends PureComponent {
   
   render() {
     const { dropTarget, isOver, canDrop, heldChips, slotHeatmap, column } = this.props;
-    var bgColor="#d0f4a6";
-    var textColor="#000000";
-    var chipBgColor="#86dde0";
+    var bgColor=this.props.bgColor;
+    var textColor=this.props.textColor;
+    var chipBgColor=this.props.bgColor;
     var display=column;
     var rank="";
     var score="";
