@@ -3,7 +3,21 @@ import ChipsConfig from "../../containers/_Game/ChipsConfig";
 import { clone, toSlashDate, uniq, toIntegerDate, clean, getOffsetDate, getOffsetSlashDate,getDemoPnL, getSimDate, getDateNowStr } from "../../util";
 var moment = require('moment-timezone');
 
+const checkChip = (chip, liveDate) => {
+  var locktime=new moment.tz(chip.locktime.replace(' EST',''),"US/Eastern");
+  var unlocktime=new moment.tz(chip.unlocktime.replace(' EST',''),"US/Eastern");
+  chip['lockdown']=locktime;
+  chip['lockdown_text']=locktime.format('hh:mm:ss A');
+  if (locktime > liveDate || liveDate > unlocktime) {
+    chip['status']='unlocked';
+  } else {
+    chip['status']='locked';
+  }
+
+  return chip;
+}
 const insertChip = (systems, column, chip) => {
+  chip=checkChip(chip);
   return systems.map(system => {
     const { heldChips } = system;
     return system.column === column
@@ -24,15 +38,7 @@ const insertChip = (systems, column, chip) => {
 const checkChipsLock = (chips, liveDate) => {
   var newChips=[];
   chips.map(function (chip) {
-    var locktime=new moment.tz(chip.locktime.replace(' EST',''),"US/Eastern");
-    var unlocktime=new moment.tz(chip.unlocktime.replace(' EST',''),"US/Eastern");
-    chip['lockdown']=locktime;
-    if (locktime > liveDate || liveDate > unlocktime) {
-      chip['status']='unlocked';
-    } else {
-      chip['status']='locked';
-    }
-    newChips.push(chip);
+    newChips.push(checkChip(chip, liveDate));
   });
   return newChips;
 }
@@ -86,7 +92,7 @@ const initialState = {
   isLive:false,
   initializeData: {},
   simulatedDate: getOffsetDate(1),
-  liveDate: new moment(),
+  liveDate: new moment().tz("US/Eastern"),
   inGameChips: {
     balanceChips: ChipsConfig.map(chip => {
       chip["count"] = 1;
@@ -300,7 +306,7 @@ const reducer = (state = initialState, action) => {
     }
     case actionTypes.UPDATE_DATE:
     {
-        var date = new moment.tz(action.simdate, "US/Eastern");
+        var date = new moment().tz("US/Eastern");
         console.log(date.format('hh:mm:ss A'));
         const liveDate = date;
 
@@ -363,6 +369,8 @@ const reducer = (state = initialState, action) => {
     }
     case actionTypes.INITIALIZE_DATA:
     {
+        const liveDate = new moment().tz("US/Eastern");
+        console.log(liveDate.format('hh:mm:ss A'));
         var initializeData =  action.data;
         var accounts= JSON.parse(action.data.accounts)
         var heatmap = JSON.parse(action.data.heatmap)
@@ -400,15 +408,8 @@ const reducer = (state = initialState, action) => {
           chip['display']=chip.account_chip_text;
           chip['chip_styles']=themes.chip_styles;
 
-          var locktime=new moment.tz(chip.locktime.replace(' EST',''),"US/Eastern");
-          var unlocktime=new moment.tz(chip.unlocktime.replace(' EST',''),"US/Eastern");
-          chip['lockdown']=locktime;
-          chip['lockdown_text']=locktime.format('hh:mm:ss A');
-          if (locktime > state.liveDate || state.liveDate > unlocktime) {
-            chip['status']='unlocked';
-          } else {
-            chip['status']='locked';
-          }
+
+          chip=checkChip(chip, liveDate);
 
           balanceChips.push(chip);
           account_list.push(accounts[key]); 
@@ -465,9 +466,10 @@ const reducer = (state = initialState, action) => {
         });
       
         var inGameChips = {
-          balanceChips: balanceChips,
+          balanceChips: checkChipsLock(balanceChips, liveDate),
           bettingChips: []
         }
+
         initializeData.accounts=account_list;
         initializeData.heatmap=heatmap;
         initializeData.themes=themes;
@@ -485,50 +487,74 @@ const reducer = (state = initialState, action) => {
             
               balanceChips.map(function (chip) {
                 if (account.accountId === chip.accountId) {
-                  const balanceChips = inGameChips.balanceChips.map(c => {
-                    return c.accountId === chip.accountId
-                      ? {
-                          ...c,
-                          count: c.count - 1
-                        }
-                      : c;
-                  });
-                
-                  var position=account.chip_location;
-                  var strat=account.last_selection;
-        
-                  if (position.match(/^Anti-\d+$/)) {
-                      position=parseInt(position.replace('Anti-',''))
+                    const balanceChips = inGameChips.balanceChips.map(c => {
+                      return c.accountId === chip.accountId
+                        ? {
+                            ...c,
+                            count: c.count - 1
+                          }
+                        : c;
+                    });
+                  
+                    chip=checkChip(chip, liveDate);
+                    var position=account.chip_location;
+                    var strat=account.last_selection;
+          
+                    if (position.match(/^Anti-\d+$/)) {
+                        position=parseInt(position.replace('Anti-',''))
 
-                  } else if (position.match(/^\d+$/)) {
-                      position=parseInt(position);
-                  } 
-                  var bettingChips = [
-                    ...inGameChips.bettingChips,
-                    { ...chip, position }
-                  ];
-                  topSystems=insertChip(topSystems, position, {
-                      ...chip,
-                      position
-                    });
-                  bottomSystems=insertChip(bottomSystems, position, {
-                      ...chip,
-                      position
-                    });
-                  leftSystems=insertChip(leftSystems, position, {
-                      ...chip,
-                      position
-                    });
-                  rightSystems=insertChip(rightSystems, position, {
-                      ...chip,
-                      position
-                    });
+                    } else if (position.match(/^\d+$/)) {
+                        position=parseInt(position);
+                    } 
+                    var bettingChips = [
+                      ...inGameChips.bettingChips,
+                      { ...chip, position }
+                    ];
+                    topSystems=insertChip(topSystems, position, {
+                        ...chip,
+                        position
+                      });
+                    bottomSystems=insertChip(bottomSystems, position, {
+                        ...chip,
+                        position
+                      });
+                    leftSystems=insertChip(leftSystems, position, {
+                        ...chip,
+                        position
+                      });
+                    rightSystems=insertChip(rightSystems, position, {
+                        ...chip,
+                        position
+                      });
                     inGameChips={ balanceChips, bettingChips };
                   }
               });
             }
           }
         });
+        
+        /*
+        inGameChips.balanceChips=checkChipsLock(inGameChips.balanceChips, liveDate);
+        inGameChips.bettingChips=checkChipsLock(inGameChips.bettingChips, liveDate);
+        
+        topSystems = topSystems.map(system => {
+          system.heldChips=checkChipsLock(system.heldChips, liveDate);
+          return system;
+        });
+        leftSystems = leftSystems.map(system => {
+          system.heldChips=checkChipsLock(system.heldChips, liveDate);
+          return system;
+        });
+        rightSystems = rightSystems.map(system => {
+          system.heldChips=checkChipsLock(system.heldChips, liveDate);
+          return system;
+        });
+        bottomSystems = bottomSystems.map(system => {
+          system.heldChips=checkChipsLock(system.heldChips, liveDate);
+          return system;
+        });
+        */
+
         const isLive=true;
         console.log(initializeData);
         return {
@@ -545,7 +571,8 @@ const reducer = (state = initialState, action) => {
             loading,
             isLive,
             inGameChips,
-            dashboard_totals
+            dashboard_totals,
+            liveDate
         };
     }
     case actionTypes.ADD_BET: {

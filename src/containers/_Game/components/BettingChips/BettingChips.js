@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import Chip from "../_Chip/_Chip";
 import classes from "./BettingChips.css";
 import Popover from 'react-tiny-popover'
-//import Popover from 'react-simple-popover';
 
 
 export default class BettingChips extends Component {
@@ -15,7 +14,6 @@ export default class BettingChips extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false,
       isPopoverOpen:false,
 
     };
@@ -24,13 +22,11 @@ export default class BettingChips extends Component {
   }
   
   handleClick(e) {
-    this.setState({open: !this.state.open});
     this.setState({ isPopoverOpen: !this.state.isPopoverOpen })
 
   }
  
   handleClose(e) {
-    this.setState({open: false});
     this.setState({ isPopoverOpen: !this.state.isPopoverOpen })
   }
 
@@ -103,6 +99,8 @@ export default class BettingChips extends Component {
         <div className={classes.BettingChips}
             style={{"overflowX": "visible",
                     "overflowY": "visible",
+                    "overflow":"visible",
+
                    }}>
              
              
@@ -119,7 +117,7 @@ export default class BettingChips extends Component {
                      "marginLeft": "-50%",
                      "transform": "translate(-50%, 0%)",
                       */   
-                     "zIndex":10000000,                   
+                     "zIndex":10000000,          
                      background: bgColor,
                       color:textColor,
                   }}
@@ -141,7 +139,7 @@ export default class BettingChips extends Component {
           >
           <a
           className={classes.MSquare}
-          ref={this.myRef.target}
+          //ref={this.myRef.target}
           style={{
             "zIndex":500,                   
             background: bgColor,

@@ -75,6 +75,31 @@ const blankSystem = {
  *
  */
 export default class Panel extends Component {
+
+  
+  static propTypes = {
+    topSystems: PropTypes.array,
+    bottomSystems: PropTypes.array,
+    leftSystems: PropTypes.array,
+    rightSystems: PropTypes.array,
+    balanceChips: PropTypes.array,
+    bettingChips: PropTypes.array,
+    accounts: PropTypes.array.isRequired,
+    addBettingChip: PropTypes.func.isRequired,
+    addLast3DaysProfit: PropTypes.func.isRequired,
+    moveToBalance: PropTypes.func.isRequired,
+    addBet: PropTypes.func.isRequired,
+    simulatedDate: PropTypes.string.isRequired,
+    showDialog: PropTypes.func.isRequired,
+    killDialog: PropTypes.func.isRequired,
+    addTimedToaster: PropTypes.func.isRequired,
+    isLive:PropTypes.bool.isRequired,
+    heatmap:PropTypes.object.isRequired,
+    showHeatmap:PropTypes.func.isRequired,
+    heatmap_selection:PropTypes.string,
+    themes:PropTypes.object,
+  };
+
   /**
    * Creates an instance of Panel.
    * @constructor
@@ -84,7 +109,6 @@ export default class Panel extends Component {
    *
    *
    */
-
   constructor(props) {
     super(props);
     this.state = {
@@ -182,10 +206,16 @@ export default class Panel extends Component {
    */
 
   componentWillMount() {
+
+    
     this.makeBoard(this.props);
   }
 
   componentWillReceiveProps(newProps) {
+
+    //console.log("Panel received new prop");
+    //console.log(newProps.balanceChips);
+    //console.log(newProps.bettingChips);
     this.makeBoard(newProps);
 
   }
@@ -456,8 +486,19 @@ export default class Panel extends Component {
     if (heatmap_selection && heatmap_selection.length > 0) {
       sectionHeatmap=heatmap[heatmap_selection];
     }
+
+    var panelBgColor="#86dde0";
+    var panelTextColor="#000000";
+
+    if (this.props.themes != undefined && this.props.themes.live.board) {
+      if (this.props.themes.live.board.background)
+        panelBgColor=this.props.themes.board.background;
+      if (this.props.themes.live.board.text)
+        panelTextColor=this.props.themes.board.text;
+        
+    }
     const panel = (
-      <div className={classes.Panel}>
+      <div className={classes.Panel} style={{"backgroundColor": panelBgColor, "text":panelTextColor}}>
 
         {slotsGrid}
         <BottomSection
@@ -594,25 +635,4 @@ export default class Panel extends Component {
     this._isMounted = false;
   }
 
-  static propTypes = {
-    topSystems: PropTypes.array,
-    bottomSystems: PropTypes.array,
-    leftSystems: PropTypes.array,
-    rightSystems: PropTypes.array,
-    balanceChips: PropTypes.array,
-    bettingChips: PropTypes.array,
-    accounts: PropTypes.array.isRequired,
-    addBettingChip: PropTypes.func.isRequired,
-    addLast3DaysProfit: PropTypes.func.isRequired,
-    moveToBalance: PropTypes.func.isRequired,
-    addBet: PropTypes.func.isRequired,
-    simulatedDate: PropTypes.string.isRequired,
-    showDialog: PropTypes.func.isRequired,
-    killDialog: PropTypes.func.isRequired,
-    addTimedToaster: PropTypes.func.isRequired,
-    isLive:PropTypes.bool.isRequired,
-    heatmap:PropTypes.object.isRequired,
-    showHeatmap:PropTypes.func.isRequired,
-    heatmap_selection:PropTypes.string
-  };
 }

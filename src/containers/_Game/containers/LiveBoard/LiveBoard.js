@@ -214,7 +214,7 @@ export default class LiveBoard extends Component {
   componentDidMount() {
 
     
-    console.log(this.props);
+    //console.log(this.props);
 
     axios
     .post("/utility/initialize_live/", {
@@ -549,7 +549,7 @@ export default class LiveBoard extends Component {
       inGameChips,
       themes
     } = this.props;
-    console.log(this.props);
+    //console.log(this.props);
     const dates = uniq(
       Object.values(last3DaysProfits)
         // ***hack*** to avoid crash when we dont have pnlData for that particular account
@@ -591,7 +591,7 @@ export default class LiveBoard extends Component {
       } else {
       var themes_bg="linear-gradient(90deg," + this.props.themes.live.heatmap.heatmap_cold + ", " + this.props.themes.live.heatmap.heatmap_hot + ")";
       var board_bg="linear-gradient(180deg," + this.props.themes.live.background.top + ", " + this.props.themes.live.background.middle + ", " + this.props.themes.live.background.bottom + ")";
-      console.log(themes_bg);
+      //console.log(themes_bg);
       return (
 
         <Aux>
@@ -599,49 +599,49 @@ export default class LiveBoard extends Component {
           <LiveDashboard 
             />
           <div className={classes.ActionRow}>
-            <span style={{"float": "left", "width": "30%", "height":"75px", "textAlign": "left", "verticalAlign":"middle"}}>
-              <Toggle
-              onClick={this.toggleMode}
-              on={<h2>Live Mode</h2>}
-              off={<h2>Practice Mode</h2>}
-              size="sm"
-              active={this.state.toggleActive}
-              
-              />
-              <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-            </span>
-            <span  style={{"float": "left", "width": "40%",  "minWidth":"600px", "height":"75px","whiteSpace": "nowrap","textAlign": "left", "verticalAlign":"top"}}>
-              
-              <Clock />
-            </span>
-        <span style={{"float": "left", "width": "30%", "height":"90px", "textAlign": "right", "verticalAlign":"middle"}}>
-            <span style={{"float": "left", "width": "80%", "height":"90px", "textAlign": "left", "verticalAlign":"middle"}}> 
-              <div className="isLive">
-                <center><b>Heatmap Legend</b></center>
-                <div style={{  "border": "1px solid",
-                                "background": themes_bg,
-                                 "width":"100%",
-                                 "height":"45px",  
-                              }}>
-                              &nbsp;
-                              <br/>
-                </div>
-                <div>
-                  <span style={{"float": "left", "width": "50%", "textAlign": "left"}}>
-                  Low Reward / Risk
-                  </span>
-                  <span style={{"float": "left", "width": "50%", "textAlign": "right"}}>
-                  High Reward / Risk
-                  </span>
-                </div>
-              </div>
+              <span style={{"float": "left", "width": "30%", "height":"75px", "textAlign": "left", "verticalAlign":"middle"}}>
+                <Toggle
+                onClick={this.toggleMode}
+                on={<h2>Live Mode</h2>}
+                off={<h2>Practice Mode</h2>}
+                size="sm"
+                active={this.state.toggleActive}
+                
+                />
+                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+              </span>
+              <span  style={{"float": "left", "width": "40%",  "minWidth":"600px", "height":"75px","whiteSpace": "nowrap","textAlign": "left", "verticalAlign":"top"}}>
+                
+                <Clock />
+              </span>
+              <span style={{"float": "left", "width": "30%", "height":"90px", "textAlign": "right", "verticalAlign":"middle"}}>
+                  <span style={{"float": "left", "width": "80%", "height":"90px", "textAlign": "left", "verticalAlign":"middle"}}> 
+                    <div className="isLive">
+                      <center><b>Heatmap Legend</b></center>
+                      <div style={{  "border": "1px solid",
+                                      "background": themes_bg,
+                                      "width":"100%",
+                                      "height":"45px",  
+                                    }}>
+                                    &nbsp;
+                                    <br/>
+                      </div>
+                      <div>
+                        <span style={{"float": "left", "width": "50%", "textAlign": "left"}}>
+                        Low Reward / Risk
+                        </span>
+                        <span style={{"float": "left", "width": "50%", "textAlign": "right"}}>
+                        High Reward / Risk
+                        </span>
+                      </div>
+                    </div>
+                </span>
+                <span style={{"float": "left", "width": "20%", "height":"90px", "textAlign": "right", "verticalAlign":"top"}}>
+                    <img src="/images/infotext_button.png" width="22"/>
+                </span>
           </span>
-          <span style={{"float": "left", "width": "20%", "height":"90px", "textAlign": "right", "verticalAlign":"top"}}>
-              <img src="/images/infotext_button.png" width="22"/>
-          </span>
-        </span>
-      </div>
-      <div
+        </div>
+        <div
             className={classes.Board}
             style={
               {
@@ -674,6 +674,7 @@ export default class LiveBoard extends Component {
               bettingChips={this.props.inGameChips.bettingChips || []}
               addBettingChip={this.addBettingChip}
               moveToBalance={this.moveToBalance}
+              themes={this.themes}
             />
           </div>
         </Aux>
