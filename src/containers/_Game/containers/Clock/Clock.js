@@ -140,7 +140,7 @@ export default class Clock extends PureComponent {
           <span>
             <p>
             <LiveClock format={'dddd, DD MMM YYYY'} ticking={true} timezone={'US/Eastern'} /> 
-            <Moment format={'YYYY-MM-DD hh:mm:ss'} onChange={(val) => { console.log(val); updateDate(val); }} interval={30000} tz="US/Eastern" style={{"display":"none"}} className="datetime" aria-hidden={true}/>
+            <Moment format={'YYYY-MM-DD HH:mm:ss'} onChange={(val) => { console.log(val); updateDate(val); }} interval={30000} tz="US/Eastern" style={{"display":"none"}} className="datetime" aria-hidden={true}/>
             </p>
           </span>
         </div>

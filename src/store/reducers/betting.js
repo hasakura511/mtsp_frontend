@@ -7,7 +7,8 @@ const checkChip = (chip, liveDate) => {
   var locktime=new moment.tz(chip.locktime.replace(' EST',''),"US/Eastern");
   var unlocktime=new moment.tz(chip.unlocktime.replace(' EST',''),"US/Eastern");
   chip['lockdown']=locktime;
-  chip['lockdown_text']=locktime.format('MM/DD hh:mm:ss A') + " EST";
+  chip['lockdown_text']=locktime.format('MM/DD HH:mm:ss A') + " EST";
+  chip['unlocktime_text']=unlocktime.format('MM/DD HH:mm:ss A') + " EST";
   if (locktime > liveDate || liveDate > unlocktime) {
     chip['status']='unlocked';
   } else {
@@ -307,7 +308,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.UPDATE_DATE:
     {
         var date = new moment().tz("US/Eastern");
-        console.log(date.format('hh:mm:ss A'));
+        console.log(date.format('HH:mm:ss A'));
         const liveDate = date;
 
         var chips=state.inGameChips;
@@ -370,7 +371,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.INITIALIZE_DATA:
     {
         const liveDate = new moment().tz("US/Eastern");
-        console.log(liveDate.format('hh:mm:ss A'));
+        console.log(liveDate.format('HH:mm:ss A'));
         var initializeData =  action.data;
         var accounts= JSON.parse(action.data.accounts)
         var heatmap = JSON.parse(action.data.heatmap)
@@ -380,7 +381,7 @@ const reducer = (state = initialState, action) => {
         dashboard_totals.lockdown_text=action.data.lockdown_text;
         var lockdown_time=new moment.tz(dashboard_totals.lockdown_text.next_lockdown,"US/Eastern");
         dashboard_totals.lockdown_text.next_lockdown_time=lockdown_time;
-        dashboard_totals.lockdown_text.next_lockdown_text=lockdown_time.format("hh:mm:ss A");
+        dashboard_totals.lockdown_text.next_lockdown_text=lockdown_time.format("HH:mm:ss A");
         
         const loading=false;
         var hasSystem=false;
