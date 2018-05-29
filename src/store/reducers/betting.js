@@ -7,7 +7,7 @@ const checkChip = (chip, liveDate) => {
   var locktime=new moment.tz(chip.locktime.replace(' EST',''),"US/Eastern");
   var unlocktime=new moment.tz(chip.unlocktime.replace(' EST',''),"US/Eastern");
   chip['lockdown']=locktime;
-  chip['lockdown_text']=locktime.format('hh:mm:ss A');
+  chip['lockdown_text']=locktime.format('MM/DD hh:mm:ss A') + " EST";
   if (locktime > liveDate || liveDate > unlocktime) {
     chip['status']='unlocked';
   } else {

@@ -94,28 +94,19 @@ export default class Chip extends PureComponent {
   constructor(props) {
     super(props);
 
-    this.state = {
-      isPopoverOpen:false,
-  
-    };
- 
-
   }
 
-  handleClick(e) {
-    this.setState({ isPopoverOpen: !this.state.isPopoverOpen })
-
-  }
-
-  handleClose(e) {
-    this.setState({ isPopoverOpen: !this.state.isPopoverOpen })
+  toTitleCase= (str) => {
+    return str.replace(/\w[^\ ^-]*/g, function(txt){
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
+ }
+  numberWithCommas = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
   render() {
     const { dragSource, isDragging, dragPreview, canDrag, chip, showHeatmap, isLive } = this.props;
-    const tooltipStyle = {
-      display: this.state.isPopoverOpen ? 'block' : 'none'
-    }
     const img = new Image();
     img.style = {
       width: "48px",
@@ -138,32 +129,17 @@ export default class Chip extends PureComponent {
         break;
     }
 
+    var title = "";
 
-    var title="";
     if (chip.tier != undefined) {
-      title=(
-          <div style={{background:"white", 
-                       color:"black", 
-                       width:"150px", 
-                       border: "1px solid black",
-                       fontSize: "12px",
-                       textAlign:"left",
-                       lineHeight:"12px",
-                       transform: "translate(-120%, 0%)",
-                       position: "absolute",
-                       overflow:"visible"
-
-                       }}>
-                <b>Tier</b>: {chip.tier}  <br/>
-                <b>Lockdown</b>: {chip.lockdown_text}<br/>
-                <b>Account Value</b>:  {chip.account_value.toString()} <br/>
-                <b>Cum. % Chg</b>:  {chip.pnl_cumpct.toString()} <br/>
-                <b>Markets in Portfolio</b>: {chip.num_markets.toString()} <br/>
-                <b>Age</b>: {chip.age.toString()} <br/>
-                <b>Current Bet</b>: {chip.last_selection.toString()} <br/>
-                <b>Status</b>: {chip.status.toString()}
-          </div>
-      )
+      title="Tier: " + this.toTitleCase(chip.tier.toString()) + "\n"; 
+      title+="Lockdown: " + chip.lockdown_text.toString() + "\n"; 
+      title+="Account Value: " + '$' + this.numberWithCommas(chip.account_value.toString()) + "\n"; 
+      title+="Cum. % Chg: " + chip.pnl_cumpct.toString() + "%\n";
+      title+="Markets in Portfolio: " + chip.num_markets.toString() + "\n"; 
+      title+="Age: " + chip.age.toString() + "\n";
+      title+="Current Bet: " + chip.last_selection.toString() + "\n";
+      title+="Status: " + chip.status.toString();
     }
 
     var status=chip.status;
@@ -193,21 +169,13 @@ export default class Chip extends PureComponent {
     }
     */
     dragPreview(
-
-      <div className={classes.Chip} style={chipStyle}>
+      <div className={classes.Chip} style={chipStyle} title={title}>
         <p>{chip.display}</p>
       </div>
     );
     return dragSource(
-      <div className={classes.Chip} 
-          style={chipStyle} 
-          onMouseOver={this.handleClick.bind(this)} 
-          onMouseOut={this.handleClose.bind(this)} 
-          onClick={this.handleClick.bind(this)} 
-          >
-        
-           <p>{chip.display}</p> <br/>
-          <div style={tooltipStyle}>{title}</div>
+      <div className={classes.Chip} style={chipStyle} title={title}>
+        <p>{chip.display}</p>
       </div>
     );
   }
