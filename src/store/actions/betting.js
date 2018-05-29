@@ -9,7 +9,6 @@ export const nextDay = () => {
 export const updateDate = simdate => {
   return {
     type: actionTypes.UPDATE_DATE,
-    simdate
   };
 };
 
@@ -47,6 +46,12 @@ export const updateBet = ( topSystems,
 export const finishLoading = () => {
   return {
     type: actionTypes.FINISH_LOADING
+  };
+};
+
+export const startLoading = () => {
+  return {
+    type: actionTypes.START_LOADING
   };
 };
 

@@ -88,8 +88,8 @@ const dispatchToProps = dispatch => {
     reset: () => {
       dispatch(actions.reset());
     },
-    updateDate: (simdate) => {
-      dispatch(actions.updateDate(simdate));
+    updateDate: () => {
+      dispatch(actions.updateDate());
 
     },
     initializeData: (data) => {
@@ -212,10 +212,13 @@ export default class LiveBoard extends Component {
   }
 
   initializeLive=() => {
-
         
     //console.log(this.props);
-
+    /*
+    this.setState({
+      loading:true,
+    });
+    */
     axios
     .post("/utility/initialize_live/", {
     // .get("https://api.myjson.com/bins/11pqxf", {
@@ -228,18 +231,20 @@ export default class LiveBoard extends Component {
       console.log('received initialize_live data')
       // eslint-disable-next-line react/no-is-mounted
       console.log(data);
+
+
+      this.props.initializeData(data);
+
+      //this.props.updateDate();
+      
+      
+
+      //this.sendNotice('Account Data Received');
       this.setState({
         loading:false,
         rankingLoading: false,
         rankingData: data.rankingData,
       });
-      
-      this.props.initializeData(data);
-      
-      this.props.updateDate(data.last_date);
-
-
-      //this.sendNotice('Account Data Received');
      
     })
     .catch(error => {
@@ -249,7 +254,8 @@ export default class LiveBoard extends Component {
     // eslint-disable-next-line react/no-is-mounted
       this.setState({
         rankingLoading: false,
-        rankingError: error
+        rankingError: error,
+        loading:false
       });
     });
 
@@ -631,7 +637,7 @@ export default class LiveBoard extends Component {
               </span>
               <span  style={{"float": "left", "width": "40%",  "minWidth":"600px", "height":"75px","whiteSpace": "nowrap","textAlign": "left", "verticalAlign":"top"}}>
                 
-                <Clock  initializeLive={this.initializeLive} />
+                <Clock  loading={this.state.loading} sendNotice={this.sendNotice} initializeLive={this.initializeLive} />
               </span>
               <span style={{"float": "left", "width": "30%", "height":"90px", "textAlign": "right", "verticalAlign":"middle"}}>
                   <span style={{"float": "left", "width": "80%", "height":"90px", "textAlign": "left", "verticalAlign":"middle"}}> 

@@ -305,6 +305,14 @@ const reducer = (state = initialState, action) => {
         loading
       };
     }
+    case actionTypes.START_LOADING:
+    {
+      const loading=true;
+      return {
+        ...state,
+        loading
+      };
+    }
     case actionTypes.UPDATE_DATE:
     {
         var date = new moment().tz("US/Eastern");
@@ -535,7 +543,7 @@ const reducer = (state = initialState, action) => {
           }
         });
         
-        /*
+        
         inGameChips.balanceChips=checkChipsLock(inGameChips.balanceChips, liveDate);
         inGameChips.bettingChips=checkChipsLock(inGameChips.bettingChips, liveDate);
         
@@ -555,8 +563,7 @@ const reducer = (state = initialState, action) => {
           system.heldChips=checkChipsLock(system.heldChips, liveDate);
           return system;
         });
-        */
-
+        
         const isLive=true;
         console.log(initializeData);
         return {

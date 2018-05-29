@@ -7,7 +7,7 @@ import LiveClock from 'react-live-clock';
 import Moment from 'react-moment';
 import momentCountdown from 'moment-countdown';
 import moment from 'moment-timezone';
-
+import ClockLoader from "../../../../components/UI/ClockLoader/ClockLoader";
 import * as actions from "../../../../store/actions";
 
 export const DAYS = [
@@ -51,14 +51,15 @@ const stateToProps = state => {
     dashboard_totals:state.betting.dashboard_totals,
     isLive:state.betting.isLive,
     themes:state.betting.themes,
+
     //liveDate:state.betting.liveDate,
   };
 };
 
 const dispatchToProps = dispatch => {
   return {
-    updateDate: date => {
-      dispatch(actions.updateDate(date));
+    updateDate: () => {
+      dispatch(actions.updateDate());
     },
   };
 };
@@ -74,7 +75,9 @@ export default class Clock extends PureComponent {
     dashboard_totals:PropTypes.object.isRequired,
     updateDate:PropTypes.func.isRequired,
     initializeLive:PropTypes.func.isRequired,
-    themes:PropTypes.object
+    sendNotice:PropTypes.func.isRequired,
+    themes:PropTypes.object,
+    loading:PropTypes.bool
   };
 
   constructor(props) {
@@ -118,9 +121,10 @@ export default class Clock extends PureComponent {
                   "color" : clockText};
     const { updateDate,dashboard_totals } = this.props;
     return (
-      <div className={classes.Widget} style={bgStyle}>
-        <div className={classes.Left}>
-          {this.props.isLive ? (
+     
+          <div className={classes.Widget} style={bgStyle}>
+          <div className={classes.Left}>
+            {this.props.isLive ? (
             <span className="isLive" >
             <p  style={{ width: "180px", 
                         "marginLeft":"15px",
@@ -136,12 +140,14 @@ export default class Clock extends PureComponent {
                                    var minutes=ts.minutes;
                                    var seconds=ts.seconds;
                                    if (dashboard_totals.lockdown_text.next_lockdown_time < new moment().tz("US/Eastern")) {
-                                     if (this.props.isLive &&  !this.state.refreshing) {
-                                       if (seconds < 10) {
+                                     if (this.props.isLive && !this.props.loading) {  
+                                       if (seconds < 10 && !this.state.refreshing) {
                                          this.setState({refreshing:true});
                                          this.props.initializeLive();
+                                         this.props.sendNotice("Board Refreshed with New Data");
+
                                          
-                                       } else if (seconds > 50) {
+                                       } else if (seconds > 50 && this.state.refreshing) {
                                          this.setState({refreshing:false});
 
                                        }
@@ -204,6 +210,6 @@ export default class Clock extends PureComponent {
           </span>
         </div>
       </div>
-    );
+      );
   }
 }

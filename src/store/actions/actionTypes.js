@@ -29,4 +29,5 @@ export const UPDATE_BET = "UPDATE_BET";
 export const INITIALIZE_DATA = "INITIALIZE_DATA";
 
 export const FINISH_LOADING = "FINISH_LOADING";
+export const START_LOADING = "START_LOADING";
 export const SHOW_HEATMAP = "SHOW_HEATMAP";

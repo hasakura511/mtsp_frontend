@@ -21,6 +21,7 @@ export { addBet,
          reset, 
          updateDate, 
          initializeData, 
+         startLoading, 
          finishLoading, 
          updateBet, 
          showHeatmap 
