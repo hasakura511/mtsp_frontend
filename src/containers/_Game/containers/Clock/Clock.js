@@ -139,6 +139,11 @@ export default class Clock extends PureComponent {
                                    var hour=ts.hours;
                                    var minutes=ts.minutes;
                                    var seconds=ts.seconds;
+
+                                   const ts2=dashboard_totals.lockdown_text.next_unlock_time.countdown();
+                                   var hour2=ts2.hours;
+                                   var minutes2=ts2.minutes;
+                                   var seconds2=ts2.seconds;
                                    if (dashboard_totals.lockdown_text.next_lockdown_time < new moment().tz("US/Eastern") || 
                                        dashboard_totals.lockdown_text.next_unlock_time < new moment().tz("US/Eastern") 
                                        ) {
@@ -172,10 +177,26 @@ export default class Clock extends PureComponent {
                                    $('#countdown_time').html(diff);
 
                                    
+                                   if (minutes2 < 10)
+                                    minutes2="0" + minutes2;
+                                   if (hour2 < 10)
+                                     hour="0" + hour2;
+                                   if (seconds2 < 10)
+                                     seconds2="0" + seconds2;
+
+                                   var diff2=hour2 + ":" + minutes2 + ":" + seconds2
+                                   if (dashboard_totals.lockdown_text.next_unlock_time < new moment().tz("US/Eastern")) {
+                                      diff2="-" + diff2;
+
+                                   }
+                                   //$('#countdown_unlock_time').html(diff2);
+
+                                   
                                   }} 
             ></Moment>
             { dashboard_totals.lockdown_text.markets }<br/>
             { dashboard_totals.lockdown_text.next_trigger }<br/>
+           
             </p>
             </span>
           ) : (
