@@ -11,7 +11,7 @@ import { connect } from "react-redux";
 import * as actions from "../../../../store/actions";
 import { compose } from 'redux'
 import Popover from 'react-tiny-popover'
-
+import Sound from 'react-sound';
 
 const stateToProps = state => {
   return {
@@ -42,6 +42,8 @@ const chipSource = {
   beginDrag(props, monitor, component) {
     //console.log(props);
     props.showHeatmap(props.chip.chip_id);
+    props.chip.isPlaying=true;
+    props.chip.isDonePlaying=true;
     return props.chip;
   },
   canDrag(props) {
@@ -54,7 +56,9 @@ const chipSource = {
   endDrag(props,monitor, component) {
     const { chip  } = props;
     props.showHeatmap("");
-    return chip;
+    props.chip.isPlaying=false;
+    props.chip.isDonePlaying=true;
+    return props.chip;
   },
 
 };
@@ -112,6 +116,7 @@ export default class Chip extends PureComponent {
       width: "48px",
       height: "48px"
     };
+    var self=this;
     switch (chip.display) {
       case "25K":
         img.src = imgSource_25K;
@@ -177,6 +182,28 @@ export default class Chip extends PureComponent {
     return dragSource(
       <div className={classes.Chip} style={chipStyle} title={title}>
         <p>{chip.display}</p>
+        {isDragging || chip.isPlaying ? (
+            <Sound
+            url="/sounds/chipLay1.wav"
+            playStatus={Sound.status.PLAYING}
+            playFromPosition={0 /* in milliseconds */}
+            //onLoading={this.handleSongLoading}
+            //onPlaying={this.handleSongPlaying}
+            //onFinishedPlaying={this.handleSongFinishedPlaying}
+          />
+        ):null}
+        {chip.isDonePlaying ? (
+            <Sound
+            url="/sounds/chipLay2.wav"
+            playStatus={Sound.status.PLAYING}
+            playFromPosition={0 /* in milliseconds */}
+            //onLoading={this.handleSongLoading}
+            //onPlaying={this.handleSongPlaying}
+            //onFinishedPlaying={this.handleSongFinishedPlaying}
+          />
+        ): null} 
+
+
       </div>
     );
   }
