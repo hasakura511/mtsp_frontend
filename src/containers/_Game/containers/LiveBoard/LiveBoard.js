@@ -275,6 +275,119 @@ export default class LiveBoard extends Component {
    * @param {any} position position of the bet, that could be a number or a system.
    * @todo find a better way to handle position of the bet.
    */
+
+  moveOnBoard = (chip, position, strat) => {
+    var {
+      topSystems,
+      bottomSystems,
+      leftSystems,
+      rightSystems,
+      inGameChips, 
+      accounts
+    } = this.props;
+
+    var origPosition=chip.position;
+
+    console.log("inGameChips")
+    console.log(inGameChips);
+
+    console.log("topSystems")
+    console.log(topSystems);
+    chip.last_selection=strat;
+              // In case the chip is dropped on a system
+              // we push it in system's heldChips in the inserChip method.
+              if (chip.position) {
+                /**
+                 * When chip is moved from one betting position to other.
+                 */
+                const balanceChips = [...inGameChips.balanceChips];
+                const bettingChips = inGameChips.bettingChips.map(c => {
+                  return c.accountId === chip.accountId
+                    ? {
+                        ...c,
+                        position: position
+                      }
+                    : c;
+                });
+                var rev_accounts = accounts.map(account => {
+                  return account.accountId === chip.accountId
+                    ? {
+                        ...account,
+                        last_selection: strat
+                      }
+                    : account;
+                });
+                accounts=rev_accounts;
+                this.props.updateBet(
+                  insertChip(topSystems, position, {
+                    ...chip,
+                    position
+                  }),
+                  insertChip(bottomSystems, position, {
+                    ...chip,
+                    position
+                  }),
+                  insertChip(leftSystems, position, {
+                    ...chip,
+                    position
+                  }),
+                  insertChip(rightSystems, position, {
+                    ...chip,
+                    position
+                  }),
+                  { balanceChips, bettingChips },
+                  accounts
+                  
+                );
+              } else {
+                /**
+                 * When chip is moved from off location to a betting position.
+                 */
+                const balanceChips = inGameChips.balanceChips.map(c => {
+                  return c.accountId === chip.accountId
+                    ? {
+                        ...c,
+                        count: c.count - 1
+                      }
+                    : c;
+                });
+                
+                var rev_accounts2 = accounts.map(account => {
+                  return account.accountId === chip.accountId
+                    ? {
+                        ...account,
+                        last_selection: strat,
+                      }
+                    : account;
+                });
+                accounts=rev_accounts2;
+                const bettingChips = [
+                  ...inGameChips.bettingChips,
+                  { ...chip, position }
+                ];
+                this.props.updateBet(
+                  insertChip(topSystems, position, {
+                    ...chip,
+                    position
+                  }),
+                  insertChip(bottomSystems, position, {
+                    ...chip,
+                    position
+                  }),
+                  insertChip(leftSystems, position, {
+                    ...chip,
+                    position
+                  }),
+                  insertChip(rightSystems, position, {
+                    ...chip,
+                    position
+                  }),
+                  { balanceChips, bettingChips },
+                  accounts
+                );
+              }
+  }
+
   addBettingChip = (chip, position, isAnti, strat) => {
         var {
           topSystems,
@@ -285,104 +398,13 @@ export default class LiveBoard extends Component {
           accounts
         } = this.props;
 
-        console.log("inGameChips")
-        console.log(inGameChips);
+        var origPosition=chip.position;
+        var origChip=chip;
+        var origStrat=chip.last_selection;
 
-        console.log("topSystems")
-        console.log(topSystems);
-        chip.last_selection=strat;
-        // In case the chip is dropped on a system
-        // we push it in system's heldChips in the inserChip method.
-        if (chip.position) {
-          /**
-           * When chip is moved from one betting position to other.
-           */
-          const balanceChips = [...inGameChips.balanceChips];
-          const bettingChips = inGameChips.bettingChips.map(c => {
-            return c.accountId === chip.accountId
-              ? {
-                  ...c,
-                  position: position
-                }
-              : c;
-          });
-          var rev_accounts = accounts.map(account => {
-            return account.accountId === chip.accountId
-              ? {
-                  ...account,
-                  last_selection: strat
-                }
-              : account;
-          });
-          accounts=rev_accounts;
-          this.props.updateBet(
-            insertChip(topSystems, position, {
-              ...chip,
-              position
-            }),
-            insertChip(bottomSystems, position, {
-              ...chip,
-              position
-            }),
-            insertChip(leftSystems, position, {
-              ...chip,
-              position
-            }),
-            insertChip(rightSystems, position, {
-              ...chip,
-              position
-            }),
-            { balanceChips, bettingChips },
-            accounts
-            
-          );
-        } else {
-          /**
-           * When chip is moved from off location to a betting position.
-           */
-          const balanceChips = inGameChips.balanceChips.map(c => {
-            return c.accountId === chip.accountId
-              ? {
-                  ...c,
-                  count: c.count - 1
-                }
-              : c;
-          });
-          
-          var rev_accounts2 = accounts.map(account => {
-            return account.accountId === chip.accountId
-              ? {
-                  ...account,
-                  last_selection: strat,
-                }
-              : account;
-          });
-          accounts=rev_accounts2;
-          const bettingChips = [
-            ...inGameChips.bettingChips,
-            { ...chip, position }
-          ];
-          this.props.updateBet(
-            insertChip(topSystems, position, {
-              ...chip,
-              position
-            }),
-            insertChip(bottomSystems, position, {
-              ...chip,
-              position
-            }),
-            insertChip(leftSystems, position, {
-              ...chip,
-              position
-            }),
-            insertChip(rightSystems, position, {
-              ...chip,
-              position
-            }),
-            { balanceChips, bettingChips },
-            accounts
-          );
-        }
+        
+        this.moveOnBoard(chip,position,strat);
+
         axios
           .post("/utility/update_bet_live/", {
           // .get("https://api.myjson.com/bins/11pqxf", {
@@ -395,15 +417,16 @@ export default class LiveBoard extends Component {
           .then(({ data }) => {
             this.sendNotice(strat + ' Bet Placed' + JSON.stringify(data));
             if (data.message && data.message.match(/ERROR/)) {
-              chip.position="off";
-              this.moveToBalance(chip);
-
+              chip.position=origPosition;
+              this.moveOnBoard(origChip, origPosition, origStrat);
+  
             }
           })
           .catch(error => {
             this.sendNotice('Error Placing Bet' + JSON.stringify(error));
-            chip.position="off";
-            this.moveToBalance(chip);
+            this.moveOnBoard(origChip, origPosition, origStrat);
+            //chip.position=origPosition;
+            //this.moveToBalance(chip);
             console.log('error initializing')
             console.log(error)
           // eslint-disable-next-line react/no-is-mounted
@@ -595,7 +618,7 @@ export default class LiveBoard extends Component {
             <center>
              <ClockLoader show={loading} />
              <br/><br/>
-             <b>Please wait while we load your board.</b>
+             <b>Please wait while we load your board. This could take a couple of minutes.</b>
             </center>
           </Aux>
 

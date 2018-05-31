@@ -74,8 +74,8 @@ export default class Clock extends PureComponent {
     //liveDate: PropTypes.instanceOf(Date).isRequired,
     dashboard_totals:PropTypes.object.isRequired,
     updateDate:PropTypes.func.isRequired,
-    initializeLive:PropTypes.func.isRequired,
-    sendNotice:PropTypes.func.isRequired,
+    initializeLive:PropTypes.func,
+    sendNotice:PropTypes.func,
     themes:PropTypes.object,
     loading:PropTypes.bool
   };
@@ -190,7 +190,7 @@ export default class Clock extends PureComponent {
         </div>
         <div className={classes.Saperation} />
         <div className={classes.Right}>
-          <span sytle={{"marginLeft":"25px"}}>
+          <span  style={{"marginLeft":"12px", "marginTop":"27px"}}>
             <br/>
             <br/>
             <br/>
@@ -202,7 +202,7 @@ export default class Clock extends PureComponent {
             </h3> EST
             <br/>
           </span>
-          <span>
+          <span  style={{"marginLeft":"28px", "marginTop":"8px"}}>
             <p>
             <LiveClock format={'dddd, DD MMM YYYY'} ticking={true} timezone={'US/Eastern'} /> 
             <Moment format={'YYYY-MM-DD HH:mm:ss'} onChange={(val) => { console.log(val); updateDate(val); }} interval={30000} tz="US/Eastern" style={{"display":"none"}} className="datetime" aria-hidden={true}/>

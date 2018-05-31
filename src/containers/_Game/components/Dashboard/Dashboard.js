@@ -44,13 +44,13 @@ const dashboard = props => {
       <table className={classes.Table}>
         <thead>
           <tr>
-            <th>Starting Values</th>
-            <th>Next Bet</th>
-            <th>Current Bet</th>
-            <th>Current PnL</th>
-            <th>Account Values</th>
+            <th><b>Starting Values</b></th>
+            <th><b>Next Bet</b></th>
+            <th><b>Current Bet</b></th>
+            <th><b>Current PnL</b></th>
+            <th><b>Account Values</b></th>
             <th><span style={{"float": "left", "width": "80%", "textAlign": "left"}}>
-                  Last Update
+                  <b>Last Update</b>
                 </span>
                 <span style={{"float": "left", "width": "20%", "textAlign": "right"}}>
                 </span>
@@ -82,7 +82,7 @@ const dashboard = props => {
                 <td>
                   <div className={classes.Cell + " " + classes.Flex}>
                     <img src={chipIcon} width="25" />
-                    <strong>{display}</strong>
+                    <strong>$ {display}</strong>
                   </div>
                 </td>
                 <td>
@@ -184,7 +184,7 @@ const dashboard = props => {
           <tr className={classes.LastRow}>
             <th>
               <div className={classes.Cell}>
-                Total: ${netStartAmount.toLocaleString("en")}
+                <b>Total: ${netStartAmount.toLocaleString("en")}</b>
               </div>
             </th>
             <td />
@@ -195,25 +195,34 @@ const dashboard = props => {
                 style={{ justifyContent: "center" }}
               >
                 <p style={{ width: "auto" }}>
+                  <b>
                   {netPnl ? (
                     <img src={netPnl > 0 ? gainIcon : lossIcon} />
                   ) : null}
-                  ${Math.abs(Math.round(netPnl)).toLocaleString("en")} (
+                  <b>
+                  ${Math.abs(Math.round(netPnl)).toLocaleString("en")}
+                  </b>
+                   (
                   <span
                     style={{
                       color: netPnl > 0 ? "green" : netPnl < 0 ? "red" : "black"
                     }}
                   >
+                  <b>
                     {netChangePercent.toFixed(2)}%
+                  </b>
                   </span>
                   )
+                  </b>
                 </p>
               </div>
             </td>
             
             <td>
               <div className={classes.Cell}>
+              <b>
                 {`$${netFinalAmount.toLocaleString("en")}`}&nbsp;
+              </b>
                 <span
                   style={{
                     color:
@@ -222,7 +231,9 @@ const dashboard = props => {
                         : netCumChangePercent < 0 ? "red" : "black"
                   }}
                 >
+                <b>
                   ( {netCumChangePercent.toFixed(2)}% )
+                </b>
                 </span>
               </div>
             </td>

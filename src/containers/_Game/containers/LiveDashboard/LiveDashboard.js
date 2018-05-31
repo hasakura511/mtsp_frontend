@@ -236,13 +236,13 @@ export default class LiveDashboard extends Component {
       <table className={classes.Table} style={tableStyle}>
         <thead  style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}>
           <tr style={tableStyle}>
-            <th style={tableStyle}>Accounts</th>
-            <th style={tableStyle}>Next Bet</th>
-            <th style={tableStyle}>Current Bet</th>
-            <th style={tableStyle}>Current PnL</th>
-            <th style={tableStyle} className="isLive">Lockdown</th>
+            <th style={tableStyle}><b>Accounts</b></th>
+            <th style={tableStyle}><b>Next Bet</b></th>
+            <th style={tableStyle}><b>Current Bet</b></th>
+            <th style={tableStyle}><b>Current PnL</b></th>
+            <th style={tableStyle} className="isLive"><b>Lockdown</b></th>
             <th style={tableStyle}><span style={{"float": "left", "width": "80%", "textAlign": "left"}}>
-                  Last Update
+                  <b>Last Update</b>
                 </span>
                 <span style={{"float": "left", "width": "20%", "textAlign": "right"}}>
                   <img src="/images/infotext_button.png" width="22" style={{"marginRight":"5px"}}/>
@@ -278,15 +278,15 @@ export default class LiveDashboard extends Component {
                 <tr key={`dashboard-row-${accountId}`} style={tableStyle}>
                   <td style={tableStyle}>
                     <div className={classes.Cell + " " + classes.Flex}>
-                      $&nbsp;<img src="/images/account_chart_button.png" width="25" />
-                      <strong>{display}</strong>
+                      &nbsp;<img src="/images/account_chart_button.png" width="25" />
+                      <strong>$ {display}</strong>
                       &nbsp;  
                       ( <span
                         style={{
                           color:
                             cummPercentChange > 0
                               ? "green"
-                              : cummPercentChange < 0 ? "red" : "black"
+                              : cummPercentChange < 0 ? "red" : bgText
                         }}
                       >
                         {cummPercentChange.toFixed(2)}% 
@@ -330,7 +330,7 @@ export default class LiveDashboard extends Component {
                               src={
                                 account.current_pct > 0
                                   ? gainIcon
-                                  : account.pnl_pct < 0 ? lossIcon : ""
+                                  : account.current_pct < 0 ? lossIcon : ""
                               }
                             />
                           ) : null}
@@ -343,7 +343,7 @@ export default class LiveDashboard extends Component {
                               color:
                               account.current_pct > 0
                                   ? "green"
-                                  : account.current_pct < 0 ? "red" : "black"
+                                  : account.current_pct < 0 ? "red" : bgText
                             }}
                           >
                             {(
@@ -380,17 +380,19 @@ export default class LiveDashboard extends Component {
           <tr style={tableStyle} className={classes.LastRow}>
             <th style={tableStyle}>
               <div className={classes.Cell}>
-                <b>Total</b>: ${dashboard_totals.accounts_total.toLocaleString("en")}
+                <b>Total: ${dashboard_totals.accounts_total.toLocaleString("en")}</b>
                 &nbsp;
                 ( <span
                   style={{
                     color:
                       dashboard_totals.accounts_pct > 0
                         ? "green"
-                        : dashboard_totals.accounts_pct < 0 ? "red" : "black"
+                        : dashboard_totals.accounts_pct < 0 ? "red" : bgText
                   }}
                 >
+                <b>
                    {dashboard_totals.accounts_pct.toFixed(2)}% 
+                </b>
                 </span> )
               </div>
             </th> 
@@ -405,13 +407,17 @@ export default class LiveDashboard extends Component {
                   {dashboard_totals.currpnl_total ? (
                     <img src={dashboard_totals.currpnl_total > 0 ? gainIcon : lossIcon} />
                   ) : null}
+                  <b>
                   ${Math.abs(Math.round(dashboard_totals.currpnl_total)).toLocaleString("en")} (
+                  </b>
                   <span
                     style={{
-                      color: dashboard_totals.currpnl_total > 0 ? "green" : dashboard_totals.currpnl_total < 0 ? "red" : "black"
+                      color: dashboard_totals.currpnl_total > 0 ? "green" : dashboard_totals.currpnl_total < 0 ? "red" : bgText
                     }}
                   >
+                  <b>
                     {dashboard_totals.currpnl_pct.toFixed(2)}%
+                  </b>
                   </span>
                   )
                 </p>
