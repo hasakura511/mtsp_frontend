@@ -106,8 +106,8 @@ export default class Container extends PureComponent {
       >
           {rank ? (
               <span style={{
-                "marginTop": "-15px",
-                "paddingTop": "5px",
+                "marginTop": "-10px",
+                "paddingTop": "10px",
                 "paddingBottom": "5px",
                 "marginLeft": "-50%",
                 "whiteSpace": "nowrap",
@@ -116,13 +116,16 @@ export default class Container extends PureComponent {
                 opacity: 1,
                 position:"absolute",
                 textAlign: "center",
-                width:"100%"
+                height:"24px",
+                width:"100%",
+                lineHeight:"10px"
             }}>
-            <font color={textColor}>{display}</font>
+            
+            <font style={{opacity: canDrop ? (isOver ? 0.2:1) : 1}} color={textColor}>{display}</font>
             <br/>
-            <span style={{ "fontSize":"0.81em" }}>{rank}</span>
+            <span style={{ "fontSize":"9px" }}>{rank}</span>
             <br/>
-            <span style={{ "fontSize":"0.81em" }}>{score}</span>
+            <span style={{ "fontSize":"9px" }}>{score}</span>
             </span>
             ) : null}
 
@@ -135,7 +138,7 @@ export default class Container extends PureComponent {
                     opacity: 1,
                     position:"absolute",
                     textAlign: "center",
-                    width:"100%"
+                    width:"100%",
                 }}>
                 <br/>
                 <font color={textColor}>{display}</font>

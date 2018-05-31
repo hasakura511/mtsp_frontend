@@ -128,7 +128,7 @@ class Slot extends Component {
               textAlign: "center"
           }}
           >
-              <span style={{ "fontSize":"0.81em" }}>{rank}</span>
+              <span style={{ "fontSize":"9px" }}>{rank}</span>
 
           </span>
           ) : null}
@@ -139,7 +139,7 @@ class Slot extends Component {
             borderLeftColor: leftSystem.color,
             borderRightColor: rightSystem.color,
             backgroundColor: canDrop ? bgColor : "transparent",
-            color: textColor,
+            color:  textColor,
             zIndex: "1",
             opacity: canDrop ? (isOver ? 0.99 : 0.8) : 1,
             width,
@@ -160,8 +160,8 @@ class Slot extends Component {
             "marginTop": "0px",
             minWidth: "60px",
             backgroundColor: canDrop ? bgColor : "transparent",
-            color: textColor,
-            opacity: 1,
+            color: canDrop ? highlightTextColor : textColor,
+            opacity: isOver?0.5:1,
             textAlign: "center"
 
               }}>
@@ -180,7 +180,7 @@ class Slot extends Component {
                           textAlign: "center"
 
             }}>
-            <span style={{ "fontSize":"0.81em" }}>{score}</span>
+            <span style={{ "fontSize":"9px" }}>{score}</span>
 
             </span>
           ) : null}
