@@ -131,6 +131,7 @@ export default class LiveDashboard extends Component {
              onChange={(val) => {  
               var allunlocked=true;
               var now= new moment().tz("US/Eastern");
+              var isRefreshing=false;
              
               accounts.map(function(account) { 
                //console.log(account);
@@ -176,9 +177,11 @@ export default class LiveDashboard extends Component {
                           if (!self.props.loading) {  
                             if (seconds < 10 && !self.state.refreshing) {
                               self.setState({refreshing:true});
-                              self.props.initializeLive();
-                              self.props.sendNotice("Board Refreshed with New Data");
-    
+                              if (!isRefreshing) {
+                                self.props.initializeLive();
+                                self.props.sendNotice("Board Refreshed with New Data");
+                                isRefreshing=true;
+                              }
                               
                             } else if (seconds > 50 && self.state.refreshing) {
                               self.setState({refreshing:false});
@@ -211,27 +214,24 @@ export default class LiveDashboard extends Component {
                 }
               });
 
-              if (now.minute()==0) {
-                if (!self.props.loading) {  
-                  if (now.second() < 10 && !self.state.refreshing) {
-                    self.setState({refreshing:true});
-                    self.props.initializeLive();
-                    self.props.sendNotice("Board Refreshed with New Data");
+              if (!isRefreshing) {
+                if (now.minute()==0) {
+                  if (!self.props.loading) {  
+                    if (now.second() < 10 && !self.state.refreshing) {
+                      self.setState({refreshing:true});
+                      self.props.initializeLive();
+                      self.props.sendNotice("Board Refreshed with New Data");
+                      isRefreshing=true;
+                      
+                    } else if (now.second() > 50 && self.state.refreshing) {
+                      self.setState({refreshing:false});
 
-                    
-                  } else if (now.second() > 50 && self.state.refreshing) {
-                    self.setState({refreshing:false});
-
+                    }
                   }
-                  
-
                 }
               }
-
-            }
-            
-
-          } 
+          }
+        } 
        ></Moment>
       <table className={classes.Table} style={tableStyle}>
         <thead  style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}>

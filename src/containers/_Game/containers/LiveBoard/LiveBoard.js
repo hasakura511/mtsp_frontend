@@ -180,6 +180,7 @@ export default class LiveBoard extends Component {
       boardMode: 'live',
       toggleActive:true,
       initializeData:{},
+      refreshing:false,
     };
     
 
@@ -212,7 +213,10 @@ export default class LiveBoard extends Component {
   }
 
   initializeLive=() => {
-        
+    if (this.state.refreshing)
+      return;
+    else
+      this.setState({refreshing:true})
     //console.log(this.props);
     /*
     this.setState({
@@ -244,6 +248,7 @@ export default class LiveBoard extends Component {
         loading:false,
         rankingLoading: false,
         rankingData: data.rankingData,
+        refreshing:false
       });
      
     })
@@ -255,7 +260,8 @@ export default class LiveBoard extends Component {
       this.setState({
         rankingLoading: false,
         rankingError: error,
-        loading:false
+        loading:false,
+        refreshing:false
       });
     });
 
