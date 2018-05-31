@@ -131,7 +131,9 @@ export default class Clock extends PureComponent {
                         "lineHeight":"1",
                         "fontSize" : "12px" }}>
               <br/>
-            Next Lockdown: &nbsp;<span id={"countdown_time"}></span><br/>
+            
+            <span id={"next_lockdown"}>Next Lockdown: &nbsp;<span id={"countdown_time"}></span><br/></span>
+            <span id={"next_unlock"} style={{"display":"none"}}>Next Unlock: &nbsp;<span id={"countdown_unlock_time"}></span><br/></span>
             <Moment 
              style={{"display":"none"}}
              interval={1000} 
@@ -172,7 +174,11 @@ export default class Clock extends PureComponent {
                                    var diff=hour + ":" + minutes + ":" + seconds
                                    if (dashboard_totals.lockdown_text.next_lockdown_time < new moment().tz("US/Eastern")) {
                                       diff="-" + diff;
-
+                                      $('#next_lockdown').hide();
+                                      $('#next_unlock').show();
+                                   } else {
+                                      $('#next_lockdown').show();
+                                      $('#next_unlock').hide();
                                    }
                                    $('#countdown_time').html(diff);
 
@@ -187,9 +193,9 @@ export default class Clock extends PureComponent {
                                    var diff2=hour2 + ":" + minutes2 + ":" + seconds2
                                    if (dashboard_totals.lockdown_text.next_unlock_time < new moment().tz("US/Eastern")) {
                                       diff2="-" + diff2;
-
-                                   }
-                                   //$('#countdown_unlock_time').html(diff2);
+                                   } else {
+                                      $('#countdown_unlock_time').html(diff2);
+                                    }
 
                                    
                                   }} 
