@@ -163,7 +163,7 @@ export default class LiveDashboard extends Component {
                        diff="-" + diff;
 
                     }
-                    $('#countdown_' + account.chip_id).html(diff);
+                    $('#countdown_' + account.chip_id).html("Unlock in " + diff);
                     $('#countdown_' + account.chip_id).css('color',self.props.themes.live.dashboard.text_loss);
 
                   } else {
@@ -206,7 +206,7 @@ export default class LiveDashboard extends Component {
                        diff="-" + diff;
 
                     }
-                    $('#countdown_' + account.chip_id).html(diff);
+                    $('#countdown_' + account.chip_id).html("Lock in " + diff);
                     $('#countdown_' + account.chip_id).css('color',self.props.themes.live.dashboard.text_gain);
 
                   }
