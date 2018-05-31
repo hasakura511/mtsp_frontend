@@ -139,7 +139,9 @@ export default class Clock extends PureComponent {
                                    var hour=ts.hours;
                                    var minutes=ts.minutes;
                                    var seconds=ts.seconds;
-                                   if (dashboard_totals.lockdown_text.next_lockdown_time < new moment().tz("US/Eastern")) {
+                                   if (dashboard_totals.lockdown_text.next_lockdown_time < new moment().tz("US/Eastern") || 
+                                       dashboard_totals.lockdown_text.next_unlock_time < new moment().tz("US/Eastern") 
+                                       ) {
                                      if (this.props.isLive && !this.props.loading) {  
                                        if (seconds < 10 && !this.state.refreshing) {
                                          this.setState({refreshing:true});

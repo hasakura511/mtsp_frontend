@@ -178,7 +178,7 @@ export default class LiveDashboard extends Component {
                             if (seconds < 10 && !self.state.refreshing) {
                               self.setState({refreshing:true});
                               if (!isRefreshing) {
-                                self.props.initializeLive();
+                                //self.props.initializeLive();
                                 isRefreshing=true;
                               }
                               
@@ -218,7 +218,7 @@ export default class LiveDashboard extends Component {
                   if (!self.props.loading) {  
                     if (now.second() < 10 && !self.state.refreshing) {
                       self.setState({refreshing:true});
-                      self.props.initializeLive();
+                      //self.props.initializeLive();
                       isRefreshing=true;
                       
                     } else if (now.second() > 50 && self.state.refreshing) {

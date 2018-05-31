@@ -392,7 +392,11 @@ const reducer = (state = initialState, action) => {
         var lockdown_time=new moment.tz(dashboard_totals.lockdown_text.next_lockdown,"US/Eastern");
         dashboard_totals.lockdown_text.next_lockdown_time=lockdown_time;
         dashboard_totals.lockdown_text.next_lockdown_text=lockdown_time.format("MM/DD HH:mm:ss A");
-        
+
+        var unlock_time=new moment.tz(dashboard_totals.lockdown_text.next_unlock,"US/Eastern");
+        dashboard_totals.lockdown_text.next_unlock_time=unlock_time;
+        dashboard_totals.lockdown_text.next_unlock_text=unlock_time.format("MM/DD HH:mm:ss A");
+
         const loading=false;
         var hasSystem=false;
         var leftSystems= [],
