@@ -144,7 +144,6 @@ export default class Clock extends PureComponent {
                                        if (seconds < 10 && !this.state.refreshing) {
                                          this.setState({refreshing:true});
                                          this.props.initializeLive();
-                                         this.props.sendNotice("Board Refreshed with New Data");
 
                                          
                                        } else if (seconds > 50 && this.state.refreshing) {

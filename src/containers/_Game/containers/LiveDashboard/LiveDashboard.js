@@ -179,7 +179,6 @@ export default class LiveDashboard extends Component {
                               self.setState({refreshing:true});
                               if (!isRefreshing) {
                                 self.props.initializeLive();
-                                self.props.sendNotice("Board Refreshed with New Data");
                                 isRefreshing=true;
                               }
                               
@@ -220,7 +219,6 @@ export default class LiveDashboard extends Component {
                     if (now.second() < 10 && !self.state.refreshing) {
                       self.setState({refreshing:true});
                       self.props.initializeLive();
-                      self.props.sendNotice("Board Refreshed with New Data");
                       isRefreshing=true;
                       
                     } else if (now.second() > 50 && self.state.refreshing) {

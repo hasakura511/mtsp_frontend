@@ -241,7 +241,9 @@ export default class LiveBoard extends Component {
 
       //this.props.updateDate();
       
-      
+      if (!this.state.loading)
+        self.props.sendNotice("Board Refreshed with New Data");
+
 
       //this.sendNotice('Account Data Received');
       this.setState({
