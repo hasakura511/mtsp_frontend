@@ -37,9 +37,8 @@ const leftSection = props => {
               title={mesg}
             >
               <Container {...props}  slotHeatmap={slotHeatmap} column={column} heldChips={heldChips} 
-                                   bgColor={bgColor}
-                                   textColor={textColor}
-              
+                bgColor={bgColor}
+                textColor={textColor}              
               />
               <font color={textColor}>{display}</font>
             </div>

@@ -620,7 +620,7 @@ export default class LiveBoard extends Component {
 
         <Aux>
 
-          <LiveDashboard 
+          <LiveDashboard sendNotice={this.sendNotice} initializeLive={this.initializeLive}
             />
           <div className={classes.ActionRow} style={{background:actionBg, color:heatmapTxt}}>
               <span style={{color:switchTxt, "float": "left", "width": "30%", "height":"75px", "textAlign": "left", "verticalAlign":"middle"}}>
