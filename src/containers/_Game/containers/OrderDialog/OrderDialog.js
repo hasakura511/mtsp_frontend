@@ -292,6 +292,9 @@ export default class OrderDialog extends Component {
       //console.log(chip);
       //console.log(slot);
 
+      chip.orig_position=chip.position;
+      chip.orig_last_selection=chip.last_selection;
+
       var strat=toSystem(slot.position);
       if (this.state.isAnti) 
         strat=this.toAntiSystem(strat);

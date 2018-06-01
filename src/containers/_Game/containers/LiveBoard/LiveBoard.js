@@ -406,9 +406,9 @@ export default class LiveBoard extends Component {
           accounts
         } = this.props;
 
-        var origPosition=chip.position;
+        var origPosition=chip.orig_position;
         var origChip=chip;
-        var origStrat=chip.last_selection;
+        var origStrat=chip.orig_last_selection;
 
         
         this.moveOnBoard(chip,position,strat);

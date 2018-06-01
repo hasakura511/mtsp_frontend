@@ -41,7 +41,7 @@ const collect = (connect, monitor) => {
   };
 };
 
-@DropTarget("chip", systemTarget, collect)
+@DropTarget("Chip", systemTarget, collect)
 
 
 /**
@@ -111,8 +111,8 @@ export default class Container extends PureComponent {
       >
           {rank ? (
               <span style={{
-                "marginTop": "-10px",
-                "paddingTop": "10px",
+                "marginTop": "0px",
+                "paddingTop": "5px",
                 "paddingBottom": "5px",
                 "marginLeft": "-50%",
                 "whiteSpace": "nowrap",

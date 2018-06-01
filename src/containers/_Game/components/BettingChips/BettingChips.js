@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 import Chip from "../_Chip/_Chip";
 import classes from "./BettingChips.css";
 import Popover from 'react-tiny-popover'
+/*
 import { connect } from "react-redux";
 import * as actions from "../../../../store/actions";
 
-/*
 const stateToProps = state => {
   return {
     //simulatedDate: state.betting.simulatedDate,
@@ -80,7 +80,7 @@ export default class BettingChips extends Component {
         <div className={classes.BettingChips}
             style={{"overflowX": "visible",
                     "opacity": !visible ? 0.3 : 1}}>
-          <Chip  key={"chip-" + chips[0].chip_id } chip={chips[0]} canDrag={true} />
+          <Chip  key={"singlechip-" + chips[0].chip_id } chip={chips[0]} canDrag={true} />
         </div>
       );
 
@@ -115,7 +115,7 @@ export default class BettingChips extends Component {
                   style={{ "position":"absolute",
                           
                           "marginLeft": margin + "px" 
-                          }}><Chip chip={row} key={"chip-" + row.chip_id } canDrag={true} /></span>
+                          }}><Chip chip={row} key={"multichip-" + row.chip_id } canDrag={true} /></span>
           );
           margin += 48;
         }
@@ -139,7 +139,8 @@ export default class BettingChips extends Component {
                     "overflow":"visible",
                     "opacity": visible,
 
-                   }}>
+                   }}
+                   >
              
              
         <Popover
@@ -148,9 +149,10 @@ export default class BettingChips extends Component {
           content={
             (          
               <div className={classes.MSquare}
-                    onMouseOver={self.handleEnter.bind(this)}
-                    //onMouseLeave={self.handleClick.bind(this)}
-                    onMouseOut={self.handleClick.bind(this)}
+                    //onMouseOver={self.handleEnter.bind(this)}
+                    onMouseLeave={self.handleClose.bind(this)}
+
+                    //onMouseOut={self.handleClick.bind(this)}
                     style={{
                       "width":margin + "px",
                       "height": "60px",
@@ -160,7 +162,7 @@ export default class BettingChips extends Component {
                      "transform": "translate(-50%, 0%)",
                       */   
 
-                     "zIndex":10000000,          
+                     "zIndex":100000,          
                      background: bgColor,
                       color:textColor,
                   }}
@@ -176,15 +178,15 @@ export default class BettingChips extends Component {
           className={classes.MSquare}
           //ref={this.myRef.target}
           style={{
-            "zIndex":500,                   
+            "zIndex":1000,                   
             background: bgColor,
             color:textColor,
           }}
-          href={"#"}
-          onMouseEnter={this.handleClick.bind(this)}
-          
-          
-          onClick={this.handleClick.bind(this)}>
+                href={"#"}
+                onMouseEnter={this.handleClick.bind(this)}
+
+                //onClick={this.handleClick.bind(this)}
+                >
               <span style={{"position":"absolute","marginTop":"-15px", "marginLeft":"-15px", 
                 "background":"transparent",
                 "fontSize":"12px",

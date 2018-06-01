@@ -439,6 +439,7 @@ export default class Panel extends Component {
       heatmap,
       showHeatmap
     } = this.props;
+    console.log("heatmap selection" + heatmap_selection);
     let slot = null;
 
     var panelBgColor="#86dde0";
@@ -562,11 +563,7 @@ export default class Panel extends Component {
           />
           </div>
         ) : null}
-            <Sound
-            url="/sounds/chipLay1.wav"
-            playStatus={this.props.heatmap_selection ? Sound.status.PLAYING : Sound.status.STOPPED}
-            playFromPosition={0 /* in milliseconds */}
-          />
+          
 
 
       </div>

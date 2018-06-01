@@ -6,10 +6,11 @@ import { DropTarget } from "react-dnd";
 import BettingChips from "../../components/BettingChips/BettingChips";
 import { LongShortMap } from "../../Config";
 
+/*
+
 import { connect } from "react-redux";
 import * as actions from "../../../../store/actions";
 
-/*
 const stateToProps = state => {
   return {
     //simulatedDate: state.betting.simulatedDate,
@@ -44,7 +45,16 @@ const slotTarget = {
     props.moveChipToSlot(monitor.getItem(), props.position);
   },
   canDrop(props, monitor) {
-    return true;
+    /*
+    const MIN_MOVEMENT = 12;
+    const vectorMagnitude = (x, y) => Math.sqrt(x ** 2 + y ** 2);
+    const isMinimallyMoved = ({ x, y }) => vectorMagnitude(x, y) > MIN_MOVEMENT;
+
+    // A workaround to avoid react dnd glitch preventing drag.
+    let minimallyMoved = isMinimallyMoved((monitor.getDifferenceFromInitialOffset()));
+    return minimallyMoved && true;
+    */
+   return true;
     /*
     return !props.heldChips.find(
       chip => chip.accountId === monitor.getItem().accountId
@@ -58,7 +68,6 @@ const collect = (connect, monitor) => {
   return {
     dropTarget: connect.dropTarget(),
     isOver: monitor.isOver(),
-    isOverCurrent: monitor.isOver({ shallow: true }),
     canDrop: monitor.canDrop()
   };
 };
@@ -77,7 +86,33 @@ const collect = (connect, monitor) => {
 
 //@connect(stateToProps, dispatchToProps)
 
-class Slot extends Component {
+
+
+@DropTarget("Chip", slotTarget, collect)
+
+export default class Slot extends Component {
+  static propTypes = {
+    topSystem: PropTypes.any,
+    bottomSystem: PropTypes.any,
+    leftSystem: PropTypes.any,
+    rightSystem: PropTypes.any,
+    heldChips: PropTypes.array,
+    position: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+    dictionary_strategy:PropTypes.object,
+    dropTarget: PropTypes.func,
+    isOver: PropTypes.bool,
+    canDrop: PropTypes.bool,
+    children: PropTypes.any,
+    moveChipToSlot: PropTypes.func,
+    width: PropTypes.string,
+    fontSize: PropTypes.string,
+    slotHeatmap:PropTypes.object,
+    bgColor:PropTypes.string,
+    textColor:PropTypes.string,
+    heatmap_selection:PropTypes.string,
+    isLive:PropTypes.bool,
+    showOrderDialog:PropTypes.bool
+  }
   constructor(props) {
     super(props);
 
@@ -89,7 +124,6 @@ class Slot extends Component {
     var {
       dropTarget,
       isOver,
-      isOverCurrent,
       canDrop,
       leftSystem,
       rightSystem,
@@ -156,7 +190,7 @@ class Slot extends Component {
     }
     
     return dropTarget(
-      <div className={classes.Slot}>
+      <div className={classes.Slot} style={{zIndex: "0"}}>
           {rank ? (
             <span style={{
               width: "60px",
@@ -192,7 +226,8 @@ class Slot extends Component {
            chips={heldChips} 
            showOrderDialog={this.props.showOrderDialog}
            heatmap_selection={this.props.heatmap_selection}
- 
+           style={{zIndex: "3",
+          }}
            /> 
            
                             
@@ -201,7 +236,9 @@ class Slot extends Component {
             minWidth: "60px",
             backgroundColor: canDrop ? bgColor : "transparent",
             color: canDrop ? highlightTextColor : textColor,
-            opacity: isOver?0.5:1,
+            opacity: isOver?0.7:1,
+            zIndex: "-1",
+            
             textAlign: "center"
 
               }}>
@@ -216,6 +253,8 @@ class Slot extends Component {
                           backgroundColor: canDrop ? bgColor : "transparent",
                           color: highlightTextColor,
                           opacity: 1,
+                          zIndex: "2",
+            
                           "whiteSpace": "nowrap",
                           textAlign: "center"
 
@@ -228,29 +267,3 @@ class Slot extends Component {
     );
   }
 }
-
-Slot.propTypes = {
-  topSystem: PropTypes.any,
-  bottomSystem: PropTypes.any,
-  leftSystem: PropTypes.any,
-  rightSystem: PropTypes.any,
-  heldChips: PropTypes.array,
-  position: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
-  dictionary_strategy:PropTypes.object,
-  dropTarget: PropTypes.func,
-  isOver: PropTypes.bool,
-  isOverCurrent: PropTypes.bool,
-  canDrop: PropTypes.bool,
-  children: PropTypes.any,
-  moveChipToSlot: PropTypes.func,
-  width: PropTypes.string,
-  fontSize: PropTypes.string,
-  slotHeatmap:PropTypes.object,
-  bgColor:PropTypes.string,
-  textColor:PropTypes.string,
-  heatmap_selection:PropTypes.string,
-  isLive:PropTypes.bool,
-  showOrderDialog:PropTypes.bool
-};
-
-export default DropTarget("chip", slotTarget, collect)(Slot);

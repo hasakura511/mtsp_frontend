@@ -283,8 +283,8 @@ export default class LiveDashboard extends Component {
                         style={{
                           color:
                             cummPercentChange > 0
-                              ? "green"
-                              : cummPercentChange < 0 ? "red" : bgText
+                              ? self.props.themes.live.dashboard.text_gain
+                              : cummPercentChange < 0 ? self.props.themes.live.dashboard.text_loss : bgText
                         }}
                       >
                         {cummPercentChange.toFixed(2)}% 
@@ -340,8 +340,8 @@ export default class LiveDashboard extends Component {
                             style={{
                               color:
                               account.current_pct > 0
-                                  ? "green"
-                                  : account.current_pct < 0 ? "red" : bgText
+                                  ? self.props.themes.live.dashboard.text_gain
+                                  : account.current_pct < 0 ? self.props.themes.live.dashboard.text_loss : bgText
                             }}
                           >
                             {(
@@ -384,8 +384,8 @@ export default class LiveDashboard extends Component {
                   style={{
                     color:
                       dashboard_totals.accounts_pct > 0
-                        ? "green"
-                        : dashboard_totals.accounts_pct < 0 ? "red" : bgText
+                        ? self.props.themes.live.dashboard.text_gain
+                        : dashboard_totals.accounts_pct < 0 ? self.props.themes.live.dashboard.text_loss : bgText
                   }}
                 >
                 <b>
@@ -410,7 +410,7 @@ export default class LiveDashboard extends Component {
                   </b>
                   <span
                     style={{
-                      color: dashboard_totals.currpnl_total > 0 ? "green" : dashboard_totals.currpnl_total < 0 ? "red" : bgText
+                      color: dashboard_totals.currpnl_total > 0 ? self.props.themes.live.dashboard.text_gain : dashboard_totals.currpnl_total < 0 ? self.props.themes.live.dashboard.text_loss : bgText
                     }}
                   >
                   <b>

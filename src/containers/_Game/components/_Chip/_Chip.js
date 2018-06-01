@@ -18,7 +18,7 @@ const stateToProps = state => {
     //simulatedDate: state.betting.simulatedDate,
     //dashboard_totals:state.betting.dashboard_totals,
     isLive:state.betting.isLive,
-    heatmap_selection:state.betting.heatmap_selection,
+    //heatmap_selection:state.betting.heatmap_selection,
     //liveDate:state.betting.liveDate,
   };
 };
@@ -42,20 +42,26 @@ const chipSource = {
    */
   beginDrag(props, monitor, component) {
     //console.log(props);
-    props.showHeatmap(props.chip.chip_id);
+    console.log("begin drag",props.chip.chip_id)
+    props.showHeatmap(props.chip.chip_id+"");
     props.chip.isPlaying=true;
     props.chip.isDonePlaying=true;
+    console.log("beginning")
     return props.chip;
   },
   canDrag(props) {
+    return true;
+    /*
     const { chip } = props;
-    if (chip.status != undefined && chip.status == 'locked')
+    if (chip.status == undefined || chip.status == 'locked')
       return false;
     
-    return props.canDrag;
+    return true;
+    */
   },
   endDrag(props,monitor, component) {
     const { chip  } = props;
+    console.log("end drag",props.chip.chip_id)
     props.showHeatmap("");
     props.chip.isPlaying=false;
     props.chip.isDonePlaying=true;
@@ -83,7 +89,7 @@ const collect = (connect, monitor) => {
 
 
 @connect(stateToProps, dispatchToProps)
-@DragSource("chip", chipSource,  collect)
+@DragSource("Chip", chipSource,  collect)
 
 export default class Chip extends PureComponent {
   static propTypes = {
@@ -94,7 +100,7 @@ export default class Chip extends PureComponent {
     dragPreview: PropTypes.any,
     isLive:PropTypes.bool.isRequired,
     showHeatmap:PropTypes.func.isRequired,
-    heatmap_selection:PropTypes.string
+    //heatmap_selection:PropTypes.string
   };
 
   constructor(props) {
@@ -166,17 +172,10 @@ export default class Chip extends PureComponent {
       ,
       "backgroundSize": "48px 48px",
       "backgroundPosition": "-3px -3px",
+      zIndex: "100",
+            
       };
-      
-      chipStyle2=chipStyle;
-      if (this.props.heatmap_selection) {
-        if (this.props.heatmap_selection != chip.chip_id) {
-          chipStyle['opacity']=0.1;
-
-        }
-        
-      }
-    
+          
     /*
     if (chip.status != undefined) {
       if (chip.status == 'locked') {
@@ -188,16 +187,14 @@ export default class Chip extends PureComponent {
     }
     */
     dragPreview(
-      <div className={classes.Chip} style={chipStyle2} title={title}>
+      <div className={classes.Chip} style={chipStyle} title={title}>
         <p>{chip.display}</p>
       </div>
     );
+
     return dragSource(
       <div className={classes.Chip} style={chipStyle} title={title}>
         <p>{chip.display}</p>
-       
-
-
       </div>
     );
   }
