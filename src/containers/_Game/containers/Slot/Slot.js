@@ -199,7 +199,8 @@ export default class Slot extends Component {
               color: highlightTextColor,
               "whiteSpace": "nowrap",
               opacity: 1,
-              textAlign: "center"
+              zIndex: "-1",
+              textAlign: "center",
           }}
           >
               <span style={{ "fontSize":"9px" }}>{rank}</span>
@@ -214,7 +215,7 @@ export default class Slot extends Component {
             borderRightColor: rightSystem.color,
             backgroundColor: canDrop ? bgColor : "transparent",
             color:  textColor,
-            zIndex: "1",
+            zIndex: "0",
             opacity: canDrop ? (isOver ? 0.99 : 0.8) : 1,
             width,
             fontSize
@@ -253,7 +254,7 @@ export default class Slot extends Component {
                           backgroundColor: canDrop ? bgColor : "transparent",
                           color: highlightTextColor,
                           opacity: 1,
-                          zIndex: "2",
+                          zIndex: "-1",
             
                           "whiteSpace": "nowrap",
                           textAlign: "center"

@@ -294,7 +294,7 @@ export default class LiveBoard extends Component {
       accounts
     } = this.props;
 
-    var origPosition=chip.position;
+    var origPosition=position;
 
     console.log("inGameChips")
     console.log(inGameChips);
@@ -302,6 +302,11 @@ export default class LiveBoard extends Component {
     console.log("topSystems")
     console.log(topSystems);
     chip.last_selection=strat;
+    chip.position=position;
+    console.log("moving with params");  
+    console.log(strat);
+    console.log(chip);
+
               // In case the chip is dropped on a system
               // we push it in system's heldChips in the inserChip method.
               if (chip.position) {
@@ -313,7 +318,8 @@ export default class LiveBoard extends Component {
                   return c.accountId === chip.accountId
                     ? {
                         ...c,
-                        position: position
+                        position: position,
+                        last_selection: strat
                       }
                     : c;
                 });
@@ -425,13 +431,20 @@ export default class LiveBoard extends Component {
           .then(({ data }) => {
             this.sendNotice(strat + ' Bet Placed' + JSON.stringify(data));
             if (data.message && data.message.match(/ERROR/)) {
-              chip.position=origPosition;
+              origChip.position=origPosition;
+              origChip.last_selection=origStrat;
+              console.log("error");
+              console.log(origPosition);
+              console.log(origStrat);
+
               this.moveOnBoard(origChip, origPosition, origStrat);
   
             }
           })
           .catch(error => {
             this.sendNotice('Error Placing Bet' + JSON.stringify(error));
+            origChip.position=origPosition;
+            origChip.last_selection=origStrat;
             this.moveOnBoard(origChip, origPosition, origStrat);
             //chip.position=origPosition;
             //this.moveToBalance(chip);
@@ -466,6 +479,14 @@ export default class LiveBoard extends Component {
         /**
          * When chip is moved to off location from some betting position.
          */
+
+         
+        var origPosition=chip.orig_position;
+        var origChip=chip;
+        var origStrat=chip.orig_last_selection;
+
+        
+
         const balanceChips = inGameChips.balanceChips.map(c => {
           return c.accountId === chip.accountId
             ? { ...c, count: c.count + 1 }
@@ -497,6 +518,7 @@ export default class LiveBoard extends Component {
 
         if (strat == 'off') 
           strat="Off";
+
         axios
           .post("/utility/update_bet_live/", {
           // .get("https://api.myjson.com/bins/11pqxf", {
@@ -509,12 +531,24 @@ export default class LiveBoard extends Component {
           .then(({ data }) => {
             this.sendNotice(strat + ' Bet Placed' + JSON.stringify(data));
 
+            if (data.message && data.message.match(/ERROR/)) {
+              origChip.position=origPosition;
+              origChip.last_selection=origStrat;
+              this.moveOnBoard(origChip, origPosition, origStrat);
+  
+            }
+
           })
           .catch(error => {
             this.sendNotice('Error Placing Bet' + JSON.stringify(error));
             console.log('error initializing')
             console.log(error)
-          // eslint-disable-next-line react/no-is-mounted
+            // eslint-disable-next-line react/no-is-mounted
+            origChip.position=origPosition;
+            origChip.last_selection=origStrat;
+
+            this.moveOnBoard(origChip, origPosition, origStrat);
+
             this.setState({
               rankingLoading: false,
               rankingError: error

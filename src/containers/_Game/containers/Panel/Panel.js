@@ -292,6 +292,11 @@ export default class Panel extends Component {
       addTimedToaster
     } = this.props;
 
+    chip.orig_position=chip.position;
+    chip.orig_last_selection=chip.last_selection;
+
+
+
     const system = [
       ...topSystems,
       ...bottomSystems,
