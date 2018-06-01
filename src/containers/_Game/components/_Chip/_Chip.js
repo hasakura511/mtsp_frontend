@@ -18,6 +18,7 @@ const stateToProps = state => {
     //simulatedDate: state.betting.simulatedDate,
     //dashboard_totals:state.betting.dashboard_totals,
     isLive:state.betting.isLive,
+    heatmap_selection:state.betting.heatmap_selection,
     //liveDate:state.betting.liveDate,
   };
 };
@@ -92,7 +93,8 @@ export default class Chip extends PureComponent {
     canDrag: PropTypes.bool,
     dragPreview: PropTypes.any,
     isLive:PropTypes.bool.isRequired,
-    showHeatmap:PropTypes.func.isRequired
+    showHeatmap:PropTypes.func.isRequired,
+    heatmap_selection:PropTypes.string
   };
 
   constructor(props) {
@@ -158,12 +160,23 @@ export default class Chip extends PureComponent {
         chipImg="/images/mixed_chip.png";
     }
     var chipStyle={ "backgroundImage": "linear-gradient(to top, #00468c 0%, #2a92fa 100%)" };
+    var chipStyle2=chipStyle;
     if (chipImg)
       chipStyle={  "backgroundImage": "url(" + chipImg + ")" 
       ,
       "backgroundSize": "48px 48px",
-      "backgroundPosition": "-3px -3px"
+      "backgroundPosition": "-3px -3px",
       };
+      
+      chipStyle2=chipStyle;
+      if (this.props.heatmap_selection) {
+        if (this.props.heatmap_selection != chip.chip_id) {
+          chipStyle['opacity']=0.1;
+
+        }
+        
+      }
+    
     /*
     if (chip.status != undefined) {
       if (chip.status == 'locked') {
@@ -175,33 +188,14 @@ export default class Chip extends PureComponent {
     }
     */
     dragPreview(
-      <div className={classes.Chip} style={chipStyle} title={title}>
+      <div className={classes.Chip} style={chipStyle2} title={title}>
         <p>{chip.display}</p>
       </div>
     );
     return dragSource(
       <div className={classes.Chip} style={chipStyle} title={title}>
         <p>{chip.display}</p>
-        {isDragging || chip.isPlaying ? (
-            <Sound
-            url="/sounds/chipLay1.wav"
-            playStatus={Sound.status.PLAYING}
-            playFromPosition={0 /* in milliseconds */}
-            //onLoading={this.handleSongLoading}
-            //onPlaying={this.handleSongPlaying}
-            //onFinishedPlaying={this.handleSongFinishedPlaying}
-          />
-        ):null}
-        {chip.isDonePlaying ? (
-            <Sound
-            url="/sounds/chipLay2.wav"
-            playStatus={Sound.status.PLAYING}
-            playFromPosition={0 /* in milliseconds */}
-            //onLoading={this.handleSongLoading}
-            //onPlaying={this.handleSongPlaying}
-            //onFinishedPlaying={this.handleSongFinishedPlaying}
-          />
-        ): null} 
+       
 
 
       </div>

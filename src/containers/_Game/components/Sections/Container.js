@@ -25,9 +25,11 @@ const systemTarget = {
    * @param {any} monitor
    */
   canDrop(props, monitor) {
-    return !props.heldChips.find(
+    return true; 
+    /*!props.heldChips.find(
       chip => chip.accountId === monitor.getItem().accountId
     );
+    */
   }
 };
 
@@ -147,15 +149,12 @@ export default class Container extends PureComponent {
                 ) : null
               }
 
-          {canDrop ?
-            null :
-            (
-
-          
-            <BettingChips parent={this.myRef} ref={this.myRef.sq} chips={heldChips} />
-            
-            )
-          }
+          <BettingChips   
+           parent={this.myRef} 
+           chips={heldChips} 
+           style={{opacity: canDrop ? 0.01 : 1 }}
+           /> 
+           
 
       </div>
     );

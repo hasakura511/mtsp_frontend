@@ -6,7 +6,7 @@ import classes from "./Order.css";
 // import Switch from "../../../../components/UI/Switch/Switch";
 import OrderCharts from "../../containers/OrderCharts/OrderCharts";
 import { toSystem  } from "../../Config";
-
+import Sound from 'react-sound';
 const getSystems = slot => {
   return Object.keys(slot)
     .filter(key => key.indexOf("System") !== -1)
@@ -108,6 +108,14 @@ const order = props => {
           <p style={{ color: "#63a57c" }}>Anti-System</p>
         </div> */}
       </div>
+      <Sound
+            url="/sounds/chipLay2.wav"
+            playStatus={Sound.status.PLAYING}
+            playFromPosition={0 /* in milliseconds */}
+            //onLoading={this.handleSongLoading}
+            //onPlaying={this.handleSongPlaying}
+            //onFinishedPlaying={this.handleSongFinishedPlaying}
+          />
       {isLive ? (
 
         <div className={classes.Content}>

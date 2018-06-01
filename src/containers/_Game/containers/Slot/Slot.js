@@ -6,6 +6,28 @@ import { DropTarget } from "react-dnd";
 import BettingChips from "../../components/BettingChips/BettingChips";
 import { LongShortMap } from "../../Config";
 
+import { connect } from "react-redux";
+import * as actions from "../../../../store/actions";
+
+const stateToProps = state => {
+  return {
+    //simulatedDate: state.betting.simulatedDate,
+    //dashboard_totals:state.betting.dashboard_totals,
+    isLive:state.betting.isLive,
+    heatmap_selection:state.betting.heatmap_selection,
+    //liveDate:state.betting.liveDate,
+  };
+};
+
+const dispatchToProps = dispatch => {
+  return {
+    showHeatmap(id) {
+      dispatch(actions.showHeatmap(id));
+    },
+  };
+};
+
+
 /**
  * Droptarget Spec
  */
@@ -22,16 +44,21 @@ const slotTarget = {
     props.moveChipToSlot(monitor.getItem(), props.position);
   },
   canDrop(props, monitor) {
+    return true;
+    /*
     return !props.heldChips.find(
       chip => chip.accountId === monitor.getItem().accountId
     );
-  }
+    */
+  },
+
 };
 
 const collect = (connect, monitor) => {
   return {
     dropTarget: connect.dropTarget(),
     isOver: monitor.isOver(),
+    isOverCurrent: monitor.isOver({ shallow: true }),
     canDrop: monitor.canDrop()
   };
 };
@@ -48,6 +75,8 @@ const collect = (connect, monitor) => {
 //   return colors;
 // };
 
+@connect(stateToProps, dispatchToProps)
+
 class Slot extends Component {
   constructor(props) {
     super(props);
@@ -60,6 +89,7 @@ class Slot extends Component {
     var {
       dropTarget,
       isOver,
+      isOverCurrent,
       canDrop,
       leftSystem,
       rightSystem,
@@ -73,7 +103,9 @@ class Slot extends Component {
       dictionary_strategy,
       slotHeatmap,
       bgColor,
-      textColor
+      textColor,
+      isLive,
+      heatmap_selection
     } = this.props;
     const titleArray = [
       bottomSystem.display,
@@ -115,6 +147,14 @@ class Slot extends Component {
     if (slotHeatmap != undefined && slotHeatmap.score != undefined) {
       score="Score: " + slotHeatmap.score.toString();
     }
+
+    var visible=1;
+    var popoverVisible=this.state.isPopoverOpen;
+    if (this.props.heatmap_selection) {
+      popoverVisible=false;
+      visible=0;
+    }
+    
     return dropTarget(
       <div className={classes.Slot}>
           {rank ? (
@@ -147,14 +187,11 @@ class Slot extends Component {
           }}
           title={name}
         >
-        {canDrop ?
-          null :
-          (
-            <BettingChips   
-                            parent={this.myRef} 
-                            chips={heldChips} />
-          )
-        }
+           <BettingChips   
+           parent={this.myRef} 
+           chips={heldChips} 
+           /> 
+           
                             
           <span style={{
             "marginTop": "0px",
@@ -199,6 +236,7 @@ Slot.propTypes = {
   dictionary_strategy:PropTypes.object,
   dropTarget: PropTypes.func,
   isOver: PropTypes.bool,
+  isOverCurrent: PropTypes.bool,
   canDrop: PropTypes.bool,
   children: PropTypes.any,
   moveChipToSlot: PropTypes.func,
@@ -206,7 +244,9 @@ Slot.propTypes = {
   fontSize: PropTypes.string,
   slotHeatmap:PropTypes.object,
   bgColor:PropTypes.string,
-  textColor:PropTypes.string
+  textColor:PropTypes.string,
+  heatmap_selection:PropTypes.string,
+  isLive:PropTypes.bool
 };
 
 export default DropTarget("chip", slotTarget, collect)(Slot);

@@ -15,6 +15,8 @@ import { connect } from "react-redux";
 import * as actions from "../../../../store/actions";
 import { toSlashDate,  getDateNowStr  } from "../../../../util";
 import Title from "../OrderDialog/OffOrderDialogTitle";
+import Sound from 'react-sound';
+
 /**
  * returns state to `Props` mapping object with keys that would later become props.
  * @function stateToProps
@@ -549,6 +551,16 @@ export default class Panel extends Component {
           />
           </div>
         ) : null}
+            <Sound
+            url="/sounds/chipLay1.wav"
+            playStatus={this.props.heatmap_selection ? Sound.status.PLAYING : Sound.status.PAUSED}
+            playFromPosition={0 /* in milliseconds */}
+            //onLoading={this.handleSongLoading}
+            //onPlaying={this.handleSongPlaying}
+            //onFinishedPlaying={this.handleSongFinishedPlaying}
+          />
+
+
       </div>
     );
 

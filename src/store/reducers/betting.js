@@ -91,6 +91,7 @@ const initialState = {
   },
   heatmap:{},
   loading: true,
+  dragChip:"",
   isLive:false,
   initializeData: {},
   simulatedDate: getOffsetDate(1),
@@ -293,6 +294,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SHOW_HEATMAP:
     {
       const heatmap_selection=action.id;
+      
       return {
         ...state,
         heatmap_selection
@@ -396,6 +398,10 @@ const reducer = (state = initialState, action) => {
         var unlock_time=new moment.tz(dashboard_totals.lockdown_text.next_unlock,"US/Eastern");
         dashboard_totals.lockdown_text.next_unlock_time=unlock_time;
         dashboard_totals.lockdown_text.next_unlock_text=unlock_time.format("MM/DD HH:mm:ss A");
+
+        var refresh_time=new moment.tz(dashboard_totals.lockdown_text.next_refresh,"US/Eastern");
+        dashboard_totals.lockdown_text.next_refresh_time=refresh_time;
+        dashboard_totals.lockdown_text.next_refresh_text=refresh_time.format("MM/DD HH:mm:ss A");
 
         const loading=false;
         var hasSystem=false;

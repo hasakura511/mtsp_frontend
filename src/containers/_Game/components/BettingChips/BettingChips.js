@@ -3,12 +3,35 @@ import PropTypes from "prop-types";
 import Chip from "../_Chip/_Chip";
 import classes from "./BettingChips.css";
 import Popover from 'react-tiny-popover'
+import { connect } from "react-redux";
+import * as actions from "../../../../store/actions";
 
+const stateToProps = state => {
+  return {
+    //simulatedDate: state.betting.simulatedDate,
+    //dashboard_totals:state.betting.dashboard_totals,
+    isLive:state.betting.isLive,
+    heatmap_selection:state.betting.heatmap_selection,
+    //liveDate:state.betting.liveDate,
+  };
+};
+
+const dispatchToProps = dispatch => {
+  return {
+    showHeatmap(id) {
+      dispatch(actions.showHeatmap(id));
+    },
+  };
+};
+
+@connect(stateToProps, dispatchToProps)
 
 export default class BettingChips extends Component {
   static propTypes = {
     chips: PropTypes.array.isRequired,
-    parent:PropTypes.any
+    parent:PropTypes.any,
+    heatmap_selection: PropTypes.string,
+    isLive:PropTypes.bool
   };
 
   constructor(props) {
@@ -20,9 +43,14 @@ export default class BettingChips extends Component {
     this.myRef = React.createRef();
 
   }
-  
+
+  handleEnter(e) {
+    this.setState({ isPopoverOpen: true });
+    
+  }
+
   handleClick(e) {
-    this.setState({ isPopoverOpen: !this.state.isPopoverOpen })
+    this.setState({ isPopoverOpen: this.props.heatmap_selection ? false : !this.state.isPopoverOpen })
 
   }
  
@@ -35,7 +63,7 @@ export default class BettingChips extends Component {
     var bgColor="#FFF2CC";
     var textColor="#000000";
     var totalBoxColor="#FFFFFF";
-
+    var self=this;
     if (chips.length == 0) { 
       return null;
     } else if (chips.length == 1) {
@@ -94,21 +122,32 @@ export default class BettingChips extends Component {
         chipImg="/images/mixed_multi.png";
     
   
+      var visible=1;
+      var popoverVisible=this.state.isPopoverOpen;
+      if (this.props.heatmap_selection) {
+        popoverVisible=false;
+        visible=0;
+      }
 
       return (
         <div className={classes.BettingChips}
             style={{"overflowX": "visible",
                     "overflowY": "visible",
                     "overflow":"visible",
+                    "opacity": visible,
 
                    }}>
              
              
         <Popover
           position='right'
+
           content={
             (          
               <div className={classes.MSquare}
+                    onMouseOver={self.handleEnter.bind(this)}
+                    onMouseLeave={self.handleClick.bind(this)}
+                    //onMouseOut={self.handleClick.bind(this)}
                     style={{
                       "width":margin + "px",
                       "height": "60px",
@@ -117,6 +156,7 @@ export default class BettingChips extends Component {
                      "marginLeft": "-50%",
                      "transform": "translate(-50%, 0%)",
                       */   
+
                      "zIndex":10000000,          
                      background: bgColor,
                       color:textColor,
@@ -125,16 +165,8 @@ export default class BettingChips extends Component {
                     >  { chipHtml  } </div>
               )
           }
-          /*container={this}
-          target={this.myRef.target}
-          onHide={this.handleClose.bind(this)} 
-          style={{
-            "position":"absolute",
-            "transform": "translate(-25%, 0%)",
-            "height":'60px',
-            "width":margin+"px"}}
-          */
-          isOpen={this.state.isPopoverOpen}
+          
+          isOpen={popoverVisible}
           onClickOutside={this.handleClose.bind(this)} 
           >
           <a
@@ -147,6 +179,7 @@ export default class BettingChips extends Component {
           }}
           href={"#"}
           onMouseEnter={this.handleClick.bind(this)}
+          onMouseLeave={this.handleClick.bind(this)}
           
           onClick={this.handleClick.bind(this)}>
               <span style={{"position":"absolute","marginTop":"-15px", "marginLeft":"-15px", 
