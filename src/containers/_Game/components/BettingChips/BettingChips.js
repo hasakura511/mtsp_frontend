@@ -6,6 +6,7 @@ import Popover from 'react-tiny-popover'
 import { connect } from "react-redux";
 import * as actions from "../../../../store/actions";
 
+/*
 const stateToProps = state => {
   return {
     //simulatedDate: state.betting.simulatedDate,
@@ -25,13 +26,14 @@ const dispatchToProps = dispatch => {
 };
 
 @connect(stateToProps, dispatchToProps)
-
+*/
 export default class BettingChips extends Component {
   static propTypes = {
     chips: PropTypes.array.isRequired,
     parent:PropTypes.any,
     heatmap_selection: PropTypes.string,
-    isLive:PropTypes.bool
+    isLive:PropTypes.bool,
+    showOrderDialog:PropTypes.bool
   };
 
   constructor(props) {
@@ -64,12 +66,20 @@ export default class BettingChips extends Component {
     var textColor="#000000";
     var totalBoxColor="#FFFFFF";
     var self=this;
+    
+    var visible=1;
+    var popoverVisible=this.state.isPopoverOpen;
+    if (this.props.heatmap_selection || this.props.showOrderDialog) {
+      popoverVisible=false;
+      visible=0;
+    }
     if (chips.length == 0) { 
       return null;
     } else if (chips.length == 1) {
       return (
         <div className={classes.BettingChips}
-            style={{"overflowX": "visible"}}>
+            style={{"overflowX": "visible",
+                    "opacity": !visible ? 0.3 : 1}}>
           <Chip  key={"chip-" + chips[0].chip_id } chip={chips[0]} canDrag={true} />
         </div>
       );
@@ -122,13 +132,6 @@ export default class BettingChips extends Component {
         chipImg="/images/mixed_multi.png";
     
   
-      var visible=1;
-      var popoverVisible=this.state.isPopoverOpen;
-      if (this.props.heatmap_selection) {
-        popoverVisible=false;
-        visible=0;
-      }
-
       return (
         <div className={classes.BettingChips}
             style={{"overflowX": "visible",
@@ -146,8 +149,8 @@ export default class BettingChips extends Component {
             (          
               <div className={classes.MSquare}
                     onMouseOver={self.handleEnter.bind(this)}
-                    onMouseLeave={self.handleClick.bind(this)}
-                    //onMouseOut={self.handleClick.bind(this)}
+                    //onMouseLeave={self.handleClick.bind(this)}
+                    onMouseOut={self.handleClick.bind(this)}
                     style={{
                       "width":margin + "px",
                       "height": "60px",
@@ -179,7 +182,7 @@ export default class BettingChips extends Component {
           }}
           href={"#"}
           onMouseEnter={this.handleClick.bind(this)}
-          onMouseLeave={this.handleClick.bind(this)}
+          
           
           onClick={this.handleClick.bind(this)}>
               <span style={{"position":"absolute","marginTop":"-15px", "marginLeft":"-15px", 

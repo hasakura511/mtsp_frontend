@@ -10,7 +10,10 @@ export default class BottomSection extends PureComponent {
     topSystems: PropTypes.array,
     sectionHeatmap: PropTypes.object,
     bgColor:PropTypes.string,
-    textColor:PropTypes.string
+    textColor:PropTypes.string,
+    showOrderDialog:PropTypes.bool,
+    heatmap_selection:PropTypes.string
+    
   };
 
   constructor(props) {
@@ -61,6 +64,9 @@ export default class BottomSection extends PureComponent {
                     <Container {...this.props} slotHeatmap={slotHeatmap} column={column} heldChips={heldChips}
                      bgColor={bgColor}
                      textColor={textColor}
+                     showOrderDialog={this.props.showOrderDialog}
+                     heatmap_selection={this.props.heatmap_selection}
+           
                     />
                     <font color={textColor}>{display}</font>
 

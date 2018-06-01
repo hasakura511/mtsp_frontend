@@ -480,6 +480,9 @@ export default class Panel extends Component {
             moveChipToSlot={this.moveChipToSlot}
             bgColor={panelBgColor}
             textColor={panelTextColor}
+            showOrderDialog={showOrderDialog}
+            heatmap_selection={heatmap_selection}
+  
             style={{
               backgroundColor: bgColor,
               text: textColor,
@@ -514,6 +517,8 @@ export default class Panel extends Component {
           sectionHeatmap={sectionHeatmap}
           bgColor={panelBgColor}
           textColor={panelTextColor}
+          showOrderDialog={showOrderDialog}
+          heatmap_selection={heatmap_selection}
         />
         <LeftSection
           systems={this.state.leftSystems}
@@ -521,6 +526,8 @@ export default class Panel extends Component {
           sectionHeatmap={sectionHeatmap}
           bgColor={panelBgColor}
           textColor={panelTextColor}
+          showOrderDialog={showOrderDialog}
+          heatmap_selection={heatmap_selection}
         />
         <RightSection
           systems={this.state.rightSystems}
@@ -528,6 +535,8 @@ export default class Panel extends Component {
           sectionHeatmap={sectionHeatmap}
           bgColor={panelBgColor}
           textColor={panelTextColor}
+          showOrderDialog={showOrderDialog}
+          heatmap_selection={heatmap_selection}
         />
         <TopSection
           systems={this.state.topSystems}
@@ -536,6 +545,8 @@ export default class Panel extends Component {
           sectionHeatmap={sectionHeatmap}
           bgColor={panelBgColor}
           textColor={panelTextColor}
+          showOrderDialog={showOrderDialog}
+          heatmap_selection={heatmap_selection}
         />
         {showOrderDialog ? (
           <div             id={"modalDialog"}>
@@ -553,11 +564,8 @@ export default class Panel extends Component {
         ) : null}
             <Sound
             url="/sounds/chipLay1.wav"
-            playStatus={this.props.heatmap_selection ? Sound.status.PLAYING : Sound.status.PAUSED}
+            playStatus={this.props.heatmap_selection ? Sound.status.PLAYING : Sound.status.STOPPED}
             playFromPosition={0 /* in milliseconds */}
-            //onLoading={this.handleSongLoading}
-            //onPlaying={this.handleSongPlaying}
-            //onFinishedPlaying={this.handleSongFinishedPlaying}
           />
 
 

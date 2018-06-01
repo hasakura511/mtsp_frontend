@@ -62,7 +62,10 @@ export default class Container extends PureComponent {
     heldChips: PropTypes.array.isRequired,
     slotHeatmap:PropTypes.any,
     bgColor:PropTypes.string,
-    textColor:PropTypes.string
+    textColor:PropTypes.string,
+    showOrderDialog:PropTypes.bool,
+    heatmap_selection:PropTypes.string
+    
   };
   
   constructor(props) {
@@ -153,7 +156,11 @@ export default class Container extends PureComponent {
            parent={this.myRef} 
            chips={heldChips} 
            style={{opacity: canDrop ? 0.01 : 1 }}
+           showOrderDialog={this.props.showOrderDialog}
+           heatmap_selection={this.props.heatmap_selection}
+
            /> 
+           
            
 
       </div>

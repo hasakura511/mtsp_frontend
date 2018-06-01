@@ -38,7 +38,10 @@ const leftSection = props => {
             >
               <Container {...props}  slotHeatmap={slotHeatmap} column={column} heldChips={heldChips} 
                 bgColor={bgColor}
-                textColor={textColor}              
+                textColor={textColor}         
+                showOrderDialog={props.showOrderDialog}
+                heatmap_selection={props.heatmap_selection}
+           
               />
               <font color={textColor}>{display}</font>
             </div>
@@ -52,7 +55,10 @@ leftSection.propTypes = {
   systems: PropTypes.array,
   sectionHeatmap: PropTypes.object,
   bgColor:PropTypes.string,
-  textColor:PropTypes.string
+  textColor:PropTypes.string,
+  showOrderDialog:PropTypes.bool,
+  heatmap_selection:PropTypes.string
+  
 
 };
 export default leftSection;

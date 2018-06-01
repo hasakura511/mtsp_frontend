@@ -9,12 +9,12 @@ import { LongShortMap } from "../../Config";
 import { connect } from "react-redux";
 import * as actions from "../../../../store/actions";
 
+/*
 const stateToProps = state => {
   return {
     //simulatedDate: state.betting.simulatedDate,
     //dashboard_totals:state.betting.dashboard_totals,
     isLive:state.betting.isLive,
-    heatmap_selection:state.betting.heatmap_selection,
     //liveDate:state.betting.liveDate,
   };
 };
@@ -26,7 +26,7 @@ const dispatchToProps = dispatch => {
     },
   };
 };
-
+*/
 
 /**
  * Droptarget Spec
@@ -75,7 +75,7 @@ const collect = (connect, monitor) => {
 //   return colors;
 // };
 
-@connect(stateToProps, dispatchToProps)
+//@connect(stateToProps, dispatchToProps)
 
 class Slot extends Component {
   constructor(props) {
@@ -190,6 +190,9 @@ class Slot extends Component {
            <BettingChips   
            parent={this.myRef} 
            chips={heldChips} 
+           showOrderDialog={this.props.showOrderDialog}
+           heatmap_selection={this.props.heatmap_selection}
+ 
            /> 
            
                             
@@ -246,7 +249,8 @@ Slot.propTypes = {
   bgColor:PropTypes.string,
   textColor:PropTypes.string,
   heatmap_selection:PropTypes.string,
-  isLive:PropTypes.bool
+  isLive:PropTypes.bool,
+  showOrderDialog:PropTypes.bool
 };
 
 export default DropTarget("chip", slotTarget, collect)(Slot);
