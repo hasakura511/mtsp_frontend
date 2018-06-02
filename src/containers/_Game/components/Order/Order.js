@@ -108,14 +108,8 @@ const order = props => {
           <p style={{ color: "#63a57c" }}>Anti-System</p>
         </div> */}
       </div>
-      <Sound
-            url="/sounds/chipLay2.wav"
-            playStatus={Sound.status.PLAYING}
-            playFromPosition={0 /* in milliseconds */}
-            //onLoading={this.handleSongLoading}
-            //onPlaying={this.handleSongPlaying}
-            //onFinishedPlaying={this.handleSongFinishedPlaying}
-          />
+      
+      
       {isLive ? (
 
         <div className={classes.Content}>

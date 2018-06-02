@@ -10,7 +10,7 @@ import * as actions from "../../../../store/actions";
 import { toSlashDate, getDemoProfitObj } from "../../../../util";
 import { withRouter } from "react-router-dom";
 import { toSystem } from "../../Config";
-
+import Sound from 'react-sound';
 const stateToProps = state => {
   return {
     simulatedDate: state.betting.simulatedDate,
@@ -363,7 +363,18 @@ export default class OrderDialog extends Component {
             close={this.toggle}
             isAnti={isAnti}
           />
+
         )}
+        {showModal ? (
+        <Sound
+            url="/sounds/chipLay2.wav"
+            playStatus={Sound.status.PLAYING}
+            playFromPosition={0 /* in milliseconds */}
+            //onLoading={this.handleSongLoading}
+            //onPlaying={this.handleSongPlaying}
+            //onFinishedPlaying={this.handleSongFinishedPlaying}
+          />
+        ) : null}
       </Modal>
     );
   }

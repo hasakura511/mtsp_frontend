@@ -292,7 +292,7 @@ export default class Panel extends Component {
       killDialog,
       addTimedToaster
     } = this.props;
-
+    
     chip.orig_position=chip.position;
     chip.orig_last_selection=chip.last_selection;
 
@@ -320,6 +320,7 @@ export default class Panel extends Component {
     if (slot) {
       this.setState({
         showOrderDialog: true,
+        showClearDialog: false,
         orderChip: chip,
         orderSlot: slot
       });
@@ -334,14 +335,16 @@ export default class Panel extends Component {
       systemToSlot[`${system.position}System`] = system;
       this.setState({
         showOrderDialog: true,
+        showClearDialog: false,
         orderChip: chip,
         orderSlot: systemToSlot
       });
     } else if (position === "off") {
         this.setState({showClearDialog:true})
+        
         showDialog(
           Title({ chip, canDrag: false }),
-         " All positions for this account will be cleared at the market close, your funds will be held in cash. ",
+         " All positions for this account will be cleared at the market close, your funds will be held in cash. " ,
           () => {
             // Here you first need to remove the bet in the state so it's location
             // appears correctly on the board
@@ -394,7 +397,14 @@ export default class Panel extends Component {
           "Clear all positions",
           "Cancel"
       );
+      setInterval(() => { this.setState({showClearDialog:false})} , 2000)
+      
+    } else {
+      this.setState({
+        showClearDialog: false,
+      });
     }
+
   };
 
   /**
@@ -573,18 +583,16 @@ export default class Panel extends Component {
           />
           </div>
         ) : null}
-
         
-        <Sound
-            url="/sounds/chipLay2.wav"
-            playStatus={this.state.showClearDialog ? Sound.status.PLAYING : Sound.status.STOPPED}
-            playFromPosition={0 /* in milliseconds */}
-            //onLoading={this.handleSongLoading}
-            //onPlaying={this.handleSongPlaying}
-            //onFinishedPlaying={this.handleSongFinishedPlaying}
-          />
-
-
+          <Sound
+              url="/sounds/chipLay2.wav"
+              playStatus={this.state.showClearDialog ? Sound.status.PLAYING: Sound.status.STOPPED}
+              playFromPosition={0 /* in milliseconds */}
+              //onLoading={this.handleSongLoading}
+              //onPlaying={this.handleSongPlaying}
+              //onFinishedPlaying={this.handleSongFinishedPlaying}
+        /> 
+        
       </div>
     );
 

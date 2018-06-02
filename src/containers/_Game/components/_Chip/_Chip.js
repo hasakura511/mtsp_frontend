@@ -152,8 +152,8 @@ export default class Chip extends PureComponent {
       title+="Cum. % Chg: " + chip.pnl_cumpct.toString() + "%\n";
       title+="Markets in Portfolio: " + chip.num_markets.toString() + "\n"; 
       title+="Age: " + chip.age.toString() + "\n";
-      title+="Current Bet: " + chip.last_selection.toString() + "\n";
-      title+="Status: " + chip.status.toString();
+      title+="Current Bet: " +  this.toTitleCase(chip.last_selection.toString()) + "\n";
+      title+="Status: " +  this.toTitleCase(chip.status.toString());
     }
 
     var status=chip.status;
