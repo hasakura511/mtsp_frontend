@@ -135,6 +135,7 @@ export default class LiveDashboard extends Component {
              
               accounts.map(function(account) { 
                //console.log(account);
+               var days=0;
                var hour=0;
                var minutes=0;
                var seconds=0;
@@ -145,11 +146,13 @@ export default class LiveDashboard extends Component {
                  
                   if (now >= account.lockdown && now < account.unlock) {
                     const ts=account.unlock.countdown();
+                    days=ts.days;
                     hour=ts.hours;
                     minutes=ts.minutes;
                     seconds=ts.seconds;
                     //console.log(account.unlock);
-
+                    hour += days * 24;
+                                   
 
                     if (minutes < 10)
                      minutes="0" + minutes;
@@ -168,9 +171,12 @@ export default class LiveDashboard extends Component {
 
                   } else {
                     const ts=account.lockdown.countdown();
+                    days=ts.days;
                     hour=ts.hours;
                     minutes=ts.minutes;
                     seconds=ts.seconds;
+                    hour += days * 24;
+                                   
                     if (now >= account.lockdown) {
                       if (!self.props.loading) {  
                         if (now >= account.unlock) {

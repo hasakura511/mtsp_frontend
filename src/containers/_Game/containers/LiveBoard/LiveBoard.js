@@ -301,7 +301,7 @@ export default class LiveBoard extends Component {
 
     console.log("topSystems")
     console.log(topSystems);
-    chip.last_selection=strat;
+    chip.last_selection=strat;    
     chip.position=position;
     console.log("moving with params");  
     console.log(strat);
@@ -313,7 +313,7 @@ export default class LiveBoard extends Component {
                 /**
                  * When chip is moved from one betting position to other.
                  */
-                const balanceChips = [...inGameChips.balanceChips];
+                //const balanceChips = [...inGameChips.balanceChips];
                 const bettingChips = inGameChips.bettingChips.map(c => {
                   return c.accountId === chip.accountId
                     ? {
@@ -323,10 +323,21 @@ export default class LiveBoard extends Component {
                       }
                     : c;
                 });
+                const balanceChips = inGameChips.balanceChips.map(c => {
+                  return c.accountId === chip.accountId
+                    ? {
+                        ...c,
+                        count: c.count - 1,
+                        position: position,
+                        last_selection: strat
+                      }
+                    : c;
+                });
                 var rev_accounts = accounts.map(account => {
                   return account.accountId === chip.accountId
                     ? {
                         ...account,
+                        position: position,
                         last_selection: strat
                       }
                     : account;
@@ -357,15 +368,18 @@ export default class LiveBoard extends Component {
                 /**
                  * When chip is moved from off location to a betting position.
                  */
+
                 const balanceChips = inGameChips.balanceChips.map(c => {
                   return c.accountId === chip.accountId
                     ? {
                         ...c,
-                        count: c.count - 1
+                        count: c.count - 1,
+                        position: position,
+                        last_selection: strat
                       }
                     : c;
                 });
-                
+
                 var rev_accounts2 = accounts.map(account => {
                   return account.accountId === chip.accountId
                     ? {

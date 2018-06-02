@@ -139,10 +139,13 @@ export default class Clock extends PureComponent {
              style={{"display":"none"}}
              interval={1000} 
              onChange={(val) => {  const ts=dashboard_totals.lockdown_text.next_refresh_time.countdown();
+                                   var days=ts.days;
+
                                    var hour=ts.hours;
                                    var minutes=ts.minutes;
                                    var seconds=ts.seconds;
-                                  
+                                   //console.log(days);
+                                   hour += days * 24;
                                    /*
 
                                    const ts2=dashboard_totals.lockdown_text.next_unlock_time.countdown();

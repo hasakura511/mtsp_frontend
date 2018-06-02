@@ -9,10 +9,13 @@ const offTarget = {
     moveChipToSlot(monitor.getItem(), "off");
   },
   canDrop({ balanceChips }, monitor) {
-    return (
+    return true;
+    /*
+    (
       balanceChips.find(chip => chip.accountId === monitor.getItem().accountId)
         .count === 0
     );
+    */
   }
 };
 
@@ -74,4 +77,4 @@ chipsPanel.propTypes = {
   isOver: PropTypes.bool.isRequired
 };
 
-export default DropTarget("chip", offTarget, collect)(chipsPanel);
+export default DropTarget("Chip", offTarget, collect)(chipsPanel);
