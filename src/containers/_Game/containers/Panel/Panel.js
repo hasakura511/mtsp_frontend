@@ -344,6 +344,7 @@ export default class Panel extends Component {
             // Here you first need to remove the bet in the state so it's location
             // appears correctly on the board
             chip.position="off";
+            chip.last_selection="off"
             moveToBalance(chip);
 
             // Then we need to reflect this in our redux store:

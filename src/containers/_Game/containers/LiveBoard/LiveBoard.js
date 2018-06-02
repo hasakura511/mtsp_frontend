@@ -294,126 +294,110 @@ export default class LiveBoard extends Component {
       accounts
     } = this.props;
 
-    var origPosition=position;
 
     console.log("inGameChips")
     console.log(inGameChips);
 
     console.log("topSystems")
     console.log(topSystems);
-    chip.last_selection=strat;    
+    chip.last_selection=strat.toLowerCase();    
     chip.position=position;
+    chip.chip_location=strat.toLowerCase();
     console.log("moving with params");  
     console.log(strat);
     console.log(chip);
 
-              // In case the chip is dropped on a system
-              // we push it in system's heldChips in the inserChip method.
-              if (chip.position) {
-                /**
-                 * When chip is moved from one betting position to other.
-                 */
-                //const balanceChips = [...inGameChips.balanceChips];
-                const bettingChips = inGameChips.bettingChips.map(c => {
-                  return c.accountId === chip.accountId
-                    ? {
-                        ...c,
-                        position: position,
-                        last_selection: strat
-                      }
-                    : c;
-                });
-                const balanceChips = inGameChips.balanceChips.map(c => {
-                  return c.accountId === chip.accountId
-                    ? {
-                        ...c,
-                        count: c.count - 1,
-                        position: position,
-                        last_selection: strat
-                      }
-                    : c;
-                });
-                var rev_accounts = accounts.map(account => {
-                  return account.accountId === chip.accountId
-                    ? {
-                        ...account,
-                        position: position,
-                        last_selection: strat
-                      }
-                    : account;
-                });
-                accounts=rev_accounts;
-                this.props.updateBet(
-                  insertChip(topSystems, position, {
-                    ...chip,
-                    position
-                  }),
-                  insertChip(bottomSystems, position, {
-                    ...chip,
-                    position
-                  }),
-                  insertChip(leftSystems, position, {
-                    ...chip,
-                    position
-                  }),
-                  insertChip(rightSystems, position, {
-                    ...chip,
-                    position
-                  }),
-                  { balanceChips, bettingChips },
-                  accounts
-                  
-                );
-              } else {
-                /**
-                 * When chip is moved from off location to a betting position.
-                 */
+    // In case the chip is dropped on a system
+    // we push it in system's heldChips in the inserChip method.
+    /**
+     * When chip is moved from one betting position to other.
+     */
+    //const balanceChips = [...inGameChips.balanceChips];
+    var balanceChips=inGameChips.balanceChips;
+    var bettingChips=inGameChips.bettingChips;
+    
+    if (!chip.position || chip.position == 'off') {
+      
+        balanceChips = inGameChips.balanceChips.map(c => {
+          
+          return c.accountId === chip.accountId
+            ? { ...c, 
+              count: c.count + 1 ,
+              position: position,
+              last_selection:strat }
+              : c;
+          }
 
-                const balanceChips = inGameChips.balanceChips.map(c => {
-                  return c.accountId === chip.accountId
-                    ? {
-                        ...c,
-                        count: c.count - 1,
-                        position: position,
-                        last_selection: strat
-                      }
-                    : c;
-                });
+        );
 
-                var rev_accounts2 = accounts.map(account => {
-                  return account.accountId === chip.accountId
-                    ? {
-                        ...account,
-                        last_selection: strat,
-                      }
-                    : account;
-                });
-                accounts=rev_accounts2;
-                const bettingChips = [
-                  ...inGameChips.bettingChips,
-                  { ...chip, position }
-                ];
-                this.props.updateBet(
-                  insertChip(topSystems, position, {
-                    ...chip,
-                    position
-                  }),
-                  insertChip(bottomSystems, position, {
-                    ...chip,
-                    position
-                  }),
-                  insertChip(leftSystems, position, {
-                    ...chip,
-                    position
-                  }),
-                  insertChip(rightSystems, position, {
-                    ...chip,
-                    position
-                  }),
-                  { balanceChips, bettingChips },
-                  accounts
-                );
-              }
+    } else {
+
+        balanceChips = inGameChips.balanceChips.map(c => {
+        return c.accountId === chip.accountId
+          ? {
+              ...c,
+              count: c.count - 1,
+              position: position,
+              last_selection: strat
+            }
+          : c;
+        });
+        
+        bettingChips = [
+          ...inGameChips.bettingChips,
+          { ...chip, 
+            position:position,
+            last_selection: strat
+          }
+        ];
+
+    }
+
+    bettingChips = inGameChips.bettingChips.map(c => {
+        return c.accountId === chip.accountId
+          ? {
+              ...c,
+              position: position,
+              last_selection: strat
+            }
+          : c;
+    });
+    
+
+    var rev_accounts = accounts.map(account => {
+      return account.accountId === chip.accountId
+        ? {
+            ...account,
+            position: position,
+            last_selection: strat
+          }
+        : account;
+    });
+    accounts=rev_accounts;
+    this.props.updateBet(
+      insertChip(topSystems, position, {
+        ...chip,
+        position
+      }),
+      insertChip(bottomSystems, position, {
+        ...chip,
+        position
+      }),
+      insertChip(leftSystems, position, {
+        ...chip,
+        position
+      }),
+      insertChip(rightSystems, position, {
+        ...chip,
+        position
+      }),
+      { balanceChips, bettingChips },
+      accounts
+      
+    );
+
+                
+
   }
 
   addBettingChip = (chip, position, isAnti, strat) => {
@@ -499,7 +483,9 @@ export default class LiveBoard extends Component {
         var origChip=chip;
         var origStrat=chip.orig_last_selection;
 
+        this.moveOnBoard(chip, chip.position, chip.last_selection);
         
+        /*
 
         const balanceChips = inGameChips.balanceChips.map(c => {
           return c.accountId === chip.accountId
@@ -533,6 +519,7 @@ export default class LiveBoard extends Component {
         if (strat == 'off') 
           strat="Off";
 
+          */
         axios
           .post("/utility/update_bet_live/", {
           // .get("https://api.myjson.com/bins/11pqxf", {
@@ -540,7 +527,7 @@ export default class LiveBoard extends Component {
           // accounts: [{ portfolio, target, accountValue }],
           'account_id': chip.accountId,
           'chip_id':chip.chip_id,
-          'strategy':strat,
+          'strategy':chip.last_selection == 'off' ? 'Off' :chip.last_selection,
           },{timeout: 600000})
           .then(({ data }) => {
             this.sendNotice(strat + ' Bet Placed' + JSON.stringify(data));
