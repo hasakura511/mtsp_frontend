@@ -191,6 +191,7 @@ export default class Panel extends Component {
       //   heldChips: []
       // }
       showOrderDialog: false,
+      showClearDialog:false,
       orderChip: null,
       orderSlot: null,
       rankingLoading: true,
@@ -337,9 +338,10 @@ export default class Panel extends Component {
         orderSlot: systemToSlot
       });
     } else if (position === "off") {
+        this.setState({showClearDialog:true})
         showDialog(
           Title({ chip, canDrag: false }),
-          "All positions for this account will be cleared at the market close, your funds will be held in cash.",
+         " All positions for this account will be cleared at the market close, your funds will be held in cash. ",
           () => {
             // Here you first need to remove the bet in the state so it's location
             // appears correctly on the board
@@ -371,6 +373,7 @@ export default class Panel extends Component {
               // 2. append a new currentBet on off location
               addBet(bet);
               killDialog();
+              this.setState({showClearDialog:false});
   
             } else {
 
@@ -384,6 +387,7 @@ export default class Panel extends Component {
               // 2. append a new currentBet on off location
               addBet(bet);
               killDialog();
+              this.setState({showClearDialog:false})
             }
           },
           null,
@@ -569,7 +573,16 @@ export default class Panel extends Component {
           />
           </div>
         ) : null}
-          
+
+        
+        <Sound
+            url="/sounds/chipLay2.wav"
+            playStatus={this.state.showClearDialog ? Sound.status.PLAYING : Sound.status.STOPPED}
+            playFromPosition={0 /* in milliseconds */}
+            //onLoading={this.handleSongLoading}
+            //onPlaying={this.handleSongPlaying}
+            //onFinishedPlaying={this.handleSongFinishedPlaying}
+          />
 
 
       </div>

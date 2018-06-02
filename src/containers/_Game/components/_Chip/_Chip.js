@@ -45,7 +45,7 @@ const chipSource = {
     console.log("begin drag",props.chip.chip_id)
     props.showHeatmap(props.chip.chip_id+"");
     props.chip.isPlaying=true;
-    props.chip.isDonePlaying=true;
+    props.chip.isDonePlaying=false;
     console.log("beginning")
     return props.chip;
   },
@@ -195,6 +195,7 @@ export default class Chip extends PureComponent {
     return dragSource(
       <div className={classes.Chip} style={chipStyle} title={title}>
         <p>{chip.display}</p>
+        
       </div>
     );
   }

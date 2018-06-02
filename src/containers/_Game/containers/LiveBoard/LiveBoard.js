@@ -295,17 +295,15 @@ export default class LiveBoard extends Component {
     } = this.props;
 
 
+    console.log("moving with params");  
     console.log("inGameChips")
     console.log(inGameChips);
+    console.log(strat);
+    console.log(position);
 
-    console.log("topSystems")
-    console.log(topSystems);
     chip.last_selection=strat.toLowerCase();    
     chip.position=position;
     chip.chip_location=strat.toLowerCase();
-    console.log("moving with params");  
-    console.log(strat);
-    console.log(chip);
 
     // In case the chip is dropped on a system
     // we push it in system's heldChips in the inserChip method.
@@ -330,6 +328,11 @@ export default class LiveBoard extends Component {
 
         );
 
+        
+        bettingChips = inGameChips.bettingChips.filter(
+          c => c.accountId !== chip.accountId
+        );
+
     } else {
 
         balanceChips = inGameChips.balanceChips.map(c => {
@@ -343,26 +346,34 @@ export default class LiveBoard extends Component {
           : c;
         });
         
-        bettingChips = [
-          ...inGameChips.bettingChips,
-          { ...chip, 
-            position:position,
-            last_selection: strat
-          }
-        ];
+        var found=false;
+        bettingChips = bettingChips.map(c => {
+          if (c.accountId === chip.accountId)
+            found=true;
+          return c.accountId === chip.accountId
+            ? {
+                ...c,
+                position: position,
+                last_selection: strat
+              }
+            : c;
+        });
 
-    }
+        if (!found) {
 
-    bettingChips = inGameChips.bettingChips.map(c => {
-        return c.accountId === chip.accountId
-          ? {
-              ...c,
-              position: position,
+          bettingChips = [
+            ...inGameChips.bettingChips,
+            { ...chip, 
+              position:position,
               last_selection: strat
             }
-          : c;
-    });
-    
+          ];
+        }
+        
+        
+
+
+    }
 
     var rev_accounts = accounts.map(account => {
       return account.accountId === chip.accountId
@@ -396,7 +407,8 @@ export default class LiveBoard extends Component {
       
     );
 
-                
+    console.log(inGameChips);
+
 
   }
 
