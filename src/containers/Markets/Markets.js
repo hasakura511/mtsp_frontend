@@ -557,24 +557,20 @@ export default class Markets extends Component {
         if (items[key]!= undefined) {
             items[key].map( item => {
               group2.push (
-                <div className={classes.flex_item2}
+                <a  href='#chartArea' className={classes.flex_item2}
                     style={{
                       "background":item.color_fill,
                       "color":item.color_text,
+                      "fontSize":"1.5em",
                     }}
                     key={item.key + idx.toString()}
                     onClick={ () => {
                       self.onGetChart(item.key, this.props.liveDateText, "3 Months");
                     }}
                 >
-                <a href='#chartArea' style={{
-                      "background":item.color_fill,
-                      "color":item.color_text,
-                    }}>
                 {item.display} <br/><br/>
                 {item.pct_chg}
                 </a>
-                </div>
             )
           });
         }
