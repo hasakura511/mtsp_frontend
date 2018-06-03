@@ -486,6 +486,7 @@ export default class Markets extends Component {
             "offsetY": 10
           },
         
+          /*
           "periodSelector": {
             "position": "bottom",
             "periods": [ {
@@ -510,16 +511,15 @@ export default class Markets extends Component {
                 "selected": true,
                 "label": "2Y"
               },
-              /* {
-                  "period": "YTD",
-                  "label": "YTD"
-                },*/
               {
                 "period": "MAX",
                 "label": "MAX"
               }
             ]
-          }});
+          }
+          */
+        
+        });
           $('#chartdiv').show();
         
   }
@@ -601,12 +601,15 @@ export default class Markets extends Component {
      });
     }
 
+    var specidx=0;
+    var specs=[];
     return (
       <FormatModal title="Futures Market Heatmap">
          <center>
                <h3><b>Data as of {toSlashDate(this.props.liveDateText)}</b></h3>
                <br/><br/>
                <div id="chartArea"  style={{display:"none", width:"100%", textAlign:"left"}}>
+                  <center><h3>{this.state.specifications.chart_title}</h3></center>
                   <h4>
                   &nbsp;
                   &nbsp;
@@ -636,7 +639,49 @@ export default class Markets extends Component {
                   
 
                  <div id="chartdiv"  style={{display:"none", width:"100%",height:"600px", padding:"30px", marginBottom:"60px"}}></div>
+                 {this.state.specifications['Contract Specifications'] ? 
+                 (
+                  <div>
+                    
+                 <h4>Contract Specifications</h4>
+                  <hr/>
+                  {Object.keys(this.state.specifications['Contract Specifications']).map(item => {
+                      specidx+=1;
+                      specs.push (
+                    <span style={{"flex":1, width:"25%" }}
+                    key={item}
+                    >
+                        <h4>{item}</h4>
+                    </span>
+                      )
+                      specs.push(
+                      <span style={{"flex":1,width:"25%"}}
+                      key={item + specidx}
+                      >
+                          <h4>{this.state.specifications['Contract Specifications'][item]}</h4>
+                      </span>
+                      )
+                      if (specs.length >= 4) {
+                        var specHtml=specs;
+                        specs=[];
+                        return (
+                          <div key={'spec' + specidx}>
+                          <span style={{"flexDirection":"row", display:"flex",width:"100%"}}>
+                            {specHtml}
+                          </span>
+                          <hr/>
+                          </div>
+                        )
+                      }
+                  
+                  })}
+
+                </div>
+                 ) : null}
                 </div> 
+                <br/>
+                
+
         </center>
         <div className={classes.Markets}>
 

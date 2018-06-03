@@ -386,7 +386,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.INITIALIZE_DATA:
     {
         const liveDate = new moment().tz("US/Eastern");
-        const liveDateText = new moment(toSlashDate(action.data.last_date)).tz("US/Eastern").format('YYYYMMDD');
+        const liveDateText = action.data.last_date;
         console.log(liveDateText);
         console.log(liveDate.format('HH:mm:ss A'));
         var initializeData =  action.data;
