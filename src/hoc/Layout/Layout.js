@@ -23,7 +23,7 @@ const LINKS = [
   },
   {
     id: "link6",
-    href: "/profile",
+    href: "/markets",
     target: "_self",
     active: false,
     text: "MARKETS",

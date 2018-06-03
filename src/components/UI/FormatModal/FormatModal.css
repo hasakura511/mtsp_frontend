@@ -3,16 +3,15 @@
   height: auto;
   text-align: center;
   padding: 4px 0px;
-  background-color: #0fc6a7;
+  background-color: #FFFFFF;
   box-sizing: border-box;
-  color: white;
+  color: black;
 }
 
 .FormatModal .Title h2{
   color: inherit;
   margin: 0px;
   padding: 0px;
-  font-size: 1.5em;
 }
 
 .FormatModal .Content{

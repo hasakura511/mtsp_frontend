@@ -96,6 +96,8 @@ const initialState = {
   initializeData: {},
   simulatedDate: getOffsetDate(1),
   liveDate: new moment().tz("US/Eastern"),
+  liveDateText: new moment().tz("US/Eastern").format('YYYYMMDD'),
+  
   inGameChips: {
     balanceChips: ChipsConfig.map(chip => {
       chip["count"] = 1;
@@ -321,6 +323,8 @@ const reducer = (state = initialState, action) => {
         var date = new moment().tz("US/Eastern");
         console.log(date.format('HH:mm:ss A'));
         const liveDate = date;
+        const liveDateText = date.format('YYYYMMDD');
+
 
         
         var chips=state.inGameChips;
@@ -355,6 +359,7 @@ const reducer = (state = initialState, action) => {
             ...state,
             //simulatedDate,
             liveDate,
+            liveDateText,
             inGameChips:chips,  
             topSystems:tSys,
             leftSystems:lSys,

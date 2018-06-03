@@ -1,0 +1,70 @@
+/* .Contact form{
+  width: 100%;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 20px;
+  box-sizing: border-box;
+} */
+
+.Markets{
+    min-height: 100%;
+  }
+  
+
+.flex_container {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    display: flex;           /* establish flex container */
+    flex-direction: row;  /* make main axis vertical */
+    justify-content: stretch; /* center items vertically, in this case */
+    align-items: stretch;    /* center items horizontally, in this case */
+    width: 100%;
+    flex: 1; 
+
+}
+
+
+.flex_vcontainer {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    display: flex;           /* establish flex container */
+    flex-direction: column;  /* make main axis vertical */
+    justify-content: center; /* center items vertically, in this case */
+    align-items: center;     /* center items horizontally, in this case */
+    align-self: flex-start;
+    flex: 1; 
+
+}
+
+
+.flex_item {
+    padding: 10px;
+    padding-top:20px;
+    width: 90%;
+    height: 100%;
+    margin: 10px;
+    line-height: 20px;    align-self: flex-start;
+
+    font-weight: bold;
+    font-size: 1em;
+    text-align: center;
+    align-self: flex-start;
+    flex: 1; 
+}
+
+.flex_item2 {
+    padding: 10px;
+    padding-top:20px;
+    width: 90%;
+    height: 100%;
+    margin: 10px;
+    line-height: 20px;
+    font-weight: bold;
+    font-size: "96px";
+    text-align: center;
+    flex: 1; 
+}
