@@ -407,22 +407,10 @@ export default class Markets extends Component {
                 "comparable": true,
                 "compareField": "close",
                 "showBalloon": true,
-                "showBalloonAt":"high",
+                //"showBalloonAt":"bottom",
                 "proCandlesticks": true,
-                "balloon": {
-                  "adjustBorderColor": true,
-                  "color": self.state.themes.text_color,
-                  "cornerRadius": 5,
-                  "fillColor": self.state.themes.background,
-                  "fixedPosition":false,
-                  "offsetX": 200,
-                  //"verticalPadding":100,
-                  //"offsetY":100,
-                  "horizontalPadding":200,
-                  "showBullet":false,
-                  "fillAlpha":0.2,
-                  
-                },
+                
+               
                 "balloonText": "[[display_date]]<hr style='margin:1px;color:black;border: 0;border-top: 1px solid #ccc;' />" +
                               "<span style='float:left;'>Open:</span> <span style='float:right'>[[open]]</span><br/>" +
                               "<span style='float:left;'>High:</span> <span style='float:right'>[[high]]</span><br/>" +
@@ -529,8 +517,19 @@ export default class Markets extends Component {
           },
         
           "balloon": {
-            "textAlign": "left",
-            "offsetY": 10
+            "adjustBorderColor": true,
+            "color": self.state.themes.text_color,
+            "cornerRadius": 5,
+            "fillColor": self.state.themes.background,
+            "fixedPosition":false,
+            "offsetX": 200,
+            "verticalPadding":0,
+            "textAlign":"left",
+            "offsetY":0,
+            //"horizontalPadding":200,
+            "showBullet":false,
+            "fillAlpha":0.5,
+            
           },
         
           /*
