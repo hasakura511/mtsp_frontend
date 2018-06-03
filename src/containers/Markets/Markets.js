@@ -94,7 +94,12 @@ export default class Markets extends Component {
       fetched: false,
       error: false,
       submitTitle: "",
+      symbol:"",
+      date:"",
+      chartData:{},
       data:{},
+      specifications:{},
+      themes:{},
     };
   }
 
@@ -267,6 +272,258 @@ export default class Markets extends Component {
     });
   };
 
+  onGetChart = (symbol, date, period) => {
+    this.setState({symbol:symbol,
+                    date:date});
+
+    axiosOpen
+    .post("/utility/market_chart/", {
+
+        'date':this.props.liveDateText,
+        'symbol':symbol
+
+    })
+    .then(response => {
+        console.log(response.data)
+        var chartData= JSON.parse(response.data.data["3 Months"])
+        var chartData2= JSON.parse(response.data.data["6 Months"])
+        var chartData3= JSON.parse(response.data.data["12 Months"])
+       
+
+        var cd=[];
+        var cd2=[];
+        var cd3=[];
+        Object.keys(chartData).map(key => {
+          var tick=chartData[key];
+          tick.Date=key;
+          cd.push(tick);
+        })
+        Object.keys(chartData2).map(key => {
+          var tick=chartData2[key];
+          tick.Date=key;
+          cd2.push(tick);
+        })
+        Object.keys(chartData3).map(key => {
+          var tick=chartData3[key];
+          tick.Date=key;
+          cd3.push(tick);
+        })
+
+        var finalData={'3 Months':cd, '6 Months':cd2, '12 Months':cd3}
+        this.setState({chartData:finalData,
+            specifications:response.data.specifications,
+            themes:response.data.themes});
+        this.onGetChartDate(symbol, date, period)
+        $('#chartArea').show()
+        
+    })
+    .catch((error) => {
+      console.log(error);
+      this.setState({ error: true, loading: false });
+      this.props.addTimedToaster({
+        id: "contact-us-error",
+        text: "Server error, please wait till we fix."
+      });
+    });
+    
+  }
+
+  onGetChartDate = (symbol, date, period) => {
+        var chartData=this.state.chartData[period];
+        var self=this;
+
+
+        var color;
+
+        var chart = AmCharts.makeChart( "chartdiv", {
+          "type": "stock",
+          "theme": "light",
+        
+          //"color": "#fff",
+          "dataSets": [ {
+            "title":  symbol + " " + period,
+            "fieldMappings": [ {
+              "fromField": "Open",
+              "toField": "open"
+            }, {
+              "fromField": "High",
+              "toField": "high"
+            }, {
+              "fromField": "Low",
+              "toField": "low"
+            }, {
+              "fromField": "Close",
+              "toField": "close"
+            }, {
+              "fromField": "Volume",
+              "toField": "volume"
+            } ],
+            "compared": false,
+            "dataProvider": chartData,
+            "categoryField": "Date",
+        
+          } ],
+          "dataDateFormat": "YYYY-MM-DD",
+        
+          "panels": [ {
+              "title": "Value",
+              "percentHeight": 70,
+        
+              "stockGraphs": [ {
+                "type": "candlestick",
+                "id": "g1",
+                "openField": "open",
+                "closeField": "close",
+                "highField": "high",
+                "lowField": "low",
+                "valueField": "close",
+                "lineColor": self.state.themes.text_color,
+                "fillColors": self.state.themes.text_color,
+                "negativeLineColor": self.state.themes.text_inactive,
+                "negativeFillColors": self.state.themes.text_inactive,
+                "fillAlphas": 1,
+                "comparedGraphLineThickness": 2,
+                "columnWidth": 0.7,
+                "useDataSetColors": false,
+                "comparable": true,
+                "compareField": "close",
+                "showBalloon": false,
+                "proCandlesticks": true
+              } ],
+        
+              "stockLegend": {
+                "valueTextRegular": undefined,
+                "periodValueTextComparing": "[[percents.value.close]]%"
+              }
+        
+            },
+        
+            {
+              "title": "Volume",
+              "percentHeight": 30,
+              "marginTop": 1,
+              "columnWidth": 0.6,
+              "showCategoryAxis": false,
+        
+              "stockGraphs": [ {
+                "valueField": "volume",
+                "openField": "open",
+                "type": "column",
+                "showBalloon": false,
+                "fillAlphas": 1,
+                "lineColor": self.state.themes.text_color,
+                "fillColors":self.state.themes.text_color,
+                "negativeLineColor": self.state.themes.text_inactive,
+                "negativeFillColors":   self.state.themes.text_inactive,
+                "useDataSetColors": false
+              } ],
+        
+              "stockLegend": {
+                "markerType": "none",
+                "markerSize": 0,
+                "labelText": "",
+                "periodValueTextRegular": "[[value.close]]"
+              },
+        
+              "valueAxes": [ {
+                "usePrefixes": true
+              } ]
+            }
+          ],
+        
+          "panelsSettings": {
+            //    "color": "#fff",
+            "plotAreaFillColors":  self.state.themes.background,
+            "plotAreaFillAlphas": 1,
+            "marginLeft": 60,
+            "marginTop": 5,
+            "marginBottom": 5
+          },
+        
+          "chartScrollbarSettings": {
+            "graph": "g1",
+            "graphType": "line",
+            "usePeriod": "WW",
+            "backgroundColor": self.state.themes.background,
+            "graphFillColor": self.state.themes.text_color,
+            "graphFillAlpha": 0.5,
+            "gridColor": self.state.themes.text_inactive,
+            "gridAlpha": 1,
+            "selectedBackgroundColor": self.state.themes.background,
+            "selectedGraphFillAlpha": 1
+          },
+        
+          "categoryAxesSettings": {
+            "equalSpacing": true,
+            "gridColor":self.state.themes.text_inactive,
+            "gridAlpha": 1
+          },
+        
+          "valueAxesSettings": {
+            "gridColor": self.state.themes.text_inactive,
+            "gridAlpha": 1,
+            "inside": false,
+            "showLastLabel": true
+          },
+        
+          "chartCursorSettings": {
+            "pan": true,
+            "valueLineEnabled": true,
+            "valueLineBalloonEnabled": true
+          },
+        
+          "legendSettings": {
+            //"color": "#fff"
+          },
+        
+          "stockEventsSettings": {
+            "showAt": "high",
+            "type": "pin"
+          },
+        
+          "balloon": {
+            "textAlign": "left",
+            "offsetY": 10
+          },
+        
+          "periodSelector": {
+            "position": "bottom",
+            "periods": [ {
+                "period": "DD",
+                "count": 1,
+                "label": "1D"
+              }, {
+                "period": "MM",
+                "count": 3,
+                "label": "3M"
+              }, {
+                "period": "MM",
+                "count": 6,
+                "label": "6M"
+              }, {
+                "period": "YYYY",
+                "count": 1,
+                "label": "1Y"
+              }, {
+                "period": "YYYY",
+                "count": 2,
+                "selected": true,
+                "label": "2Y"
+              },
+              /* {
+                  "period": "YTD",
+                  "label": "YTD"
+                },*/
+              {
+                "period": "MAX",
+                "label": "MAX"
+              }
+            ]
+          }});
+          $('#chartdiv').show();
+        
+  }
+
   render() {
     const formArr = [];
     Object.keys(this.state.controls).forEach(key => {
@@ -291,6 +548,7 @@ export default class Markets extends Component {
     }
 
     var idx=0;
+    var self=this;
     if (this.state.data.groups != undefined) {
       Object.keys(this.state.data.groups).map(key => {
         idx+=1;
@@ -305,6 +563,9 @@ export default class Markets extends Component {
                       "color":item.color_text,
                     }}
                     key={item.key + idx.toString()}
+                    onClick={ () => {
+                      self.onGetChart(item.key, this.state.liveDateText, "3 Months");
+                    }}
                 >
                 {item.display} <br/><br/>
                 {item.pct_chg}
@@ -344,6 +605,37 @@ export default class Markets extends Component {
          <center>
                <h3><b>Data as of {toSlashDate(this.props.liveDateText)}</b></h3>
                <br/><br/>
+               <div id="chartArea"  style={{display:"none", width:"100%", textAlign:"left"}}>
+                  <h4>
+                  &nbsp;
+                  &nbsp;
+                  &nbsp;
+                  &nbsp;
+                  &nbsp;
+                  &nbsp;
+                  <a href="#chartdev" onClick={() => {
+                    this.onGetChart(this.state.symbol, this.state.date, "3 Months")
+                  }
+                  }>3 Months</a>
+                  &nbsp;
+                  &nbsp;
+                  &nbsp;
+                  <a href="#chartdev" onClick={() => {
+                    this.onGetChart(this.state.symbol, this.state.date, "6 Months")
+                  }
+                  }>6 Months</a>
+                  &nbsp;
+                  &nbsp;
+                  &nbsp;
+                  <a href="#chartdev"   onClick={() => {
+                    this.onGetChart(this.state.symbol, this.state.date, "12 Months")
+                  }
+                  }>12 Months</a>
+                  </h4>
+                  
+
+                 <div id="chartdiv"  style={{display:"none", width:"100%",height:"600px", padding:"30px", marginBottom:"60px"}}></div>
+                </div> 
         </center>
         <div className={classes.Markets}>
 
