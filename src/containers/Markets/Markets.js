@@ -614,7 +614,7 @@ export default class Markets extends Component {
     return (
       <FormatModal title="Futures Market Heatmap">
          <center>
-               <h3><b>Data as of {this.state.date_str}</b></h3>
+               <h3 style={{"marginTop":"-22px"}}><b>Data as of {this.state.date_str}</b></h3>
                <br/><br/>
                <div id="chartArea"  style={{display:"none", width:"100%", textAlign:"left"}}>
                   <center><h3>{this.state.specifications.chart_title}</h3></center>
