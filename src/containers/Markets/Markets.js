@@ -564,11 +564,16 @@ export default class Markets extends Component {
                     }}
                     key={item.key + idx.toString()}
                     onClick={ () => {
-                      self.onGetChart(item.key, this.state.liveDateText, "3 Months");
+                      self.onGetChart(item.key, this.props.liveDateText, "3 Months");
                     }}
                 >
+                <a href='#chartArea' style={{
+                      "background":item.color_fill,
+                      "color":item.color_text,
+                    }}>
                 {item.display} <br/><br/>
                 {item.pct_chg}
+                </a>
                 </div>
             )
           });

@@ -323,7 +323,6 @@ const reducer = (state = initialState, action) => {
         var date = new moment().tz("US/Eastern");
         console.log(date.format('HH:mm:ss A'));
         const liveDate = date;
-        const liveDateText = date.format('YYYYMMDD');
 
 
         
@@ -359,7 +358,6 @@ const reducer = (state = initialState, action) => {
             ...state,
             //simulatedDate,
             liveDate,
-            liveDateText,
             inGameChips:chips,  
             topSystems:tSys,
             leftSystems:lSys,
@@ -388,6 +386,8 @@ const reducer = (state = initialState, action) => {
     case actionTypes.INITIALIZE_DATA:
     {
         const liveDate = new moment().tz("US/Eastern");
+        const liveDateText = new moment(toSlashDate(action.data.last_date)).tz("US/Eastern").format('YYYYMMDD');
+        console.log(liveDateText);
         console.log(liveDate.format('HH:mm:ss A'));
         var initializeData =  action.data;
         var accounts= JSON.parse(action.data.accounts)
@@ -597,7 +597,8 @@ const reducer = (state = initialState, action) => {
             isLive,
             inGameChips,
             dashboard_totals,
-            liveDate
+            liveDate,
+            liveDateText
         };
     }
     case actionTypes.ADD_BET: {
