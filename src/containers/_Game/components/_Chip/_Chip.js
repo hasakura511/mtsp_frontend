@@ -50,14 +50,11 @@ const chipSource = {
     return props.chip;
   },
   canDrag(props) {
-    return true;
-    /*
     const { chip } = props;
     if (chip.status == undefined || chip.status == 'locked')
       return false;
     
     return true;
-    */
   },
   endDrag(props,monitor, component) {
     const { chip  } = props;
