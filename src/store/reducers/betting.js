@@ -96,7 +96,7 @@ const initialState = {
   initializeData: {},
   simulatedDate: getOffsetDate(1),
   liveDate: new moment().tz("US/Eastern"),
-  liveDateText: new moment().tz("US/Eastern").format('YYYYMMDD'),
+  liveDateText: "",
   
   inGameChips: {
     balanceChips: ChipsConfig.map(chip => {

@@ -100,6 +100,8 @@ export default class Markets extends Component {
       data:{},
       specifications:{},
       themes:{},
+      liveDateText:this.props.liveDateText,
+      date_str:"",
     };
   }
 
@@ -134,12 +136,16 @@ export default class Markets extends Component {
     axiosOpen
       .post("/utility/market_heatmap/", {
 
-          'date':this.props.liveDateText,
+          'date':this.state.liveDateText,
 
       })
       .then(response => {
         console.log(response);
         var data=response.data;
+        var liveDateText=response.data.date;
+        var date_str=response.data.date_str;
+        //alert(response.data.date_str)
+        //alert(response.data.date)
         var groups= JSON.parse(response.data.groups)
         var markets= JSON.parse(response.data.markets)
         var themes = response.data.themes
@@ -168,6 +174,8 @@ export default class Markets extends Component {
         */
        this.setState({
           //controls: controls,
+          liveDateText:liveDateText,
+          date_str:date_str,
           data:data,
           loading: false,
           fetched: true
@@ -279,7 +287,7 @@ export default class Markets extends Component {
     axiosOpen
     .post("/utility/market_chart/", {
 
-        'date':this.props.liveDateText,
+        'date':this.state.liveDateText,
         'symbol':symbol
 
     })
@@ -377,17 +385,17 @@ export default class Markets extends Component {
                 "highField": "high",
                 "lowField": "low",
                 "valueField": "close",
-                "lineColor": self.state.themes.text_color,
-                "fillColors": self.state.themes.text_color,
-                "negativeLineColor": self.state.themes.text_inactive,
-                "negativeFillColors": self.state.themes.text_inactive,
+                "lineColor": self.state.themes.color_gain,
+                "fillColors": self.state.themes.color_gain,
+                "negativeLineColor": self.state.themes.color_loss,
+                "negativeFillColors": self.state.themes.color_loss,
                 "fillAlphas": 1,
                 "comparedGraphLineThickness": 2,
                 "columnWidth": 0.7,
                 "useDataSetColors": false,
                 "comparable": true,
                 "compareField": "close",
-                "showBalloon": false,
+                "showBalloon": true,
                 "proCandlesticks": true
               } ],
         
@@ -433,7 +441,7 @@ export default class Markets extends Component {
         
           "panelsSettings": {
             //    "color": "#fff",
-            "plotAreaFillColors":  self.state.themes.background,
+            "plotAreaFillColors":  self.state.themes.chart_background,
             "plotAreaFillAlphas": 1,
             "marginLeft": 60,
             "marginTop": 5,
@@ -565,7 +573,7 @@ export default class Markets extends Component {
                     }}
                     key={item.key + idx.toString()}
                     onClick={ () => {
-                      self.onGetChart(item.key, this.props.liveDateText, "3 Months");
+                      self.onGetChart(item.key, this.state.liveDateText, "3 Months");
                     }}
                 >
                 {item.display} <br/><br/>
@@ -606,7 +614,7 @@ export default class Markets extends Component {
     return (
       <FormatModal title="Futures Market Heatmap">
          <center>
-               <h3><b>Data as of {toSlashDate(this.props.liveDateText)}</b></h3>
+               <h3><b>Data as of {this.state.date_str}</b></h3>
                <br/><br/>
                <div id="chartArea"  style={{display:"none", width:"100%", textAlign:"left"}}>
                   <center><h3>{this.state.specifications.chart_title}</h3></center>
