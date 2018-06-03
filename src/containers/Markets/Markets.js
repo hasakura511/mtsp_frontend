@@ -407,8 +407,11 @@ export default class Markets extends Component {
                 "comparable": true,
                 "compareField": "close",
                 "showBalloon": true,
+                "pointPosition":"end",
                 //"showBalloonAt":"bottom",
                 "proCandlesticks": true,
+                "showAllValueLabels": true,
+
                 
                
                 "balloonText": "[[display_date]]<hr style='margin:1px;color:black;border: 0;border-top: 1px solid #ccc;' />" +
@@ -426,7 +429,8 @@ export default class Markets extends Component {
               "stockLegend": {
                 "valueTextRegular": undefined,
                 "periodValueTextComparing": "[[percents.value.close]]%"
-              }
+              },
+            
         
             },
         
@@ -456,13 +460,13 @@ export default class Markets extends Component {
                 "labelText": "",
                 "periodValueTextRegular": "[[value.close]]"
               },
-        
+             
               "valueAxes": [ {
-                "usePrefixes": true
+                "usePrefixes": true,
+                "includeAllValues":true,
               } ]
             }
           ],
-        
           "panelsSettings": {
             //    "color": "#fff",
             "plotAreaFillColors":  self.state.themes.chart_background,
@@ -471,25 +475,32 @@ export default class Markets extends Component {
             "marginTop": 5,
             "marginBottom": 5,
             "marginRight":60,
+            "recalculateToPercents": "never",
+
           },
         
           "chartScrollbarSettings": {
             "graph": "g1",
             "graphType": "line",
-            "usePeriod": "WW",
+            "usePeriod": "DD",
             "backgroundColor": self.state.themes.background,
             "graphFillColor": self.state.themes.text_color,
             "graphFillAlpha": 0.5,
             "gridColor": self.state.themes.text_inactive,
             "gridAlpha": 1,
             "selectedBackgroundColor": self.state.themes.background,
-            "selectedGraphFillAlpha": 1
+            "selectedGraphFillAlpha": 1,
+            
           },
         
           "categoryAxesSettings": {
             "equalSpacing": true,
             "gridColor":self.state.themes.text_inactive,
             "gridAlpha": 1,
+            "maxSeries":1000,
+            "minPeriod": "DD",
+            "groupToPeriods":["DD"]
+        
           },
         
           "valueAxesSettings": {
