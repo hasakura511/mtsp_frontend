@@ -342,7 +342,6 @@ export default class Markets extends Component {
 
 
         var color;
-
         var chart = AmCharts.makeChart( "chartdiv", {
           "type": "stock",
           "theme": "light",
@@ -365,6 +364,18 @@ export default class Markets extends Component {
             }, {
               "fromField": "Volume",
               "toField": "volume"
+            },  {
+              "fromField": "display_date",
+              "toField": "display_date"
+            },  {
+              "fromField": "Seasonality",
+              "toField": "Seasonality"
+            },  {
+              "fromField": "OpenInterest",
+              "toField": "OpenInterest"
+            },  {
+              "fromField": "Contract",
+              "toField": "Contract"
             } ],
             "compared": false,
             "dataProvider": chartData,
@@ -396,7 +407,32 @@ export default class Markets extends Component {
                 "comparable": true,
                 "compareField": "close",
                 "showBalloon": true,
-                "proCandlesticks": true
+                "showBalloonAt":"high",
+                "proCandlesticks": true,
+                "balloon": {
+                  "adjustBorderColor": true,
+                  "color": self.state.themes.text_color,
+                  "cornerRadius": 5,
+                  "fillColor": self.state.themes.background,
+                  "fixedPosition":false,
+                  "offsetX": 200,
+                  //"verticalPadding":100,
+                  //"offsetY":100,
+                  "horizontalPadding":200,
+                  "showBullet":false,
+                  "fillAlpha":0.2,
+                  
+                },
+                "balloonText": "[[display_date]]<hr style='margin:1px;color:black;border: 0;border-top: 1px solid #ccc;' />" +
+                              "<span style='float:left;'>Open:</span> <span style='float:right'>[[open]]</span><br/>" +
+                              "<span style='float:left;'>High:</span> <span style='float:right'>[[high]]</span><br/>" +
+                              "<span style='float:left;'>Low:</span> <span style='float:right'>[[low]]</span><br/>" +
+                              "<span style='float:left;'>Close:</span> <span style='float:right'>[[close]]</span><br/>" +
+                              "<span style='float:left;'>Seasonality:</span> <span style='float:right'>[[Seasonality]]</span><br/>" +
+                              "<span style='float:left;'>Volume:</span> <span style='float:right'>[[Volume]]</span><br/>" +
+                              "<span style='float:left;'>OpenInterest:&nbsp;</span> <span style='float:right'>[[OpenInterest]]</span><br/>" +
+                              "<span style='float:left;'>Contract:</span> <span style='float:right'>[[Contract]]</span><br/>" +
+                              "<span style='float:left;'>Currency:</span> <span style='float:right'>[[Currency]]</span><br/>"
               } ],
         
               "stockLegend": {
@@ -417,7 +453,7 @@ export default class Markets extends Component {
                 "valueField": "volume",
                 "openField": "open",
                 "type": "column",
-                "showBalloon": false,
+                "showBalloon": true,
                 "fillAlphas": 1,
                 "lineColor": self.state.themes.text_color,
                 "fillColors":self.state.themes.text_color,
@@ -445,7 +481,8 @@ export default class Markets extends Component {
             "plotAreaFillAlphas": 1,
             "marginLeft": 60,
             "marginTop": 5,
-            "marginBottom": 5
+            "marginBottom": 5,
+            "marginRight":60,
           },
         
           "chartScrollbarSettings": {
@@ -464,14 +501,16 @@ export default class Markets extends Component {
           "categoryAxesSettings": {
             "equalSpacing": true,
             "gridColor":self.state.themes.text_inactive,
-            "gridAlpha": 1
+            "gridAlpha": 1,
           },
         
           "valueAxesSettings": {
             "gridColor": self.state.themes.text_inactive,
+            "color": self.state.themes.text_color,
             "gridAlpha": 1,
             "inside": false,
-            "showLastLabel": true
+            "position":"right",
+
           },
         
           "chartCursorSettings": {
@@ -530,6 +569,7 @@ export default class Markets extends Component {
         });
           $('#chartdiv').show();
         
+          console.log(chartData);
   }
 
   render() {
@@ -646,7 +686,7 @@ export default class Markets extends Component {
                   </h4>
                   
 
-                 <div id="chartdiv"  style={{display:"none", width:"100%",height:"600px", padding:"30px", marginBottom:"60px"}}></div>
+                 <div id="chartdiv"  style={{display:"none", width:"100%",height:"600px", paddingRight:"60px",  marginBottom:"60px"}}></div>
                  {this.state.specifications['Contract Specifications'] ? 
                  (
                   <div>
