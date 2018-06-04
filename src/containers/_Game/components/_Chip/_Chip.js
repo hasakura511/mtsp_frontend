@@ -136,15 +136,15 @@ export default class Chip extends PureComponent {
     var title = "";
 
     if (chip.tier != undefined) {
-      title="Tier: " + this.toTitleCase(chip.tier.toString()) + "\n"; 
+      title="Tier: " + toTitleCase(chip.tier.toString()) + "\n"; 
       title+="Lockdown: " + chip.lockdown_text.toString() + "\n"; 
       title+="Unlock: " + chip.unlocktime_text.toString() + "\n"; 
-      title+="Account Value: " + '$' + this.numberWithCommas(chip.account_value.toString()) + "\n"; 
+      title+="Account Value: " + '$' + numberWithCommas(chip.account_value.toString()) + "\n"; 
       title+="Cum. % Chg: " + chip.pnl_cumpct.toString() + "%\n";
       title+="Markets in Portfolio: " + chip.num_markets.toString() + "\n"; 
       title+="Age: " + chip.age.toString() + "\n";
-      title+="Current Bet: " +  this.toTitleCase(chip.last_selection.toString()) + "\n";
-      title+="Status: " +  this.toTitleCase(chip.status.toString());
+      title+="Current Bet: " +  toTitleCase(chip.last_selection.toString()) + "\n";
+      title+="Status: " +  toTitleCase(chip.status.toString());
     }
 
     var status=chip.status;
