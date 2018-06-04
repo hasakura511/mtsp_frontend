@@ -133,6 +133,7 @@ export default class Markets extends Component {
 
 
   componentDidMount() {
+    this.setState({loading:true})
     axiosOpen
       .post("/utility/market_heatmap/", {
 
@@ -706,9 +707,12 @@ export default class Markets extends Component {
         }
         groups.push( 
         <div className={classes.flex_vcontainer}
+
             key={"vc" + idx.toString()}
         >
-            <div className={classes.flex_item}
+            <a className={classes.flex_item}
+               href='#chartArea'
+                onClick={() => { self.componentDidMount(); }}
                 style={{
                   "background":this.state.data.groups[key].color_fill,
                   "color":this.state.data.groups[key].color_text,
@@ -723,7 +727,7 @@ export default class Markets extends Component {
                 <br/>
 
               
-            </div>
+            </a>
             {group2}
           </div>
           );
@@ -735,7 +739,10 @@ export default class Markets extends Component {
     var specs=[];
     return (
       <FormatModal title="Futures Market Heatmap">
-         <center>
+          {this.state.loading || !this.state.date_str? (
+            <Spinner />
+          ) : this.state.error ? null : (
+             <center>
                <h3 style={{"marginTop":"-22px"}}><b>Data as of {this.state.date_str}</b></h3>
                <br/><br/>
                <div id="chartArea"  style={{display:"none", width:"100%", textAlign:"left"}}>
@@ -768,19 +775,19 @@ export default class Markets extends Component {
                   </h4>
                   
 
-                 <div id="chartdiv"  style={{display:"none", width:"100%",height:"600px", paddingRight:"60px",  marginBottom:"5px"}}></div>
+                 <div id="chartdiv"  style={{display:"none", width:"100%",height:"500px", paddingRight:"60px",  marginBottom:"5px"}}></div>
                  {this.state.specifications['Contract Specifications'] ? 
                  (
                   <div>                    
                  <h4>Contract Specifications</h4>
-                  <hr/>
+                  <hr style={{margin: "1px",marginTop:"0px", border:"2px solid black",  }}/>
                   {Object.keys(this.state.specifications['Contract Specifications']).map(item => {
                       specidx+=1;
                       specs.push (
                     <span style={{"flex":1, width:"25%" }}
                     key={item}
                     >
-                        <h4>{item}</h4>
+                        <h4><b>{item}</b></h4>
                     </span>
                       )
                       specs.push(
@@ -798,7 +805,7 @@ export default class Markets extends Component {
                           <span style={{"flexDirection":"row", display:"flex",width:"100%"}}>
                             {specHtml}
                           </span>
-                          <hr/>
+                          <hr  style={{margin: "1px",marginTop:"0px"}}/>
                           </div>
                         )
                       }
@@ -811,17 +818,15 @@ export default class Markets extends Component {
                 <br/>
                 
 
-        </center>
         <div className={classes.Markets}>
 
-          {this.state.loading ? (
-            <Spinner />
-          ) : this.state.error ? null : (
             <div className={classes.flex_container}>
                 {groups}
             </div>
-          )}
         </div>
+        </center>
+          )};
+        
       </FormatModal>
     );
   }
