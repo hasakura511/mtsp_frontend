@@ -784,7 +784,7 @@ export default class Markets extends Component {
                     </span>
                       )
                       specs.push(
-                      <span style={{"flex":1,width:"25%"}}
+                      <span style={{"flex":1,textAlign:"right",paddingRight: "100px", width:"25%"}}
                       key={item + specidx}
                       >
                           <h4>{this.state.specifications['Contract Specifications'][item]}</h4>
