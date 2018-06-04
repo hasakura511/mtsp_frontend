@@ -387,7 +387,33 @@ export default class Markets extends Component {
           "panels": [ {
               "percentHeight": 70,
         
-              "stockGraphs": [ {
+              "stockGraphs": [  {
+                "title": "Seasonality",
+                "type": "line",
+                "id": "g2",
+                "valueAxis":"v1",
+                "valueField": "Seasonality",
+                "lineColor": self.state.themes.seasonality,
+                "fillColors": self.state.themes.seasonality,
+                "fillAlphas": 0.03,
+                "comparedGraphLineThickness": 2,
+                "columnWidth": 0.7,
+                "useDataSetColors": false,
+                
+               
+                "showBalloon": true,
+                "balloonText": "[[display_date]]<hr style='margin-left:-8px;margin-right:-8px;margin-top:1px;margin-bottom:1px;color:" +  self.state.themes.text_color + ";border: 3px;border-top: 1px solid " +  self.state.themes.text_color + "' />" +
+                              "<span style='float:left;'>Open:</span> <span style='float:right'>[[open]]</span><br/>" +
+                              "<span style='float:left;'>High:</span> <span style='float:right'>[[high]]</span><br/>" +
+                              "<span style='float:left;'>Low:</span> <span style='float:right'>[[low]]</span><br/>" +
+                              "<span style='float:left;'>Close:</span> <span style='float:right'>[[close]]</span><br/>" +
+                              "<span style='float:left;'>Seasonality:</span> <span style='float:right'>[[Seasonality]]</span><br/>" +
+                              "<span style='float:left;'>Volume:</span> <span style='float:right'>[[volume.value]]</span><br/>" +
+                              "<span style='float:left;'>OpenInterest:&nbsp;</span> <span style='float:right'>[[OpenInterest]]</span><br/>" +
+                              "<span style='float:left;'>Contract:</span> <span style='float:right'>[[Contract]]</span><br/>" +
+                              "<span style='float:left;'>Currency:</span> <span style='float:right'>[[Currency]]</span><br/>"
+
+              }, {
                 "title": "OHLC Close",
                 "type": "candlestick",
                 "id": "g1",
@@ -402,42 +428,29 @@ export default class Markets extends Component {
                 "negativeLineColor": self.state.themes.color_loss,
                 "negativeFillColors": self.state.themes.color_loss,
                 "fillAlphas": 1,
-                "comparedGraphLineThickness": 2,
                 "columnWidth": 0.7,
                 "useDataSetColors": false,
-                "showBalloon": true,
-                "pointPosition":"end",
                 //"showBalloonAt":"bottom",
                 "proCandlesticks": false,
                 "showAllValueLabels": true,
-
-                
+                "showHandOnHover":true,                
                
-                "balloonText": "[[display_date]]<hr style='margin-left:-8px;margin-right:-8px;margin-top:1px;margin-bottom:1px;color:" +  self.state.themes.text_color + ";border: 3px;border-top: 1px solid " +  self.state.themes.text_color + "' />" +
-                              "<span style='float:left;'>Open:</span> <span style='float:right'>[[open]]</span><br/>" +
-                              "<span style='float:left;'>High:</span> <span style='float:right'>[[high]]</span><br/>" +
-                              "<span style='float:left;'>Low:</span> <span style='float:right'>[[low]]</span><br/>" +
-                              "<span style='float:left;'>Close:</span> <span style='float:right'>[[close]]</span><br/>" +
-                              "<span style='float:left;'>Seasonality:</span> <span style='float:right'>[[Seasonality]]</span><br/>" +
-                              "<span style='float:left;'>Volume:</span> <span style='float:right'>[[Volume]]</span><br/>" +
-                              "<span style='float:left;'>OpenInterest:&nbsp;</span> <span style='float:right'>[[OpenInterest]]</span><br/>" +
-                              "<span style='float:left;'>Contract:</span> <span style='float:right'>[[Contract]]</span><br/>" +
-                              "<span style='float:left;'>Currency:</span> <span style='float:right'>[[Currency]]</span><br/>"
-              },
-              {
-                "title": "Seasonality",
-                "type": "line",
-                "id": "g2",
-                "valueAxis":"v1",
-                "valueField": "Seasonality",
-                "lineColor": self.state.themes.seasonality,
-                "fillColors": self.state.themes.seasonality,
                 "showBalloon": true,
-                "fillAlphas": 0.03,
-                "comparedGraphLineThickness": 2,
-                "columnWidth": 0.7,
-                "useDataSetColors": false,
-              } ],
+                "balloonFunction": function(item) {
+
+                  return item.serialDataItem.dataContext.display_date + "<hr style='margin-left:-8px;margin-right:-8px;margin-top:1px;margin-bottom:1px;color:" +  self.state.themes.text_color + ";border: 3px;border-top: 1px solid " +  self.state.themes.text_color + "' />" +
+                              "<span style='float:left;'>Open:</span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.Open.toString()) + "</span><br/>" +
+                              "<span style='float:left;'>High:</span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.High.toString()) + "</span><br/>" +
+                              "<span style='float:left;'>Low:</span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.Low.toString()) + "</span><br/>" +
+                              "<span style='float:left;'>Close:</span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.Close.toString()) + "</span><br/>" +
+                              "<span style='float:left;'>Seasonality:</span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.Seasonality.toString()) + "</span><br/>" +
+                              "<span style='float:left;'>Volume:</span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.Volume.toString()) + "</span><br/>" +
+                              "<span style='float:left;'>OpenInterest:&nbsp;</span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.OpenInterest.toString()) + "</span><br/>" +
+                              "<span style='float:left;'>Contract:</span> <span style='float:right'>" + item.serialDataItem.dataContext.Contract.toString() + "</span><br/>" +
+                              "<span style='float:left;'>Currency:</span> <span style='float:right'>" + item.serialDataItem.dataContext.Currency.toString() + "</span><br/>"
+                }
+              }
+              ],
         
               "stockLegend": {
                 "valueTextRegular": undefined,
@@ -463,21 +476,7 @@ export default class Markets extends Component {
             {
               "percentHeight": 30,
         
-              "stockGraphs": [ {
-                "title": "Volume",
-                "valueAxis":"v4",
-                "valueField": "volume",
-                "openField": "open",
-                "type": "column",
-                "showBalloon": true,
-                "fillAlphas": 1,
-                "lineColor": self.state.themes.text_color,
-                "fillColors":self.state.themes.text_color,
-                "negativeLineColor": self.state.themes.text_inactive,
-                "negativeFillColors":   self.state.themes.text_inactive,
-                "useDataSetColors": false
-              },
-              {
+              "stockGraphs": [  {
                 "title": "OpenInterest",
                 "valueAxis":"v3",
                 "type": "line",
@@ -490,7 +489,30 @@ export default class Markets extends Component {
                 "comparedGraphLineThickness": 2,
                 "columnWidth": 0.7,
                 "useDataSetColors": false,
-              }  ],
+              } ,{
+                "title": "Volume",
+                "valueAxis":"v4",
+                "valueField": "volume",
+                "openField": "open",
+                "type": "column",
+                "fillAlphas": 1,
+                "lineColor": self.state.themes.text_color,
+                "fillColors":self.state.themes.text_color,
+                "negativeLineColor": self.state.themes.text_inactive,
+                "negativeFillColors":   self.state.themes.text_inactive,
+                "useDataSetColors": false,
+                "showHandOnHover":true,
+                "showBalloon": true,
+                "balloonFunction": function(item) {
+                  //console.log(item);
+                  return "[[display_date]]<hr style='margin-left:-8px;margin-right:-8px;margin-top:1px;margin-bottom:1px;color:" +  self.state.themes.text_color + ";border: 3px;border-top: 1px solid " +  self.state.themes.text_color + "' />" +
+                  "<span style='float:left;'>Volume:</span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.Volume) + "</span><br/>" +
+                  "<span style='float:left;'>OpenInterest:&nbsp;</span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.OpenInterest) + "</span><br/>" 
+                  
+                },
+
+              }
+              ],
         
               "stockLegend": {
                 "periodValueTextRegular": "[[value.close]]"
@@ -521,23 +543,11 @@ export default class Markets extends Component {
             "marginTop": 5,
             "marginBottom": 5,
             "marginRight":60,
-            "recalculateToPercents": "never",
-
+            //"recalculateToPercents": "never",
+            "thousandsSeparator":","
           },
         
-          "chartScrollbarSettings": {
-            "graph": "g1",
-            "graphType": "line",
-            "usePeriod": "DD",
-            "backgroundColor": self.state.themes.background,
-            "graphFillColor": self.state.themes.text_color,
-            "graphFillAlpha": 0.5,
-            "gridColor": self.state.themes.text_inactive,
-            "gridAlpha": 1,
-            "selectedBackgroundColor": self.state.themes.background,
-            "selectedGraphFillAlpha": 1,
-            
-          },
+        
         
           "categoryAxesSettings": {
             "equalSpacing": true,
@@ -569,7 +579,26 @@ export default class Markets extends Component {
             "showAt": "high",
             "type": "pin"
           },
-        
+          "numberFormatter": {
+            "precision": -1,
+            "decimalSeparator": ".",
+            "thousandsSeparator": ","
+          },
+          "chartScrollbarSettings": {
+            "graph": "g1",
+            "graphType": "line",
+            "usePeriod": "DD",
+            "backgroundColor": self.state.themes.background,
+            "graphFillColor": self.state.themes.text_color,
+            "graphFillAlpha": 0.5,
+            "gridColor": self.state.themes.text_inactive,
+            "gridAlpha": 1,
+            "selectedBackgroundColor": self.state.themes.background,
+            "selectedGraphFillAlpha": 1,
+            "enabled":false,
+            
+          },
+
           "balloon": {
             "adjustBorderColor": true,
             "color": self.state.themes.text_color,
@@ -739,11 +768,10 @@ export default class Markets extends Component {
                   </h4>
                   
 
-                 <div id="chartdiv"  style={{display:"none", width:"100%",height:"600px", paddingRight:"60px",  marginBottom:"60px"}}></div>
+                 <div id="chartdiv"  style={{display:"none", width:"100%",height:"600px", paddingRight:"60px",  marginBottom:"5px"}}></div>
                  {this.state.specifications['Contract Specifications'] ? 
                  (
-                  <div>
-                    
+                  <div>                    
                  <h4>Contract Specifications</h4>
                   <hr/>
                   {Object.keys(this.state.specifications['Contract Specifications']).map(item => {

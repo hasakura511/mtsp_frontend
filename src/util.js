@@ -363,5 +363,9 @@ export const toTitleCase = (str) => {
 }
 
 export const numberWithCommas = (x) => {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  var y=x.toString();
+  if (y.match(/\./))
+    return y;
+  else
+    return y.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
