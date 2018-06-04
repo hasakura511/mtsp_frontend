@@ -12,6 +12,8 @@ import * as actions from "../../../../store/actions";
 import { compose } from 'redux'
 import Popover from 'react-tiny-popover'
 import Sound from 'react-sound';
+import { toTitleCase, numberWithCommas } from "../../../../util";
+
 
 const stateToProps = state => {
   return {
@@ -105,14 +107,6 @@ export default class Chip extends PureComponent {
 
   }
 
-  toTitleCase= (str) => {
-    return str.replace(/\w[^\ ^-]*/g, function(txt){
-        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-    });
- }
-  numberWithCommas = (x) => {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  }
 
   render() {
     const { dragSource, isDragging, dragPreview, canDrag, chip, showHeatmap, isLive } = this.props;

@@ -354,3 +354,14 @@ export const getDemoProfitObj = (offset, performance, position) => {
   console.log(obj);
   return obj;
 }
+
+
+export const toTitleCase = (str) => {
+  return str.replace(/\w[^\ ^-]*/g, function(txt){
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+  });
+}
+
+export const numberWithCommas = (x) => {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}

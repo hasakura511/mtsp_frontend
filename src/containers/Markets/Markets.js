@@ -11,7 +11,7 @@ import Spinner from "../../components/UI/Spinner/Spinner";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import initialControls from "./InitialControls";
-import { toUnderScore, andify, toSlashDate } from "../../util";
+import { toUnderScore, andify, toSlashDate, toTitleCase, numberWithCommas } from "../../util";
 import moment from 'moment-timezone';
 
 const Aux = props => props.children;
@@ -385,12 +385,13 @@ export default class Markets extends Component {
           "dataDateFormat": "YYYY-MM-DD",
         
           "panels": [ {
-              "title": "Value",
               "percentHeight": 70,
         
               "stockGraphs": [ {
+                "title": "OHLC Close",
                 "type": "candlestick",
                 "id": "g1",
+                "valueAxis":"v2",
                 "openField": "open",
                 "closeField": "close",
                 "highField": "high",
@@ -404,17 +405,15 @@ export default class Markets extends Component {
                 "comparedGraphLineThickness": 2,
                 "columnWidth": 0.7,
                 "useDataSetColors": false,
-                "comparable": true,
-                "compareField": "close",
                 "showBalloon": true,
                 "pointPosition":"end",
                 //"showBalloonAt":"bottom",
-                "proCandlesticks": true,
+                "proCandlesticks": false,
                 "showAllValueLabels": true,
 
                 
                
-                "balloonText": "[[display_date]]<hr style='margin:1px;color:black;border: 0;border-top: 1px solid #ccc;' />" +
+                "balloonText": "[[display_date]]<hr style='margin-left:-8px;margin-right:-8px;margin-top:1px;margin-bottom:1px;color:" +  self.state.themes.text_color + ";border: 3px;border-top: 1px solid " +  self.state.themes.text_color + "' />" +
                               "<span style='float:left;'>Open:</span> <span style='float:right'>[[open]]</span><br/>" +
                               "<span style='float:left;'>High:</span> <span style='float:right'>[[high]]</span><br/>" +
                               "<span style='float:left;'>Low:</span> <span style='float:right'>[[low]]</span><br/>" +
@@ -424,24 +423,49 @@ export default class Markets extends Component {
                               "<span style='float:left;'>OpenInterest:&nbsp;</span> <span style='float:right'>[[OpenInterest]]</span><br/>" +
                               "<span style='float:left;'>Contract:</span> <span style='float:right'>[[Contract]]</span><br/>" +
                               "<span style='float:left;'>Currency:</span> <span style='float:right'>[[Currency]]</span><br/>"
+              },
+              {
+                "title": "Seasonality",
+                "type": "line",
+                "id": "g2",
+                "valueAxis":"v1",
+                "valueField": "Seasonality",
+                "lineColor": self.state.themes.seasonality,
+                "fillColors": self.state.themes.seasonality,
+                "showBalloon": true,
+                "fillAlphas": 0.03,
+                "comparedGraphLineThickness": 2,
+                "columnWidth": 0.7,
+                "useDataSetColors": false,
               } ],
         
               "stockLegend": {
                 "valueTextRegular": undefined,
                 "periodValueTextComparing": "[[percents.value.close]]%"
               },
+              "valueAxes": [{
+                "id":"v1",
+                "axisColor": "#FF6600",
+                "axisThickness": 2,
+                "axisAlpha": 1,
+                "position": "left"
+              }, {
+                  "id":"v2",
+                  "axisColor": "#FCD202",
+                  "axisThickness": 2,
+                  "axisAlpha": 1,
+                  "position": "right"
+              }]
             
         
             },
         
             {
-              "title": "Volume",
               "percentHeight": 30,
-              "marginTop": 1,
-              "columnWidth": 0.6,
-              "showCategoryAxis": false,
         
               "stockGraphs": [ {
+                "title": "Volume",
+                "valueAxis":"v4",
                 "valueField": "volume",
                 "openField": "open",
                 "type": "column",
@@ -452,19 +476,41 @@ export default class Markets extends Component {
                 "negativeLineColor": self.state.themes.text_inactive,
                 "negativeFillColors":   self.state.themes.text_inactive,
                 "useDataSetColors": false
-              } ],
+              },
+              {
+                "title": "OpenInterest",
+                "valueAxis":"v3",
+                "type": "line",
+                "id": "g3",
+                "valueField": "OpenInterest",
+                "lineColor": self.state.themes.open_interest,
+                "fillColors": self.state.themes.open_interest,
+                "showBalloon": true,
+                "fillAlphas": 0.03,
+                "comparedGraphLineThickness": 2,
+                "columnWidth": 0.7,
+                "useDataSetColors": false,
+              }  ],
         
               "stockLegend": {
-                "markerType": "none",
-                "markerSize": 0,
-                "labelText": "",
                 "periodValueTextRegular": "[[value.close]]"
               },
-             
-              "valueAxes": [ {
+              "valueAxes": [{
+                "id":"v3",
+                "axisColor": "#FF6600",
+                "axisThickness": 2,
+                "axisAlpha": 1,
+                "position": "left", 
                 "usePrefixes": true,
-                "includeAllValues":true,
-              } ]
+              }, {
+                  "id":"v4",
+                  "usePrefixes": true,
+                  "includeAllValues":true,
+                  "axisColor": "#FCD202",
+                  "axisThickness": 2,
+                  "axisAlpha": 1,
+                  "position": "right"
+              }]
             }
           ],
           "panelsSettings": {
@@ -498,8 +544,6 @@ export default class Markets extends Component {
             "gridColor":self.state.themes.text_inactive,
             "gridAlpha": 1,
             "maxSeries":1000,
-            "minPeriod": "DD",
-            "groupToPeriods":["DD"]
         
           },
         
@@ -508,7 +552,6 @@ export default class Markets extends Component {
             "color": self.state.themes.text_color,
             "gridAlpha": 1,
             "inside": false,
-            "position":"right",
 
           },
         
@@ -539,7 +582,7 @@ export default class Markets extends Component {
             "offsetY":0,
             //"horizontalPadding":200,
             "showBullet":false,
-            "fillAlpha":0.5,
+            "fillAlpha":0.8,
             
           },
         

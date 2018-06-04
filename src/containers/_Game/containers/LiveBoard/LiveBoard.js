@@ -1,4 +1,3 @@
-
 import React, { Component } from "react";
 import Panel from "../Panel/Panel";
 import classes from "./LiveBoard.css";
@@ -20,12 +19,6 @@ import Toggle from 'react-bootstrap-toggle'
 import axios from "../../../../axios-gsm";
 import ClockLoader from "../../../../components/UI/ClockLoader/ClockLoader";
 import { toSystem, toAntiSystem } from "../../Config";
-
-/**
- * create dummy balanceChips array
- */
-
-
 
 // Inserts or removes chip into system
 const insertChip = (systems, column, chip) => {
@@ -182,8 +175,6 @@ export default class LiveBoard extends Component {
       initializeData:{},
       refreshing:false,
     };
-    
-
   
   }
 
@@ -218,34 +209,20 @@ export default class LiveBoard extends Component {
     else
       this.setState({refreshing:true})
     //console.log(this.props);
-    /*
-    this.setState({
-      loading:true,
-    });
-    */
     axios
     .post("/utility/initialize_live/", {
-    // .get("https://api.myjson.com/bins/11pqxf", {
-    //only 5k chip for tier 0
     // accounts: [{ portfolio, target, accountValue }],
     'username':  this.props.email,
     'reinitialize': 'false'
     },{timeout: 600000})
     .then(({ data }) => {
       console.log('received initialize_live data')
-      // eslint-disable-next-line react/no-is-mounted
       console.log(data);
-
-
       this.props.initializeData(data);
 
-      //this.props.updateDate();
-      
       if (!this.state.loading)
         this.sendNotice("Board Refreshed with New Data");
 
-
-      //this.sendNotice('Account Data Received');
       this.setState({
         loading:false,
         rankingLoading: false,
@@ -266,7 +243,6 @@ export default class LiveBoard extends Component {
         refreshing:false
       });
     });
-
 
   }
 
@@ -305,12 +281,6 @@ export default class LiveBoard extends Component {
     chip.position=position;
     chip.chip_location=strat.toLowerCase();
 
-    // In case the chip is dropped on a system
-    // we push it in system's heldChips in the inserChip method.
-    /**
-     * When chip is moved from one betting position to other.
-     */
-    //const balanceChips = [...inGameChips.balanceChips];
     var balanceChips=inGameChips.balanceChips;
     var bettingChips=inGameChips.bettingChips;
     
@@ -369,10 +339,6 @@ export default class LiveBoard extends Component {
             }
           ];
         }
-        
-        
-
-
     }
 
     var rev_accounts = accounts.map(account => {
@@ -406,7 +372,6 @@ export default class LiveBoard extends Component {
       accounts
       
     );
-
     console.log(inGameChips);
 
 
@@ -431,8 +396,6 @@ export default class LiveBoard extends Component {
 
         axios
           .post("/utility/update_bet_live/", {
-          // .get("https://api.myjson.com/bins/11pqxf", {
-          //only 5k chip for tier 0
           // accounts: [{ portfolio, target, accountValue }],
           'account_id': chip.accountId,
           'chip_id':chip.chip_id,
@@ -446,9 +409,7 @@ export default class LiveBoard extends Component {
               console.log("error");
               console.log(origPosition);
               console.log(origStrat);
-
-              this.moveOnBoard(origChip, origPosition, origStrat);
-  
+              this.moveOnBoard(origChip, origPosition, origStrat);  
             }
           })
           .catch(error => {
