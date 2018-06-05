@@ -434,7 +434,7 @@ export default class Markets extends Component {
                 "fillAlphas": 1,
                 "columnWidth": 0.7,
                 "useDataSetColors": false,
-                //"showBalloonAt":"bottom",
+                "showBalloonAt":"close",
                 "proCandlesticks": false,
                 "showAllValueLabels": true,
                 "showHandOnHover":true,                
@@ -462,16 +462,20 @@ export default class Markets extends Component {
               },
               "valueAxes": [{
                 "id":"v1",
-                "axisColor": "#FF6600",
-                "axisThickness": 2,
-                "axisAlpha": 1,
-                "position": "left"
+                "axisColor": "transparent",
+                "axisThickness": 0,
+                "axisAlpha": 0.0001,
+                "position": "left",
+                "gridAlpha":0.0001,
+                "gridCount":0,
+                "gridThickness":0
+
               }, {
                   "id":"v2",
                   "axisColor": "#FCD202",
                   "axisThickness": 2,
                   "axisAlpha": 1,
-                  "position": "right"
+                  "position": "right",
               }]
             
         
@@ -498,13 +502,16 @@ export default class Markets extends Component {
                 "valueAxis":"v4",
                 "valueField": "volume",
                 "openField": "open",
+                "closeField": "close",
+                "highField": "high",
+                "lowField": "low",
                 "type": "column",
                 "fillAlphas": 1,
-                "lineColor": self.state.themes.text_color,
-                "fillColors":self.state.themes.text_color,
-                "negativeLineColor": self.state.themes.text_inactive,
-                "negativeFillColors":   self.state.themes.text_inactive,
                 "useDataSetColors": false,
+                "lineColor": self.state.themes.text_color,
+                "fillColors": self.state.themes.text_color,
+                "negativeLineColor": self.state.themes.color_loss,
+                "negativeFillColors": self.state.themes.color_loss,
                 "showHandOnHover":true,
                 "showBalloon": true,
                 "balloonFunction": function(item) {
@@ -524,15 +531,17 @@ export default class Markets extends Component {
               "valueAxes": [{
                 "id":"v3",
                 "axisColor": "#FF6600",
-                "axisThickness": 2,
-                "axisAlpha": 1,
-                "position": "left", 
+                "axisThickness": 0,
+                "axisAlpha": 0.0001,
+                "position": "left",
+                "gridAlpha":0.0001,
+                "gridCount":0,
                 "usePrefixes": true,
+                "gridThickness":0
               }, {
                   "id":"v4",
                   "usePrefixes": true,
                   "includeAllValues":true,
-                  "axisColor": "#FCD202",
                   "axisThickness": 2,
                   "axisAlpha": 1,
                   "position": "right"
@@ -610,10 +619,10 @@ export default class Markets extends Component {
             "fillColor": self.state.themes.background,
             "fixedPosition":false,
             "offsetX": 200,
-            "verticalPadding":0,
+            "verticalPadding":4,
             "textAlign":"left",
-            "offsetY":0,
-            //"horizontalPadding":200,
+            "offsetY":200,
+            "horizontalPadding":8,
             "showBullet":false,
             "fillAlpha":0.8,
             
