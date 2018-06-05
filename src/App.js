@@ -101,6 +101,8 @@ class App extends Component<PropType, { showSideDrawer: boolean }> {
   toggleSideDrawer = () => {
     this.setState(prev => ({ showSideDrawer: !prev.showSideDrawer }));
   };
+
+  
   /**
    * Render of App component
    * @function render

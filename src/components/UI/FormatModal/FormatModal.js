@@ -7,9 +7,11 @@ const formatModal = props => {
   const Title = title;
   return (
     <div className={classes.FormatModal}>
+      { /*
       <div className={classes.Title}>
         {typeof title === "function" ? <Title /> : <h3><b>{title}</b></h3>}
       </div>
+      */ }
       <div className={classes.Content}>{children}</div>
     </div>
   );

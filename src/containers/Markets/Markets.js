@@ -178,6 +178,7 @@ export default class Markets extends Component {
           liveDateText:liveDateText,
           date_str:date_str,
           data:data,
+          themes:themes,
           loading: false,
           fetched: true
         });
@@ -738,14 +739,22 @@ export default class Markets extends Component {
     var specidx=0;
     var specs=[];
     return (
-      <FormatModal title="Futures Market Heatmap">
+      <FormatModal title="Futures Market Heatmap" 
+      style={{background:self.state.themes.background,
+              backgroundColor:self.state.themes.background,
+              padding:"0px",margin:"0px"
+      }}>
           {this.state.loading || !this.state.date_str? (
             <Spinner />
           ) : this.state.error ? null : (
-             <center>
-               <h3 style={{"marginTop":"-22px"}}><b>Data as of {this.state.date_str}</b></h3>
+             <div style={{textAlign:"center",background:self.state.themes.background,
+              backgroundColor:self.state.themes.background,
+              padding:"0px",margin:"0px"
+              }}
+             >
+               <h3 style={{"marginTop":"5px"}}><br/><b>Data as of {this.state.date_str}</b></h3>
                <br/><br/>
-               <div id="chartArea"  style={{display:"none", width:"100%", textAlign:"left"}}>
+               <div id="chartArea"  style={{display:"none", width:"100%", textAlign:"left", padding:"10px"}}>
                   <center><h3>{this.state.specifications.chart_title}</h3></center>
                   <h4>
                   &nbsp;
@@ -824,7 +833,7 @@ export default class Markets extends Component {
                 {groups}
             </div>
         </div>
-        </center>
+        </div>
           )};
         
       </FormatModal>

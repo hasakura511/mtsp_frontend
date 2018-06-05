@@ -555,7 +555,8 @@ export default class Board extends Component {
             addBettingChip={this.addBettingChip}
             moveToBalance={this.moveToBalance}
           />
-        </div>
+
+s        </div>
       </Aux>
     );
   }

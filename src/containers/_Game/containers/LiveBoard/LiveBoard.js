@@ -19,6 +19,7 @@ import Toggle from 'react-bootstrap-toggle'
 import axios from "../../../../axios-gsm";
 import ClockLoader from "../../../../components/UI/ClockLoader/ClockLoader";
 import { toSystem, toAntiSystem } from "../../Config";
+import Markets from "../../../Markets/Markets"
 
 // Inserts or removes chip into system
 const insertChip = (systems, column, chip) => {
@@ -739,7 +740,9 @@ export default class LiveBoard extends Component {
               addBettingChip={this.addBettingChip}
               moveToBalance={this.moveToBalance}
             />
+
           </div>
+          <Markets/>
         </Aux>
       );
     }
