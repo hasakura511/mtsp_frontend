@@ -391,10 +391,13 @@ export default class Markets extends Component {
           "dataDateFormat": "YYYY-MM-DD",
         
           "panels": [ {
-              "percentHeight": 70,
-        
+              "percentHeight": 80,
+              "autoMarginOffset":70,
+              "autoDisplay":true,
+              "marginsUpdated":true,
+              "marginBottom":70,
               "stockGraphs": [  {
-                "title": "Seasonality",
+                  "title": "Seasonality",
                 "type": "line",
                 "id": "g2",
                 "valueAxis":"v1",
@@ -486,7 +489,7 @@ export default class Markets extends Component {
             },
         
             {
-              "percentHeight": 30,
+              "percentHeight": 20,
         
               "stockGraphs": [  {
                 "title": "OpenInterest",
@@ -623,7 +626,7 @@ export default class Markets extends Component {
             "offsetX": 200,
             "verticalPadding":0,
             "textAlign":"left",
-            "offsetY":200,
+            //"offsetY":200,
             "horizontalPadding":8,
             "showBullet":false,
             "fillAlpha":0.8,
@@ -1181,7 +1184,7 @@ export default class Markets extends Component {
                   </h4>
                   
 
-                 <div id="chartdiv"  style={{display:"none", width:"100%",height:"500px", paddingRight:"60px",  marginBottom:"5px"}}></div>
+                 <div id="chartdiv"  style={{display:"none", width:"100%",height:"600px", paddingRight:"60px",  marginBottom:"5px"}}></div>
                  {this.state.specifications['Contract Specifications'] ? 
                  (
                   <div>                    
