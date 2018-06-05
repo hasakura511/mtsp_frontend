@@ -423,7 +423,7 @@ export default class Markets extends Component {
                               "<span style='float:left;'>Currency:</span> <span style='float:right'>[[Currency]]</span><br/>"
 
               }, {
-                "title": "OHLC Close",
+                "title": "Close",
                 "type": "candlestick",
                 "id": "g1",
                 "valueAxis":"v2",
@@ -436,9 +436,15 @@ export default class Markets extends Component {
                 "fillColors": self.state.themes.color_gain,
                 "negativeLineColor": self.state.themes.color_loss,
                 "negativeFillColors": self.state.themes.color_loss,
+                "legendColor":self.state.themes.color_gain,
+
+                "colorField":"VolumeColor",
+                "lineColorField":"VolumeColor",
+                "labelColorField":"VolumeColor",
+                "useDataSetColors": true,
+
                 "fillAlphas": 1,
                 "columnWidth": 0.7,
-                "useDataSetColors": false,
                 "showBalloonAt":"close",
                 "proCandlesticks": false,
                 "showAllValueLabels": true,
@@ -516,9 +522,9 @@ export default class Markets extends Component {
                 "colorField":"VolumeColor",
                 "lineColorField":"VolumeColor",
                 "labelColorField":"VolumeColor",
+                "useDataSetColors": true,
                 "legendColor":self.state.themes.color_loss,
                 "fillAlphas": 1,
-                "useDataSetColors": true,
                 "showHandOnHover":true,
                 "showBalloon": true,
                 "balloonFunction": function(item) {
@@ -1153,10 +1159,16 @@ export default class Markets extends Component {
               backgroundColor:self.state.themes.background,
               padding:"0px",margin:"0px"
               }}
-             >
-               <h3 style={{"marginTop":"0px"}}><br/><b>Data as of {this.state.date_str}</b></h3>
+
+            >
+              {
+                /*
+               <h3 style={{"marginTop":"0px", "color" : self.state.themes.text_color}}><br/><b>Data as of {this.state.date_str}</b></h3>
                <br/><br/>
-               <div id="chartArea"  style={{display:"none", width:"100%", textAlign:"left", padding:"10px"}}>
+               */
+              }
+              
+              <div id="chartArea"  style={{display:"none", width:"100%", textAlign:"left", padding:"10px"}}>
                   <center><h3>{this.state.specifications.chart_title}</h3></center>
                   <h4>
                   &nbsp;
@@ -1236,7 +1248,7 @@ export default class Markets extends Component {
             </div>
         </div>
         </div>
-          )};
+          )}
         
       </FormatModal>
     );
