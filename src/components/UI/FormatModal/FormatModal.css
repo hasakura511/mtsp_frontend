@@ -2,7 +2,7 @@
   width: 100%;
   height: auto;
   text-align: center;
-  padding: 4px 0px;
+  padding: 0px 0px;
   box-sizing: border-box;
   color: black;
 }
@@ -14,8 +14,7 @@
 }
 
 .FormatModal .Content{
-  padding: 16px;
+  padding: 0px;
   margin: auto;
-  color: #1b1b1c;
   font-size: 0.75em;
 }

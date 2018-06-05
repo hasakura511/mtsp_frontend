@@ -452,7 +452,7 @@ export default class Markets extends Component {
                               "<span style='float:left;'><b>Open:</b></span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.Open.toString()) + "</span><br/>" +
                               "<span style='float:left;'><b>High:</b></span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.High.toString()) + "</span><br/>" +
                               "<span style='float:left;'><b>Low:</b></span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.Low.toString()) + "</span><br/>" +
-                              "<span style='float:left;'><b>Close:</b></span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.Close.toString()) + "</span><br/>" +
+                              "<span style='float:left;'><b>Close:</b></span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.Close.toString()) + "</span><br/>" + 
                               //"<span style='float:left;'><b>Seasonality:</b></span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.Seasonality.toString()) + "</span>" +
                               //"<span style='float:left;'><b>Volume:</b></span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.Volume.toString()) + "</span><br/>" +
                               //"<span style='float:left;'><b>OpenInterest:</b></span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.OpenInterest.toString()) + "</span>" +
@@ -515,6 +515,8 @@ export default class Markets extends Component {
                 "type": "column",
                 "colorField":"VolumeColor",
                 "lineColorField":"VolumeColor",
+                "labelColorField":"VolumeColor",
+                "legendColor":self.state.themes.color_loss,
                 "fillAlphas": 1,
                 "useDataSetColors": true,
                 "showHandOnHover":true,
@@ -807,7 +809,7 @@ export default class Markets extends Component {
                               "<span style='float:left;'>Currency:</span> <span style='float:right'>[[Currency]]</span><br/>"
 
               }, {
-                "title": "OHLC Close",
+                "title": "Close",
                 "type": "candlestick",
                 "id": "g1",
                 "valueAxis":"v2",
@@ -1152,7 +1154,7 @@ export default class Markets extends Component {
               padding:"0px",margin:"0px"
               }}
              >
-               <h3 style={{"marginTop":"5px"}}><br/><b>Data as of {this.state.date_str}</b></h3>
+               <h3 style={{"marginTop":"0px"}}><br/><b>Data as of {this.state.date_str}</b></h3>
                <br/><br/>
                <div id="chartArea"  style={{display:"none", width:"100%", textAlign:"left", padding:"10px"}}>
                   <center><h3>{this.state.specifications.chart_title}</h3></center>
@@ -1200,7 +1202,7 @@ export default class Markets extends Component {
                     </span>
                       )
                       specs.push(
-                      <span style={{"flex":1,textAlign:"right",paddingRight: "100px", width:"25%"}}
+                      <span style={{"flex":1,textAlign:"right",paddingRight: "30px", width:"25%"}}
                       key={item + specidx}
                       >
                           <h4>{this.state.specifications['Contract Specifications'][item]}</h4>
