@@ -452,9 +452,9 @@ export default class Markets extends Component {
                               "<span style='float:left;'><b>Open:</b></span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.Open.toString()) + "</span><br/>" +
                               "<span style='float:left;'><b>High:</b></span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.High.toString()) + "</span><br/>" +
                               "<span style='float:left;'><b>Low:</b></span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.Low.toString()) + "</span><br/>" +
-                              //"<span style='float:right;margin-right:5px'><span style='float:left;'><b>Close:</b></span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.Close.toString()) + "</span><br/>" +
+                              "<span style='float:left;'><b>Close:</b></span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.Close.toString()) + "</span><br/>" +
                               //"<span style='float:left;'><b>Seasonality:</b></span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.Seasonality.toString()) + "</span>" +
-                              "<span style='float:left;'><b>Volume:</b></span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.Volume.toString()) + "</span><br/>" +
+                              //"<span style='float:left;'><b>Volume:</b></span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.Volume.toString()) + "</span><br/>" +
                               //"<span style='float:left;'><b>OpenInterest:</b></span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.OpenInterest.toString()) + "</span>" +
                               //"<span style='float:right;margin-right:5px'><span style='float:left;'><b></b></span> <span style='float:right'></span><br/>" +
                               "<span style='float:left;'><b>Currency:</b></span> <span style='float:right'>" + item.serialDataItem.dataContext.Currency.toString() + "</span><br/>" +
