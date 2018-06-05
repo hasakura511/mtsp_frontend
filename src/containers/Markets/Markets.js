@@ -380,11 +380,13 @@ export default class Markets extends Component {
             },  {
               "fromField": "Contract",
               "toField": "Contract"
+            },  {
+              "fromField": "VolumeColor",
+              "toField": "VolumeColor"
             } ],
             "compared": false,
             "dataProvider": chartData,
             "categoryField": "Date",
-        
           } ],
           "dataDateFormat": "YYYY-MM-DD",
         
@@ -442,17 +444,18 @@ export default class Markets extends Component {
                 "showBalloon": true,
                 "balloonFunction": function(item) {
 
-                  return "<b style='margin-left:-25px'>" + item.serialDataItem.dataContext.display_date + "</b><hr style='margin-left:-30px;margin-right:-30px;margin-top:1px;margin-bottom:1px;color:" +  self.state.themes.text_color + ";border: 3px;border-top: 1px solid " +  self.state.themes.text_color + "' />" +
-                              "<span style='float:left;margin-left:-25px'><span style='float:left;width:80px;'><b>Open:</b></span> <span style='float:right'>&nbsp;&nbsp;&nbsp;" + numberWithCommas(item.serialDataItem.dataContext.Open.toString()) + "</span></span>" +
-                              "<span style='float:right;margin-right:-25px'><span style='float:left;width:80px;'>&nbsp;&nbsp;&nbsp;<b>High:</b></span> <span style='float:right'>&nbsp;&nbsp;&nbsp;" + numberWithCommas(item.serialDataItem.dataContext.High.toString()) + "</span></span><br/>" +
-                              "<span style='float:left;margin-left:-25px'><span style='float:left;width:80px;'><b>Low:</b></span> <span style='float:right'>&nbsp;&nbsp;&nbsp;" + numberWithCommas(item.serialDataItem.dataContext.Low.toString()) + "</span></span>" +
-                              "<span style='float:right;margin-right:-25px'><span style='float:left;width:80px;'>&nbsp;&nbsp;&nbsp;<b>Close:</b></span> <span style='float:right'>&nbsp;&nbsp;&nbsp;" + numberWithCommas(item.serialDataItem.dataContext.Close.toString()) + "</span></span><br/>" +
-                              "<span style='float:left;margin-left:-25px'><span style='float:left;width:80px;'><b>Seasonality:</b></span> <span style='float:right'>&nbsp;&nbsp;&nbsp;" + numberWithCommas(item.serialDataItem.dataContext.Seasonality.toString()) + "</span></span>" +
-                              "<span style='float:right;margin-right:-25px'><span style='float:left;width:80px;'>&nbsp;&nbsp;&nbsp;<b>Volume:</b></span> <span style='float:right'>&nbsp;&nbsp;&nbsp;" + numberWithCommas(item.serialDataItem.dataContext.Volume.toString()) + "</span></span><br/>" +
-                              "<span style='float:left;margin-left:-25px'><span style='float:left;width:80px;'><b>OpenInterest:</b></span> <span style='float:right'>&nbsp;&nbsp;&nbsp;" + numberWithCommas(item.serialDataItem.dataContext.OpenInterest.toString()) + "</span></span>" +
-                              "<span style='float:right;margin-right:-25px'><span style='float:left;width:80px;'>&nbsp;&nbsp;&nbsp;<b></b></span> <span style='float:right'>&nbsp;&nbsp;&nbsp;</span></span><br/>" +
-                              "<span style='float:left;margin-left:-25px'><span style='float:left;width:80px;'><b>Currency:</b></span> <span style='float:right'>&nbsp;&nbsp;&nbsp;" + item.serialDataItem.dataContext.Currency.toString() + "</span></span>" +
-                              "<span style='float:right;margin-right:-25px'><span style='float:left;width:80px;'>&nbsp;&nbsp;&nbsp;<b>Contract:</b></span> <span style='float:right'>&nbsp;&nbsp;&nbsp;" + item.serialDataItem.dataContext.Contract.toString() + "</span></span><br/>"
+                  return "<b style='margin-left:5px'>" + item.serialDataItem.dataContext.display_date + "</b>" +
+                              "<hr style='margin-left:-8px;margin-right:-8px;margin-top:1px;margin-bottom:1px;color:" +  self.state.themes.text_color + ";border: 3px;border-top: 1px solid " +  self.state.themes.text_color + "' />" +
+                              "<span style='float:left;'><b>Open:</b></span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.Open.toString()) + "</span><br/>" +
+                              "<span style='float:left;'><b>High:</b></span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.High.toString()) + "</span><br/>" +
+                              "<span style='float:left;'><b>Low:</b></span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.Low.toString()) + "</span><br/>" +
+                              //"<span style='float:right;margin-right:5px'><span style='float:left;'><b>Close:</b></span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.Close.toString()) + "</span><br/>" +
+                              //"<span style='float:left;'><b>Seasonality:</b></span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.Seasonality.toString()) + "</span>" +
+                              "<span style='float:left;'><b>Volume:</b></span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.Volume.toString()) + "</span><br/>" +
+                              //"<span style='float:left;'><b>OpenInterest:</b></span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.OpenInterest.toString()) + "</span>" +
+                              //"<span style='float:right;margin-right:5px'><span style='float:left;'><b></b></span> <span style='float:right'></span><br/>" +
+                              "<span style='float:left;'><b>Currency:</b></span> <span style='float:right'>" + item.serialDataItem.dataContext.Currency.toString() + "</span><br/>" +
+                              "<span style='float:left;'><b>Contract:</b></span> <span style='float:right'>" + item.serialDataItem.dataContext.Contract.toString() + "</span><br/>"
                 }
               }
               ],
@@ -507,12 +510,10 @@ export default class Markets extends Component {
                 "highField": "high",
                 "lowField": "low",
                 "type": "column",
+                "colorField":"VolumeColor",
+                "lineColorField":"VolumeColor",
                 "fillAlphas": 1,
-                "useDataSetColors": false,
-                "lineColor": self.state.themes.text_color,
-                "fillColors": self.state.themes.text_color,
-                "negativeLineColor": self.state.themes.color_loss,
-                "negativeFillColors": self.state.themes.color_loss,
+                "useDataSetColors": true,
                 "showHandOnHover":true,
                 "showBalloon": true,
                 "balloonFunction": function(item) {
@@ -620,10 +621,10 @@ export default class Markets extends Component {
             "fillColor": self.state.themes.background,
             "fixedPosition":false,
             "offsetX": 200,
-            "verticalPadding":4,
+            "verticalPadding":0,
             "textAlign":"left",
             "offsetY":200,
-            "horizontalPadding":30,
+            "horizontalPadding":8,
             "showBullet":false,
             "fillAlpha":0.8,
             

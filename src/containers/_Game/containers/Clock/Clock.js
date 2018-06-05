@@ -230,7 +230,7 @@ export default class Clock extends PureComponent {
             <br/>
             <br/>
             <h3>
-            <LiveClock format={'HH:mm:ss A '} ticking={true} timezone={'US/Eastern'} />
+            <LiveClock format={'hh:mm:ss A '} ticking={true} timezone={'US/Eastern'} />
             &nbsp;
             </h3> EST
             <br/>
