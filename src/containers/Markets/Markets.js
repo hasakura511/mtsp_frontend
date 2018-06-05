@@ -44,7 +44,8 @@ const toOptionsList = obj => {
 const stateToProps = state => {
   return {
     liveDate:state.betting.liveDate,
-    liveDateText:state.betting.liveDateText
+    liveDateText:state.betting.liveDateText,
+    email:state.auth.email
     
   };
 };
@@ -109,7 +110,8 @@ export default class Markets extends Component {
     history: PropTypes.object.isRequired,
     addTimedToaster: PropTypes.func.isRequired,
     liveDate:PropTypes.instanceOf(moment).isRequired,
-    liveDateText:PropTypes.string.isRequired
+    liveDateText:PropTypes.string.isRequired,
+    email:PropTypes.string
   };
 
   getSubmitTitle(controls) {
@@ -136,7 +138,7 @@ export default class Markets extends Component {
     this.setState({loading:true})
     axiosOpen
       .post("/utility/market_heatmap/", {
-
+          'username':  this.props.email,
           'date':this.state.liveDateText,
 
       })
