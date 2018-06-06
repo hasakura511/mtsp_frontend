@@ -1,13 +1,13 @@
 import React, { PureComponent } from "react";
-import classes from "./Clock.css";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
 import { toSlashDate } from "../../../../util";
 import LiveClock from 'react-live-clock';
 import Moment from 'react-moment';
 import momentCountdown from 'moment-countdown';
 import moment from 'moment-timezone';
 import ClockLoader from "../../../../components/UI/ClockLoader/ClockLoader";
+import classes from "./Clock.css";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import * as actions from "../../../../store/actions";
 
 export const DAYS = [

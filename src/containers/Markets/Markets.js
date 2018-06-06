@@ -322,8 +322,10 @@ export default class Markets extends Component {
         })
 
         var finalData={'3 Months':cd, '6 Months':cd2, '12 Months':cd3}
+        var spec=response.data.specifications;
+        spec['status']='item';
         this.setState({chartData:finalData,
-            specifications:response.data.specifications,
+            specifications:spec,
             themes:response.data.themes});
         this.onGetChartDate(symbol, date, period)
         $('#chartArea').show()
@@ -693,36 +695,31 @@ export default class Markets extends Component {
 
     })
     .then(response => {
-        console.log(response.data)
-        var chartData= JSON.parse(response.data.data["3 Months"])
-        var chartData2= JSON.parse(response.data.data["6 Months"])
-        var chartData3= JSON.parse(response.data.data["12 Months"])
+        var finalData={}
+        var title=response.data.chart_title;
+
+        Object.keys(response.data.data).map(date => {
+            console.log(response.data)
+            var chartData= JSON.parse(response.data.data[date]);
+            var cd=[];
+
+            Object.keys(chartData).map(key => {
+              var tick=chartData[key];
+              tick.Date=key;
+              cd.push(tick);
+            })
+            finalData[date]=cd;
+            
+
+     
+        })
        
+        console.log(finalData)
 
-        var cd=[];
-        var cd2=[];
-        var cd3=[];
-        Object.keys(chartData).map(key => {
-          var tick=chartData[key];
-          tick.Date=key;
-          cd.push(tick);
-        })
-        Object.keys(chartData2).map(key => {
-          var tick=chartData2[key];
-          tick.Date=key;
-          cd2.push(tick);
-        })
-        Object.keys(chartData3).map(key => {
-          var tick=chartData3[key];
-          tick.Date=key;
-          cd3.push(tick);
-        })
-
-        var finalData={'3 Months':cd, '6 Months':cd2, '12 Months':cd3}
         this.setState({chartData:finalData,
-            specifications:response.data.specifications,
+            specifications:{"chart_title":title, "status":"group"},
             themes:response.data.themes});
-        this.onGetChartDate(symbol, date, period)
+        this.onGetGroupChartDate(symbol, date, period)
         $('#chartArea').show()
         
     })
@@ -738,331 +735,228 @@ export default class Markets extends Component {
   }
 
   onGetGroupChartDate = (symbol, date, period) => {
-        var chartData=this.state.chartData[period];
-        var self=this;
+    var chartData=this.state.chartData[period];
+    var self=this;
 
 
-        var color;
-        var chart = AmCharts.makeChart( "chartdiv", {
-          "type": "stock",
-          "theme": "light",
-        
-          //"color": "#fff",
-          "dataSets": [ {
-            "title":  symbol + " " + period,
-            "fieldMappings": [ {
-              "fromField": "Open",
-              "toField": "open"
-            }, {
-              "fromField": "High",
-              "toField": "high"
-            }, {
-              "fromField": "Low",
-              "toField": "low"
-            }, {
-              "fromField": "Close",
-              "toField": "close"
-            }, {
-              "fromField": "Volume",
-              "toField": "volume"
-            },  {
-              "fromField": "display_date",
-              "toField": "display_date"
-            },  {
-              "fromField": "Seasonality",
-              "toField": "Seasonality"
-            },  {
-              "fromField": "OpenInterest",
-              "toField": "OpenInterest"
-            },  {
-              "fromField": "Contract",
-              "toField": "Contract"
-            } ],
-            "compared": false,
-            "dataProvider": chartData,
-            "categoryField": "Date",
-        
-          } ],
-          "dataDateFormat": "YYYY-MM-DD",
-        
-          "panels": [ {
-              "percentHeight": 70,
-        
-              "stockGraphs": [  {
-                "title": "Seasonality",
-                "type": "line",
-                "id": "g2",
-                "valueAxis":"v1",
-                "valueField": "Seasonality",
-                "lineColor": self.state.themes.seasonality,
-                "fillColors": self.state.themes.seasonality,
-                "fillAlphas": 0.03,
-                "comparedGraphLineThickness": 2,
-                "columnWidth": 0.7,
-                "useDataSetColors": false,
-                
-               
-                "showBalloon": true,
-                "balloonText": "[[display_date]]<hr style='margin-left:-8px;margin-right:-8px;margin-top:1px;margin-bottom:1px;color:" +  self.state.themes.text_color + ";border: 3px;border-top: 1px solid " +  self.state.themes.text_color + "' />" +
-                              "<span style='float:left;'>Open:</span> <span style='float:right'>[[open]]</span><br/>" +
-                              "<span style='float:left;'>High:</span> <span style='float:right'>[[high]]</span><br/>" +
-                              "<span style='float:left;'>Low:</span> <span style='float:right'>[[low]]</span><br/>" +
-                              "<span style='float:left;'>Close:</span> <span style='float:right'>[[close]]</span><br/>" +
-                              "<span style='float:left;'>Seasonality:</span> <span style='float:right'>[[Seasonality]]</span><br/>" +
-                              "<span style='float:left;'>Volume:</span> <span style='float:right'>[[volume.value]]</span><br/>" +
-                              "<span style='float:left;'>OpenInterest:&nbsp;</span> <span style='float:right'>[[OpenInterest]]</span><br/>" +
-                              "<span style='float:left;'>Contract:</span> <span style='float:right'>[[Contract]]</span><br/>" +
-                              "<span style='float:left;'>Currency:</span> <span style='float:right'>[[Currency]]</span><br/>"
+    var color;
+    var chart = AmCharts.makeChart( "chartdiv", {
+      "type": "stock",
+      "theme": "light",
+    
+      //"color": "#fff",
+      "dataSets": [ {
+        "title":  symbol + " " + period,
+        "fieldMappings": Object.keys(chartData[0]).map(key => {
+          return {
+                  "fromField": key,
+                  "toField": key.replace(" ","")
+                }
+              }),
+        "compared": false,
+        "dataProvider": chartData,
+        "categoryField": "Date",
+      } ],
+      "dataDateFormat": "YYYY-MM-DD",
+    
+      "panels": [
+        {
+          "percentHeight": 100,
+          "autoMarginOffset":70,
+          "autoDisplay":true,
+          "marginsUpdated":true,
+          
+          "marginBottom":70,
+          "stockGraphs": Object.keys(chartData[0]).map(key => {
+              if (key != 'display_date' && key != 'Date') {
+                return {
+                  "title": key,
+                  "type": "line",
+                  "id": key.replace(" ",""),
+                  //"labelText":"[[value]]%",
+                  "valueAxis":"v1",
+                  "valueField": key.replace(" ",""),
+                  "lineColor": self.state.themes[key],
+                  "fillColors": self.state.themes[key],
+                  "fillAlphas": 0.03,
+                  //"comparedGraphLineThickness": 2,
+                  "columnWidth": 0.7,
+                  "accessibleLabel":"[[category]] [[value]]%",
+                  
+                   "useDataSetColors": false,
+                   "bullet": "round",
+                   "bulletSize": 1,
+                   //"bullet":"round",
+                   //"showBalloonAt": "",
+                   //"showBulletsAt":key.replace(" ",""),
+                   "showHandOnHover":true,
+                   "showBalloon": true,
+                   //"balloonText": "[[category]]<br><b><span style='font-size:14px;'>[[value]]%</span></b>",
+                   "balloonFunction": function(item) {
 
-              }, {
-                "title": "Close",
-                "type": "candlestick",
-                "id": "g1",
-                "valueAxis":"v2",
-                "openField": "open",
-                "closeField": "close",
-                "highField": "high",
-                "lowField": "low",
-                "valueField": "close",
-                "lineColor": self.state.themes.color_gain,
-                "fillColors": self.state.themes.color_gain,
-                "negativeLineColor": self.state.themes.color_loss,
-                "negativeFillColors": self.state.themes.color_loss,
-                "fillAlphas": 1,
-                "columnWidth": 0.7,
-                "useDataSetColors": false,
-                "showBalloonAt":"close",
-                "proCandlesticks": false,
-                "showAllValueLabels": true,
-                "showHandOnHover":true,                
-               
-                "showBalloon": true,
-                "balloonFunction": function(item) {
-
-                  return "<b style='margin-left:-25px'>" + item.serialDataItem.dataContext.display_date + "</b><hr style='margin-left:-30px;margin-right:-30px;margin-top:1px;margin-bottom:1px;color:" +  self.state.themes.text_color + ";border: 3px;border-top: 1px solid " +  self.state.themes.text_color + "' />" +
-                              "<span style='float:left;margin-left:-25px'><span style='float:left;width:80px;'><b>Open:</b></span> <span style='float:right'>&nbsp;&nbsp;&nbsp;" + numberWithCommas(item.serialDataItem.dataContext.Open.toString()) + "</span></span>" +
-                              "<span style='float:right;margin-right:-25px'><span style='float:left;width:80px;'>&nbsp;&nbsp;&nbsp;<b>High:</b></span> <span style='float:right'>&nbsp;&nbsp;&nbsp;" + numberWithCommas(item.serialDataItem.dataContext.High.toString()) + "</span></span><br/>" +
-                              "<span style='float:left;margin-left:-25px'><span style='float:left;width:80px;'><b>Low:</b></span> <span style='float:right'>&nbsp;&nbsp;&nbsp;" + numberWithCommas(item.serialDataItem.dataContext.Low.toString()) + "</span></span>" +
-                              "<span style='float:right;margin-right:-25px'><span style='float:left;width:80px;'>&nbsp;&nbsp;&nbsp;<b>Close:</b></span> <span style='float:right'>&nbsp;&nbsp;&nbsp;" + numberWithCommas(item.serialDataItem.dataContext.Close.toString()) + "</span></span><br/>" +
-                              "<span style='float:left;margin-left:-25px'><span style='float:left;width:80px;'><b>Seasonality:</b></span> <span style='float:right'>&nbsp;&nbsp;&nbsp;" + numberWithCommas(item.serialDataItem.dataContext.Seasonality.toString()) + "</span></span>" +
-                              "<span style='float:right;margin-right:-25px'><span style='float:left;width:80px;'>&nbsp;&nbsp;&nbsp;<b>Volume:</b></span> <span style='float:right'>&nbsp;&nbsp;&nbsp;" + numberWithCommas(item.serialDataItem.dataContext.Volume.toString()) + "</span></span><br/>" +
-                              "<span style='float:left;margin-left:-25px'><span style='float:left;width:80px;'><b>OpenInterest:</b></span> <span style='float:right'>&nbsp;&nbsp;&nbsp;" + numberWithCommas(item.serialDataItem.dataContext.OpenInterest.toString()) + "</span></span>" +
-                              "<span style='float:right;margin-right:-25px'><span style='float:left;width:80px;'>&nbsp;&nbsp;&nbsp;<b></b></span> <span style='float:right'>&nbsp;&nbsp;&nbsp;</span></span><br/>" +
-                              "<span style='float:left;margin-left:-25px'><span style='float:left;width:80px;'><b>Currency:</b></span> <span style='float:right'>&nbsp;&nbsp;&nbsp;" + item.serialDataItem.dataContext.Currency.toString() + "</span></span>" +
-                              "<span style='float:right;margin-right:-25px'><span style='float:left;width:80px;'>&nbsp;&nbsp;&nbsp;<b>Contract:</b></span> <span style='float:right'>&nbsp;&nbsp;&nbsp;" + item.serialDataItem.dataContext.Contract.toString() + "</span></span><br/>"
+                   return "<b style='margin-left:5px'>" + item.serialDataItem.dataContext.display_date + "</b>" +
+                          "<hr style='margin-left:-8px;margin-right:-8px;margin-top:1px;margin-bottom:1px;color:" +  self.state.themes.text_color + ";border: 3px;border-top: 1px solid " +  self.state.themes.text_color + "' />" +
+                          "<span style='float:left;'><b>" + key + "</b></span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext[key].toString()) + "%</span><br/>" 
+                   }
+                   
                 }
               }
-              ],
-        
-              "stockLegend": {
-                "valueTextRegular": undefined,
-                "periodValueTextComparing": "[[percents.value.close]]%"
-              },
-              "valueAxes": [{
-                "id":"v1",
-                "axisColor": "transparent",
-                "axisThickness": 0,
-                "axisAlpha": 0.0001,
-                "position": "left",
-                "gridAlpha":0.0001,
-                "gridCount":0,
-                "gridThickness":0
+          
+              }),
 
-              }, {
-                  "id":"v2",
-                  "axisColor": "#FCD202",
-                  "axisThickness": 2,
-                  "axisAlpha": 1,
-                  "position": "right",
-              }]
-            
-        
-            },
-        
-            {
-              "percentHeight": 30,
-        
-              "stockGraphs": [  {
-                "title": "OpenInterest",
-                "valueAxis":"v3",
-                "type": "line",
-                "id": "g3",
-                "valueField": "OpenInterest",
-                "lineColor": self.state.themes.open_interest,
-                "fillColors": self.state.themes.open_interest,
-                "showBalloon": true,
-                "fillAlphas": 0.03,
-                "comparedGraphLineThickness": 2,
-                "columnWidth": 0.7,
-                "useDataSetColors": false,
-              } ,{
-                "title": "Volume",
-                "valueAxis":"v4",
-                "valueField": "volume",
-                "openField": "open",
-                "closeField": "close",
-                "highField": "high",
-                "lowField": "low",
-                "type": "column",
-                "fillAlphas": 1,
-                "useDataSetColors": false,
-                "lineColor": self.state.themes.text_color,
-                "fillColors": self.state.themes.text_color,
-                "negativeLineColor": self.state.themes.color_loss,
-                "negativeFillColors": self.state.themes.color_loss,
-                "showHandOnHover":true,
-                "showBalloon": true,
-                "balloonFunction": function(item) {
-                  //console.log(item);
-                  return "[[display_date]]<hr style='margin-left:-8px;margin-right:-8px;margin-top:1px;margin-bottom:1px;color:" +  self.state.themes.text_color + ";border: 3px;border-top: 1px solid " +  self.state.themes.text_color + "' />" +
-                  "<span style='float:left;'>Volume:</span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.Volume) + "</span><br/>" +
-                  "<span style='float:left;'>OpenInterest:&nbsp;</span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.OpenInterest) + "</span><br/>" 
-                  
-                },
-
-              }
-              ],
-        
-              "stockLegend": {
-                "periodValueTextRegular": "[[value.close]]"
-              },
-              "valueAxes": [{
-                "id":"v3",
-                "axisColor": "#FF6600",
-                "axisThickness": 0,
-                "axisAlpha": 0.0001,
-                "position": "left",
-                "gridAlpha":0.0001,
-                "gridCount":0,
-                "usePrefixes": true,
-                "gridThickness":0
-              }, {
-                  "id":"v4",
-                  "usePrefixes": true,
-                  "includeAllValues":true,
-                  "axisThickness": 2,
-                  "axisAlpha": 1,
-                  "position": "right"
-              }]
-            }
-          ],
-          "panelsSettings": {
-            //    "color": "#fff",
-            "plotAreaFillColors":  self.state.themes.chart_background,
-            "plotAreaFillAlphas": 1,
-            "marginLeft": 60,
-            "marginTop": 5,
-            "marginBottom": 5,
-            "marginRight":60,
-            //"recalculateToPercents": "never",
-            "thousandsSeparator":","
+    
+          "stockLegend": {
+            "valueTextRegular": "[[value]]%",
           },
-        
-        
-        
-          "categoryAxesSettings": {
-            "equalSpacing": true,
-            "gridColor":self.state.themes.text_inactive,
+          "axes": [ {
+            "axisColor": self.state.themes.grid_color,
+
+            "unit":"%",
+          } ],
+          "valueAxes": [{
+            "id":"v1",
+            "axisColor": self.state.themes.grid_color,
+            "axisThickness": 1,
+            "axisAlpha": 1,
+            "position": "left",
             "gridAlpha": 1,
-            "maxSeries":1000,
-        
-          },
-        
-          "valueAxesSettings": {
-            "gridColor": self.state.themes.text_inactive,
-            "color": self.state.themes.text_color,
-            "gridAlpha": 1,
-            "inside": false,
+            "gridCount":1,
+            "gridThickness":1,
+            "unit":"%",
 
-          },
-        
-          "chartCursorSettings": {
-            "pan": true,
-            "valueLineEnabled": true,
-            "valueLineBalloonEnabled": true
-          },
-        
-          "legendSettings": {
-            //"color": "#fff"
-          },
-        
-          "stockEventsSettings": {
-            "showAt": "high",
-            "type": "pin"
-          },
-          "numberFormatter": {
-            "precision": -1,
-            "decimalSeparator": ".",
-            "thousandsSeparator": ","
-          },
-          "chartScrollbarSettings": {
-            "graph": "g1",
-            "graphType": "line",
-            "usePeriod": "DD",
-            "backgroundColor": self.state.themes.background,
-            "graphFillColor": self.state.themes.text_color,
-            "graphFillAlpha": 0.5,
-            "gridColor": self.state.themes.text_inactive,
-            "gridAlpha": 1,
-            "selectedBackgroundColor": self.state.themes.background,
-            "selectedGraphFillAlpha": 1,
-            "enabled":false,
-            
-          },
 
-          "balloon": {
-            "adjustBorderColor": true,
-            "color": self.state.themes.text_color,
-            "cornerRadius": 5,
-            "fillColor": self.state.themes.background,
-            "fixedPosition":false,
-            "offsetX": 200,
-            "verticalPadding":4,
-            "textAlign":"left",
-            "offsetY":200,
-            "horizontalPadding":30,
-            "showBullet":false,
-            "fillAlpha":0.8,
-            
-          },
+          }, {
+              "id":"v2",
+              "axisColor": "#FCD202",
+              "axisThickness": 2,
+              "axisAlpha": 1,
+              "position": "right",
+          }]
         
-          /*
-          "periodSelector": {
-            "position": "bottom",
-            "periods": [ {
-                "period": "DD",
-                "count": 1,
-                "label": "1D"
-              }, {
-                "period": "MM",
-                "count": 3,
-                "label": "3M"
-              }, {
-                "period": "MM",
-                "count": 6,
-                "label": "6M"
-              }, {
-                "period": "YYYY",
-                "count": 1,
-                "label": "1Y"
-              }, {
-                "period": "YYYY",
-                "count": 2,
-                "selected": true,
-                "label": "2Y"
-              },
-              {
-                "period": "MAX",
-                "label": "MAX"
-              }
-            ]
+    
+        } ],
+    
+      "panelsSettings": {
+        //    "color": "#fff",
+        "plotAreaFillColors":  self.state.themes.chart_background,
+        "plotAreaFillAlphas": 1,
+        "marginLeft": 60,
+        "marginTop": 5,
+        "marginBottom": 5,
+        "marginRight":60,
+        //"recalculateToPercents": "never",
+        "thousandsSeparator":","
+      },
+    
+    
+    
+      "categoryAxesSettings": {
+        "equalSpacing": true,
+        "gridColor":self.state.themes.text_inactive,
+        "gridAlpha": 1,
+        "maxSeries":1000, 
+    
+      },
+    
+      "valueAxesSettings": {
+        "gridColor": self.state.themes.text_inactive,
+        "color": self.state.themes.text_color,
+        "gridAlpha": 1,
+        "inside": false,
+
+      },
+    
+      "chartCursorSettings": {
+        "enabled":true,
+        "pan": true,
+        "valueLineEnabled": true,
+        "valueLineBalloonEnabled": true,
+        //"oneBalloonOnly":true,
+        "valueLineAlpha":0.5,
+        "fullWidth":true
+      },
+      "legendSettings": {
+        "valueText": "[[value]]%"
+        //"color": "#fff"
+      },
+    
+      "stockEventsSettings": {
+        "showAt": "high",
+        "type": "pin"
+      },
+      "numberFormatter": {
+        "precision": -1,
+        "decimalSeparator": ".",
+        "thousandsSeparator": ","
+      },
+      "chartScrollbarSettings": {
+        "graph": "g1",
+        "graphType": "line",
+        "usePeriod": "DD",
+        "backgroundColor": self.state.themes.background,
+        "graphFillColor": self.state.themes.text_color,
+        "graphFillAlpha": 0.5,
+        "gridColor": self.state.themes.text_inactive,
+        "gridAlpha": 1,
+        "selectedBackgroundColor": self.state.themes.background,
+        "selectedGraphFillAlpha": 1,
+        "enabled":false,
+        
+      },
+
+      "balloon": {
+        "adjustBorderColor": true,
+        "color": self.state.themes.text_color,
+        "cornerRadius": 5,
+        "fillColor": self.state.themes.background,
+        "fixedPosition":false,
+        //"offsetX": 200,
+        //"verticalPadding":0,
+        "textAlign":"left",
+        //"offsetY":200,
+        //"horizontalPadding":8,
+        "showBullet":true,
+        "fillAlpha":0.8,
+        
+      },
+    
+      /*
+      "periodSelector": {
+        "position": "bottom",
+        "periods": [ {
+            "period": "DD",
+            "count": 1,
+            "label": "1D"
+          }, {
+            "period": "MM",
+            "count": 3,
+            "label": "3M"
+          }, {
+            "period": "MM",
+            "count": 6,
+            "label": "6M"
+          }, {
+            "period": "YYYY",
+            "count": 1,
+            "label": "1Y"
+          }, {
+            "period": "YYYY",
+            "count": 2,
+            "selected": true,
+            "label": "2Y"
+          },
+          {
+            "period": "MAX",
+            "label": "MAX"
           }
-          */
-        
-        });
-          $('#chartdiv').show();
-        
-          console.log(chartData);
+        ]
+      }
+      */
+    
+    });
+      $('#chartdiv').show();
+    
+      console.log(chartData);
   }
   render() {
     const formArr = [];
@@ -1121,7 +1015,7 @@ export default class Markets extends Component {
         >
             <a className={classes.flex_item}
                href='#chartArea'
-                onClick={() => { self.componentDidMount(); }}
+                onClick={() => { self.onGetGroupChart(key, this.state.liveDateText, "3 Months"); }}
                 style={{
                   "background":this.state.data.groups[key].color_fill,
                   "color":this.state.data.groups[key].color_text,
@@ -1174,27 +1068,22 @@ export default class Markets extends Component {
                   &nbsp;
                   &nbsp;
                   &nbsp;
-                  &nbsp;
-                  &nbsp;
-                  &nbsp;
-                  <a href="#chartdev" onClick={() => {
-                    this.onGetChart(this.state.symbol, this.state.date, "3 Months")
-                  }
-                  }>3 Months</a>
-                  &nbsp;
-                  &nbsp;
-                  &nbsp;
-                  <a href="#chartdev" onClick={() => {
-                    this.onGetChart(this.state.symbol, this.state.date, "6 Months")
-                  }
-                  }>6 Months</a>
-                  &nbsp;
-                  &nbsp;
-                  &nbsp;
-                  <a href="#chartdev"   onClick={() => {
-                    this.onGetChart(this.state.symbol, this.state.date, "12 Months")
-                  }
-                  }>12 Months</a>
+                  {Object.keys(this.state.chartData).map(date => {
+                    return (
+                    <a key={"iter_" + date} href="#chartdev" onClick={() => {
+                      if (self.state.specifications.status=='item')
+                        this.onGetChart(this.state.symbol, this.state.date, date)
+                      else
+                        this.onGetGroupChart(this.state.symbol, this.state.date, date)
+
+                    }}>
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+
+                  {date}</a>
+                  )
+                  })}
                   </h4>
                   
 
