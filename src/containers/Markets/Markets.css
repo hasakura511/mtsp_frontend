@@ -44,9 +44,9 @@
 .flex_item {
     padding: 10px;
     padding-top:20px;
-    width: 90%;
+    width: 99%;
     height: 100%;
-    margin: 10px;
+    margin: 1px;
     line-height: 20px;    align-self: flex-start;
 
     font-weight: bold;
@@ -59,9 +59,9 @@
 .flex_item2 {
     padding: 10px;
     padding-top:20px;
-    width: 90%;
+    width: 99%;
     height: 100%;
-    margin: 10px;
+    margin: 1px;
     line-height: 20px;
     font-weight: bold;
     font-size: "96px";
