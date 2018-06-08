@@ -104,6 +104,7 @@ export default class Markets extends Component {
       liveDateText:this.props.liveDateText,
       date_str:"",
       selected_period:"",
+      firstPeriod:"",
     };
   }
 
@@ -285,9 +286,9 @@ export default class Markets extends Component {
     });
   };
 
-  onGetChart = (symbol, date, period) => {
+  onGetChart = (symbol, date) => {
     this.setState({symbol:symbol,
-                    date:date, selected_period:period});
+                    date:date});
 
     axiosOpen
     .post("/utility/market_chart/", {
@@ -300,9 +301,12 @@ export default class Markets extends Component {
         console.log(response.data)
 
         var finalData={};
-        
+        var firstPeriod="";
         Object.keys(response.data.data).map(date => {
           console.log(response.data)
+          if (!firstPeriod) {
+            firstPeriod=date;
+          }
           var chartData= JSON.parse(response.data.data[date]);
           var cd=[];
 
@@ -321,8 +325,10 @@ export default class Markets extends Component {
         spec['status']='item';
         this.setState({chartData:finalData,
             specifications:spec,
-            themes:response.data.themes});
-        this.onGetChartDate(symbol, date, period)
+            themes:response.data.themes,
+          firstPeriod:firstPeriod,
+          selected_period:firstPeriod});
+        this.onGetChartDate(symbol, date, firstPeriod)
         $('#chartArea').show()
         
     })
@@ -341,6 +347,9 @@ export default class Markets extends Component {
         var chartData=this.state.chartData[period];
         var self=this;
 
+        this.setState({symbol:symbol,
+          date:date,
+        selected_period:period});
 
         var color;
         var chart = AmCharts.makeChart( "chartdiv", {
@@ -681,9 +690,9 @@ export default class Markets extends Component {
   }
 
   
-  onGetGroupChart = (symbol, date, period) => {
+  onGetGroupChart = (symbol, date) => {
     this.setState({symbol:symbol,
-                    date:date, selected_period:period});
+                    date:date});
 
     axiosOpen
     .post("/utility/market_group/", {
@@ -695,9 +704,12 @@ export default class Markets extends Component {
     .then(response => {
         var finalData={}
         var title=response.data.chart_title;
-
+        var firstPeriod="";
         Object.keys(response.data.data).map(date => {
-            console.log(response.data)
+          console.log(response.data)
+          if (!firstPeriod) {
+            firstPeriod=date;
+          }
             var chartData= JSON.parse(response.data.data[date]);
             var cd=[];
 
@@ -716,8 +728,10 @@ export default class Markets extends Component {
 
         this.setState({chartData:finalData,
             specifications:{"chart_title":title, "status":"group"},
-            themes:response.data.themes});
-        this.onGetGroupChartDate(symbol, date, period)
+            themes:response.data.themes,
+            selected_period:firstPeriod,
+            firstPeriod:firstPeriod});
+        this.onGetGroupChartDate(symbol, date, firstPeriod)
         $('#chartArea').show()
         
     })
@@ -736,6 +750,7 @@ export default class Markets extends Component {
     var chartData=this.state.chartData[period];
     var self=this;
 
+    this.setState({symbol:symbol, selected_period:period, date:date})
 
     var color;
     var chart = AmCharts.makeChart( "chartdiv", {
@@ -760,7 +775,8 @@ export default class Markets extends Component {
       "panels": [
         {
           "percentHeight": 100,
-          "autoMarginOffset":70,
+          "percentWidth": 100,
+          "autoMarginOffset":2,
           "autoDisplay":true,
           "marginsUpdated":true,
           
@@ -783,7 +799,7 @@ export default class Markets extends Component {
                   
                    "useDataSetColors": false,
                    "bullet": "round",
-                   "bulletSize": 1,
+                   "bulletSize": 3,
                    //"bullet":"round",
                    //"showBalloonAt": "",
                    //"showBulletsAt":key.replace(" ",""),
@@ -795,8 +811,18 @@ export default class Markets extends Component {
                       var selected_key=key;
                       Object.keys(chartData[0]).map(key => { 
                             var add_style="";
-                            if (selected_key == key)
-                              add_style="color:" + self.state.themes[key] + ";"
+                            if (selected_key == key) {
+
+                              if (parseFloat(item.serialDataItem.dataContext[key]) > 0) 
+                                add_style="color:" + self.state.themes.color_gain + ";"
+                              else if (parseFloat(item.serialDataItem.dataContext[key]) < 0)
+                                add_style="color:" + self.state.themes.color_loss + ";"
+                              else 
+                                add_style="color:" +self.state.themes[key] + ";"
+
+                              add_style += "font-weight:800;"
+                              }
+
                             if (key != 'display_date' && key != 'Date') {
                               str +="<span style='float:left;'><b>" + key + "</b></span> <span style='float:right;" + add_style + "'>&nbsp;&nbsp;&nbsp;" + numberWithCommas(item.serialDataItem.dataContext[key].toString()) + "%</span><br/>" ;
                             }
@@ -858,7 +884,8 @@ export default class Markets extends Component {
         "marginLeft": 60,
         "marginTop": 5,
         "marginBottom": 5,
-        "marginRight":60,
+        "marginRight":0,
+        //"paddingRight":0,
         //"recalculateToPercents": "never",
         "thousandsSeparator":","
       },
@@ -1016,7 +1043,7 @@ export default class Markets extends Component {
                     }}
                     key={item.key + idx.toString()}
                     onClick={ () => {
-                      self.onGetChart(item.key, this.state.liveDateText, "3 Months");
+                      self.onGetChart(item.key, this.state.liveDateText);
                     }}
                 >
                 {item.display} <br/><br/>
@@ -1032,7 +1059,7 @@ export default class Markets extends Component {
         >
             <a className={classes.flex_item}
                href='#chartArea'
-                onClick={() => { self.onGetGroupChart(key, this.state.liveDateText, "3 Months"); }}
+                onClick={() => { self.onGetGroupChart(key, this.state.liveDateText) }}
                 style={{
                   "background":this.state.data.groups[key].color_fill,
                   "color":this.state.data.groups[key].color_text,
@@ -1088,6 +1115,7 @@ export default class Markets extends Component {
                   &nbsp;
                   {Object.keys(this.state.chartData).map(date => {
                     return (
+                      <span key={"iterspan-" + date}>
                     <a key={"iter_" + date} 
                     href="#chartdev" 
                     style={{
@@ -1096,16 +1124,18 @@ export default class Markets extends Component {
                     }}
                     onClick={() => {
                       if (self.state.specifications.status=='item')
-                        this.onGetChart(this.state.symbol, this.state.date, date)
+                        this.onGetChartDate(this.state.symbol, this.state.date, date)
                       else
-                        this.onGetGroupChart(this.state.symbol, this.state.date, date)
+                        this.onGetGroupChartDate(this.state.symbol, this.state.date, date)
 
                     }}>
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
 
                   {date}</a>
+                                    &nbsp;
+                                    &nbsp;
+                                    &nbsp;
+                    </span>
+                
                   )
                   })}
                   </h4>
