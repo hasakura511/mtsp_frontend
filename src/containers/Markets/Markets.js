@@ -418,12 +418,7 @@ export default class Markets extends Component {
                
                 "showBalloon": true,
                 "balloonText": "[[display_date]]<hr style='margin-left:-8px;margin-right:-8px;margin-top:1px;margin-bottom:1px;color:" +  self.state.themes.text_color + ";border: 3px;border-top: 1px solid " +  self.state.themes.text_color + "' />" +
-                              "<span style='float:left;'>Open:</span> <span style='float:right'>[[open]]</span><br/>" +
-                              "<span style='float:left;'>High:</span> <span style='float:right'>[[high]]</span><br/>" +
-                              "<span style='float:left;'>Low:</span> <span style='float:right'>[[low]]</span><br/>" +
-                              "<span style='float:left;'>Close:</span> <span style='float:right'>[[close]]</span><br/>" +
                               "<span style='float:left;'>Seasonality:</span> <span style='float:right'>[[Seasonality]]</span><br/>" +
-                              "<span style='float:left;'>Volume:</span> <span style='float:right'>[[volume.value]]</span><br/>" +
                               "<span style='float:left;'>OpenInterest:&nbsp;</span> <span style='float:right'>[[OpenInterest]]</span><br/>" +
                               "<span style='float:left;'>Contract:</span> <span style='float:right'>[[Contract]]</span><br/>" +
                               "<span style='float:left;'>Currency:</span> <span style='float:right'>[[Currency]]</span><br/>"
@@ -600,12 +595,27 @@ export default class Markets extends Component {
 
           },
           
-          "chartCursorSettings": {
-            "pan": true,
-            "valueLineEnabled": true,
-            "valueLineBalloonEnabled": true
+          "chartCursor":{
+            //"cursorAlpha":0,
+            //"categoryBalloonEnabled":false,
+            
           },
-        
+          "chartCursorSettings": {
+            "enabled":true,
+            "pan": true,
+            "bulletsEnabled":true,
+            "zoomable":false,
+            "leaveCursor":true,
+            "leaveAfterTouch":true, 
+            "showNextAvailable":true,
+            "valueLineAlpha":1,
+            "fullWidth":true,
+            "valueLineEnabled": true,
+            "valueLineBalloonEnabled": true,
+            "valueBalloonsEnabled":true,
+            //"oneBalloonOnly": true,
+            //"avoidBalloonOverlapping":false,
+          },        
           "legendSettings": {
             //"color": "#fff"
           },
