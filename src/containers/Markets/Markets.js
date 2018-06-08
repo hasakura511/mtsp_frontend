@@ -912,6 +912,7 @@ export default class Markets extends Component {
     
       "chartCursor":{
         //"cursorAlpha":0,
+        "bulletsEnabled":true,
         "zoomable":false,
         //"categoryBalloonEnabled":false,
         "valueLineEnabled": true,
@@ -922,7 +923,7 @@ export default class Markets extends Component {
         "showNextAvailable":true,
       },
       "chartCursorSettings": {
-        "enabled":false,
+        "enabled":true,
         "pan": true,
         "valueLineAlpha":1,
         "fullWidth":true,
