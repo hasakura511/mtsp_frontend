@@ -509,7 +509,7 @@ export default class Markets extends Component {
                 "valueField": "OpenInterest",
                 "lineColor": self.state.themes.open_interest,
                 "fillColors": self.state.themes.open_interest,
-                "showBalloon": true,
+                "showBalloon": false,
                 "fillAlphas": 0.03,
                 "comparedGraphLineThickness": 2,
                 "columnWidth": 0.7,
@@ -600,19 +600,35 @@ export default class Markets extends Component {
             //"categoryBalloonEnabled":false,
             
           },
+          "balloon": {
+            "adjustBorderColor": true,
+            "color": self.state.themes.text_color,
+            "cornerRadius": 5,
+            "fillColor": self.state.themes.background,
+            "fixedPosition":false,
+            "offsetX": 200,
+            "verticalPadding":0,
+            "textAlign":"left",
+            //"offsetY":200,
+            "horizontalPadding":8,
+            "showBullet":false,
+            "fillAlpha":0.8,
+            
+          },
           "chartCursorSettings": {
             "enabled":true,
             "pan": true,
             "bulletsEnabled":true,
             "zoomable":false,
-            "leaveCursor":true,
-            "leaveAfterTouch":true, 
+            //"leaveCursor":true,
+            //"leaveAfterTouch":true, 
             "showNextAvailable":true,
             "valueLineAlpha":1,
             "fullWidth":true,
             "valueLineEnabled": true,
             "valueLineBalloonEnabled": true,
             "valueBalloonsEnabled":true,
+            "balloonPointerOrientation":"horizontal",
             //"oneBalloonOnly": true,
             //"avoidBalloonOverlapping":false,
           },        
@@ -644,21 +660,7 @@ export default class Markets extends Component {
             
           },
 
-          "balloon": {
-            "adjustBorderColor": true,
-            "color": self.state.themes.text_color,
-            "cornerRadius": 5,
-            "fillColor": self.state.themes.background,
-            "fixedPosition":false,
-            "offsetX": 200,
-            "verticalPadding":0,
-            "textAlign":"left",
-            //"offsetY":200,
-            "horizontalPadding":8,
-            "showBullet":false,
-            "fillAlpha":0.8,
-            
-          },
+         
         
           /*
           "periodSelector": {
