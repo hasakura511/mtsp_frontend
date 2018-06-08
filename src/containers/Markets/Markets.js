@@ -438,7 +438,7 @@ export default class Markets extends Component {
                 "negativeLineColor": self.state.themes.color_loss,
                 "negativeFillColors": self.state.themes.color_loss,
                 "legendColor":self.state.themes.color_gain,
-
+               
                 "colorField":"VolumeColor",
                 "lineColorField":"VolumeColor",
                 "labelColorField":"VolumeColor",
@@ -469,7 +469,7 @@ export default class Markets extends Component {
                 }
               }
               ],
-        
+              
               "stockLegend": {
                 "valueTextRegular": undefined,
                 "periodValueTextComparing": "[[percents.value.close]]%"
@@ -532,7 +532,7 @@ export default class Markets extends Component {
                 "showHandOnHover":true,
                 "showBalloon": true,
                 "balloonFunction": function(item) {
-                  //console.log(item);
+                  console.log(item);
                   return "<b>[[display_date]]</b><hr style='margin-left:-8px;margin-right:-8px;margin-top:1px;margin-bottom:1px;color:" +  self.state.themes.text_color + ";border: 3px;border-top: 1px solid " +  self.state.themes.text_color + "' />" +
                   "<span style='float:left;'><b>Volume:</b></span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.Volume) + "</span><br/>" +
                   "<span style='float:left;'><b>OpenInterest:</b>&nbsp;</span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.OpenInterest) + "</span><br/>" 
@@ -565,6 +565,7 @@ export default class Markets extends Component {
               }]
             }
           ],
+          
           "panelsSettings": {
             //    "color": "#fff",
             "plotAreaFillColors":  self.state.themes.chart_background,
@@ -615,6 +616,7 @@ export default class Markets extends Component {
             "fillAlpha":0.8,
             
           },
+         
           "chartCursorSettings": {
             "enabled":true,
             "pan": true,
@@ -629,6 +631,7 @@ export default class Markets extends Component {
             "valueLineBalloonEnabled": true,
             "valueBalloonsEnabled":true,
             "balloonPointerOrientation":"horizontal",
+            "cursorPosition":"mouse",
             //"oneBalloonOnly": true,
             //"avoidBalloonOverlapping":false,
           },        
