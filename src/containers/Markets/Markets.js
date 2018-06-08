@@ -416,7 +416,7 @@ export default class Markets extends Component {
                 "useDataSetColors": false,
                 
                
-                "showBalloon": true,
+                "showBalloon": false,
                 "balloonText": "<b>[[display_date]]</b><hr style='margin-left:-8px;margin-right:-8px;margin-top:1px;margin-bottom:1px;color:" +  self.state.themes.text_color + ";border: 3px;border-top: 1px solid " +  self.state.themes.text_color + "' />" +
                               "<span style='float:left;'><b>Seasonality:</b></span> <span style='float:right'>[[Seasonality]]</span><br/>" +
                               "<span style='float:left;'><b>OpenInterest:</b>&nbsp;</span> <span style='float:right'>[[OpenInterest]]</span><br/>" +
@@ -460,7 +460,7 @@ export default class Markets extends Component {
                               "<span style='float:left;'><b>High:</b></span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.High.toString()) + "</span><br/>" +
                               "<span style='float:left;'><b>Low:</b></span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.Low.toString()) + "</span><br/>" +
                               "<span style='float:left;'><b>Close:</b></span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.Close.toString()) + "</span><br/>" + 
-                              //"<span style='float:left;'><b>Seasonality:</b></span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.Seasonality.toString()) + "</span>" +
+                              "<span style='float:left;'><b>Seasonality:</b></span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.Seasonality.toString()) + "</span>" +
                               //"<span style='float:left;'><b>Volume:</b></span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.Volume.toString()) + "</span><br/>" +
                               //"<span style='float:left;'><b>OpenInterest:</b></span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.OpenInterest.toString()) + "</span>" +
                               //"<span style='float:right;margin-right:5px'><span style='float:left;'><b></b></span> <span style='float:right'></span><br/>" +
