@@ -922,7 +922,7 @@ export default class Markets extends Component {
         "showNextAvailable":true,
       },
       "chartCursorSettings": {
-        "enabled":true,
+        "enabled":false,
         "pan": true,
         "valueLineAlpha":1,
         "fullWidth":true,
