@@ -417,11 +417,11 @@ export default class Markets extends Component {
                 
                
                 "showBalloon": true,
-                "balloonText": "[[display_date]]<hr style='margin-left:-8px;margin-right:-8px;margin-top:1px;margin-bottom:1px;color:" +  self.state.themes.text_color + ";border: 3px;border-top: 1px solid " +  self.state.themes.text_color + "' />" +
-                              "<span style='float:left;'>Seasonality:</span> <span style='float:right'>[[Seasonality]]</span><br/>" +
-                              "<span style='float:left;'>OpenInterest:&nbsp;</span> <span style='float:right'>[[OpenInterest]]</span><br/>" +
-                              "<span style='float:left;'>Contract:</span> <span style='float:right'>[[Contract]]</span><br/>" +
-                              "<span style='float:left;'>Currency:</span> <span style='float:right'>[[Currency]]</span><br/>"
+                "balloonText": "<b>[[display_date]]</b><hr style='margin-left:-8px;margin-right:-8px;margin-top:1px;margin-bottom:1px;color:" +  self.state.themes.text_color + ";border: 3px;border-top: 1px solid " +  self.state.themes.text_color + "' />" +
+                              "<span style='float:left;'><b>Seasonality:</b></span> <span style='float:right'>[[Seasonality]]</span><br/>" +
+                              "<span style='float:left;'><b>OpenInterest:</b>&nbsp;</span> <span style='float:right'>[[OpenInterest]]</span><br/>" +
+                              "<span style='float:left;'><b>Contract:</b></span> <span style='float:right'>[[Contract]]</span><br/>" +
+                              "<span style='float:left;'><b>Currency:</b></span> <span style='float:right'>[[Currency]]</span><br/>"
 
               }, {
                 "title": "Close",
@@ -533,9 +533,9 @@ export default class Markets extends Component {
                 "showBalloon": true,
                 "balloonFunction": function(item) {
                   //console.log(item);
-                  return "[[display_date]]<hr style='margin-left:-8px;margin-right:-8px;margin-top:1px;margin-bottom:1px;color:" +  self.state.themes.text_color + ";border: 3px;border-top: 1px solid " +  self.state.themes.text_color + "' />" +
-                  "<span style='float:left;'>Volume:</span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.Volume) + "</span><br/>" +
-                  "<span style='float:left;'>OpenInterest:&nbsp;</span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.OpenInterest) + "</span><br/>" 
+                  return "<b>[[display_date]]</b><hr style='margin-left:-8px;margin-right:-8px;margin-top:1px;margin-bottom:1px;color:" +  self.state.themes.text_color + ";border: 3px;border-top: 1px solid " +  self.state.themes.text_color + "' />" +
+                  "<span style='float:left;'><b>Volume:</b></span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.Volume) + "</span><br/>" +
+                  "<span style='float:left;'><b>OpenInterest:</b>&nbsp;</span> <span style='float:right'>" + numberWithCommas(item.serialDataItem.dataContext.OpenInterest) + "</span><br/>" 
                   
                 },
 
