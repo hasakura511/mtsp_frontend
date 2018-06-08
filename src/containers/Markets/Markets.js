@@ -599,7 +599,7 @@ export default class Markets extends Component {
             "inside": false,
 
           },
-        
+          
           "chartCursorSettings": {
             "pan": true,
             "valueLineEnabled": true,
@@ -684,6 +684,7 @@ export default class Markets extends Component {
           */
         
         });
+
           $('#chartdiv').show();
         
           console.log(chartData);
@@ -795,6 +796,7 @@ export default class Markets extends Component {
                   "fillAlphas": 0.03,
                   //"comparedGraphLineThickness": 2,
                   "columnWidth": 0.7,
+                  "bulletHitAreaSize":20,
                   "accessibleLabel":"[[category]] [[value]]%",
                   
                    "useDataSetColors": false,
@@ -908,14 +910,23 @@ export default class Markets extends Component {
 
       },
     
-    
+      "chartCursor":{
+        //"cursorAlpha":0,
+        "zoomable":false,
+        //"categoryBalloonEnabled":false,
+        "valueLineEnabled": true,
+        "valueLineBalloonEnabled": true,
+        "valueBalloonsEnabled":true,
+        "leaveCursor":true,
+        "leaveAfterTouch":true, 
+        "showNextAvailable":true,
+      },
       "chartCursorSettings": {
         "enabled":true,
         "pan": true,
-        "valueLineEnabled": true,
-        "valueLineBalloonEnabled": true,
-        "valueLineAlpha":0.5,
-        "fullWidth":true
+        "valueLineAlpha":1,
+        "fullWidth":true,
+        //"avoidBalloonOverlapping":false,
       },
       "legendSettings": {
         "valueText": "[[value]]%"
