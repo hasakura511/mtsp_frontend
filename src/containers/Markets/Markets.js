@@ -912,21 +912,23 @@ export default class Markets extends Component {
     
       "chartCursor":{
         //"cursorAlpha":0,
-        "bulletsEnabled":true,
-        "zoomable":false,
         //"categoryBalloonEnabled":false,
-        "valueLineEnabled": true,
-        "valueLineBalloonEnabled": true,
-        "valueBalloonsEnabled":true,
-        "leaveCursor":true,
-        "leaveAfterTouch":true, 
-        "showNextAvailable":true,
+        
       },
       "chartCursorSettings": {
         "enabled":true,
         "pan": true,
+        "bulletsEnabled":true,
+        "zoomable":false,
+        "leaveCursor":true,
+        "leaveAfterTouch":true, 
+        "showNextAvailable":true,
         "valueLineAlpha":1,
         "fullWidth":true,
+        "valueLineEnabled": true,
+        "valueLineBalloonEnabled": true,
+        "valueBalloonsEnabled":true,
+        "oneBalloonOnly": true,
         //"avoidBalloonOverlapping":false,
       },
       "legendSettings": {
