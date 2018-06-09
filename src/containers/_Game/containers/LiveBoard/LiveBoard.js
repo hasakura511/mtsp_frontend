@@ -668,14 +668,16 @@ export default class LiveBoard extends Component {
       return (
 
         <Aux>
-
+          
           <LiveDashboard sendNotice={this.sendNotice} initializeLive={this.initializeLive}
             />
+
+
           <div className={classes.ActionRow} style={{background:actionBg, color:heatmapTxt}}>
-              <span style={{color:switchTxt, "float": "left", "width": "30%", "height":"75px", "textAlign": "left", "verticalAlign":"middle"}}>
+              <span style={{color:switchTxt, "float": "left", "width": "30%", "height":"75px", "textAlign": "left", "verticalAlign":"middle", zIndex:1}}>
                 <Toggle
                 onClick={this.toggleMode}
-                on={<h2 style={{marginTop:"6px",marginLeft:"30px", color:switchTxt,}}>Live<span className={classes.dot}></span></h2>}
+                on={<h2 style={{marginTop:"6px",marginLeft:"30px", color:switchTxt, zIndex:3,}}>Live<span className={classes.dot} style={{zIndex:4}}></span></h2>}
                 off={<h2  style={{marginTop:"6px"}}>Practice</h2>}
                 size="sm"
                 active={this.state.toggleActive}
@@ -687,7 +689,7 @@ export default class LiveBoard extends Component {
                   verticalAlign:"middle",
                   borderRadius: "200px",
                   width:"200px",
-                  zIndex:1,
+                  zIndex:2,
                  
                 }}
                 onstyle= {"background:" + switchBg + ",color:" + switchTxt}
