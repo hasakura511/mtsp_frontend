@@ -91,6 +91,7 @@ const initialState = {
   },
   heatmap:{},
   loading: true,
+  mute:false,
   dragChip:"",
   isLive:false,
   initializeData: {},
@@ -599,6 +600,12 @@ const reducer = (state = initialState, action) => {
             dashboard_totals,
             liveDate,
             liveDateText
+        };
+    }
+    case actionTypes.SET_MUTE: {
+        return {
+          ...state,
+          mute:action.isMute
         };
     }
     case actionTypes.ADD_BET: {

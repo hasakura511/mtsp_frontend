@@ -75,6 +75,14 @@ export const addLast3DaysProfit = last3DaysProfit => {
   };
 };
 
+
+export const setMute = (isMute) => {
+  return {
+    type: actionTypes.SET_MUTE,
+    isMute
+  };
+};
+
 export const reset = () => {
   return {
     type: actionTypes.RESET_BOARD

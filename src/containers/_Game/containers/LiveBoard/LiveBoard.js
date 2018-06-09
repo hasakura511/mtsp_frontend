@@ -60,6 +60,7 @@ const stateToProps = state => {
     rightSystems:state.betting.rightSystems,
     bottomSystems:state.betting.bottomSystems,
     themes:state.betting.themes,
+    mute:state.betting.mute
     
   };
 };
@@ -92,6 +93,9 @@ const dispatchToProps = dispatch => {
     },
     authSuccess: (user, token) => {
       dispatch(actions.authSuccess(user, token));
+    },
+    setMute: (isMute) => {
+      dispatch(actions.setMute(isMute));
     },
     addTimedToaster: toaster => {
         dispatch(actions.addTimedToaster(toaster, 5000))
@@ -149,7 +153,9 @@ export default class LiveBoard extends Component {
     topSystems:PropTypes.array.isRequired,
     rightSystems:PropTypes.array.isRequired,
     bottomSystems:PropTypes.array.isRequired,
-    themes:PropTypes.object.isRequired
+    themes:PropTypes.object.isRequired,
+    mute:PropTypes.bool.isRequired,
+    setMute:PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -589,6 +595,7 @@ export default class LiveBoard extends Component {
   }
   
   render() {
+    var self=this;
     const {
       
       isAuth,
@@ -735,8 +742,7 @@ export default class LiveBoard extends Component {
           >
             <div>
               <span style={{"marginTop":"-150px","float": "left", "width": "50%", "textAlign": "left", "display": "inline-block","verticalAlign": "top"}}>
-              <img src="/images/edit_board_button.png" width="50"/><br/>  
-              <img src="/images/leaderboard_button.png" width="50"/><br/>
+              <img src="/images/leaderboard_button.png" width="120"/><br/>
               </span>
               <span style={{"marginTop":"-150px", "float": "right", "width": "50%",  "textAlign": "right",  "display": "inline-block", "verticalAlign":"top"}}>
                 <img src="/images/infotext_button.png" width="22" style={{"margin":"10px"}} />
@@ -754,6 +760,23 @@ export default class LiveBoard extends Component {
               addBettingChip={this.addBettingChip}
               moveToBalance={this.moveToBalance}
             />
+              <span style={{"marginTop":"30px","float": "left", "width": "50%", "textAlign": "left", "display": "inline-block","verticalAlign": "top"}}>
+                <img src="/images/accounts_button.png" width="120"/><br/>
+                <img src="/images/edit_board_button.png" width="120"/><br/>  
+              </span>
+              {self.props.mute ? (
+              <span style={{"marginTop":"30px", "paddingRight":"5px", "float": "right", "width": "50%", "textAlign": "right", "display": "inline-block","verticalAlign": "top"}}>
+                <a href='#soundbutton' onClick={() => { self.props.setMute(false);  } }><img src="/images/sound_off_button.png" width="60"/></a><br/>
+              </span>
+              ) :
+              (
+              <span style={{"marginTop":"30px","paddingRight":"5px","float": "right", "width": "50%", "textAlign": "right", "display": "inline-block","verticalAlign": "top"}}>
+                <a href='#soundbutton' onClick={() => { self.props.setMute(true); } }><img src="/images/sound_on_button.png" width="60"/></a><br/>
+              </span>
+
+              )}
+
+
 
           </div>
           <Markets refreshing={this.state.refreshing} />

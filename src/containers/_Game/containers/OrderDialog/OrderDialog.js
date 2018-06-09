@@ -16,7 +16,8 @@ const stateToProps = state => {
     simulatedDate: state.betting.simulatedDate,
     isAuth: state.auth.token !== null,
     isLive: state.betting.isLive,
-    dictionary_strategy: state.betting.dictionary_strategy
+    dictionary_strategy: state.betting.dictionary_strategy,
+    mute:state.betting.mute
   };
 };
 
@@ -365,7 +366,7 @@ export default class OrderDialog extends Component {
           />
 
         )}
-        {showModal ? (
+        {showModal && !this.props.mute ? (
         <Sound
             url="/sounds/chipLay2.wav"
             playStatus={Sound.status.PLAYING}
@@ -395,5 +396,6 @@ export default class OrderDialog extends Component {
     dictionary_strategy:PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
     addTimedToaster: PropTypes.func.isRequired,
+    mute:PropTypes.bool.isRequired,
   };
 }

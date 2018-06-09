@@ -27,7 +27,8 @@ const stateToProps = state => {
   return { simulatedDate: state.betting.simulatedDate,
            heatmap:state.betting.heatmap,
            heatmap_selection:state.betting.heatmap_selection,
-           themes:state.betting.themes
+           themes:state.betting.themes,
+           mute:state.betting.mute,
            
           };
 };
@@ -101,6 +102,7 @@ export default class Panel extends Component {
     showHeatmap:PropTypes.func.isRequired,
     heatmap_selection:PropTypes.string,
     themes:PropTypes.object,
+    mute:PropTypes.bool.isRequired,
   };
 
   /**
@@ -584,6 +586,7 @@ export default class Panel extends Component {
           </div>
         ) : null}
         
+        {!this.props.mute ? (
           <Sound
               url="/sounds/chipLay2.wav"
               playStatus={this.state.showClearDialog ? Sound.status.PLAYING: Sound.status.STOPPED}
@@ -592,6 +595,7 @@ export default class Panel extends Component {
               //onPlaying={this.handleSongPlaying}
               //onFinishedPlaying={this.handleSongFinishedPlaying}
         /> 
+        ) : null}
         
       </div>
     );

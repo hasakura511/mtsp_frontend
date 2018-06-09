@@ -325,8 +325,8 @@ export default class LiveDashboard extends Component {
                       className={classes.Cell}
                       style={{ justifyContent: "center" }}
                     >
-                      
-
+                      <span style={{'float':'left','marginLeft':"-37px","marginTop":"5px"}}><img src="/images/view_portfolio.png" width="30" /></span>
+                      <span style={{'float':'left','marginTop':"10px"}}>
                       {account.current_pnl !== null ? (
                         <p style={{ width: "auto" }}>
                           {account.current_pct ? (
@@ -357,6 +357,7 @@ export default class LiveDashboard extends Component {
                           )
                         </p>
                       ) : null}
+                      </span>
                     </div>
                   </td>
                  

@@ -24,5 +24,6 @@ export { addBet,
          startLoading, 
          finishLoading, 
          updateBet, 
-         showHeatmap 
+         showHeatmap,
+         setMute, 
       } from "./betting";
