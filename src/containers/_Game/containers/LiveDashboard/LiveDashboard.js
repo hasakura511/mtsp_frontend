@@ -282,7 +282,7 @@ export default class LiveDashboard extends Component {
                 <tr key={`dashboard-row-${accountId}`} style={tableStyle}>
                   <td style={tableStyle}>
                     <div className={classes.Cell + " " + classes.Flex}>
-                      &nbsp;<img src="/images/account_chart_button.png" width="25" />
+                      &nbsp;<img src="/images/account_chart_button.png" width="30" />
                       <strong>$ {display}</strong>
                       &nbsp;  
                       ( <span

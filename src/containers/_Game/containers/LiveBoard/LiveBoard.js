@@ -767,13 +767,13 @@ export default class LiveBoard extends Component {
                 <img src="/images/edit_board_button.png" width="120"/><br/>  
               </span>
               {self.props.mute ? (
-              <span style={{"marginTop":"30px", "paddingRight":"5px", "float": "right", "width": "50%", "textAlign": "right", "display": "inline-block","verticalAlign": "top"}}>
-                <a href='#soundbutton' onClick={() => { self.props.setMute(false);  } }><img src="/images/sound_off_button.png" width="60"/></a><br/>
+              <span style={{"marginTop":"60px", "paddingRight":"5px", "float": "right", "width": "50%", "textAlign": "right", "display": "inline-block","verticalAlign": "top"}}>
+                <a href='#soundbutton' onClick={() => { self.props.setMute(false);  } }><img src="/images/sound_off_button.png" width="30"/></a><br/>
               </span>
               ) :
               (
-              <span style={{"marginTop":"30px","paddingRight":"5px","float": "right", "width": "50%", "textAlign": "right", "display": "inline-block","verticalAlign": "top"}}>
-                <a href='#soundbutton' onClick={() => { self.props.setMute(true); } }><img src="/images/sound_on_button.png" width="60"/></a><br/>
+              <span style={{"marginTop":"60px","paddingRight":"5px","float": "right", "width": "50%", "textAlign": "right", "display": "inline-block","verticalAlign": "top"}}>
+                <a href='#soundbutton' onClick={() => { self.props.setMute(true); } }><img src="/images/sound_on_button.png" width="30"/></a><br/>
               </span>
 
               )}

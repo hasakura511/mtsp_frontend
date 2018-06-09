@@ -1103,7 +1103,7 @@ export default class Markets extends Component {
         if (items[key]!= undefined) {
             items[key].map( item => {
               group2.push (
-                <a  href='JavaScript:$(window).scrollTop($("#chartTop").offset().top-100);' className={classes.flex_item2}
+                <a  href='JavaScript:$(window).scrollTop($("#chartTop").offset().top-111);' className={classes.flex_item2}
                     style={{
                       "background":item.color_fill,
                       "color":item.color_text,
@@ -1128,7 +1128,7 @@ export default class Markets extends Component {
             key={"vc" + idx.toString()}
         >
             <a className={classes.flex_item}
-               href='JavaScript:$(window).scrollTop($("#chartTop").offset().top-100);'
+               href='JavaScript:$(window).scrollTop($("#chartTop").offset().top- 111);'
                 onClick={() => { self.onGetGroupChart(key, this.state.liveDateText) }}
                 style={{
                   "background":this.state.data.groups[key].color_fill,
