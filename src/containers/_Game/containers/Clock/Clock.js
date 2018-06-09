@@ -160,11 +160,11 @@ export default class Clock extends PureComponent {
                                          this.props.initializeLive();
 
                                          
-                                       } else if (seconds > 50 && this.state.refreshing) {
-                                         this.setState({refreshing:false});
-
                                        }
                                      }
+                                    }
+                                    if (seconds > 50 && this.state.refreshing) {
+                                      this.setState({refreshing:false});
                                     }
 
                                    if (minutes < 10)
