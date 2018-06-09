@@ -6,6 +6,7 @@
   align-items: center;
   flex-flow: column;
   height: 100%;
+  z-index: 100000;
 }
 
 .NavigationItems li {
@@ -32,6 +33,7 @@
   width: 100%;
   box-sizing: border-box;
   display: block;
+  z-index: 100000;
 }
 
 .NavigationItems li > a {

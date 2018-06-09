@@ -5,6 +5,8 @@
   box-sizing: border-box;
   border-radius: 5px;
   outline: none;
+  z-index: 100000;
+
 }
 
 .Logo img {

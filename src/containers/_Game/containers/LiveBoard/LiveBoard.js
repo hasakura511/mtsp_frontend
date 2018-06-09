@@ -209,6 +209,7 @@ export default class LiveBoard extends Component {
       return;
     else
       this.setState({refreshing:true})
+    
     //console.log(this.props);
     axios
     .post("/utility/initialize_live/", {
@@ -223,6 +224,7 @@ export default class LiveBoard extends Component {
 
       if (!this.state.loading)
         this.sendNotice("Board Refreshed with New Data");
+
 
       this.setState({
         loading:false,
@@ -682,7 +684,7 @@ export default class LiveBoard extends Component {
               <span style={{"float": "left", "width": "30%", "height":"90px", "textAlign": "right", "verticalAlign":"middle"}}>
                   <span style={{"float": "left", "width": "80%", "height":"90px", "textAlign": "left", "verticalAlign":"middle"}}> 
                     <div className="isLive">
-                      <center><b style={{color:heatmapTxt}}>Heatmap Legend</b></center>
+                      <center><b style={{color:heatmapTxt}} >Heatmap Legend</b></center>
                       <div style={{  "border": "1px solid",
                                       "background": themes_bg,
                                       "width":"100%",
@@ -742,7 +744,7 @@ export default class LiveBoard extends Component {
             />
 
           </div>
-          <Markets/>
+          <Markets refreshing={this.state.refreshing} />
         </Aux>
       );
     }

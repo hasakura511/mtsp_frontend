@@ -105,6 +105,7 @@ export default class Markets extends Component {
       date_str:"",
       selected_period:"",
       firstPeriod:"",
+      refreshing:false,
     };
   }
 
@@ -113,7 +114,8 @@ export default class Markets extends Component {
     addTimedToaster: PropTypes.func.isRequired,
     liveDate:PropTypes.instanceOf(moment).isRequired,
     liveDateText:PropTypes.string.isRequired,
-    email:PropTypes.string
+    email:PropTypes.string,
+    refreshing:PropTypes.bool
   };
 
   getSubmitTitle(controls) {
@@ -134,10 +136,20 @@ export default class Markets extends Component {
     });
   }
 
+  
+  componentWillReceiveProps(newProps) {
+    if (newProps.refreshing) {
+      this.refreshData();
+    }
+  }
 
-
-  componentDidMount() {
+  refreshData=() => {
     this.setState({loading:true})
+    if (this.state.refreshing)
+      return;
+    else
+      this.setState({refreshing:true})
+
     axiosOpen
       .post("/utility/market_heatmap/", {
           'username':  this.props.email,
@@ -184,17 +196,24 @@ export default class Markets extends Component {
           data:data,
           themes:themes,
           loading: false,
-          fetched: true
+          fetched: true,
+          refreshing:false,
+
         });
       })
       .catch((error) => {
         console.log(error);
-        this.setState({ error: true, loading: false });
+        this.setState({ error: true, loading: false,refreshing:false });
         this.props.addTimedToaster({
           id: "contact-us-error",
           text: "Server error, please wait till we fix."
         });
       });
+  }
+
+
+  componentDidMount() {
+    this.refreshData();
   }
 
   inputChangeHandler = (event, identifier) => {
@@ -289,6 +308,7 @@ export default class Markets extends Component {
   onGetChart = (symbol, date) => {
     this.setState({symbol:symbol,
                     date:date});
+    $(window).scrollTop(0);
 
     axiosOpen
     .post("/utility/market_chart/", {
@@ -479,13 +499,15 @@ export default class Markets extends Component {
                 "id":"v1",
                 "color":self.state.themes.seasonality,
                 "titleColor":self.state.themes.seasonality,
+                "totalTextColor":self.state.themes.seasonality,
                 "axisColor": "transparent",
                 "axisThickness": 0,
                 "axisAlpha": 0.0001,
                 "position": "left",
                 "gridAlpha":0.0001,
                 "gridCount":0,
-                "gridThickness":0
+                "gridThickness":0,
+                
 
               }, {
                   "id":"v2",
@@ -551,6 +573,7 @@ export default class Markets extends Component {
                 "axisThickness": 0,
                 "axisAlpha": 0.0001,
                 "position": "left",
+                "color": self.state.themes.open_interest,
                 "gridAlpha":0.0001,
                 "gridCount":0,
                 "usePrefixes": true,
@@ -590,7 +613,6 @@ export default class Markets extends Component {
         
           "valueAxesSettings": {
             "gridColor": self.state.themes.text_inactive,
-            "color": self.state.themes.text_color,
             "gridAlpha": 1,
             "inside": false,
 
@@ -637,6 +659,7 @@ export default class Markets extends Component {
           },        
           "legendSettings": {
             //"color": "#fff"
+            //"spacing": "30px",
           },
         
           "stockEventsSettings": {
@@ -710,6 +733,8 @@ export default class Markets extends Component {
     this.setState({symbol:symbol,
                     date:date});
 
+
+    $(window).scrollTop(0);
     axiosOpen
     .post("/utility/market_group/", {
 
@@ -947,7 +972,23 @@ export default class Markets extends Component {
         //"avoidBalloonOverlapping":false,
       },
       "legendSettings": {
-        "valueText": "[[value]]%"
+        "valueText": "[[value]]%",
+        "align":"left",
+        "markerType":"square",
+        //"maxColumns":5,
+        //"markerLabelGap":5,
+        "autoMargins":false,
+        "horizontalGap":0,
+        "fontSize":12,
+        "marginLeft":100,
+        "marginRight":0,
+        "forceWidth":false,
+        "labelWidth":150,
+        "valueAlign": "left",
+        "valueWidth":10,
+        "spacing":2,
+        "equalWidths":true,
+        
         //"color": "#fff"
       },
     
@@ -1062,7 +1103,7 @@ export default class Markets extends Component {
         if (items[key]!= undefined) {
             items[key].map( item => {
               group2.push (
-                <a  href='#chartArea' className={classes.flex_item2}
+                <a  href='JavaScript:$(window).scrollTop(0);' className={classes.flex_item2}
                     style={{
                       "background":item.color_fill,
                       "color":item.color_text,
@@ -1087,7 +1128,7 @@ export default class Markets extends Component {
             key={"vc" + idx.toString()}
         >
             <a className={classes.flex_item}
-               href='#chartArea'
+               href='JavaScript:$(window).scrollTop(0);'
                 onClick={() => { self.onGetGroupChart(key, this.state.liveDateText) }}
                 style={{
                   "background":this.state.data.groups[key].color_fill,
@@ -1115,7 +1156,7 @@ export default class Markets extends Component {
     var specidx=0;
     var specs=[];
     return (
-      <FormatModal title="Futures Market Heatmap" 
+      <div title="Futures Market Heatmap" 
       style={{background:self.state.themes.background,
               backgroundColor:self.state.themes.background,
               padding:"0px",margin:"0px"
@@ -1123,7 +1164,7 @@ export default class Markets extends Component {
           {this.state.loading || !this.state.date_str? (
             <Spinner />
           ) : this.state.error ? null : (
-             <div style={{textAlign:"center",background:self.state.themes.background,
+             <div id="chartTop" style={{textAlign:"center",background:self.state.themes.background,
               backgroundColor:self.state.themes.background,
               padding:"0px",margin:"0px"
               }}
@@ -1137,7 +1178,8 @@ export default class Markets extends Component {
               }
               
               <div id="chartArea"  style={{display:"none", width:"100%", textAlign:"left", padding:"10px"}}>
-                  <center><h3>{this.state.specifications.chart_title}</h3></center>
+              <span style={{'float':'right'}}><button onClick={()=>{ $('#chartArea').hide(); }}>Close</button></span>
+                  <center><h3>{this.state.specifications.chart_title} </h3></center>
                   <h4>
                   &nbsp;
                   &nbsp;
@@ -1206,6 +1248,7 @@ export default class Markets extends Component {
                       }
                   
                   })}
+                  <hr style={{margin: "1px",marginTop:"0px", border:"2px solid black",  }}/>
 
                 </div>
                  ) : null}
@@ -1222,7 +1265,7 @@ export default class Markets extends Component {
         </div>
           )}
         
-      </FormatModal>
+      </div>
     );
   }
 }
