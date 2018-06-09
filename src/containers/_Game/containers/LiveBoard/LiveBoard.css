@@ -101,3 +101,16 @@
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
 }
+
+.dot {
+  height: 60px;
+  width: 60px;
+  float: right;
+  margin-right: -21px;
+  margin-top: -13px;
+  background-color: #fff;
+  border-radius: 50%;
+  display: inline-block;
+  border: 1px solid #aaa;
+  z-index: 200;
+}

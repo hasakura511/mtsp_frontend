@@ -668,7 +668,7 @@ export default class LiveBoard extends Component {
               <span style={{color:switchTxt, "float": "left", "width": "30%", "height":"75px", "textAlign": "left", "verticalAlign":"middle"}}>
                 <Toggle
                 onClick={this.toggleMode}
-                on={<h2 style={{marginTop:"6px",color:switchTxt,}}>Live</h2>}
+                on={<h2 style={{marginTop:"6px",marginLeft:"30px", color:switchTxt,}}>Live<span className={classes.dot}></span></h2>}
                 off={<h2  style={{marginTop:"6px"}}>Practice</h2>}
                 size="sm"
                 active={this.state.toggleActive}
@@ -680,6 +680,7 @@ export default class LiveBoard extends Component {
                   verticalAlign:"middle",
                   borderRadius: "200px",
                   width:"200px",
+                  zIndex:1,
                  
                 }}
                 onstyle={{background:" + switchBg + ", 

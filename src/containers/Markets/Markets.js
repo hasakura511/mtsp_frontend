@@ -308,7 +308,7 @@ export default class Markets extends Component {
   onGetChart = (symbol, date) => {
     this.setState({symbol:symbol,
                     date:date});
-    $(window).scrollTop(0);
+    //$(window).scrollTop(0);
 
     axiosOpen
     .post("/utility/market_chart/", {
@@ -734,7 +734,7 @@ export default class Markets extends Component {
                     date:date});
 
 
-    $(window).scrollTop(0);
+    //$(window).scrollTop(0);
     axiosOpen
     .post("/utility/market_group/", {
 
@@ -1103,7 +1103,7 @@ export default class Markets extends Component {
         if (items[key]!= undefined) {
             items[key].map( item => {
               group2.push (
-                <a  href='JavaScript:$(window).scrollTop(0);' className={classes.flex_item2}
+                <a  href='JavaScript:$(window).scrollTop($("#chartTop").offset().top-90);' className={classes.flex_item2}
                     style={{
                       "background":item.color_fill,
                       "color":item.color_text,
@@ -1128,7 +1128,7 @@ export default class Markets extends Component {
             key={"vc" + idx.toString()}
         >
             <a className={classes.flex_item}
-               href='JavaScript:$(window).scrollTop(0);'
+               href='JavaScript:$(window).scrollTop($("#chartTop").offset().top-90);'
                 onClick={() => { self.onGetGroupChart(key, this.state.liveDateText) }}
                 style={{
                   "background":this.state.data.groups[key].color_fill,
