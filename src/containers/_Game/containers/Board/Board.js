@@ -471,9 +471,10 @@ export default class Board extends Component {
           <span style={{"float": "left", "width": "20%", "height":"75px", "textAlign": "left", "verticalAlign":"middle"}}>
             <Toggle
             onClick={this.toggleMode}
-            on={<h2>Live Mode</h2>}
-            off={<h2>Practice Mode</h2>}
+            on={<h2>Live</h2>}
+            off={<h2>Practice</h2>}
             size="xs"
+            style={{borderRadius: "200px", width:"200px"}}
             active={this.state.toggleActive}
             
             />

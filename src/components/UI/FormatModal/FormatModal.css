@@ -4,7 +4,8 @@
   text-align: center;
   padding: 0px 0px;
   box-sizing: border-box;
-  color: black;
+  color: white;
+  background:#0fc6a7;
 }
 
 .FormatModal .Title h2{
