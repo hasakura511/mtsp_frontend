@@ -1242,7 +1242,7 @@ export default class Markets extends Component {
                           <span style={{"flexDirection":"row", display:"flex",width:"100%"}}>
                             {specHtml}
                           </span>
-                          <hr  style={{margin: "1px",marginTop:"0px"}}/>
+                          <hr  style={{bordr:"1px solid #999999", margin: "3px",marginTop:"0px"}}/>
                           </div>
                         )
                       }
