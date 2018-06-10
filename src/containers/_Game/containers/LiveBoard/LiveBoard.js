@@ -676,7 +676,10 @@ export default class LiveBoard extends Component {
           <div className={classes.ActionRow} style={{background:actionBg, color:heatmapTxt}}>
               <span style={{color:switchTxt, "float": "left", "width": "30%", "height":"75px", "textAlign": "left", "verticalAlign":"middle", zIndex:1}}>
 
-               <a href='#practice_board' style={{textDecoration: "none"}}> 
+               <a href='#practice_board' style={{textDecoration: "none"}}
+                               onClick={this.toggleMode}
+
+               > 
               <div style={{background:switchBg, 
                   color:switchTxt, 
                   marginTop:"3px",
@@ -688,15 +691,20 @@ export default class LiveBoard extends Component {
                   zIndex:2,
                  
                 }}
-                onClick={this.toggleMode}
 
                 >
               <span style={{marginTop:"0px",  color:switchTxt, zIndex:3,}}>
               <h2 style={{marginLeft:"70px", paddingTop:"12px"}} > 
               Live
               </h2>
+
               </span>
                 </div>
+                </a>
+                <a href='#practice_board' style={{textDecoration: "none"}}
+                                onClick={this.toggleMode}
+
+> 
                 <span className={classes.dot}></span>
                 </a>
 
