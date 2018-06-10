@@ -45,6 +45,9 @@ const dispatchToProps = dispatch => {
     initializeHeatmap:(action_id) => {
       dispatch(actions.initializeHeatmap(action_id, 'current'))
     },
+    showPerformance:(action_id) => {
+      dispatch(actions.showPerformance(action_id))
+    },
     
   };
 };
@@ -67,6 +70,7 @@ export default class LiveDashboard extends Component {
     initializeLive:PropTypes.func.isRequired,
     sendNotice:PropTypes.func.isRequired,
     initializeHeatmap:PropTypes.func.isRequired,
+    showPerformance:PropTypes.func.isRequired
   };
     
   constructor(props) {
@@ -286,7 +290,11 @@ export default class LiveDashboard extends Component {
                 <tr key={`dashboard-row-${accountId}`} style={tableStyle}>
                   <td style={tableStyle}>
                     <div className={classes.Cell + " " + classes.Flex}>
-                      &nbsp;<img src="/images/account_chart_button.png" width="30" />
+                      &nbsp;
+                      <a href='#accountPerf' 
+                        onClick={() => {self.props.showPerformance(account.account_id)}}>
+                        <img src="/images/account_chart_button.png" width="30" />
+                      </a>&nbsp;&nbsp;
                       <strong>$ {display}</strong>
                       &nbsp;  
                       ( <span

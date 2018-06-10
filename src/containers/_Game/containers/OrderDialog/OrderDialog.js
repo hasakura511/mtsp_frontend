@@ -17,7 +17,8 @@ const stateToProps = state => {
     isAuth: state.auth.token !== null,
     isLive: state.betting.isLive,
     dictionary_strategy: state.betting.dictionary_strategy,
-    mute:state.betting.mute
+    mute:state.betting.mute,
+    
   };
 };
 
@@ -102,59 +103,109 @@ export default class OrderDialog extends Component {
       this.setState({ showModal: true });
     }, 0);
 
+    var isPerformance=this.props.isPerformance;
     /**
      * @type {string[]}
      */
-    const systems = Object.values(this.props.slot)
-        .map(value => value.column)
-        .filter(s => s),
-      { portfolio, accountValue, accountId, qty, target } = this.props.chip;
+    if (!this.props.isPerformance) {
+      const systems = Object.values(this.props.slot)
+          .map(value => value.column)
+          .filter(s => s),
+        { portfolio, accountValue, accountId, qty, target } = this.props.chip;
 
-      /**
-       * Fetch performance charts
-       */
-      if (!this.props.isLive) {
-        axios
-        .post("/utility/charts/", {
-          /**
-           * @example {"portfolio": ["TU", "BO"], "systems": ["prev1", "prev5"], "target": 500, "account": 5000}
-           *
-           */
-          systems,
-          portfolio,
-          qty,
-          target,
-          account: accountValue
-        })
-        .then(response => {
-          /**
-           * @namespace {Performance}
-           */
-          const performance = response.data;
+        /**
+         * Fetch performance charts
+         */
+        if (!this.props.isLive) {
+          axios
+          .post("/utility/charts/", {
+            /**
+             * @example {"portfolio": ["TU", "BO"], "systems": ["prev1", "prev5"], "target": 500, "account": 5000}
+             *
+             */
+            systems,
+            portfolio,
+            qty,
+            target,
+            account: accountValue
+          })
+          .then(response => {
+            /**
+             * @namespace {Performance}
+             */
+            const performance = response.data;
 
-          // Adding last 3 days profit for simulation
-          // __TEMPERORY__CODE__
-          var profitObj = getDemoProfitObj(100, performance, this.props.slot.position);
-          
-          this._isMounted &&
+            var profitObj = getDemoProfitObj(100, performance, accountId);
+
+            this._isMounted &&
+              this.setState({
+                last3DaysProfit: profitObj,
+                performanceLoading: false,
+                performance
+              });
+          })
+          .catch(performanceError => {
             this.setState({
-              last3DaysProfit: profitObj,
               performanceLoading: false,
-              performance
+              performanceError: performanceError
             });
-        })
-        .catch(performanceError => {
-          this.setState({
-            performanceLoading: false,
-            performanceError: performanceError
           });
+        } else {
+          isPerformance=true;
+          this.setState({
+            performanceLoading: true,
+          });
+        }
+    }
+    if (isPerformance) {
+      axios
+      .post("/utility/account_performance_live/", {
+        /**
+         * @example {"portfolio": ["TU", "BO"], "systems": ["prev1", "prev5"], "target": 500, "account": 5000}
+         *
+         */
+        account_id: this.props.performance_account_id
+      })
+      .then(response => {
+        /**
+         * @namespace {Performance}
+         */
+        var performance = response.data;
+        console.log(performance);
+        var specs=Object.keys(performance.chart_specs);
+        var idx=0;
+        var chart_data={};
+        Object.keys(performance.chart_data).map(period => {
+          var dataJson= JSON.parse(performance.chart_data[period]) 
+          var data=[];
+          Object.keys(dataJson).map(date => {
+
+            var item=dataJson[date];
+            item.date=date;
+            data.push(item);
+
+          });
+          chart_data[specs[idx]]=data;
+          idx+=1;
+
         });
-      } else {
+        performance.chart_data=chart_data;
+        
+        console.log(chart_data);
 
         this.setState({
+            performanceLoading: false,
+            performance
+          });
+      })
+      .catch(performanceError => {
+        console.log(performanceError);
+        this.setState({
           performanceLoading: false,
+          performanceError: performanceError
         });
-      }
+      });
+    }
   }
 
   /**
@@ -188,7 +239,7 @@ export default class OrderDialog extends Component {
    */
 
   componentWillMount() {
-    const { chip, history, isAuth, addTimedToaster } = this.props;
+    const { chip, history, isAuth, addTimedToaster, isPerformance, performance_account_id } = this.props;
     if (chip.display !== "25K" && chip.display !== "50K" && !isAuth) {
       history.push("/auth");
       addTimedToaster({
@@ -349,10 +400,13 @@ export default class OrderDialog extends Component {
               "Could not load performance data, contact us to report this bug."}
           </h1>
         ) : (
+
           <Order
             {...this.props}
             dictionary_strategy={this.props.dictionary_strategy}
             isLive={this.props.isLive}
+            isPerformance={this.props.isPerformance}
+            performance_account_id={this.props.performance_account_id}
             performance={performance}
             setAnti={this.setAnti}
             setNotAnti={this.setNotAnti}
@@ -381,7 +435,7 @@ export default class OrderDialog extends Component {
   }
 
   static propTypes = {
-    slot: PropTypes.object.isRequired,
+    slot: PropTypes.object,
     chip: PropTypes.object.isRequired,
     successHandler: PropTypes.func.isRequired,
     toggle: PropTypes.func.isRequired,
@@ -397,5 +451,7 @@ export default class OrderDialog extends Component {
     history: PropTypes.object.isRequired,
     addTimedToaster: PropTypes.func.isRequired,
     mute:PropTypes.bool.isRequired,
+    isPerformance: PropTypes.bool,
+    performance_account_id: PropTypes.string
   };
 }

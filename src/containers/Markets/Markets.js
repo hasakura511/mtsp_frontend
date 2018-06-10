@@ -1125,6 +1125,12 @@ export default class Markets extends Component {
                 >
                 {item.display} <br/><br/>
                 {item.pct_chg}
+                {item.bottom_row ? (
+                  <span><br/>{item.bottom_row}</span>
+                ) : null}
+                {item.bottom_row2 ? (
+                  <span><br/>{item.bottom_row2}</span>
+                ) : null}
                 </a>
             )
           });

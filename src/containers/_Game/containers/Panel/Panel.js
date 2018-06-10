@@ -29,6 +29,7 @@ const stateToProps = state => {
            heatmap_selection:state.betting.heatmap_selection,
            themes:state.betting.themes,
            mute:state.betting.mute,
+           performance_account_id:state.betting.performance_account_id,
            
           };
 };
@@ -103,6 +104,7 @@ export default class Panel extends Component {
     heatmap_selection:PropTypes.string,
     themes:PropTypes.object,
     mute:PropTypes.bool.isRequired,
+    performance_account_id:PropTypes.string.isRequired,
   };
 
   /**
@@ -198,7 +200,9 @@ export default class Panel extends Component {
       orderSlot: null,
       rankingLoading: true,
       rankingData: [],
-      rankingError: null
+      rankingError: null,
+      performance_account_id:'',
+      isPerformance:false,
     };
     this._isMounted = false;
   }
@@ -223,6 +227,14 @@ export default class Panel extends Component {
     //console.log(newProps.balanceChips);
     //console.log(newProps.bettingChips);
     this.makeBoard(newProps);
+    if (newProps.performance_account_id && newProps.performance_account_id != this.state.performance_account_id) {
+      var chip='';
+      this.props.accounts.map(account => {
+          if (account.account_id == newProps.performance_account_id)
+            chip=account;
+      });
+      this.setState({showOrderDialog:true, performance_account_id:newProps.performance_account_id, orderChip:chip, isPerformance:true});
+    } 
 
   }
 
@@ -426,7 +438,8 @@ export default class Panel extends Component {
 
   toggleOrderDialog = () => {
     this.setState(prevState => ({
-      showOrderDialog: !prevState.showOrderDialog
+      showOrderDialog: !prevState.showOrderDialog,
+      isPerformance:false
     }));
   };
 
@@ -582,6 +595,8 @@ export default class Panel extends Component {
             rankingLoading={rankingLoading}
             rankingData={rankingData}
             rankingError={rankingError}
+            isPerformance={this.state.isPerformance}
+            performance_account_id={this.state.performance_account_id}
           />
           </div>
         ) : null}

@@ -730,7 +730,8 @@ export default class LiveBoard extends Component {
             />
 
 
-          <div className={classes.ActionRow} style={{background:actionBg, color:heatmapTxt}}>
+          <div className={classes.ActionRow} style={{background:actionBg, backgroundRepeat: "no-repeat",
+                backgroundSize: "62px 62px",color:heatmapTxt}}>
               <span style={{color:switchTxt, "float": "left", "width": "30%", "height":"75px", "textAlign": "left", "verticalAlign":"middle", zIndex:1}}>
 
                <a href='#practice_board' style={{textDecoration: "none"}}
@@ -738,7 +739,9 @@ export default class LiveBoard extends Component {
                                title="Switch to Practice"
 
                > 
-              <div style={{background:switchBg, 
+              <div style={{
+                  
+                  background:switchBg, 
                   color:switchTxt, 
                   marginTop:"3px",
                   height:"60px", 

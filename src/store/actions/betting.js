@@ -26,6 +26,13 @@ export const initializeData = data => {
   };
 };
 
+export const showPerformance = account_id => {
+  return {
+    type: actionTypes.SHOW_PERFORMANCE,
+    account_id,
+  }
+}
+
 
 export const initializeHeatmap = (account_id, link) => {
   return {

@@ -108,6 +108,8 @@
   margin-left: 137px;
   margin-top: -62px;
   display: block;
-  background: url("/images/switch_toggle.png");
+  background-image: url("/images/switch_toggle.png");
+  background-repeat: "no-repeat";
+  background-size: contain;
   z-index: 5;
 }

@@ -90,6 +90,7 @@ const initialState = {
             }
   },
   heatmap:{},
+  performance_account_id:'',
   loading: true,
   mute: true,
   dragChip:"",
@@ -318,6 +319,13 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         loading
+      };
+    }
+    case actionTypes.SHOW_PERFORMANCE:
+    {
+      return {
+        ...state,
+        performance_account_id:action.account_id
       };
     }
     case actionTypes.UPDATE_DATE:

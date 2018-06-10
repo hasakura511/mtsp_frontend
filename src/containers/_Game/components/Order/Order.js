@@ -5,6 +5,7 @@ import Chip from "../_Chip/_Chip";
 import classes from "./Order.css";
 // import Switch from "../../../../components/UI/Switch/Switch";
 import OrderCharts from "../../containers/OrderCharts/OrderCharts";
+import AccountCharts from "../../components/AccountCharts/AccountCharts";
 import { toSystem  } from "../../Config";
 import Sound from 'react-sound';
 const getSystems = slot => {
@@ -16,11 +17,16 @@ const getSystems = slot => {
 
 
 const order = props => {
-  const { slot, chip, setAnti, setNotAnti, isAnti, toAntiSystem, submitBetHandler, close, isLive,  dictionary_strategy } = props;
+  const { slot, chip, setAnti, setNotAnti, isAnti, toAntiSystem, submitBetHandler, close, isLive,  dictionary_strategy, isPerformance } = props;
   console.log(slot);
-  const isNumbered = !isNaN(Number(slot.position));
+  var isNumbered;
+  if (!isPerformance) {
+    isNumbered = !isNaN(Number(slot.position));
+  }
+
   return (
     <div className={classes.Order}>
+      {!isPerformance ? (
       <div className={classes.TitleRow}>
         <div className={classes.Left}>
           <div
@@ -54,7 +60,6 @@ const order = props => {
             <Chip chip={chip} />
           </div>
         </div>
-
         <div className={classes.Right}>
           <div className={classes.ElementContainer}>
             <div style={{ display: "flex", width: "100%" }}>
@@ -108,11 +113,13 @@ const order = props => {
           <p style={{ color: "#63a57c" }}>Anti-System</p>
         </div> */}
       </div>
-      
+    
+    ) : null}
       
       {isLive ? (
 
         <div className={classes.Content}>
+          <AccountCharts {...props} />
         </div>
 
 
@@ -141,7 +148,7 @@ const order = props => {
 };
 
 order.propTypes = {
-  slot: PropTypes.object.isRequired,
+  slot: PropTypes.object,
   chip: PropTypes.object.isRequired,
   isLive: PropTypes.bool.isRequired,
   performance: PropTypes.object,
@@ -155,6 +162,8 @@ order.propTypes = {
   isAnti: PropTypes.bool.isRequired,
   close: PropTypes.func.isRequired,
   dictionary_strategy:PropTypes.object.isRequired,
+  isPerformance:PropTypes.bool,
+  performance_account_id:PropTypes.string,
 };
 
 export default order;
