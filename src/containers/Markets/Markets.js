@@ -160,7 +160,7 @@ export default class Markets extends Component {
           'username':  this.props.email,
           'date':this.state.liveDateText,
           'account_id':account_id,
-          'link':'current',
+          'link':link,
 
       })
       .then(response => {
