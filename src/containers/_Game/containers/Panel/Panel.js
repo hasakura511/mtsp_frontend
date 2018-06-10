@@ -333,6 +333,7 @@ export default class Panel extends Component {
     }
     if (slot) {
       this.setState({
+        performance_account_id:chip.account_id,
         showOrderDialog: true,
         showClearDialog: false,
         orderChip: chip,
@@ -348,6 +349,7 @@ export default class Panel extends Component {
       };
       systemToSlot[`${system.position}System`] = system;
       this.setState({
+        performance_account_id:chip.account_id,
         showOrderDialog: true,
         showClearDialog: false,
         orderChip: chip,

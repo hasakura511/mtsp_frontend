@@ -57,6 +57,7 @@ export default class OrderDialog extends Component {
     super(props);
 
     this.state = {
+      performance_account_id:'',
       /**
        * @type {boolean}
        */
@@ -153,58 +154,16 @@ export default class OrderDialog extends Component {
         } else {
           isPerformance=true;
           this.setState({
-            performanceLoading: true,
+            performanceLoading: false
           });
         }
     }
     if (isPerformance) {
-      axios
-      .post("/utility/account_performance_live/", {
-        /**
-         * @example {"portfolio": ["TU", "BO"], "systems": ["prev1", "prev5"], "target": 500, "account": 5000}
-         *
-         */
-        account_id: this.props.performance_account_id
-      })
-      .then(response => {
-        /**
-         * @namespace {Performance}
-         */
-        var performance = response.data;
-        console.log(performance);
-        var specs=Object.keys(performance.chart_specs);
-        var idx=0;
-        var chart_data={};
-        Object.keys(performance.chart_data).map(period => {
-          var dataJson= JSON.parse(performance.chart_data[period]) 
-          var data=[];
-          Object.keys(dataJson).map(date => {
-
-            var item=dataJson[date];
-            item.date=date;
-            data.push(item);
-
-          });
-          chart_data[specs[idx]]=data;
-          idx+=1;
-
-        });
-        performance.chart_data=chart_data;
-        
-        console.log(chart_data);
 
         this.setState({
+          performance_account_id:this.props.performance_account_id,
             performanceLoading: false,
-            performance
           });
-      })
-      .catch(performanceError => {
-        console.log(performanceError);
-        this.setState({
-          performanceLoading: false,
-          performanceError: performanceError
-        });
-      });
     }
   }
 
@@ -240,6 +199,8 @@ export default class OrderDialog extends Component {
 
   componentWillMount() {
     const { chip, history, isAuth, addTimedToaster, isPerformance, performance_account_id } = this.props;
+    if (performance_account_id)
+      this.setState({performance_account_id:performance_account_id})
     if (chip.display !== "25K" && chip.display !== "50K" && !isAuth) {
       history.push("/auth");
       addTimedToaster({
@@ -406,7 +367,7 @@ export default class OrderDialog extends Component {
             dictionary_strategy={this.props.dictionary_strategy}
             isLive={this.props.isLive}
             isPerformance={this.props.isPerformance}
-            performance_account_id={this.props.performance_account_id}
+            performance_account_id={this.state.performance_account_id}
             performance={performance}
             setAnti={this.setAnti}
             setNotAnti={this.setNotAnti}

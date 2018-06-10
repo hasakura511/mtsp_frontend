@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classes from "./AccountCharts.css";
 import PerformanceChart from "./PerformanceChart/PerformanceChart";
+import OpenPositions from "./OpenPositions/OpenPositions";
+import PreviousPnL from "./PreviousPnL/PreviousPnL";
+import TradingCosts from "./TradingCosts/TradingCosts";
 import Spinner from "../../../../components/UI/Spinner/Spinner";
 //import RankingChart from "./RankingChart/RankingChart";
 
@@ -23,16 +26,15 @@ class AccountCharts extends Component {
 
     this.state = {
       isPerformance: true,
-      isRanking: false
+      isOpenPositions:false,
+      isTradingCosts:false,
+      isPreviousPnL:false
     };
   }
 
-  toggle = isPerformance => {
-    this.setState({ isPerformance, isRanking: !isPerformance });
-  };
 
   render() {
-    const { isPerformance, isRanking } = this.state;
+    const { isPerformance, isOpenPositions, isTradingCosts, isPreviousPnL } = this.state;
     const {
       performance,
       rankingLoading,
@@ -49,15 +51,30 @@ class AccountCharts extends Component {
               className={
                 classes.Tab + " " + (isPerformance ? classes.active : "")
               }
-              onClick={() => this.toggle(true)}
+              onClick={() => this.setState({isPerformance:true, isOpenPositions:false, isTradingCosts:false, isPreviousPnL:false}) }
             >
-              Performance Chart
+              Performance
             </div>
             <div
-              className={classes.Tab + " " + (isRanking ? classes.active : "")}
-              onClick={() => this.toggle(false)}
+              className={classes.Tab + " " + (isOpenPositions ? classes.active : "")}
+              onClick={() => this.setState({isPerformance:false, isOpenPositions:true, isTradingCosts:false, isPreviousPnL:false})
+            }
             >
-              Ranking Chart
+              Open Positions
+            </div>
+            <div
+              className={classes.Tab + " " + (isTradingCosts ? classes.active : "")}
+              onClick={() => this.setState({isPerformance:false, isOpenPositions:false, isTradingCosts:true, isPreviousPnL:false})
+            }
+            >
+              Trading Costs
+            </div>
+            <div
+              className={classes.Tab + " " + (isPreviousPnL ? classes.active : "")}
+              onClick={() => this.setState({isPerformance:false, isOpenPositions:false, isTradingCosts:false, isPreviousPnL:true})
+            }
+            >
+              Previous PnL
             </div>
           </div>
           
@@ -68,10 +85,33 @@ class AccountCharts extends Component {
               <PerformanceChart performance={performance} />
             </div>
           ) : (
-            <div className={classes.Content}>
-              
-            </div>
+           null
           )}
+        
+        {isOpenPositions ? (
+            <div className={classes.Content}>
+              <OpenPositions />
+            </div>
+          ) : (
+           null
+          )}
+
+         {isTradingCosts ? (
+            <div className={classes.Content}>
+              <TradingCosts />
+            </div>
+          ) : (
+           null
+          )}
+
+         {isPreviousPnL ? (
+            <div className={classes.Content}>
+              <PreviousPnL />
+            </div>
+          ) : (
+           null
+          )}
+
         </div>
       </div>
     );
@@ -80,6 +120,7 @@ class AccountCharts extends Component {
 
 AccountCharts.propTypes = {
   performance: PropTypes.object,
+
   rankingLoading: PropTypes.bool.isRequired,
   rankingData: PropTypes.array,
   rankingError: PropTypes.object,

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { toWordedDate, toSlashDate } from "../../../../../util";
-import classes from "./PerformanceChart.css";
+import classes from "./PreviousPnL.css";
 import Spinner from "../../../../../components/UI/Spinner/Spinner";
 import axios from "../../../../../axios-gsm";
 
@@ -142,7 +142,7 @@ class CustomTooltip extends Component {
 }
 
 @connect(stateToProps)
-export default class PerformanceChart extends Component {
+export default class PreviousPnL extends Component {
   constructor(props) {
     super(props);
 
@@ -238,7 +238,7 @@ export default class PerformanceChart extends Component {
         console.log(chartData);
     }
     return (
-        <div className={classes.PerformanceChart}>
+        <div className={classes.PreviousPnL}>
         
           {performanceLoading ? (
                 <div>
@@ -255,7 +255,7 @@ export default class PerformanceChart extends Component {
           </div>
         ) : (
 
-        <div className={classes.PerformanceChart}>
+        <div className={classes.PreviousPnL}>
             <div className={classes.Tabs}>
             {Object.keys(performance.chart_specs).map(date => {
                 console.log(date);

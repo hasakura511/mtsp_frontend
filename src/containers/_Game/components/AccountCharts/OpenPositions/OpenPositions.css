@@ -1,0 +1,63 @@
+.OpenPositions {
+    height: 100%;
+  }
+  
+  .ToolTip {
+    width: 230px;
+    height: 220px;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-flow: column;
+    align-items: start;
+    justify-content: flex-start;
+    background-color: #f1f1f1;
+    border: 1px solid #ececec;
+    opacity: 0.9;
+  }
+  
+  .ToolTip .Row {
+    width: 100%;
+  }
+  
+  .ToolTip .Row p {
+    margin: 0px;
+    width: 100%;
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+  }
+  
+  .Tabs {
+    display: inline-flex;
+    align-items: end;
+    justify-content: flex-start;
+    /* padding: 10px; */
+    padding-left: 100px;
+    padding-bottom: 1px;
+    width: 100%;
+  }
+  
+  .Tab>p {
+    margin: 0px;
+    color: #919191;
+    font-weight: 500;
+    font-size: 1.2em;
+    width: fit-content;
+  }
+  
+  .Tab>p.active {
+    color: black;
+    border-bottom: 2px solid black;
+  }
+  
+  .Tab {
+    width: 100px;
+    cursor: pointer;
+  }
+  
+  .ChartContainer {
+    background-color: #f7f7f7;
+    display: flex;
+    justify-content: center;
+  }
