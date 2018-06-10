@@ -675,13 +675,9 @@ export default class LiveBoard extends Component {
 
           <div className={classes.ActionRow} style={{background:actionBg, color:heatmapTxt}}>
               <span style={{color:switchTxt, "float": "left", "width": "30%", "height":"75px", "textAlign": "left", "verticalAlign":"middle", zIndex:1}}>
-                <Toggle
-                onClick={this.toggleMode}
-                on={<h2 style={{marginTop:"6px",marginLeft:"30px", color:switchTxt, zIndex:3,}}>Live<span className={classes.dot} style={{zIndex:4}}></span></h2>}
-                off={<h2  style={{marginTop:"6px"}}>Practice</h2>}
-                size="sm"
-                active={this.state.toggleActive}
-                style={{background:switchBg, 
+
+               <a href='#practice_board' style={{textDecoration: "none"}}> 
+              <div style={{background:switchBg, 
                   color:switchTxt, 
                   marginTop:"3px",
                   height:"60px", 
@@ -692,10 +688,18 @@ export default class LiveBoard extends Component {
                   zIndex:2,
                  
                 }}
-                onstyle= {"background:" + switchBg + ",color:" + switchTxt}
+                onClick={this.toggleMode}
+
                 >
-               
-                </Toggle>
+              <span style={{marginTop:"0px",  color:switchTxt, zIndex:3,}}>
+              <h2 style={{marginLeft:"70px", paddingTop:"12px"}} > 
+              Live
+              </h2>
+              </span>
+                </div>
+                <span className={classes.dot}></span>
+                </a>
+
                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
               </span>
               <span  style={{"float": "left", "width": "40%",  "minWidth":"600px", "height":"75px","whiteSpace": "nowrap","textAlign": "left", "verticalAlign":"top"}}>

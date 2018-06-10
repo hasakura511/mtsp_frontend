@@ -103,14 +103,11 @@
 }
 
 .dot {
-  height: 60px;
-  width: 60px;
+  height: 64px;
+  width: 64px;
   float: right;
-  margin-right: -22px;
-  margin-top: -13px;
-  background-color: #fff;
-  border-radius: 50%;
-  display: inline-block;
-  border: 1px solid #aaa;
+  margin-right: 30px;
+  margin-top: -62px;
+  background: url("/images/switch_toggle.png");
   z-index: 2;
 }
