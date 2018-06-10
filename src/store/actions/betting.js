@@ -26,6 +26,15 @@ export const initializeData = data => {
   };
 };
 
+
+export const initializeHeatmap = (account_id, link) => {
+  return {
+    type: actionTypes.INITIALIZE_HEATMAP,
+    account_id, 
+    link
+  };
+};
+
 export const updateBet = ( topSystems,
   bottomSystems,
   leftSystems,

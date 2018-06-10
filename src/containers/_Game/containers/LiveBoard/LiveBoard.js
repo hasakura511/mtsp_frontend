@@ -60,7 +60,8 @@ const stateToProps = state => {
     rightSystems:state.betting.rightSystems,
     bottomSystems:state.betting.bottomSystems,
     themes:state.betting.themes,
-    mute:state.betting.mute
+    mute:state.betting.mute,
+    liveDateText:state.betting.liveDateText
     
   };
 };
@@ -156,6 +157,7 @@ export default class LiveBoard extends Component {
     themes:PropTypes.object.isRequired,
     mute:PropTypes.bool.isRequired,
     setMute:PropTypes.func.isRequired,
+    liveDateText:PropTypes.string,
   };
 
   constructor(props) {
@@ -181,6 +183,7 @@ export default class LiveBoard extends Component {
       toggleActive:true,
       initializeData:{},
       refreshing:false,
+      heatmapData:{},
     };
   
   }
@@ -208,6 +211,60 @@ export default class LiveBoard extends Component {
      * set initial state
      */
     
+  }
+
+  
+  initializeHeatmap=(account_id) => {
+    /*
+    if (this.state.refreshing)
+      return;
+    else
+      this.setState({refreshing:true})
+    */
+    //console.log(this.props);
+    axios
+    .post("/utility/market_heatmap/", {
+      "username":this.props.email, 
+      "account_id":account_id, 
+      "link":"current",
+      "date":this.props.liveDateText,
+
+      // accounts: [{ portfolio, target, accountValue }],
+    },{timeout: 600000})
+    .then(({ data }) => {
+      console.log('received initialize_live data')
+      console.log(data);
+      /*
+      this.props.initialize(data);
+
+      if (!this.state.loading)
+        this.sendNotice("Board Refreshed with New Data");
+
+
+      this.setState({
+        loading:false,
+        rankingLoading: false,
+        rankingData: data.rankingData,
+        refreshing:false
+      });*/
+
+    })
+    .catch(error => {
+      this.sendNotice('Heatmap Data not received: ' + JSON.stringify(error));
+      console.log('error initializing')
+      console.log(error)
+    // eslint-disable-next-line react/no-is-mounted
+    /*
+      this.setState({
+        rankingLoading: false,
+        rankingError: error,
+        loading:false,
+        refreshing:false
+      });
+          */
+
+    });
+
   }
 
   initializeLive=() => {
@@ -678,6 +735,7 @@ export default class LiveBoard extends Component {
 
                <a href='#practice_board' style={{textDecoration: "none"}}
                                onClick={this.toggleMode}
+                               title="Switch to Practice"
 
                > 
               <div style={{background:switchBg, 
@@ -703,6 +761,7 @@ export default class LiveBoard extends Component {
                 </a>
                 <a href='#practice_board' style={{textDecoration: "none"}}
                                 onClick={this.toggleMode}
+                                title="Switch to Practice"
 
 > 
                 <span className={classes.dot}></span>
@@ -756,7 +815,7 @@ export default class LiveBoard extends Component {
           >
             <div>
               <span style={{"marginTop":"-150px","float": "left", "width": "50%", "textAlign": "left", "display": "inline-block","verticalAlign": "top"}}>
-              <img src="/images/leaderboard_button.png" width="120"/><br/>
+              <a href='#leaderboard' title="Show Global Leaderboards."><img src="/images/leaderboard_button.png" width="120"/></a><br/>
               </span>
               <span style={{"marginTop":"-150px", "float": "right", "width": "50%",  "textAlign": "right",  "display": "inline-block", "verticalAlign":"top"}}>
                 <img src="/images/infotext_button.png" width="22" style={{"margin":"10px"}} />
@@ -775,17 +834,17 @@ export default class LiveBoard extends Component {
               moveToBalance={this.moveToBalance}
             />
               <span style={{"marginTop":"30px","float": "left", "width": "50%", "textAlign": "left", "display": "inline-block","verticalAlign": "top"}}>
-                <img src="/images/accounts_button.png" width="120"/><br/>
-                <img src="/images/edit_board_button.png" width="120"/><br/>  
+                <a href='#accounts' title="Create or configure your accounts."><img src="/images/accounts_button.png" width="120"/></a><br/>
+                <a href='#edit_board' title="Edit your board."><img src="/images/edit_board_button.png" width="120"/></a><br/>  
               </span>
               {self.props.mute ? (
               <span style={{"marginTop":"60px", "paddingRight":"5px", "float": "right", "width": "50%", "textAlign": "right", "display": "inline-block","verticalAlign": "top"}}>
-                <a href='#soundbutton' onClick={() => { self.props.setMute(false);  } }><img src="/images/sound_off_button.png" width="30"/></a><br/>
+                <a title="Turn sounds on" href='#soundbutton' onClick={() => { self.props.setMute(false);  } }><img src="/images/sound_off_button.png" width="30"/></a><br/>
               </span>
               ) :
               (
               <span style={{"marginTop":"60px","paddingRight":"5px","float": "right", "width": "50%", "textAlign": "right", "display": "inline-block","verticalAlign": "top"}}>
-                <a href='#soundbutton' onClick={() => { self.props.setMute(true); } }><img src="/images/sound_on_button.png" width="30"/></a><br/>
+                <a title="Turn sounds off" href='#soundbutton' onClick={() => { self.props.setMute(true); } }><img src="/images/sound_on_button.png" width="30"/></a><br/>
               </span>
 
               )}

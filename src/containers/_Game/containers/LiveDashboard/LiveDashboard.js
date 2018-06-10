@@ -42,6 +42,9 @@ const dispatchToProps = dispatch => {
     addTimedToaster: toaster => {
       dispatch(actions.addTimedToaster(toaster, 5000))
     },
+    initializeHeatmap:(action_id) => {
+      dispatch(actions.initializeHeatmap(action_id, 'current'))
+    },
     
   };
 };
@@ -63,6 +66,7 @@ export default class LiveDashboard extends Component {
     themes:PropTypes.object,
     initializeLive:PropTypes.func.isRequired,
     sendNotice:PropTypes.func.isRequired,
+    initializeHeatmap:PropTypes.func.isRequired,
   };
     
   constructor(props) {
@@ -325,7 +329,13 @@ export default class LiveDashboard extends Component {
                       className={classes.Cell}
                       style={{ justifyContent: "center" }}
                     >
-                      <span style={{'float':'left','marginLeft':"-37px","marginTop":"5px"}}><img src="/images/view_portfolio.png" width="30" /></span>
+                      <span style={{'float':'left','marginLeft':"-37px","marginTop":"5px"}}>
+                      <a href='#viewportfolio' onClick={() => { 
+                        self.props.initializeHeatmap(account.account_id);
+                        $(window).scrollTop($("#marketTop").offset().top-111);
+
+                      }}><img src="/images/view_portfolio.png" width="30" /></a>
+                      </span>
                       <span style={{'float':'left','marginTop':"10px"}}>
                       {account.current_pnl !== null ? (
                         <p style={{ width: "auto" }}>

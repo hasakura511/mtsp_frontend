@@ -91,10 +91,11 @@ const initialState = {
   },
   heatmap:{},
   loading: true,
-  mute:false,
+  mute: true,
   dragChip:"",
   isLive:false,
   initializeData: {},
+  heatmap_account_id:'',
   simulatedDate: getOffsetDate(1),
   liveDate: new moment().tz("US/Eastern"),
   liveDateText: "",
@@ -382,6 +383,13 @@ const reducer = (state = initialState, action) => {
           rightSystems,
           inGameChips,
           accounts
+        };
+    }
+    case actionTypes.INITIALIZE_HEATMAP:
+    {
+        return {
+          ...state,
+          heatmap_account_id:action.account_id
         };
     }
     case actionTypes.INITIALIZE_DATA:

@@ -45,8 +45,8 @@ const stateToProps = state => {
   return {
     liveDate:state.betting.liveDate,
     liveDateText:state.betting.liveDateText,
-    email:state.auth.email
-    
+    email:state.auth.email,
+    heatmap_account_id:state.betting.heatmap_account_id,
   };
 };
 
@@ -106,6 +106,7 @@ export default class Markets extends Component {
       selected_period:"",
       firstPeriod:"",
       refreshing:false,
+      heatmap_account_id:'',
     };
   }
 
@@ -115,7 +116,8 @@ export default class Markets extends Component {
     liveDate:PropTypes.instanceOf(moment).isRequired,
     liveDateText:PropTypes.string.isRequired,
     email:PropTypes.string,
-    refreshing:PropTypes.bool
+    refreshing:PropTypes.bool,
+    heatmap_account_id:PropTypes.string,
   };
 
   getSubmitTitle(controls) {
@@ -141,10 +143,13 @@ export default class Markets extends Component {
     if (newProps.refreshing) {
       this.refreshData();
     }
+    if (newProps.heatmap_account_id && newProps.heatmap_account_id != this.state.heatmap_account_id) {
+      this.refreshData(newProps.heatmap_account_id, 'current');
+    }
   }
 
-  refreshData=() => {
-    this.setState({loading:true})
+  refreshData=(account_id='', link='') => {
+    this.setState({loading:true, heatmap_account_id:account_id})
     if (this.state.refreshing)
       return;
     else
@@ -154,6 +159,8 @@ export default class Markets extends Component {
       .post("/utility/market_heatmap/", {
           'username':  this.props.email,
           'date':this.state.liveDateText,
+          'account_id':account_id,
+          'link':'current',
 
       })
       .then(response => {
@@ -1160,7 +1167,9 @@ export default class Markets extends Component {
       style={{background:self.state.themes.background,
               backgroundColor:self.state.themes.background,
               padding:"0px",margin:"0px"
-      }}>
+      }}
+      id="marketTop"
+      >
           {this.state.loading || !this.state.date_str? (
             <Spinner />
           ) : this.state.error ? null : (
