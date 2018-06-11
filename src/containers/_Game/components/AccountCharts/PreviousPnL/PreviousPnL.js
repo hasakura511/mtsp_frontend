@@ -4,6 +4,11 @@ import { toWordedDate, toSlashDate } from "../../../../../util";
 import classes from "./PreviousPnL.css";
 import Spinner from "../../../../../components/UI/Spinner/Spinner";
 import axios from "../../../../../axios-gsm";
+import chipIcon from "../../../../../assets/images/chip-icon.png";
+import lossIcon from "../../../../../assets/images/loss-icon.png";
+import gainIcon from "../../../../../assets/images/gain-icon.png";
+import ReactTable from "react-table";
+import tableClasses from "react-table/react-table.css";
 
 import {
   LineChart,
@@ -20,7 +25,9 @@ import {
 import { connect } from "react-redux";
 
 const stateToProps = state => ({
-  performance_account_id: state.betting.performance_account_id
+  performance_account_id: state.betting.performance_account_id,
+  email: state.auth.email,
+  liveDateText:state.betting.liveDateText
 });
 
 const convert = pnlObj => {
@@ -171,72 +178,58 @@ export default class PreviousPnL extends Component {
 
   componentDidMount() {
       var self=this;
-    axios
-    .post("/utility/account_performance_live/", {
-      /**
-       * @example {"portfolio": ["TU", "BO"], "systems": ["prev1", "prev5"], "target": 500, "account": 5000}
-       *
-       */
-      account_id: self.props.performance_account_id
-    })
-    .then(response => {
-      /**
-       * @namespace {Performance}
-       */
-      var performance = response.data;
-      console.log(performance);
-      var specs=Object.keys(performance.chart_specs);
-      var idx=0;
-      var chart_data={};
-      Object.keys(performance.chart_data).map(period => {
-        var dataJson= JSON.parse(performance.chart_data[period]) 
-        var data=[];
-        Object.keys(dataJson).map(date => {
-
-          var item=dataJson[date];
-          item.date=date;
-          data.push(item);
-
-        });
-        chart_data[specs[idx]]=data;
-        idx+=1;
-
-      });
-      performance.chart_data=chart_data;
-      
-      console.log(chart_data);
-
-      this.setState({
+      axios
+      .post("/utility/prev_pnl_live/", {
+        /**
+         * @example {"portfolio": ["TU", "BO"], "systems": ["prev1", "prev5"], "target": 500, "account": 5000}
+         *
+         */
+        "username":self.props.email,
+        "chip_id":self.props.chip.chip_id,
+        "last_date":self.props.liveDateText
+  
+      })
+      .then(response => {
+        var performance = response.data;
+        console.log('trading costs data')
+        console.log(performance);
+        var dataJson= JSON.parse(performance.prev_pnl);
+        performance.prev_pnl=dataJson;
+        
+        console.log(performance);
+  
+        this.setState({
+            performanceLoading: false,
+            performance
+          });
+      })
+      .catch(performanceError => {
+        console.log(performanceError);
+        this.setState({
           performanceLoading: false,
-          performance
+          performanceError: performanceError
         });
-    })
-    .catch(performanceError => {
-      console.log(performanceError);
-      this.setState({
-        performanceLoading: false,
-        performanceError: performanceError
       });
-    });
-
   }
 
   render() {
     var { performance, lookback, performanceLoading, performanceError } = this.state;
+    var bgColor="white";
+    var bgText="black";
+    var bdColor="green";
+    var bhColor="pink";
+    /*if (this.props.themes.live.dashboard != undefined) {
+      bgColor=this.props.themes.live.dashboard.background;
+      bgText=this.props.themes.live.dashboard.text;
+      bdColor=this.props.themes.live.dashboard.lines;
+      bhColor=this.props.themes.live.dashboard.lines_horizontal_middle;
+    }
+    */
+    var tableStyle={ fontSize:'12px',background: bgColor, color:bgText, borderLeft: "1px solid " + bdColor, borderRight: "1px solid " + bdColor, borderTop: "0.1px solid " + bhColor, borderBottom: "0.1px solid " + bhColor};
+    var self=this;
 
     var chartData={};
 
-    if (!performanceLoading) {
-        Object.keys(performance.chart_specs).map(date => {
-            if (!lookback)
-                lookback=date;
-        });
-
-        console.log('chart data');
-        chartData=performance.chart_data[lookback];
-        console.log(lookback);
-        console.log(chartData);
-    }
     return (
         <div className={classes.PreviousPnL}>
         
@@ -256,63 +249,109 @@ export default class PreviousPnL extends Component {
         ) : (
 
         <div className={classes.PreviousPnL}>
-            <div className={classes.Tabs}>
-            {Object.keys(performance.chart_specs).map(date => {
-                console.log(date);
-                return (
-          <div key={date} className={classes.Tab} onClick={() => this.lookbackHandler(date)}>
-            <p className={lookback === date ? classes.active : ""}>{date}</p>
-          </div>
-            )
-            })}
-        </div>
-        <div className={classes.ChartContainer}>
-          <ResponsiveContainer
-            width="100%"
-            height={innerHeight - 190}
-            maxHeight="100%"
-          >
-            <LineChart
-              data={chartData}
-              
-              margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-            >
-              <XAxis
-                dataKey="date"
-                interval={0}
-                tick={props => this.xTick(props)}
-                height={100}
-              >
-                <Label
-                  position="bottom"
-                  offset={-15}
-                  value="Hypothetical Historical Performance for Market-on-Close orders"
-                />
-              </XAxis>
-              <YAxis
-                tickFormatter={value =>
-                  `${Math.floor(value).toLocaleString("en")}`
+                <span style={{"float": "right", "width": "100%", "textAlign": "right"}}>
+                  <img src="/images/infotext_button.png" width="22" style={{"marginRight":"5px"}}/>
+                </span>
+
+           <center><h3>Previous Bets Profits & Losses</h3></center>
+          <center><h3>{performance.bet}</h3></center>
+         
+          <div className={classes.ChartContainer}>
+          <ReactTable
+          
+          data={Object.keys(performance.prev_pnl).map(key=> { 
+            //console.log(account);
+            var item=performance.prev_pnl[key];
+
+            if (item) { 
+              item.key=key;
+              return item;
+            }
+          })}
+
+             
+          columns={[
+            {
+              Header: "",
+              columns: [
+                {
+                  Header: "Markets",
+                  accessor: "Markets",
+                  Cell: props => <span><a href='#market'>{props.value}</a></span>, // Custom cell components!,
+
+                },
+                {
+                  Header: "Group",
+                  accessor: "Group"
                 }
-                domain={[dataMin => dataMin * 0.9, dataMax => dataMax * 1.1]}
-              />
-              <CartesianGrid strokeDasharray="3 1" />
-              {<Tooltip content={<CustomTooltip />} />}
-              <Legend />
-              <Line
-                type="monotone"
-                dataKey={"benchmark_pctchg" }
-                stroke={BLUE}
-                activeDot={{ r: 8 }}
-               />
-                <Line
-                type="monotone"
-                dataKey={"account_pnl_pct" }
-                stroke={GREEN}
-                activeDot={{ r: 8 }}
-               />
+
+              ]
+            },
+            {
+              Header:  props => <span><center><h4>{performance.last_date}</h4></center></span>, // Custom cell components!,
+
+              columns: [
+                {
+                  Header: "1 Day %Change",
+                  accessor: "1 Day %Change",
+                  Cell: props => <span className='number'><center>{props.value}</center></span>, // Custom cell components!,
+                },
+              ]
+            },
+            {
+              Header:  props => <span><center><h4>{performance.prev_date}</h4></center></span>, // Custom cell components!,
+
+              columns: [
+                {
+                  Header: "Previous Positions",
+                  accessor: "Previous Positions",
+                  Cell: props => <span className='number'><center>{props.value}</center></span>, // Custom cell components!,
+                },
+                {
+                  Header: "Position Value",
+                  accessor: "Position Value",
+                  Cell: props => <span className='number'><center>$ {props.value}</center></span>, // Custom cell components!,
+                  Footer: (
+                    <span style={{'float':'right'}}><b>Total:</b></span>
+                  )
+                },
+                {
+                  Header: "Previous PnL",
+                  accessor: "Previous PnL",
+                  Cell: props => <span className='number'><center>$ {props.value}</center></span>, // Custom cell components!,
+                  Footer: (
+                    <span>
+                     {performance.pnl_total !== null ? (
+                       <center>
+                          {performance.pnl_total ? (
+                            <img
+                              src={
+                                performance.pnl_total > 0
+                                  ? gainIcon
+                                  : performance.pnl_total < 0 ? lossIcon : ""
+                              }
+                            />
+                          ) : null}
+                          $ {performance.pnl_total}
+                        </center>
+                       ):null}
+                      </span>
+                  )
+                },
+                
+              ],
+              
+            },
             
-            </LineChart>
-          </ResponsiveContainer>
+          ]}
+          //defaultPageSize={20}
+          style={{
+            width: "100%",
+            height: "400px" // This will force the table body to overflow and scroll, since there is not enough room
+          }}
+          className="-striped -highlight"
+          showPagination={false}
+        />
         </div>
         </div>
         )}
@@ -324,6 +363,9 @@ export default class PreviousPnL extends Component {
    
     //performance: PropTypes.object,
     //position: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    performance_account_id: PropTypes.string.isRequired
+    performance_account_id: PropTypes.string.isRequired,
+    email:PropTypes.string.isRequired,
+    liveDateText:PropTypes.string.isRequired
+
   };
 }

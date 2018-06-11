@@ -114,7 +114,78 @@ const order = props => {
         </div> */}
       </div>
     
-    ) : null}
+    ) : (
+
+      <div className={classes.TitleRow}>
+        
+        <div
+          className={classes.ElementContainer}
+          style={{ paddingTop: "15px" }}
+        >
+          <Chip chip={chip} />
+        </div>
+        <div           style={{ minWidth:"100px", padding: "15px" }}
+>
+           {chip.tier}<br/>
+            Tier {chip.chip_tier}<br/>
+            {chip.chip_tier_text}<br/>
+            Rank: {chip.rank}<br/>
+        </div>
+        
+      <table style={{border:"none", borderCollapse: "collapse"}}>
+      <thead  style={{border:"none"}}>
+        <tr style={{border:"none"}}>
+        <th  style={{border:"none"}}>
+            Starting Value:
+            </th>
+            <th  style={{border:"none"}}>
+            Account Value:
+            </th>
+            <th  style={{border:"none"}}>
+            Total Margin:
+            </th>
+            <th  style={{border:"none"}}>
+            Cumulative %Chg.
+            </th>
+            <th  style={{border:"none"}}>
+            Previous %Chg.:
+            </th>
+            <th  style={{border:"none"}}>
+            Markets in Portfolio:
+            </th>
+            <th  style={{border:"none"}}>
+              Age
+            </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style={{border:"1px", "padding":"1px"}}>
+            <td style={{borderLeft:"1px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
+            $ {chip.starting_value}
+            </td>            
+            <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
+
+            $ {chip.account_value}
+            </td>            
+            <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
+            $ {chip.total_margin}
+            </td>            
+            <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
+            {chip.pnl_cumpct} %
+            </td>            
+            <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
+            {chip.pnl_pct} %
+            </td>            
+            <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
+              {chip.num_markets}
+            </td>            
+            <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"1px solid black"}}>
+              {chip.age}
+            </td></tr>
+            </tbody>
+            </table>
+      </div>
+    )}
       
       {isLive ? (
 

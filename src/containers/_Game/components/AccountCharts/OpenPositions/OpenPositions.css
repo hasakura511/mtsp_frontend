@@ -61,3 +61,55 @@
     display: flex;
     justify-content: center;
   }
+
+  td,
+th {
+  box-sizing: border-box;
+  width: 220px;
+  text-align: left;
+  padding-left: 20px;
+}
+
+
+
+.Table {
+  width: 100%;
+  margin: auto;
+  border-collapse: collapse;
+}
+
+.Table th {
+  font-size: 1em;
+  font-weight: 400;
+}
+
+.Table td > .Cell.Flex {
+  display: flex;
+  flex-flow: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.Table td > .Cell {
+  /* font-size: 0.9em; */
+  font-weight: 500;
+}
+
+.Cell > p {
+  width: 190px;
+  margin: 0px 0px;
+  /* font-size: 0.9em; */
+  font-weight: 400;
+}
+
+.Cell > p > span {
+  margin: 0px 5px;
+}
+
+.Cell > img {
+  margin: 6px;
+}
+
+.Cell > p > img {
+  margin-right: 10px;
+}

@@ -4,6 +4,11 @@ import { toWordedDate, toSlashDate } from "../../../../../util";
 import classes from "./TradingCosts.css";
 import Spinner from "../../../../../components/UI/Spinner/Spinner";
 import axios from "../../../../../axios-gsm";
+import chipIcon from "../../../../../assets/images/chip-icon.png";
+import lossIcon from "../../../../../assets/images/loss-icon.png";
+import gainIcon from "../../../../../assets/images/gain-icon.png";
+import ReactTable from "react-table";
+import 'react-table/react-table.css'
 
 import {
   LineChart,
@@ -172,7 +177,7 @@ export default class TradingCosts extends Component {
   componentDidMount() {
       var self=this;
     axios
-    .post("/utility/account_performance_live/", {
+    .post("/utility/trading_costs_live/", {
       /**
        * @example {"portfolio": ["TU", "BO"], "systems": ["prev1", "prev5"], "target": 500, "account": 5000}
        *
@@ -184,27 +189,12 @@ export default class TradingCosts extends Component {
        * @namespace {Performance}
        */
       var performance = response.data;
+      console.log('trading costs data')
       console.log(performance);
-      var specs=Object.keys(performance.chart_specs);
-      var idx=0;
-      var chart_data={};
-      Object.keys(performance.chart_data).map(period => {
-        var dataJson= JSON.parse(performance.chart_data[period]) 
-        var data=[];
-        Object.keys(dataJson).map(date => {
-
-          var item=dataJson[date];
-          item.date=date;
-          data.push(item);
-
-        });
-        chart_data[specs[idx]]=data;
-        idx+=1;
-
-      });
-      performance.chart_data=chart_data;
+      var dataJson= JSON.parse(performance.trading_costs);
+      performance.trading_costs=dataJson;
       
-      console.log(chart_data);
+      console.log(performance);
 
       this.setState({
           performanceLoading: false,
@@ -223,20 +213,22 @@ export default class TradingCosts extends Component {
 
   render() {
     var { performance, lookback, performanceLoading, performanceError } = this.state;
+    var bgColor="white";
+    var bgText="black";
+    var bdColor="green";
+    var bhColor="pink";
+    /*if (this.props.themes.live.dashboard != undefined) {
+      bgColor=this.props.themes.live.dashboard.background;
+      bgText=this.props.themes.live.dashboard.text;
+      bdColor=this.props.themes.live.dashboard.lines;
+      bhColor=this.props.themes.live.dashboard.lines_horizontal_middle;
+    }
+    */
+    var tableStyle={ fontSize:'12px',background: bgColor, color:bgText, borderLeft: "1px solid " + bdColor, borderRight: "1px solid " + bdColor, borderTop: "0.1px solid " + bhColor, borderBottom: "0.1px solid " + bhColor};
+    var self=this;
 
     var chartData={};
 
-    if (!performanceLoading) {
-        Object.keys(performance.chart_specs).map(date => {
-            if (!lookback)
-                lookback=date;
-        });
-
-        console.log('chart data');
-        chartData=performance.chart_data[lookback];
-        console.log(lookback);
-        console.log(chartData);
-    }
     return (
         <div className={classes.TradingCosts}>
         
@@ -256,64 +248,254 @@ export default class TradingCosts extends Component {
         ) : (
 
         <div className={classes.TradingCosts}>
-            <div className={classes.Tabs}>
-            {Object.keys(performance.chart_specs).map(date => {
-                console.log(date);
-                return (
-          <div key={date} className={classes.Tab} onClick={() => this.lookbackHandler(date)}>
-            <p className={lookback === date ? classes.active : ""}>{date}</p>
-          </div>
-            )
-            })}
-        </div>
-        <div className={classes.ChartContainer}>
-          <ResponsiveContainer
-            width="100%"
-            height={innerHeight - 190}
-            maxHeight="100%"
-          >
-            <LineChart
-              data={chartData}
-              
-              margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-            >
-              <XAxis
-                dataKey="date"
-                interval={0}
-                tick={props => this.xTick(props)}
-                height={100}
-              >
-                <Label
-                  position="bottom"
-                  offset={-15}
-                  value="Hypothetical Historical Performance for Market-on-Close orders"
-                />
-              </XAxis>
-              <YAxis
-                tickFormatter={value =>
-                  `${Math.floor(value).toLocaleString("en")}`
+                <span style={{"float": "right", "width": "100%", "textAlign": "right"}}>
+                  <img src="/images/infotext_button.png" width="22" style={{"marginRight":"5px"}}/>
+                </span>
+
+           <center><h3>Trading Costs</h3></center>
+          <center><h3>{performance.bet}</h3></center>
+                <div className={classes.ChartContainer}>
+          <ReactTable
+          
+          data={Object.keys(performance.trading_costs).map(key=> { 
+            //console.log(account);
+            var item=performance.trading_costs[key];
+
+            if (item) { 
+              item.key=key;
+              return item;
+            }
+          })}
+
+             
+          columns={[
+            {
+              Header: "",
+              columns: [
+                {
+                  Header: "Markets",
+                  accessor: "Markets",
+                  Cell: props => <span><a href='#market'>{props.value}</a></span>, // Custom cell components!,
+
+                },
+                {
+                  Header: "Group",
+                  accessor: "Group"
                 }
-                domain={[dataMin => dataMin * 0.9, dataMax => dataMax * 1.1]}
-              />
-              <CartesianGrid strokeDasharray="3 1" />
-              {<Tooltip content={<CustomTooltip />} />}
-              <Legend />
-              <Line
-                type="monotone"
-                dataKey={"benchmark_pctchg" }
-                stroke={BLUE}
-                activeDot={{ r: 8 }}
-               />
-                <Line
-                type="monotone"
-                dataKey={"account_pnl_pct" }
-                stroke={GREEN}
-                activeDot={{ r: 8 }}
-               />
+
+              ]
+            },
+            {
+              Header:  props => <span><center><h4>{performance.last_date}</h4></center></span>, // Custom cell components!,
+
+              columns: [
+                {
+                  Header: "Contracts Traded",
+                  accessor: "Contracts Traded",
+                  Cell: props => <span className='number'><center>{props.value}</center></span>, // Custom cell components!,
+                },
+                {
+                  Header: "Exec. vs Close Price",
+                  accessor: "Contracts Traded",
+                  Cell: props => <span className='number'><center>{props.value}</center></span>, // Custom cell components!,
+                  Footer: (
+                    <span style={{'float':'right'}}><b>Total:</b></span>
+                  )
+                },
+                {
+                  Header: "Commissions",
+                  accessor: "Commissions",
+                  Cell: props => <span className='number'><center>$ {props.value}</center></span>, // Custom cell components!,
+
+                  Footer: (
+                    <span>
+                     {performance.commissions_total !== null ? (
+                        <center>
+                          {performance.commissions_total ? (
+                            <img
+                              src={
+                                performance.commissions_total > 0
+                                  ? gainIcon
+                                  : performance.commissions_total < 0 ? lossIcon : ""
+                              }
+                            />
+                          ) : null}
+                          $ {performance.commissions_total}
+                        </center>
+                       ):null}
+                      </span>
+                  )
+                },
+                {
+                  Header: "Slippage",
+                  accessor: "Slippage",
+                  Cell: props => <span className='number'><center>$ {props.value}</center></span>, // Custom cell components!,
+                  Footer: (
+                    <span>
+                     {performance.slippage_total !== null ? (
+                       <center>
+                          {performance.slippage_total ? (
+                            <img
+                              src={
+                                performance.slippage_total > 0
+                                  ? gainIcon
+                                  : performance.slippage_total < 0 ? lossIcon : ""
+                              }
+                            />
+                          ) : null}
+                          $ {performance.slippage_total}
+                        </center>
+                       ):null}
+                      </span>
+                  )
+                },
+                
+              ],
+              
+            },
             
-            </LineChart>
-          </ResponsiveContainer>
+          ]}
+          //defaultPageSize={20}
+          style={{
+            width: "100%",
+            height: "400px" // This will force the table body to overflow and scroll, since there is not enough room
+          }}
+          className="-striped -highlight"
+          showPagination={false}
+        />
         </div>
+         
+         {  /*
+                   <div className={classes.ChartContainer}>
+
+          <table className={classes.Table} style={tableStyle}>
+        <thead  className={classes.thead} style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}>
+          <tr className={classes.tr} style={tableStyle}>
+            <th style={tableStyle}><b>Markets</b></th>
+            <th style={tableStyle}><b>Group</b></th>
+            <th style={tableStyle}><b>Contracts Traded</b></th>
+            <th style={tableStyle}><b>Exec. vs Close Price</b></th>
+            <th style={tableStyle}><b>Commissions</b></th>
+            <th style={tableStyle}><b>Slippage</b></th>
+          </tr>
+        </thead>
+        <tbody className={classes.tbody} style={tableStyle}>
+          {Object.keys(performance.trading_costs).map(key=> { 
+            //console.log(account);
+            var item=performance.trading_costs[key];
+
+            if (item) { 
+
+             
+              return (
+                <tr className={classes.tr} key={`dashboard-row-${key}`} style={tableStyle}>
+                  <td style={tableStyle}>
+                    <div className={classes.Cell + " " + classes.Flex}>
+                      &nbsp;
+                      <a href='#accountPerf' 
+                        onClick={() => {self.props.showPerformance(account.account_id)}}>
+                        {item.Markets}
+                      </a>&nbsp;&nbsp;
+                    </div>
+                  </td>
+                  <td style={tableStyle}>
+                    <div className={classes.Cell}>
+                    {item.Group}
+                    </div>
+                  </td>
+                  <td style={tableStyle}>
+                    <div className={classes.Cell}>
+                      {item['Contracts Traded']}
+                    </div>
+                  </td>
+                  <td style={tableStyle}>
+                    <div
+                      className={classes.Cell}
+                      style={{ justifyContent: "center" }}
+                    >
+                      <span style={{'float':'left','marginTop':"10px"}}>
+                      {item['Exec. vs Close Price'] !== null ? (
+                        <p style={{ width: "auto" }}>
+                          {item['Exec. vs Close Price'] ? (
+                            <img
+                              src={
+                                item['Exec. vs Close Price'] > 0
+                                  ? gainIcon
+                                  : item['Exec. vs Close Price'] < 0 ? lossIcon : ""
+                              }
+                            />
+                          ) : null}
+                          {item['Exec. vs Close Price']}
+                        </p>
+                      ) : null}
+                      </span>
+                    </div>
+                  </td>
+                  <td style={tableStyle}>
+                    <div
+                      className={classes.Cell}
+                      style={{ justifyContent: "center" }}
+                    >
+                      <span style={{'float':'left','marginTop':"10px"}}>
+                      {item['Commissions'] !== null ? (
+                        <p style={{ width: "auto" }}>
+                          {item['Commissions'] ? (
+                            <img
+                              src={
+                                item['Commissions'] > 0
+                                  ? gainIcon
+                                  : item['Commissions'] < 0 ? lossIcon : ""
+                              }
+                            />
+                          ) : null}
+                         $ {item['Commissions']}
+                        </p>
+                      ) : null}
+                      </span>
+                    </div>
+                  </td>
+                  <td style={tableStyle}>
+                    <div
+                      className={classes.Cell}
+                      style={{ justifyContent: "left" }}
+                    >
+                      <span style={{'float':'left','marginTop':"10px"}}>
+                      {item['Slippage'] !== null ? (
+                        <p style={{ width: "auto" }}>
+                          {item['Slippage'] ? (
+                            <img
+                              src={
+                                item['Slippage'] > 0
+                                  ? gainIcon
+                                  : item['Slippage'] < 0 ? lossIcon : ""
+                              }
+                            />
+                          ) : null}
+                          $ {item['Slippage']}
+
+                        </p>
+                      ) : null}
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+              );
+            }
+          })}
+
+         <tr className={classes.tr} style={tableStyle}><td></td><td></td><td></td>
+         <td style={tableStyle}>Total:</td>
+         <td  style={tableStyle}>
+           <span> $ {performance.commissions_total}</span>
+         </td><td style={tableStyle}>
+          <span > $ {performance.slippage_total}</span>
+         </td></tr>
+        </tbody>
+      </table>
+        </div>
+        */}
+
+      
         </div>
         )}
         </div>

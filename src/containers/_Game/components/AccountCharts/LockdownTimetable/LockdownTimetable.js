@@ -1,0 +1,211 @@
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { toWordedDate, toSlashDate } from "../../../../../util";
+import classes from "./LockdownTimetable.css";
+import Spinner from "../../../../../components/UI/Spinner/Spinner";
+import axios from "../../../../../axios-gsm";
+import chipIcon from "../../../../../assets/images/chip-icon.png";
+import lossIcon from "../../../../../assets/images/loss-icon.png";
+import gainIcon from "../../../../../assets/images/gain-icon.png";
+import ReactTable from "react-table";
+import tableClasses from "react-table/react-table.css";
+
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  Label
+} from "recharts";
+
+import { connect } from "react-redux";
+
+const stateToProps = state => ({
+  performance_account_id: state.betting.performance_account_id,
+  email: state.auth.email,
+  liveDateText:state.betting.liveDateText,
+  timetable_dialog:state.betting.timetable_dialog
+
+});
+
+const convert = pnlObj => {
+  return {
+    pnl: Number(pnlObj.pnl).toFixed(2),
+    cumulative: (pnlObj.cumulative * 100).toFixed(2),
+    changePercent: (pnlObj.changePercent * 100).toFixed(2)
+  };
+};
+
+const RED = "#e12f48",
+  BLUE = "#8884d8",
+  GREEN = "#63a57c";
+
+
+@connect(stateToProps)
+export default class LockdownTimetable extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      lookback: '',
+      performance:{},
+      performanceLoading:true,
+      performanceError:'',
+      // endDate: 20180201
+    };
+  }
+
+  lookbackHandler = lookback => {
+    this.setState({ lookback });
+  };
+
+  xTick({ payload, x, y }) {
+    return (
+      <g transform={`translate(${x},${y})`}>
+        <text x={0} y={0} dy={16} textAnchor="end" transform="rotate(-45)">
+          {payload.value}
+        </text>
+      </g>
+    );
+  }
+
+  componentDidMount() {
+      var self=this;
+    var performance=self.props.timetable_dialog;
+    var close_text=performance.close_text   ;
+    var group=performance.group;
+    var text_color=performance.text_color;
+    var trigger_text=performance.trigger_text;
+    var data=[];
+    Object.keys(group).map(key => {
+        var item={};
+        var color=text_color[key];
+        if (!color)
+            color='black';
+        item.Markets=key;
+        item.Group=group[key] //{'Value':group[key],'Color':color};
+        item.Next_Trigger=trigger_text[key] //{'value':trigger_text[key],'color':color};
+        item.Next_Close=close_text[key] //{'value':close_text[key],'color':color};
+        item.Color=color;
+        data.push(item);
+
+    })
+
+    console.log('data');
+    console.log(data);
+    this.setState({
+    performanceLoading: false,
+    performance:data
+     });
+  }
+
+  render() {
+    var { performance, lookback, performanceLoading, performanceError } = this.state;
+    var bgColor="white";
+    var bgText="black";
+    var bdColor="green";
+    var bhColor="pink";
+    /*if (this.props.themes.live.dashboard != undefined) {
+      bgColor=this.props.themes.live.dashboard.background;
+      bgText=this.props.themes.live.dashboard.text;
+      bdColor=this.props.themes.live.dashboard.lines;
+      bhColor=this.props.themes.live.dashboard.lines_horizontal_middle;
+    }
+    */
+    var tableStyle={ fontSize:'12px',background: bgColor, color:bgText, borderLeft: "1px solid " + bdColor, borderRight: "1px solid " + bdColor, borderTop: "0.1px solid " + bhColor, borderBottom: "0.1px solid " + bhColor};
+    var self=this;
+
+    var chartData={};
+
+    return (
+        <div className={classes.LockdownTimetable}>
+        
+          {performanceLoading ? (
+                <div>
+                    <Spinner />
+                </div>
+        ) : performanceError ? (
+            <div>
+                
+          <h1>
+            {performanceError.Message ||
+              "Could not load performance data, contact us to report this bug."}
+          </h1>
+          
+          </div>
+        ) : (
+
+        <div className={classes.LockdownTimetable}>
+                <span style={{"float": "right", "width": "100%", "textAlign": "right"}}>
+                  <img src="/images/infotext_button.png" width="22" style={{"marginRight":"5px"}}/>
+                </span>
+
+           <center><h3>Lockdown Timetables</h3></center>
+         
+          <div className={classes.ChartContainer}>
+          <ReactTable
+          
+          data={performance}
+             
+          columns={[
+            {
+              Header: "",
+              columns: [
+                {
+                  Header: "Markets",
+                  accessor: "Markets",
+                  Cell: props => <span><a href='#market'>{props.value}</a></span>, // Custom cell components!,
+
+                },
+                {
+                  Header: "Group",
+                  accessor: "Group",
+                  id:"Group",
+                  Cell: props => <span style={{color:props.original.Color}} onClick={()=>{ console.log(props); }}>{props.value}</span>, // Custom cell components!,
+                },
+
+                {
+                  Header: "Next Trigger",
+                  accessor: "Next_Trigger",
+                  Cell: props => <span style={{color:props.original.Color}} onClick={()=>{ console.log(props); }}>{props.value}</span>, // Custom cell components!,
+                },
+                {
+                    Header: "Next Close",
+                    accessor: "Next_Close",
+                    Cell: props => <span style={{color:props.original.Color}} onClick={()=>{ console.log(props); }}>{props.value}</span>, // Custom cell components!,
+                },
+                ],
+            
+            },
+            
+          ]}
+          //defaultPageSize={20}
+          style={{
+            width: "100%",
+            height: "400px" // This will force the table body to overflow and scroll, since there is not enough room
+          }}
+          className="-striped -highlight"
+          showPagination={false}
+        />
+        </div>
+        </div>
+        )}
+        </div>
+    );
+  }
+
+  static propTypes = {
+   
+    //performance: PropTypes.object,
+    //position: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    performance_account_id: PropTypes.string.isRequired,
+    email:PropTypes.string.isRequired,
+    liveDateText:PropTypes.string.isRequired,
+    timetable_dialog:PropTypes.object.isRequired
+
+  };
+}

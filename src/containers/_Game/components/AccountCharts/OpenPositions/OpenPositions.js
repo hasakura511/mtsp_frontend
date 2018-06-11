@@ -4,6 +4,10 @@ import { toWordedDate, toSlashDate } from "../../../../../util";
 import classes from "./OpenPositions.css";
 import Spinner from "../../../../../components/UI/Spinner/Spinner";
 import axios from "../../../../../axios-gsm";
+import chipIcon from "../../../../../assets/images/chip-icon.png";
+import lossIcon from "../../../../../assets/images/loss-icon.png";
+import gainIcon from "../../../../../assets/images/gain-icon.png";
+
 
 import {
   LineChart,
@@ -172,7 +176,7 @@ export default class OpenPositions extends Component {
   componentDidMount() {
       var self=this;
     axios
-    .post("/utility/account_performance_live/", {
+    .post("/utility/open_positions_live/", {
       /**
        * @example {"portfolio": ["TU", "BO"], "systems": ["prev1", "prev5"], "target": 500, "account": 5000}
        *
@@ -184,27 +188,12 @@ export default class OpenPositions extends Component {
        * @namespace {Performance}
        */
       var performance = response.data;
+      console.log('open positions data')
       console.log(performance);
-      var specs=Object.keys(performance.chart_specs);
-      var idx=0;
-      var chart_data={};
-      Object.keys(performance.chart_data).map(period => {
-        var dataJson= JSON.parse(performance.chart_data[period]) 
-        var data=[];
-        Object.keys(dataJson).map(date => {
-
-          var item=dataJson[date];
-          item.date=date;
-          data.push(item);
-
-        });
-        chart_data[specs[idx]]=data;
-        idx+=1;
-
-      });
-      performance.chart_data=chart_data;
+      var dataJson= JSON.parse(performance.open_positions);
+      performance.open_positions=dataJson;
       
-      console.log(chart_data);
+      console.log(performance);
 
       this.setState({
           performanceLoading: false,
@@ -223,20 +212,22 @@ export default class OpenPositions extends Component {
 
   render() {
     var { performance, lookback, performanceLoading, performanceError } = this.state;
+    var bgColor="white";
+    var bgText="black";
+    var bdColor="green";
+    var bhColor="pink";
+    /*if (this.props.themes.live.dashboard != undefined) {
+      bgColor=this.props.themes.live.dashboard.background;
+      bgText=this.props.themes.live.dashboard.text;
+      bdColor=this.props.themes.live.dashboard.lines;
+      bhColor=this.props.themes.live.dashboard.lines_horizontal_middle;
+    }
+    */
+    var tableStyle={ fontSize:'12px',background: bgColor, color:bgText, borderLeft: "1px solid " + bdColor, borderRight: "1px solid " + bdColor, borderTop: "0.1px solid " + bhColor, borderBottom: "0.1px solid " + bhColor};
+    var self=this;
 
     var chartData={};
 
-    if (!performanceLoading) {
-        Object.keys(performance.chart_specs).map(date => {
-            if (!lookback)
-                lookback=date;
-        });
-
-        console.log('chart data');
-        chartData=performance.chart_data[lookback];
-        console.log(lookback);
-        console.log(chartData);
-    }
     return (
         <div className={classes.OpenPositions}>
         
@@ -256,63 +247,140 @@ export default class OpenPositions extends Component {
         ) : (
 
         <div className={classes.OpenPositions}>
-            <div className={classes.Tabs}>
-            {Object.keys(performance.chart_specs).map(date => {
-                console.log(date);
-                return (
-          <div key={date} className={classes.Tab} onClick={() => this.lookbackHandler(date)}>
-            <p className={lookback === date ? classes.active : ""}>{date}</p>
-          </div>
-            )
-            })}
-        </div>
-        <div className={classes.ChartContainer}>
-          <ResponsiveContainer
-            width="100%"
-            height={innerHeight - 190}
-            maxHeight="100%"
-          >
-            <LineChart
-              data={chartData}
-              
-              margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-            >
-              <XAxis
-                dataKey="date"
-                interval={0}
-                tick={props => this.xTick(props)}
-                height={100}
-              >
-                <Label
-                  position="bottom"
-                  offset={-15}
-                  value="Hypothetical Historical Performance for Market-on-Close orders"
-                />
-              </XAxis>
-              <YAxis
-                tickFormatter={value =>
-                  `${Math.floor(value).toLocaleString("en")}`
-                }
-                domain={[dataMin => dataMin * 0.9, dataMax => dataMax * 1.1]}
-              />
-              <CartesianGrid strokeDasharray="3 1" />
-              {<Tooltip content={<CustomTooltip />} />}
-              <Legend />
-              <Line
-                type="monotone"
-                dataKey={"benchmark_pctchg" }
-                stroke={BLUE}
-                activeDot={{ r: 8 }}
-               />
-                <Line
-                type="monotone"
-                dataKey={"account_pnl_pct" }
-                stroke={GREEN}
-                activeDot={{ r: 8 }}
-               />
+                <span style={{"float": "right", "width": "100%", "textAlign": "right"}}>
+                  <img src="/images/infotext_button.png" width="22" style={{"marginRight":"5px"}}/>
+                </span>
+
+           <center><h3>Open Positions</h3></center>
+          <center><h3>{performance.bet}</h3></center>
+          <div className={classes.ChartContainer}>
+          <table className={classes.Table} style={tableStyle}>
+        <thead  style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}>
+        <tr><td></td><td></td><td colSpan={'2'}><center><h4>{performance.last_date}</h4></center></td><td  colSpan={'2'}><center><h4>Last Update</h4></center></td></tr>
+          <tr style={tableStyle}>
+            <th style={tableStyle}><b>Markets</b></th>
+            <th style={tableStyle}><b>Group</b></th>
+            <th style={tableStyle}><b>Current Positions</b></th>
+            <th style={tableStyle}><b>Position Value</b></th>
+            <th style={tableStyle}><b>Updated When</b></th>
+            <th style={tableStyle}><b>PnL</b></th>
             
-            </LineChart>
-          </ResponsiveContainer>
+          </tr>
+        </thead>
+        <tbody  style={tableStyle}>
+          {Object.keys(performance.open_positions).map(key=> { 
+            //console.log(account);
+            var item=performance.open_positions[key];
+
+            if (item) { 
+
+              /*
+              const accountId=account.account_id;
+              const accountValue=account.account_value;
+              var locktime=account.locktime;
+              var lcBet = account.last_selection;
+              if (lcBet.toLowerCase() == 'off') {
+                lcBet="Off";
+              }
+              const betDate=locktime.substring(5,10).replace('-','/')
+              const lpBet = account.prev_selection;
+              const lpBetDate=account.date.substring(5).replace('-','/')
+              
+              const cummPercentChange =account.pnl_cumpct;
+              const display=account.account_chip_text;
+              locktime=locktime.substring(5).replace('-','/');
+              //eslint-disable-next-line
+              // if (lpBet) console.log(account.accountValue - lpBet.change);
+
+              //eslint-disable-next-line
+              // console.log(account.accountValue);
+              */
+              return (
+                <tr key={`dashboard-row-${key}`} style={tableStyle}>
+                  <td style={tableStyle}>
+                    <div className={classes.Cell + " " + classes.Flex}>
+                      &nbsp;
+                      <a href='#accountPerf' 
+                        onClick={() => {self.props.showPerformance(account.account_id)}}>
+                        {item.Markets}
+                      </a>&nbsp;&nbsp;
+                    </div>
+                  </td>
+                  <td style={tableStyle}>
+                    <div className={classes.Cell}>
+                    {item.Group}
+                    </div>
+                  </td>
+                  <td style={tableStyle}>
+                    <div className={classes.Cell}>
+                      {item.Positions}
+                    </div>
+                  </td>
+                  <td style={tableStyle}>
+                    <div
+                      className={classes.Cell}
+                      style={{ justifyContent: "center" }}
+                    >
+                      <span style={{'float':'left','marginTop':"10px"}}>
+                      {item['Position Value'] !== null ? (
+                        <p style={{ width: "auto" }}>
+                          {item['Position Value'] ? (
+                            <img
+                              src={
+                                item['Position Value'] > 0
+                                  ? gainIcon
+                                  : item['Position Value'] < 0 ? lossIcon : ""
+                              }
+                            />
+                          ) : null}
+                          $ {item['Position Value']}
+                        </p>
+                      ) : null}
+                      </span>
+                    </div>
+                  </td>
+                 
+                  <td  style={tableStyle}>
+                  <div
+                    className={classes.Cell} >
+                    {item['Updated When']}
+                  </div>
+                  </td>
+                  <td style={tableStyle}>
+                    <div
+                      className={classes.Cell}
+                      style={{ justifyContent: "left" }}
+                    >
+                      <span style={{'float':'left','marginTop':"10px"}}>
+                      {item['PnL'] !== null ? (
+                        <p style={{ width: "auto" }}>
+                          {item['PnL'] ? (
+                            <img
+                              src={
+                                item['PnL'] > 0
+                                  ? gainIcon
+                                  : item['PnL'] < 0 ? lossIcon : ""
+                              }
+                            />
+                          ) : null}
+                          $ {item['PnL']}
+
+                        </p>
+                      ) : null}
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+              );
+            }
+          })}
+
+         <tr><td colSpan={"6"}>
+         <span style={{textAlign:'right',float:'right'}}>Total: $ {performance.pnl_total}</span>
+         </td></tr>
+        </tbody>
+      </table>
+      
         </div>
         </div>
         )}

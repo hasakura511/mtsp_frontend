@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classes from "./AccountCharts.css";
+import LockdownTimetable from "./LockdownTimetable/LockdownTimetable";
 import PerformanceChart from "./PerformanceChart/PerformanceChart";
 import OpenPositions from "./OpenPositions/OpenPositions";
 import PreviousPnL from "./PreviousPnL/PreviousPnL";
@@ -28,13 +29,14 @@ class AccountCharts extends Component {
       isPerformance: true,
       isOpenPositions:false,
       isTradingCosts:false,
-      isPreviousPnL:false
+      isPreviousPnL:false,
+      isLockdownTimetable:false
     };
   }
 
 
   render() {
-    const { isPerformance, isOpenPositions, isTradingCosts, isPreviousPnL } = this.state;
+    const { isPerformance, isOpenPositions, isTradingCosts, isPreviousPnL, isLockdownTimetable } = this.state;
     const {
       performance,
       rankingLoading,
@@ -48,33 +50,45 @@ class AccountCharts extends Component {
         <div className={classes.Row}>
           <div className={classes.Tabs}>
             <div
+              style={{minWidth:'180px'}}
               className={
                 classes.Tab + " " + (isPerformance ? classes.active : "")
               }
-              onClick={() => this.setState({isPerformance:true, isOpenPositions:false, isTradingCosts:false, isPreviousPnL:false}) }
+              onClick={() => this.setState({isPerformance:true, isOpenPositions:false, isTradingCosts:false, isPreviousPnL:false, isLockdownTimetable:false}) }
             >
               Performance
             </div>
             <div
               className={classes.Tab + " " + (isOpenPositions ? classes.active : "")}
-              onClick={() => this.setState({isPerformance:false, isOpenPositions:true, isTradingCosts:false, isPreviousPnL:false})
+              style={{minWidth:'180px'}}
+              onClick={() => this.setState({isPerformance:false, isOpenPositions:true, isTradingCosts:false, isPreviousPnL:false, isLockdownTimetable:false})
             }
             >
               Open Positions
             </div>
             <div
               className={classes.Tab + " " + (isTradingCosts ? classes.active : "")}
-              onClick={() => this.setState({isPerformance:false, isOpenPositions:false, isTradingCosts:true, isPreviousPnL:false})
+              style={{minWidth:'180px'}}
+              onClick={() => this.setState({isPerformance:false, isOpenPositions:false, isTradingCosts:true, isPreviousPnL:false, isLockdownTimetable:false})
             }
             >
               Trading Costs
             </div>
             <div
               className={classes.Tab + " " + (isPreviousPnL ? classes.active : "")}
-              onClick={() => this.setState({isPerformance:false, isOpenPositions:false, isTradingCosts:false, isPreviousPnL:true})
+              style={{minWidth:'180px'}}
+              onClick={() => this.setState({isPerformance:false, isOpenPositions:false, isTradingCosts:false, isPreviousPnL:true, isLockdownTimetable:false})
             }
             >
               Previous PnL
+            </div>
+            <div
+              className={classes.Tab + " " + (isLockdownTimetable ? classes.active : "")}
+              style={{minWidth:'180px'}}
+              onClick={() => this.setState({isPerformance:false, isOpenPositions:false, isTradingCosts:false, isPreviousPnL:false, isLockdownTimetable:true})
+            }
+            >
+              Lockdown Timetable
             </div>
           </div>
           
@@ -106,7 +120,15 @@ class AccountCharts extends Component {
 
          {isPreviousPnL ? (
             <div className={classes.Content}>
-              <PreviousPnL />
+              <PreviousPnL chip={this.props.chip}/>
+            </div>
+          ) : (
+           null
+          )}
+
+          {isLockdownTimetable ? (
+            <div className={classes.Content}>
+              <LockdownTimetable />
             </div>
           ) : (
            null

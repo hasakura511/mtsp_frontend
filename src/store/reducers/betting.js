@@ -67,6 +67,7 @@ const initialState = {
     },
     {}
   ),
+  timetable_dialog:{},
   currentBets: ChipsConfig.map(({ accountId }) => accountId).reduce(
     (acc, curr) => {
       acc[curr] = { bettingDate: getOffsetSlashDate(1), position: "off", isAnti: false };
@@ -409,6 +410,7 @@ const reducer = (state = initialState, action) => {
         var initializeData =  action.data;
         var accounts= JSON.parse(action.data.accounts)
         var heatmap = JSON.parse(action.data.heatmap)
+        var timetable_dialog= JSON.parse(action.data.timetable_dialog)
         const dictionary_strategy = JSON.parse(action.data.dictionary_strategy)
         const themes = action.data.themes
         var dashboard_totals=action.data.dashboard_totals;
@@ -517,6 +519,7 @@ const reducer = (state = initialState, action) => {
         initializeData.heatmap=heatmap;
         initializeData.themes=themes;
         initializeData.dictionary_strategy=dictionary_strategy;
+        initializeData.timetable_dialog=timetable_dialog;
         ////console.log(leftSystems);
         ////console.log(rightSystems);
         ////console.log(topSystems);
@@ -615,7 +618,8 @@ const reducer = (state = initialState, action) => {
             inGameChips,
             dashboard_totals,
             liveDate,
-            liveDateText
+            liveDateText,
+            timetable_dialog
         };
     }
     case actionTypes.SET_MUTE: {

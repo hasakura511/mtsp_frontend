@@ -111,13 +111,13 @@ class CustomTooltip extends Component {
           <div className={classes.Row} style={{ color: RED }}>
             <p>
               <span>Benchmark Daily %Chg: </span>
-              <span>{benchmark_pctchg}</span>
+              <span>{benchmark_pctchg}%</span>
             </p>
           </div>
           <div className={classes.Row} style={{ color: RED }}>
             <p>
               <span>Benchmark Cum. %Chg: </span>
-              <span>{benchmark_cumpct}</span>
+              <span>{benchmark_cumpct}%</span>
             </p>
           </div>
           <div className={classes.Row} style={{ color: RED }}>
