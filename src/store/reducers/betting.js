@@ -91,6 +91,7 @@ const initialState = {
             }
   },
   heatmap:{},
+  heatmap_lookup_symbol:'',
   performance_account_id:'',
   loading: true,
   mute: true,
@@ -405,11 +406,16 @@ const reducer = (state = initialState, action) => {
     }
     case actionTypes.INITIALIZE_HEATMAP:
     {
+      
+        var sym='';
+        if (action.sym)
+          sym=action.sym;
         return {
           ...state,
           performance_account_id:'',
           show_lockdown_dialog:false,
-          heatmap_account_id:action.account_id
+          heatmap_account_id:action.account_id,
+          heatmap_lookup_symbol:sym
         };
     }
     case actionTypes.INITIALIZE_DATA:

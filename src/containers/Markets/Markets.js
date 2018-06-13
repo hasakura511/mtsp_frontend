@@ -47,6 +47,7 @@ const stateToProps = state => {
     liveDateText:state.betting.liveDateText,
     email:state.auth.email,
     heatmap_account_id:state.betting.heatmap_account_id,
+    heatmap_lookup_symbol:state.betting.heatmap_lookup_symbol,
   };
 };
 
@@ -119,6 +120,7 @@ export default class Markets extends Component {
     email:PropTypes.string,
     refreshing:PropTypes.bool,
     heatmap_account_id:PropTypes.string,
+    heatmap_lookup_symbol:PropTypes.string,
   };
 
   getSubmitTitle(controls) {
@@ -143,13 +145,17 @@ export default class Markets extends Component {
   componentWillReceiveProps(newProps) {
     if (newProps.refreshing) {
       this.refreshData();
+    } else if (newProps.heatmap_account_id && newProps.heatmap_account_id != this.state.heatmap_account_id) {
+      this.refreshData(newProps.heatmap_account_id, 'current', newProps.heatmap_lookup_symbol);
+    } else if (newProps.heatmap_account_id != undefined && newProps.heatmap_account_id == '') {
+      this.refreshData('','',newProps.heatmap_lookup_symbol);
     }
-    if (newProps.heatmap_account_id && newProps.heatmap_account_id != this.state.heatmap_account_id) {
-      this.refreshData(newProps.heatmap_account_id, 'current');
-    }
+    
   }
 
-  refreshData=(account_id='', link='') => {
+  refreshData=(account_id='', link='', sym='') => {
+    var self=this;
+    console.log("Refreshing HEATMAP with " + account_id + ',' + link )
     this.setState({loading:true, heatmap_account_id:account_id})
     if (this.state.refreshing)
       return;
@@ -208,6 +214,9 @@ export default class Markets extends Component {
           refreshing:false,
 
         });
+        if (sym) {
+          self.onGetChart(sym, liveDateText);
+        }
       })
       .catch((error) => {
         console.log(error);

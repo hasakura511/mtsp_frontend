@@ -42,11 +42,12 @@ export const showLockdownDialog = show => {
 
 
 
-export const initializeHeatmap = (account_id, link) => {
+export const initializeHeatmap = (account_id, link, sym='') => {
   return {
     type: actionTypes.INITIALIZE_HEATMAP,
     account_id, 
-    link
+    link, 
+    sym
   };
 };
 

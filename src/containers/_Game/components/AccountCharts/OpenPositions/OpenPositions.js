@@ -150,8 +150,8 @@ class CustomTooltip extends Component {
 
 const dispatchToProps = dispatch => {
   return {
-    initializeHeatmap:(account_id) => {
-      dispatch(actions.initializeHeatmap(account_id))
+    initializeHeatmap:(account_id, link, sym) => {
+      dispatch(actions.initializeHeatmap(account_id, link, sym))
     }
     
   };
@@ -286,11 +286,15 @@ export default class OpenPositions extends Component {
                   Header: "Markets",
                   accessor: "Markets",
                   Cell: props => <span><a href='#market' onClick={()=> {
-                    self.props.initializeHeatmap(self.props.performance_account_id);
+                    console.log(props);
+                    var sym= props.value;
+                    sym=sym.substr(0, sym.indexOf(' ')); 
+                    self.props.initializeHeatmap(self.props.performance_account_id,'current',sym);
                     if (self.props.toggle)
                       self.props.toggle();
                     $(window).scrollTop($("#marketTop").offset().top-111);
                   }} >{props.value}</a></span>, // Custom cell components!,
+
 
                 },
                 {

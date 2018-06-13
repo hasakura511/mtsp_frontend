@@ -36,8 +36,8 @@ const stateToProps = state => ({
 
 const dispatchToProps = dispatch => {
   return {
-    initializeHeatmap:(account_id) => {
-      dispatch(actions.initializeHeatmap(account_id))
+    initializeHeatmap:(account_id, link, sym) => {
+      dispatch(actions.initializeHeatmap(account_id, link, sym))
     }
     
   };
@@ -183,7 +183,9 @@ export default class LockdownTimetable extends Component {
                   accessor: "Markets",
                   Cell: props => <span><a href='#market' onClick={()=> {
                     console.log(props);
-                    self.props.initializeHeatmap('');
+                    var sym= props.value;
+                    sym=sym.substr(0, sym.indexOf(' ')); 
+                    self.props.initializeHeatmap('','',sym);
                     if (self.props.toggle)
                       self.props.toggle();
                     $(window).scrollTop($("#marketTop").offset().top-111);
