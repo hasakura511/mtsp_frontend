@@ -305,7 +305,16 @@ export default class TradingCosts extends Component {
                 {
                   Header: "Commissions",
                   accessor: "Commissions",
-                  Cell: props => <span className='number'><center>$ {props.value}</center></span>, // Custom cell components!,
+                  Cell: props => (
+                    <span className='number'><center>
+                    {parseFloat(props.value) ? (
+                      <img src={parseFloat(props.value) > 0 ? gainIcon : lossIcon} />
+                    ) : null}
+                    <b>
+                    $ {Math.abs(Math.round(parseFloat(props.value))).toLocaleString("en")} 
+                    </b>
+                    </center></span>
+                  ), // Custom cell components!,
 
                   Footer: (
                     <span>
@@ -320,7 +329,9 @@ export default class TradingCosts extends Component {
                               }
                             />
                           ) : null}
-                          $ {performance.commissions_total}
+                           <b>
+                            $ {Math.abs(Math.round(performance.commissions_total)).toLocaleString("en")} 
+                            </b>
                         </center>
                        ):null}
                       </span>
@@ -329,7 +340,16 @@ export default class TradingCosts extends Component {
                 {
                   Header: "Slippage",
                   accessor: "Slippage",
-                  Cell: props => <span className='number'><center>$ {props.value}</center></span>, // Custom cell components!,
+                  Cell: props => (
+                    <span className='number'><center>
+                    {parseFloat(props.value) ? (
+                      <img src={parseFloat(props.value) > 0 ? gainIcon : lossIcon} />
+                    ) : null}
+                    <b>
+                    $ {Math.abs(Math.round(parseFloat(props.value))).toLocaleString("en")} 
+                    </b>
+                    </center></span>
+                  ), // Custom cell components!,
                   Footer: (
                     <span>
                      {performance.slippage_total !== null ? (
@@ -343,7 +363,9 @@ export default class TradingCosts extends Component {
                               }
                             />
                           ) : null}
-                          $ {performance.slippage_total}
+                           <b>
+                            $ {Math.abs(Math.round(performance.slippage_total)).toLocaleString("en")} 
+                            </b>
                         </center>
                        ):null}
                       </span>

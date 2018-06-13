@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import Slot from "../../containers/Slot/Slot";
 import Chip from "../_Chip/_Chip";
 import classes from "./Order.css";
+import {numberWithCommas} from "../../../../util"
 // import Switch from "../../../../components/UI/Switch/Switch";
 import OrderCharts from "../../containers/OrderCharts/OrderCharts";
 import AccountCharts from "../../components/AccountCharts/AccountCharts";
@@ -161,14 +162,14 @@ const order = props => {
           <tbody>
             <tr style={{border:"1px", "padding":"1px"}}>
             <td style={{borderLeft:"1px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
-            $ {chip.starting_value}
+            $ {numberWithCommas(chip.starting_value.toString())}
             </td>            
             <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
 
-            $ {chip.account_value}
+            $ {numberWithCommas(chip.account_value.toString())}
             </td>            
             <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
-            $ {chip.total_margin}
+            $ {numberWithCommas(chip.total_margin.toString())}
             </td>            
             <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
             {chip.pnl_cumpct} %

@@ -7,7 +7,7 @@ import axios from "../../../../../axios-gsm";
 import chipIcon from "../../../../../assets/images/chip-icon.png";
 import lossIcon from "../../../../../assets/images/loss-icon.png";
 import gainIcon from "../../../../../assets/images/gain-icon.png";
-
+import ReactTable from "react-table";
 
 import {
   LineChart,
@@ -254,6 +254,120 @@ export default class OpenPositions extends Component {
            <center><h3>Open Positions</h3></center>
           <center><h3>{performance.bet}</h3></center>
           <div className={classes.ChartContainer}>
+          <ReactTable
+          
+          data={Object.keys(performance.open_positions).map(key=> { 
+            //console.log(account);
+            var item=performance.open_positions[key];
+
+            if (item) { 
+              item.key=key;
+              return item;
+            }
+          })}
+
+             
+          columns={[
+            {
+              Header: "",
+              columns: [
+                {
+                  Header: "Markets",
+                  accessor: "Markets",
+                  Cell: props => <span><a href='#market'>{props.value}</a></span>, // Custom cell components!,
+
+                },
+                {
+                  Header: "Group",
+                  accessor: "Group"
+                }
+
+              ]
+            },
+            {
+              Header:  props => <span><center><h4>{performance.last_date}</h4></center></span>, // Custom cell components!,
+
+              columns: [
+                {
+                  Header: "Current Positions",
+                  accessor: "Positions",
+                  Cell: props => <span className='number'><center>{props.value}</center></span>, // Custom cell components!,
+                },
+                {
+                  Header: "Position Value",
+                  accessor: "Position Value",
+
+                  Cell: props => (
+                    <span className='number'><center>
+                    {parseFloat(props.value) ? (
+                      <img src={parseFloat(props.value) > 0 ? gainIcon : lossIcon} />
+                    ) : null}
+                    <b>
+                    $ {Math.abs(Math.round(parseFloat(props.value))).toLocaleString("en")} 
+                    </b>
+                    </center></span>
+                  ), // Custom cell components!,
+
+                },
+              ]
+            },
+            {
+              Header:  props => <span><center><h4>Last Update</h4></center></span>, // Custom cell components!,
+              columns: [
+                {
+                  Header: "Updated When",
+                  accessor: "Updated When",
+                  Cell: props => <span className='number'><center>{props.value}</center></span>, // Custom cell components!,
+
+                },
+                {
+                  Header: "PnL",
+                  accessor: "PnL",
+                  Cell: props => (
+                    <span className='number'><center>
+                    {parseFloat(props.value) ? (
+                      <img src={parseFloat(props.value) > 0 ? gainIcon : lossIcon} />
+                    ) : null}
+                    <b>
+                    $ {Math.abs(Math.round(parseFloat(props.value))).toLocaleString("en")} 
+                    </b>
+                    </center></span>
+                  ), // Custom cell components!,
+
+                  Footer: (
+                    <span>
+                     {performance.pnl_total !== null ? (
+                        <center>
+                          {performance.pnl_total ? (
+                            <img
+                              src={
+                                performance.pnl_total > 0
+                                  ? gainIcon
+                                  : performance.pnl_total < 0 ? lossIcon : ""
+                              }
+                            />
+                          ) : null}
+                          Total: <b>$  {Math.abs(Math.round(performance.pnl_total)).toLocaleString("en")}</b>
+                        </center>
+                       ):null}
+                      </span>
+                  )
+                },
+                
+              ],
+              
+            },
+            
+          ]}
+          //defaultPageSize={20}
+          style={{
+            width: "100%",
+            height: "400px" // This will force the table body to overflow and scroll, since there is not enough room
+          }}
+          className="-striped -highlight"
+          showPagination={false}
+        />
+          {/*
           <table className={classes.Table} style={tableStyle}>
         <thead  style={{ background: bgColor, color:bgText, border: "1px solid " + bdColor}}>
         <tr><td></td><td></td><td colSpan={'2'}><center><h4>{performance.last_date}</h4></center></td><td  colSpan={'2'}><center><h4>Last Update</h4></center></td></tr>
@@ -274,27 +388,7 @@ export default class OpenPositions extends Component {
 
             if (item) { 
 
-              /*
-              const accountId=account.account_id;
-              const accountValue=account.account_value;
-              var locktime=account.locktime;
-              var lcBet = account.last_selection;
-              if (lcBet.toLowerCase() == 'off') {
-                lcBet="Off";
-              }
-              const betDate=locktime.substring(5,10).replace('-','/')
-              const lpBet = account.prev_selection;
-              const lpBetDate=account.date.substring(5).replace('-','/')
-              
-              const cummPercentChange =account.pnl_cumpct;
-              const display=account.account_chip_text;
-              locktime=locktime.substring(5).replace('-','/');
-              //eslint-disable-next-line
-              // if (lpBet) console.log(account.accountValue - lpBet.change);
-
-              //eslint-disable-next-line
-              // console.log(account.accountValue);
-              */
+             
               return (
                 <tr key={`dashboard-row-${key}`} style={tableStyle}>
                   <td style={tableStyle}>
@@ -380,6 +474,7 @@ export default class OpenPositions extends Component {
          </td></tr>
         </tbody>
       </table>
+        */}
       
         </div>
         </div>

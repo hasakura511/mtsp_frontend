@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { toWordedDate, toSlashDate } from "../../../../../util";
+import { toWordedDate, toSlashDate, numberWithCommas } from "../../../../../util";
 import classes from "./PerformanceChart.css";
 import Spinner from "../../../../../components/UI/Spinner/Spinner";
 import axios from "../../../../../axios-gsm";
@@ -68,7 +68,7 @@ class CustomTooltip extends Component {
           <hr style={{ width: "100%" }} />
           <div className={classes.Row} style={{ color: BLUE }}>
             <p>
-              <span>Account Value:</span> <span>{account_value}</span>
+              <span>Account Value:</span> <span>$ {numberWithCommas(account_value.toString())}</span>
             </p>
           </div>
           <div className={classes.Row} style={{ color: BLUE }}>
@@ -86,13 +86,13 @@ class CustomTooltip extends Component {
           <div className={classes.Row} style={{ color: BLUE }}>
             <p>
               <span>Commissions: </span>
-              <span>$ {commissions}</span>
+              <span>$ {numberWithCommas(commissions.toString())}</span>
             </p>
           </div>
           <div className={classes.Row} style={{ color: BLUE }}>
             <p>
               <span>Slippage: </span>
-              <span>$ {slippage}</span>
+              <span>$ {numberWithCommas(slippage).toString()}</span>
             </p>
           </div>
           <div className={classes.Row} style={{ color: BLUE }}>
@@ -105,7 +105,7 @@ class CustomTooltip extends Component {
           <div className={classes.Row} style={{ color: RED }}>
             <p>
               <span>Benchmark Value: </span>
-              <span>$ {benchmark_value}</span>
+              <span>$ {numberWithCommas(benchmark_value.toString())}</span>
             </p>
           </div>
           <div className={classes.Row} style={{ color: RED }}>
@@ -225,6 +225,7 @@ export default class PerformanceChart extends Component {
     var { performance, lookback, performanceLoading, performanceError } = this.state;
 
     var chartData={};
+    var yticks=[];
 
     if (!performanceLoading) {
         Object.keys(performance.chart_specs).map(date => {
@@ -236,6 +237,9 @@ export default class PerformanceChart extends Component {
         chartData=performance.chart_data[lookback];
         console.log(lookback);
         console.log(chartData);
+        yticks=performance.chart_specs[lookback].yticks;
+        console.log('yticks');
+        console.log(yticks);
     }
     return (
         <div className={classes.PerformanceChart}>
@@ -293,6 +297,7 @@ export default class PerformanceChart extends Component {
                 tickFormatter={value =>
                   `${Math.floor(value).toLocaleString("en")}`
                 }
+                ticks={yticks}
                 domain={[dataMin => dataMin * 0.9, dataMax => dataMax * 1.1]}
               />
               <CartesianGrid strokeDasharray="3 1" />
@@ -300,13 +305,13 @@ export default class PerformanceChart extends Component {
               <Legend />
               <Line
                 type="monotone"
-                dataKey={"benchmark_pctchg" }
+                dataKey={"benchmark_value" }
                 stroke={BLUE}
                 activeDot={{ r: 8 }}
                />
                 <Line
                 type="monotone"
-                dataKey={"account_pnl_pct" }
+                dataKey={"account_value" }
                 stroke={GREEN}
                 activeDot={{ r: 8 }}
                />
