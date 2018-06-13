@@ -182,7 +182,7 @@ export default class TradingCosts extends Component {
        * @example {"portfolio": ["TU", "BO"], "systems": ["prev1", "prev5"], "target": 500, "account": 5000}
        *
        */
-      account_id: self.props.performance_account_id
+      account_id: self.props.chip.account_id
     })
     .then(response => {
       /**
@@ -295,8 +295,8 @@ export default class TradingCosts extends Component {
                   Cell: props => <span className='number'><center>{props.value}</center></span>, // Custom cell components!,
                 },
                 {
-                  Header: "Exec. vs Close Price",
-                  accessor: "Contracts Traded",
+                  Header: "Exec vs Close Price",
+                  accessor: "Exec vs Close Price",
                   Cell: props => <span className='number'><center>{props.value}</center></span>, // Custom cell components!,
                   Footer: (
                     <span style={{'float':'right'}}><b>Total:</b></span>

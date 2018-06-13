@@ -27,7 +27,7 @@ class TosModal extends Component {
     this.props.logout();
     this.props.addTimedToaster({
       id: "tos-modal-load-err",
-      text: error.message || message || "You must accept our terms and service."
+      text: error.message || message || "You must agree to our Terms of Service."
     });
   };
 
@@ -53,14 +53,14 @@ class TosModal extends Component {
     }
     return (
       <Modal hidden={!this.state.show}>
-        <FormatModal title="You must accept our terms of service">
+        <FormatModal title="You must agree to our Terms of Service">
           <div className={classes.Content}>
             {withHeaders(this.state.tosContent)}
           </div>
           <div className={classes.Footer}>
-            <CancelButton onClick={this.errorHandler}>I disagree</CancelButton>
+            <CancelButton onClick={this.errorHandler}>I Disagree</CancelButton>
             <Button onClick={this.acceptHandler}>
-              I agree to terms of service.
+              I Agree
             </Button>
           </div>
         </FormatModal>

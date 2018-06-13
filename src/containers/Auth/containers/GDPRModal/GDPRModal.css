@@ -1,0 +1,16 @@
+.Content{
+    overflow: auto;
+    height: 400px;
+  }
+  .Footer{
+    width: 100%;
+    padding-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .Footer button{
+    font-size: 1em;
+    font-weight: 500;
+  }

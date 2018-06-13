@@ -11,6 +11,7 @@ const initialState = {
   email: null,
   tosAccepted: false,
   rdAccepted: false,
+  gdprAccepted: false,
   deactivatedAt: null
 };
 
@@ -37,6 +38,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         rdAccepted: true
       };
+    case actionTypes.GDPR_AGREED:
+      return {
+        ...state,
+        gdprAccepted: true
+      };
     case actionTypes.AUTH_START:
       return {
         ...state,
@@ -54,6 +60,7 @@ const reducer = (state = initialState, action) => {
         email: action.user.email,
         rdAccepted: action.user.rdAccepted,
         tosAccepted: action.user.tosAccepted,
+        gdprAccepted:action.user.gdprAccepted,
         deactivatedAt: action.user.deactivatedAt,
         error: null
       };

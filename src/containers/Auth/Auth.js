@@ -16,6 +16,7 @@ import authInitialControls, {
 } from "./components/AuthInitialControls";
 import TosModal from "./containers/TosModal/TosModal";
 import RdModal from "./containers/RdModal/RdModal";
+import GDPRModal from "./containers/GDPRModal/GDPRModal";
 //sign up or sign in
 
 const Heading = props => (
@@ -98,6 +99,7 @@ class Auth extends Component {
       this.props.isAuthenticated &&
       this.props.rdAccepted &&
       this.props.tosAccepted &&
+      this.props.gdprAccepted &&
       this.props.authRedirect !== "/"
     ) {
       //clear the authRedirect path
@@ -176,13 +178,15 @@ class Auth extends Component {
   };
 
   isAuthTemplate() {
-    if (this.props.rdAccepted && this.props.tosAccepted) {
+    if (this.props.rdAccepted && this.props.tosAccepted && this.props.gdprAccepted) {
       return <Redirect to={this.props.authRedirect} />;
     } else if (!this.props.tosAccepted) {
       //Show modal to accept TOS
       return <TosModal />;
     } else if (!this.props.rdAccepted) {
       return <RdModal />;
+    } else if (!this.props.gdprAccepted) {
+      return <GDPRModal />;
     }
   }
 
@@ -250,6 +254,7 @@ Auth.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
   rdAccepted: PropTypes.bool.isRequired,
   tosAccepted: PropTypes.bool.isRequired,
+  gdprAccepted: PropTypes.bool.isRequired,
   authRedirect: PropTypes.string.isRequired,
   clearAuthRedirect: PropTypes.func.isRequired,
   addTimedToaster: PropTypes.func.isRequired,
@@ -265,6 +270,7 @@ export default withRouter(
       isAuthenticated: state.auth.token !== null,
       tosAccepted: state.auth.tosAccepted,
       rdAccepted: state.auth.rdAccepted,
+      gdprAccepted:state.auth.gdprAccepted,
       error: state.auth.error,
       authRedirect: state.auth.authRedirect
     }),

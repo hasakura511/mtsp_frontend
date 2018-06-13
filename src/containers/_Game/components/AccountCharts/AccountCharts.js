@@ -96,7 +96,7 @@ class AccountCharts extends Component {
         <div className={classes.Contents}>
           {isPerformance ? (
             <div className={classes.Content}>
-              <PerformanceChart performance={performance} />
+              <PerformanceChart  chip={this.props.chip} />
             </div>
           ) : (
            null
@@ -104,7 +104,7 @@ class AccountCharts extends Component {
         
         {isOpenPositions ? (
             <div className={classes.Content}>
-              <OpenPositions />
+              <OpenPositions  chip={this.props.chip} />
             </div>
           ) : (
            null
@@ -112,7 +112,7 @@ class AccountCharts extends Component {
 
          {isTradingCosts ? (
             <div className={classes.Content}>
-              <TradingCosts />
+              <TradingCosts chip={this.props.chip} />
             </div>
           ) : (
            null
@@ -128,7 +128,7 @@ class AccountCharts extends Component {
 
           {isLockdownTimetable ? (
             <div className={classes.Content}>
-              <LockdownTimetable />
+              <LockdownTimetable  chip={this.props.chip}/>
             </div>
           ) : (
            null

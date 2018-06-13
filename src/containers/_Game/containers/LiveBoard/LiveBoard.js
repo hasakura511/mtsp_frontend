@@ -736,7 +736,7 @@ export default class LiveBoard extends Component {
 
                <a href='#practice_board' style={{textDecoration: "none"}}
                                onClick={this.toggleMode}
-                               title="Switch to Practice"
+                               title="Switch to Practice Mode"
 
                > 
               <div style={{
@@ -779,7 +779,7 @@ export default class LiveBoard extends Component {
               <span style={{"float": "left", "width": "30%", "height":"90px", "textAlign": "right", "verticalAlign":"middle"}}>
                   <span style={{"float": "left", "width": "80%", "height":"90px", "textAlign": "left", "verticalAlign":"middle"}}> 
                     <div className="isLive">
-                      <center><b style={{color:heatmapTxt}} >Heatmap Legend</b></center>
+                      <center><b style={{color:heatmapTxt}} >{this.props.themes.live.heatmap.top_text}</b></center>
                       <div style={{  "border": "1px solid",
                                       "background": themes_bg,
                                       "width":"100%",
@@ -790,10 +790,10 @@ export default class LiveBoard extends Component {
                       </div>
                       <div>
                         <span style={{"float": "left", "width": "50%", "textAlign": "left", color:heatmapTxt}}>
-                        Low Reward / Risk
+                        {this.props.themes.live.heatmap.bottom_left}
                         </span>
                         <span style={{"float": "left", "width": "50%", "textAlign": "right", color:heatmapTxt}}>
-                        High Reward / Risk
+                        {this.props.themes.live.heatmap.bottom_right}
                         </span>
                       </div>
                     </div>

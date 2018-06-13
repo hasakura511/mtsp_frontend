@@ -29,7 +29,7 @@ class RdModal extends Component {
     this.props.logout();
     this.props.addTimedToaster({
       id: "rd-modal-load-err",
-      text: error.message || message || "You must accept our risk disclosure."
+      text: error.message || message || "You must agree to our Risk Disclosure."
     });
   };
 
@@ -47,44 +47,8 @@ class RdModal extends Component {
   acceptHandler = event => {
     event.preventDefault();
     this.setState({ loading: true });
-    Promise.all([
-      axios.post("/utility/auth/tos_update/", {}),
-      axios.post("/utility/auth/rd_update/", {})
-    ])
-      .then(response => {
-        /**
-         * @type {Object}
-         * @example response = "[{"data":{"user":{"id":6,"first_name":"Shubham","last_name":"Mishra","email":"shubhammshr621@gmail.com","country":"","house_number":"","street":"","city":"","postcode":"","phone_number":"+910000000000","verified":true,"mail_sent":true,"provider":"","tos_accepted":true,"rd_accepted":true},"sessiontoken":"318b2f0675f49423d1ad14dc61ee99fa952f2ed8b139cc90d06c26e85734b0cf"},"status":200,"statusText":"OK","headers":{"content-type":"application/json","cache-control":"max-age=0, private, must-revalidate"},"config":{"transformRequest":{},"transformResponse":{},"timeout":0,"xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN","maxContentLength":-1,"headers":{"Accept":"application/json,"Content-Type":"application/json;charset=utf-8","sessiontoken":"318b2f0675f49423d1ad14dc61ee99fa952f2ed8b139cc90d06c26e85734b0cf"},"baseURL":"http://localhost:8000","method":"post","url":"http://localhost:8000/utility/auth/tos_update/","data":"{}"},"request":{}},{"data":{"user":{"id":6,"first_name":"Shubham","last_name":"Mishra","email":"shubhammshr621@gmail.com","country":"","house_number":"","street":"","city":"","postcode":"","phone_number":"+910000000000","verified":true,"mail_sent":true,"provider":"","tos_accepted":true,"rd_accepted":true},"sessiontoken":"318b2f0675f49423d1ad14dc61ee99fa952f2ed8b139cc90d06c26e85734b0cf"},"status":200,"statusText":"OK","headers":{"content-type":"application/json","cache-control":"max-age=0, private, must-revalidate"},"config":{"transformRequest":{},"transformResponse":{},"timeout":0,"xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN","maxContentLength":-1,"headers":{"Accept":"application/json,"Content-Type":"application/json;charset=utf-8","sessiontoken":"318b2f0675f49423d1ad14dc61ee99fa952f2ed8b139cc90d06c26e85734b0cf"},"baseURL":"http://localhost:8000","method":"post","url":"http://localhost:8000/utility/auth/rd_update/","data":"{}"},"request":{}}]"
-         */
-        this.setState({ loading: false, show: false });
-        if (response.length !== 2) {
-          throw Error(BUG_MESSAGE);
-        }
-        this.props.rdAgreed();
-      })
-      .catch(error => {
-        this.errorHandler(error, "Error updating RD status.");
-      });
-    
-    // example series execution:
-    // const promise1 = () =>
-    //   new Promise((resolve, reject) => {
-    //     setTimeout(() => {
-    //       resolve({ msg: "got first response after 2 sec" });
-    //     }, 2000);
-    //   });
 
-    // const promise2 = () =>
-    //   new Promise((resolve, reject) => {
-    //     setTimeout(() => {
-    //       resolve({ msg: "got second response after 3 sec" });
-    //     }, 3000);
-    //   });
-
-    // promise1()
-    //   .then(x => promise2().then(res => [x].concat(res)))
-    //   .then(res => console.log(res));
-    // promiseSerial([promise1, promise2]).then(res => console.log(res));
+    this.props.rdAgreed();
   };
 
   render() {
@@ -93,14 +57,14 @@ class RdModal extends Component {
     }
     return (
       <Modal toggle={this.errorHandler} hidden={!this.state.show}>
-        <FormatModal title="You must accept our risk disclosure">
+        <FormatModal title="You must agree to our Risk Disclosure">
           <div className={classes.Content}>
             {withHeaders(this.state.rdContent)}
           </div>
           <div className={classes.Footer}>
-            <CancelButton onClick={this.errorHandler}>I disagree</CancelButton>
+            <CancelButton onClick={this.errorHandler}>I Disagree</CancelButton>
             <Button onClick={this.acceptHandler}>
-              I agree to risk disclosure.
+              I Agree
             </Button>
           </div>
         </FormatModal>

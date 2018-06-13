@@ -181,7 +181,7 @@ export default class OpenPositions extends Component {
        * @example {"portfolio": ["TU", "BO"], "systems": ["prev1", "prev5"], "target": 500, "account": 5000}
        *
        */
-      account_id: self.props.performance_account_id
+      account_id: self.props.chip.account_id
     })
     .then(response => {
       /**

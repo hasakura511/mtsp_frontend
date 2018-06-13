@@ -7,7 +7,7 @@ const footer = () => {
   return (
     <div className={classes.Footer}>
       <div className={classes.Left}>
-        <p><strong>Copyright © 2017 GSM – All rights reserved.</strong></p>
+        <p><strong>Copyright © 2017-2019 GSM – All rights reserved.</strong></p>
       </div>
       <div className={classes.Right}>
         <Link to="/privacy_policy" target="_blank"><strong>PRIVACY POLICY</strong></Link>

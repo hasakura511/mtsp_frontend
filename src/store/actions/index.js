@@ -10,6 +10,7 @@ export {
   facebookAuth,
   tosAgreed,
   rdAgreed,
+  gdprAgreed,
   reactivate
 } from "./auth";
 export { addToaster, removeToaster, addTimedToaster, clearAll } from "./toasters";

@@ -177,7 +177,7 @@ export default class PerformanceChart extends Component {
        * @example {"portfolio": ["TU", "BO"], "systems": ["prev1", "prev5"], "target": 500, "account": 5000}
        *
        */
-      account_id: self.props.performance_account_id
+      account_id: self.props.chip.account_id
     })
     .then(response => {
       /**
@@ -206,14 +206,14 @@ export default class PerformanceChart extends Component {
       
       console.log(chart_data);
 
-      this.setState({
+      self.setState({
           performanceLoading: false,
           performance
         });
     })
     .catch(performanceError => {
       console.log(performanceError);
-      this.setState({
+      self.setState({
         performanceLoading: false,
         performanceError: performanceError
       });

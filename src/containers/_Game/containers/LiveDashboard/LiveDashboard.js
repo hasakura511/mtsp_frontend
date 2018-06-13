@@ -292,7 +292,9 @@ export default class LiveDashboard extends Component {
                     <div className={classes.Cell + " " + classes.Flex}>
                       &nbsp;
                       <a href='#accountPerf' 
-                        onClick={() => {self.props.showPerformance(account.account_id)}}>
+                        onClick={() => {self.props.showPerformance(account.account_id)}}
+                        title="Account Performance Chart"
+                        >
                         <img src="/images/account_chart_button.png" width="30" />
                       </a>&nbsp;&nbsp;
                       <strong>$ {display}</strong>
@@ -338,7 +340,9 @@ export default class LiveDashboard extends Component {
                       style={{ justifyContent: "center" }}
                     >
                       <span style={{'float':'left','marginLeft':"-37px","marginTop":"5px"}}>
-                      <a href='#viewportfolio' onClick={() => { 
+                      <a href='#viewportfolio' 
+                        title="Display PnL Heatmap for this account"
+                        onClick={() => { 
                         self.props.initializeHeatmap(account.account_id);
                         $(window).scrollTop($("#marketTop").offset().top-111);
 

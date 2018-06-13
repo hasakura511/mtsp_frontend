@@ -218,17 +218,35 @@ export const tosAgreed = () => {
   };
 };
 
+
 export const rdAgreed = () => {
+  /*
   const user = {
     ...JSON.parse(localStorage.getItem("user")),
     rdAccepted: true,
     tosAccepted: true
   };
   localStorage.setItem("user", JSON.stringify(user));
+  */
   return {
     type: actionTypes.RD_AGREED
   };
 };
+
+
+export const gdprAgreed = () => {
+  const user = {
+    ...JSON.parse(localStorage.getItem("user")),
+    rdAccepted: true,
+    tosAccepted: true,
+    gdprAccepted: true,
+  };
+  localStorage.setItem("user", JSON.stringify(user));
+  return {
+    type: actionTypes.GDPR_AGREED
+  };
+};
+
 
 export const reactivate = () => dispatch => {
   const user = JSON.parse(localStorage.getItem("user"));
