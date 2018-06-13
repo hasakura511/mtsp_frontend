@@ -98,6 +98,7 @@ const initialState = {
   isLive:false,
   initializeData: {},
   heatmap_account_id:'',
+  show_lockdown_dialog:false,
   simulatedDate: getOffsetDate(1),
   liveDate: new moment().tz("US/Eastern"),
   liveDateText: "",
@@ -329,6 +330,14 @@ const reducer = (state = initialState, action) => {
         performance_account_id:action.account_id
       };
     }
+    case actionTypes.SHOW_LOCKDOWN_DIALOG:
+    {
+      console.log("LOCKDOWN Dialog Show: " + action.show);
+      return {
+        ...state,
+        show_lockdown_dialog:action.show
+      };
+    }
     case actionTypes.UPDATE_DATE:
     {
         var date = new moment().tz("US/Eastern");
@@ -398,6 +407,8 @@ const reducer = (state = initialState, action) => {
     {
         return {
           ...state,
+          performance_account_id:'',
+          show_lockdown_dialog:false,
           heatmap_account_id:action.account_id
         };
     }

@@ -33,6 +33,14 @@ export const showPerformance = account_id => {
   }
 }
 
+export const showLockdownDialog = show => {
+  return {
+    type: actionTypes.SHOW_LOCKDOWN_DIALOG,
+    show,
+  }
+}
+
+
 
 export const initializeHeatmap = (account_id, link) => {
   return {

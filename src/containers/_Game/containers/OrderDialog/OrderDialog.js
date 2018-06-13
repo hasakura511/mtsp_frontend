@@ -375,6 +375,7 @@ export default class OrderDialog extends Component {
             rankingError={rankingError}
             rankingLoading={rankingLoading}
             submitBetHandler={this.submitBetHandler}
+            toggle={this.props.toggle}
             toAntiSystem={this.toAntiSystem}
             close={this.toggle}
             isAnti={isAnti}

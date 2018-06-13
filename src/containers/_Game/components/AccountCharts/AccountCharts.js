@@ -8,6 +8,21 @@ import PreviousPnL from "./PreviousPnL/PreviousPnL";
 import TradingCosts from "./TradingCosts/TradingCosts";
 import Spinner from "../../../../components/UI/Spinner/Spinner";
 //import RankingChart from "./RankingChart/RankingChart";
+import * as actions from "../../../../store/actions";
+import { connect } from "react-redux";
+const stateToProps = state => ({
+  //performance_account_id: state.betting.performance_account_id
+});
+
+
+const dispatchToProps = dispatch => {
+  return {
+    showPerformance:(action_id) => {
+      dispatch(actions.showPerformance(action_id))
+    },
+    
+  };
+};
 
 const loader = (
   <div
@@ -21,7 +36,21 @@ const loader = (
   </div>
 );
 
-class AccountCharts extends Component {
+
+@connect(stateToProps, dispatchToProps)
+export default class AccountCharts extends Component {
+  static propTypes = {
+    performance: PropTypes.object,
+  
+    rankingLoading: PropTypes.bool.isRequired,
+    rankingData: PropTypes.array,
+    rankingError: PropTypes.object,
+    chip: PropTypes.object.isRequired,
+    slot: PropTypes.object,
+    close: PropTypes.func.isRequired,
+    toggle:PropTypes.func,
+    showPerformance:PropTypes.func.isRequired,
+  };
   constructor(props) {
     super(props);
 
@@ -33,7 +62,9 @@ class AccountCharts extends Component {
       isLockdownTimetable:false
     };
   }
-
+  componentWillUnmount() {
+    this.props.showPerformance('');
+  }
 
   render() {
     const { isPerformance, isOpenPositions, isTradingCosts, isPreviousPnL, isLockdownTimetable } = this.state;
@@ -96,7 +127,7 @@ class AccountCharts extends Component {
         <div className={classes.Contents}>
           {isPerformance ? (
             <div className={classes.Content}>
-              <PerformanceChart  chip={this.props.chip} />
+              <PerformanceChart  chip={this.props.chip} toggle={this.props.toggle} />
             </div>
           ) : (
            null
@@ -104,7 +135,7 @@ class AccountCharts extends Component {
         
         {isOpenPositions ? (
             <div className={classes.Content}>
-              <OpenPositions  chip={this.props.chip} />
+              <OpenPositions  chip={this.props.chip} toggle={this.props.toggle} />
             </div>
           ) : (
            null
@@ -112,7 +143,7 @@ class AccountCharts extends Component {
 
          {isTradingCosts ? (
             <div className={classes.Content}>
-              <TradingCosts chip={this.props.chip} />
+              <TradingCosts chip={this.props.chip} toggle={this.props.toggle} />
             </div>
           ) : (
            null
@@ -120,7 +151,7 @@ class AccountCharts extends Component {
 
          {isPreviousPnL ? (
             <div className={classes.Content}>
-              <PreviousPnL chip={this.props.chip}/>
+              <PreviousPnL chip={this.props.chip} toggle={this.props.toggle}/>
             </div>
           ) : (
            null
@@ -128,7 +159,7 @@ class AccountCharts extends Component {
 
           {isLockdownTimetable ? (
             <div className={classes.Content}>
-              <LockdownTimetable  chip={this.props.chip}/>
+              <LockdownTimetable  chip={this.props.chip} toggle={this.props.toggle}/>
             </div>
           ) : (
            null
@@ -140,15 +171,4 @@ class AccountCharts extends Component {
   }
 }
 
-AccountCharts.propTypes = {
-  performance: PropTypes.object,
 
-  rankingLoading: PropTypes.bool.isRequired,
-  rankingData: PropTypes.array,
-  rankingError: PropTypes.object,
-  chip: PropTypes.object.isRequired,
-  slot: PropTypes.object,
-  close: PropTypes.func.isRequired
-};
-
-export default AccountCharts;

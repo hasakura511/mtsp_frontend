@@ -10,6 +10,7 @@ import LeftSection from "../../components/Sections/LeftSection/LeftSection";
 import RightSection from "../../components/Sections/RightSection/RightSection";
 import TopSection from "../../components/Sections/TopSection/TopSection";
 import OrderDialog from "../OrderDialog/OrderDialog";
+import LockdownDialog from "../LockdownDialog/LockdownDialog";
 import axios from "../../../../axios-gsm";
 import { connect } from "react-redux";
 import * as actions from "../../../../store/actions";
@@ -30,7 +31,7 @@ const stateToProps = state => {
            themes:state.betting.themes,
            mute:state.betting.mute,
            performance_account_id:state.betting.performance_account_id,
-           
+           show_lockdown_dialog:state.betting.show_lockdown_dialog,
           };
 };
 
@@ -60,6 +61,9 @@ const dispatchToProps = dispatch => {
     },
     showHeatmap(id) {
       dispatch(actions.showHeatmap(id));
+    },
+    showLockdownDialog(show) {
+      dispatch(actions.showLockdownDialog(show));
     }
 
   };
@@ -105,6 +109,8 @@ export default class Panel extends Component {
     themes:PropTypes.object,
     mute:PropTypes.bool.isRequired,
     performance_account_id:PropTypes.string.isRequired,
+    show_lockdown_dialog:PropTypes.bool.isRequired,
+    showLockdownDialog:PropTypes.func.isRequired,
   };
 
   /**
@@ -223,7 +229,9 @@ export default class Panel extends Component {
 
   componentWillReceiveProps(newProps) {
 
-    //console.log("Panel received new prop");
+
+    console.log("Panel received new prop");
+    console.log(newProps);
     //console.log(newProps.balanceChips);
     //console.log(newProps.bettingChips);
     this.makeBoard(newProps);
@@ -234,7 +242,9 @@ export default class Panel extends Component {
             chip=account;
       });
       this.setState({showOrderDialog:true, performance_account_id:newProps.performance_account_id, orderChip:chip, isPerformance:true});
-    } 
+    } else if (!newProps.performance_account_id) {
+      this.setState({performance_account_id:''});
+    }
 
   }
 
@@ -590,6 +600,7 @@ export default class Panel extends Component {
           <div             id={"modalDialog"}>
 
           <OrderDialog
+          
             slot={orderSlot}
             chip={orderChip}
             toggle={this.toggleOrderDialog}
@@ -600,6 +611,11 @@ export default class Panel extends Component {
             isPerformance={this.state.isPerformance}
             performance_account_id={this.state.performance_account_id}
           />
+          </div>
+        ) : null}
+        {this.props.show_lockdown_dialog ? (
+          <div             id={"modalDialog"}>
+          <LockdownDialog />
           </div>
         ) : null}
         

@@ -293,7 +293,7 @@ export default class LiveDashboard extends Component {
                       &nbsp;
                       <a href='#accountPerf' 
                         onClick={() => {self.props.showPerformance(account.account_id)}}
-                        title="Account Performance Chart"
+                        title="Open Account Performance Chart"
                         >
                         <img src="/images/account_chart_button.png" width="30" />
                       </a>&nbsp;&nbsp;

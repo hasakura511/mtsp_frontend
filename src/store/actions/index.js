@@ -29,4 +29,5 @@ export { addBet,
          setMute, 
          initializeHeatmap,
          showPerformance,
+         showLockdownDialog,
       } from "./betting";

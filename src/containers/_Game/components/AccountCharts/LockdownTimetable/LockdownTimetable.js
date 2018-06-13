@@ -9,6 +9,7 @@ import lossIcon from "../../../../../assets/images/loss-icon.png";
 import gainIcon from "../../../../../assets/images/gain-icon.png";
 import ReactTable from "react-table";
 import tableClasses from "react-table/react-table.css";
+import * as actions from "../../../../../store/actions";
 
 import {
   LineChart,
@@ -32,6 +33,16 @@ const stateToProps = state => ({
 
 });
 
+
+const dispatchToProps = dispatch => {
+  return {
+    initializeHeatmap:(account_id) => {
+      dispatch(actions.initializeHeatmap(account_id))
+    }
+    
+  };
+};
+
 const convert = pnlObj => {
   return {
     pnl: Number(pnlObj.pnl).toFixed(2),
@@ -45,7 +56,7 @@ const RED = "#e12f48",
   GREEN = "#63a57c";
 
 
-@connect(stateToProps)
+@connect(stateToProps, dispatchToProps)
 export default class LockdownTimetable extends Component {
   constructor(props) {
     super(props);
@@ -104,6 +115,7 @@ export default class LockdownTimetable extends Component {
   }
 
   render() {
+    var self=this;
     var { performance, lookback, performanceLoading, performanceError } = this.state;
     var bgColor="white";
     var bgText="black";
@@ -117,7 +129,6 @@ export default class LockdownTimetable extends Component {
     }
     */
     var tableStyle={ fontSize:'12px',background: bgColor, color:bgText, borderLeft: "1px solid " + bdColor, borderRight: "1px solid " + bdColor, borderTop: "0.1px solid " + bhColor, borderBottom: "0.1px solid " + bhColor};
-    var self=this;
 
     var chartData={};
 
@@ -158,7 +169,12 @@ export default class LockdownTimetable extends Component {
                 {
                   Header: "Markets",
                   accessor: "Markets",
-                  Cell: props => <span><a href='#market'>{props.value}</a></span>, // Custom cell components!,
+                  Cell: props => <span><a href='#market' onClick={()=> {
+                    self.props.initializeHeatmap(self.props.performance_account_id);
+                    if (self.props.toggle)
+                      self.props.toggle();
+                    $(window).scrollTop($("#marketTop").offset().top-111);
+                  }} >{props.value}</a></span>, // Custom cell components!,
 
                 },
                 {
@@ -205,7 +221,7 @@ export default class LockdownTimetable extends Component {
     performance_account_id: PropTypes.string.isRequired,
     email:PropTypes.string.isRequired,
     liveDateText:PropTypes.string.isRequired,
-    timetable_dialog:PropTypes.object.isRequired
-
+    timetable_dialog:PropTypes.object.isRequired,
+    toggle:PropTypes.func,
   };
 }

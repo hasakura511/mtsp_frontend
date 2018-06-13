@@ -61,6 +61,9 @@ const dispatchToProps = dispatch => {
     updateDate: () => {
       dispatch(actions.updateDate());
     },
+    showLockdownDialog: (show) => {
+      dispatch(actions.showLockdownDialog(show));
+    },
   };
 };
 
@@ -105,6 +108,8 @@ export default class Clock extends PureComponent {
   }
 
   render() {
+    var self=this;
+
     this.clockTime = this.state.estTime.split(/\s/);
 
     var clockTop="#347da6";
@@ -118,11 +123,12 @@ export default class Clock extends PureComponent {
       clockText=this.props.themes.live.action_row.clock_text;      
     }
     var bgStyle={ "background" : "linear-gradient(" + clockTop + "," + clockMid + "," + clockBot + ")",
-                  "color" : clockText};
+                  "color" : clockText,
+                  "cursor": 'pointer'};
     const { updateDate,dashboard_totals } = this.props;
     return (
      
-          <div className={classes.Widget} style={bgStyle}>
+          <div className={classes.Widget} style={bgStyle}  onClick={()=>{ self.props.showLockdownDialog(true); }} >
           <div className={classes.Left}>
             {this.props.isLive ? (
             <span className="isLive" >

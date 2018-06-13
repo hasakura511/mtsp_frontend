@@ -233,6 +233,7 @@ order.propTypes = {
   submitBetHandler: PropTypes.func.isRequired,
   isAnti: PropTypes.bool.isRequired,
   close: PropTypes.func.isRequired,
+  toggle:PropTypes.func,
   dictionary_strategy:PropTypes.object.isRequired,
   isPerformance:PropTypes.bool,
   performance_account_id:PropTypes.string,

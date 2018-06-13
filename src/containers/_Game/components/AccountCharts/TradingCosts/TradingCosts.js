@@ -9,6 +9,7 @@ import lossIcon from "../../../../../assets/images/loss-icon.png";
 import gainIcon from "../../../../../assets/images/gain-icon.png";
 import ReactTable from "react-table";
 import 'react-table/react-table.css'
+import * as actions from "../../../../../store/actions";
 
 import {
   LineChart,
@@ -146,7 +147,17 @@ class CustomTooltip extends Component {
   };
 }
 
-@connect(stateToProps)
+
+const dispatchToProps = dispatch => {
+  return {
+    initializeHeatmap:(account_id) => {
+      dispatch(actions.initializeHeatmap(account_id))
+    }
+    
+  };
+};
+
+@connect(stateToProps, dispatchToProps)
 export default class TradingCosts extends Component {
   constructor(props) {
     super(props);
@@ -275,7 +286,12 @@ export default class TradingCosts extends Component {
                 {
                   Header: "Markets",
                   accessor: "Markets",
-                  Cell: props => <span><a href='#market'>{props.value}</a></span>, // Custom cell components!,
+                  Cell: props => <span><a href='#market' onClick={()=> {
+                    self.props.initializeHeatmap(self.props.performance_account_id);
+                    if (self.props.toggle)
+                      self.props.toggle();
+                    $(window).scrollTop($("#marketTop").offset().top-111);
+                  }} >{props.value}</a></span>, // Custom cell components!,
 
                 },
                 {
@@ -528,6 +544,8 @@ export default class TradingCosts extends Component {
    
     //performance: PropTypes.object,
     //position: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    performance_account_id: PropTypes.string.isRequired
+    performance_account_id: PropTypes.string.isRequired,
+    toggle:PropTypes.func,
+    initializeHeatmap:PropTypes.func
   };
 }

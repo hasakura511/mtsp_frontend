@@ -4,6 +4,7 @@ import { toWordedDate, toSlashDate, numberWithCommas } from "../../../../../util
 import classes from "./PerformanceChart.css";
 import Spinner from "../../../../../components/UI/Spinner/Spinner";
 import axios from "../../../../../axios-gsm";
+import * as actions from "../../../../../store/actions";
 
 import {
   LineChart,
@@ -22,6 +23,17 @@ import { connect } from "react-redux";
 const stateToProps = state => ({
   performance_account_id: state.betting.performance_account_id
 });
+
+
+const dispatchToProps = dispatch => {
+  return {
+    showPerformance:(action_id) => {
+      dispatch(actions.showPerformance(action_id))
+    },
+    
+  };
+};
+
 
 const convert = pnlObj => {
   return {
@@ -141,7 +153,8 @@ class CustomTooltip extends Component {
   };
 }
 
-@connect(stateToProps)
+@connect(stateToProps, dispatchToProps)
+
 export default class PerformanceChart extends Component {
   constructor(props) {
     super(props);
@@ -221,6 +234,7 @@ export default class PerformanceChart extends Component {
 
   }
 
+  
   render() {
     var { performance, lookback, performanceLoading, performanceError } = this.state;
 
@@ -329,6 +343,7 @@ export default class PerformanceChart extends Component {
    
     //performance: PropTypes.object,
     //position: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    performance_account_id: PropTypes.string.isRequired
+    performance_account_id: PropTypes.string.isRequired,
+    showPerformance:PropTypes.func.isRequired
   };
 }
