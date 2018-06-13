@@ -92,6 +92,7 @@ export default class Markets extends Component {
       controls: initialControls,
       formIsValid: false,
       loading: true,
+      chartLoading: false,
       fetched: false,
       error: false,
       submitTitle: "",
@@ -314,7 +315,8 @@ export default class Markets extends Component {
 
   onGetChart = (symbol, date) => {
     this.setState({symbol:symbol,
-                    date:date});
+                    date:date,
+                  chartLoading:true});
     //$(window).scrollTop(0);
 
     axiosOpen
@@ -354,6 +356,7 @@ export default class Markets extends Component {
             specifications:spec,
             themes:response.data.themes,
           firstPeriod:firstPeriod,
+          chartLoading:false,
           selected_period:firstPeriod});
         this.onGetChartDate(symbol, date, firstPeriod)
         $('#chartArea').show()
@@ -738,6 +741,7 @@ export default class Markets extends Component {
   
   onGetGroupChart = (symbol, date) => {
     this.setState({symbol:symbol,
+      chartLoading:true,
                     date:date});
 
 
@@ -778,6 +782,7 @@ export default class Markets extends Component {
             specifications:{"chart_title":title, "status":"group"},
             themes:response.data.themes,
             selected_period:firstPeriod,
+            chartLoading:false,
             firstPeriod:firstPeriod});
         this.onGetGroupChartDate(symbol, date, firstPeriod)
         $('#chartArea').show()
@@ -1269,7 +1274,9 @@ export default class Markets extends Component {
                  ) : null}
                 </div> 
                 <br/>
-                
+          {this.state.chartLoading || !this.state.date_str? (
+            <Spinner />
+                ) : null}
 
         <div className={classes.Markets}>
 

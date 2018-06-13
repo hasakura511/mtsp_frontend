@@ -58,6 +58,18 @@ const RED = "#e12f48",
 
 @connect(stateToProps, dispatchToProps)
 export default class LockdownTimetable extends Component {
+  static propTypes = {
+   
+    //performance: PropTypes.object,
+    //position: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    performance_account_id: PropTypes.string.isRequired,
+    email:PropTypes.string.isRequired,
+    liveDateText:PropTypes.string.isRequired,
+    timetable_dialog:PropTypes.object.isRequired,
+    toggle:PropTypes.func,
+    initializeHeatmap:PropTypes.func.isRequired
+  };
+
   constructor(props) {
     super(props);
 
@@ -170,7 +182,8 @@ export default class LockdownTimetable extends Component {
                   Header: "Markets",
                   accessor: "Markets",
                   Cell: props => <span><a href='#market' onClick={()=> {
-                    self.props.initializeHeatmap(self.props.performance_account_id);
+                    console.log(props);
+                    self.props.initializeHeatmap('');
                     if (self.props.toggle)
                       self.props.toggle();
                     $(window).scrollTop($("#marketTop").offset().top-111);
@@ -214,14 +227,4 @@ export default class LockdownTimetable extends Component {
     );
   }
 
-  static propTypes = {
-   
-    //performance: PropTypes.object,
-    //position: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    performance_account_id: PropTypes.string.isRequired,
-    email:PropTypes.string.isRequired,
-    liveDateText:PropTypes.string.isRequired,
-    timetable_dialog:PropTypes.object.isRequired,
-    toggle:PropTypes.func,
-  };
 }
