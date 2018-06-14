@@ -324,13 +324,13 @@ export default class OpenPositions extends Component {
                     {parseFloat(props.value) ? (
                       <span style={parseFloat(props.value) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
                     <b>
-                    $ {Math.abs(Math.round(parseFloat(props.value))).toLocaleString("en")} 
+                    $ {parseFloat(props.value).toLocaleString("en")} 
                     </b>
                     </span>
                     ) : (
                       <span style={{color:self.props.themes.live.dialog.text_color}}>
                     <b>
-                    $ {Math.abs(Math.round(parseFloat(props.value))).toLocaleString("en")} 
+                    $ {parseFloat(props.value).toLocaleString("en")} 
                     </b>
                     </span>
                     )}
@@ -358,7 +358,7 @@ export default class OpenPositions extends Component {
                       <img src={parseFloat(props.value) > 0 ? gainIcon : lossIcon} />
                     ) : null}
                     <b>
-                    $ {Math.abs(Math.round(parseFloat(props.value))).toLocaleString("en")} 
+                    $ {Math.round(Math.round(parseFloat(props.value))).toLocaleString("en")} 
                     </b>
                     </center></span>
                   ), // Custom cell components!,
@@ -376,7 +376,7 @@ export default class OpenPositions extends Component {
                               }
                             />
                           ) : null}
-                          Total: <b>$  {Math.abs(Math.round(performance.pnl_total)).toLocaleString("en")}</b>
+                          Total: <b>$  {Math.round(Math.round(performance.pnl_total)).toLocaleString("en")}</b>
                         </center>
                        ):null}
                       </span>

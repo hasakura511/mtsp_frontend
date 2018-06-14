@@ -203,7 +203,10 @@ export default class PreviousPnL extends Component {
         var performance = response.data;
         console.log('prev pnl data')
         console.log(performance);
-        var dataJson= JSON.parse(performance.prev_pnl.toString());
+
+        var dataJson={};
+        if (performance.prev_pnl && performance.prev_pnl.toString().length > 2) 
+          dataJson=JSON.parse(performance.prev_pnl.toString());
         performance.prev_pnl=dataJson;
         
         console.log(performance);
