@@ -26,7 +26,8 @@ import {
 import { connect } from "react-redux";
 
 const stateToProps = state => ({
-  performance_account_id: state.betting.performance_account_id
+  performance_account_id: state.betting.performance_account_id,
+  themes:state.betting.themes
 });
 
 const convert = pnlObj => {
@@ -299,7 +300,8 @@ export default class OpenPositions extends Component {
                 },
                 {
                   Header: "Group",
-                  accessor: "Group"
+                  accessor: "Group",
+                  Cell: props => <span><center>{props.value}</center></span>, // Custom cell components!,
                 }
 
               ]
@@ -320,11 +322,18 @@ export default class OpenPositions extends Component {
                   Cell: props => (
                     <span className='number'><center>
                     {parseFloat(props.value) ? (
-                      <img src={parseFloat(props.value) > 0 ? gainIcon : lossIcon} />
-                    ) : null}
+                      <span style={parseFloat(props.value) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
                     <b>
                     $ {Math.abs(Math.round(parseFloat(props.value))).toLocaleString("en")} 
                     </b>
+                    </span>
+                    ) : (
+                      <span style={{color:self.props.themes.live.dialog.text_color}}>
+                    <b>
+                    $ {Math.abs(Math.round(parseFloat(props.value))).toLocaleString("en")} 
+                    </b>
+                    </span>
+                    )}
                     </center></span>
                   ), // Custom cell components!,
 
@@ -510,5 +519,6 @@ export default class OpenPositions extends Component {
     performance_account_id: PropTypes.string.isRequired,
     toggle:PropTypes.func,
     initializeHeatmap:PropTypes.func,
+    themes:PropTypes.object
   };
 }

@@ -28,7 +28,8 @@ import { connect } from "react-redux";
 const stateToProps = state => ({
   performance_account_id: state.betting.performance_account_id,
   email: state.auth.email,
-  liveDateText:state.betting.liveDateText
+  liveDateText:state.betting.liveDateText,
+  themes:state.betting.themes,
 });
 
 const convert = pnlObj => {
@@ -202,7 +203,7 @@ export default class PreviousPnL extends Component {
         var performance = response.data;
         console.log('prev pnl data')
         console.log(performance);
-        var dataJson= performance.prev_pnl;
+        var dataJson= JSON.parse(performance.prev_pnl.toString());
         performance.prev_pnl=dataJson;
         
         console.log(performance);
@@ -285,7 +286,7 @@ export default class PreviousPnL extends Component {
               columns: [
                 {
                   Header: "Markets",
-                  accessor: "Markets",
+                  accessor: "display",
                   Cell: props => <span><a href='#market' onClick={()=> {
                     console.log(props);
                     var sym= props.value;
@@ -299,7 +300,8 @@ export default class PreviousPnL extends Component {
                 },
                 {
                   Header: "Group",
-                  accessor: "Group"
+                  accessor: "group",
+                  Cell: props => <span><center>{props.value}</center></span>, // Custom cell components!,
                 }
 
               ]
@@ -310,8 +312,24 @@ export default class PreviousPnL extends Component {
               columns: [
                 {
                   Header: "1 Day %Change",
-                  accessor: "1 Day %Change",
-                  Cell: props => <span className='number'><center>{props.value}</center></span>, // Custom cell components!,
+                  accessor: "last_pctchg",
+                  Cell: props => (
+                    <span className='number'><center>
+                    {parseFloat(props.value) ? (
+                      <span style={parseFloat(props.value) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
+                    <b>
+                    {parseFloat(props.value).toLocaleString("en")} %
+                    </b>
+                    </span>
+                    ) : (
+                      <span style={{color:self.props.themes.live.dialog.text_color}}>
+                    <b>
+                    {parseFloat(props.value).toLocaleString("en")} %
+                    </b>
+                    </span>
+                    )}
+                    </center></span>
+                  ), // Custom cell components!,
                 },
               ]
             },
@@ -321,21 +339,47 @@ export default class PreviousPnL extends Component {
               columns: [
                 {
                   Header: "Previous Positions",
-                  accessor: "Previous Positions",
+                  accessor: "positions",
                   Cell: props => <span className='number'><center>{props.value}</center></span>, // Custom cell components!,
                 },
                 {
                   Header: "Position Value",
-                  accessor: "Position Value",
-                  Cell: props => <span className='number'><center>$ {props.value}</center></span>, // Custom cell components!,
+                  accessor: "position_value",
+                  Cell: props => (
+                    <span className='number'><center>
+                    {parseFloat(props.value) ? (
+                      <span style={parseFloat(props.value) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
+                    <b>
+                    $ {Math.round(Math.round(parseFloat(props.value))).toLocaleString("en")} 
+                    </b>
+                    </span>
+                    ) : (
+                      <span style={{color:self.props.themes.live.dialog.text_color}}>
+                    <b>
+                    $ {Math.round(Math.round(parseFloat(props.value))).toLocaleString("en")} 
+                    </b>
+                    </span>
+                    )}
+                    </center></span>
+                  ), // Custom cell components!,
                   Footer: (
                     <span style={{'float':'right'}}><b>Total:</b></span>
                   )
                 },
                 {
                   Header: "Previous PnL",
-                  accessor: "Previous PnL",
-                  Cell: props => <span className='number'><center>$ {props.value}</center></span>, // Custom cell components!,
+                  accessor: "pnl",
+                  Cell: props => (
+                    <span className='number'><center>
+                    {parseFloat(props.value) ? (
+                      <img src={parseFloat(props.value) > 0 ? gainIcon : lossIcon} />
+                    ) : null}
+                    &nbsp;
+                    <b>
+                      $ {Math.round(Math.round(parseFloat(props.value))).toLocaleString("en")} 
+                    </b>
+                    </center></span>
+                  ), // Custom cell components!,
                   Footer: (
                     <span>
                      {performance.pnl_total !== null ? (
@@ -349,7 +393,7 @@ export default class PreviousPnL extends Component {
                               }
                             />
                           ) : null}
-                          $ {performance.pnl_total}
+                          <b> $ {performance.pnl_total} </b>
                         </center>
                        ):null}
                       </span>
@@ -385,6 +429,6 @@ export default class PreviousPnL extends Component {
     liveDateText:PropTypes.string.isRequired,
     toggle:PropTypes.func,
     initializeHeatmap:PropTypes.func,
-
+    themes:PropTypes.object.isRequired
   };
 }

@@ -196,19 +196,19 @@ export default class LockdownTimetable extends Component {
                   Header: "Group",
                   accessor: "Group",
                   id:"Group",
-                  Cell: props => <span style={{color:props.original.Color}} onClick={()=>{ console.log(props); }}>{props.value}</span>, // Custom cell components!,
+                  Cell: props => <span style={{color:props.original.Color}} onClick={()=>{ console.log(props); }}><center>{props.value}</center></span>, // Custom cell components!,
                 },
 
                 {
                   Header: "Next Trigger",
                   accessor: "Next_Trigger",
-                  Cell: props => <span style={{color:props.original.Color}} onClick={()=>{ console.log(props); }}>{props.value}</span>, // Custom cell components!,
+                  Cell: props => <span style={{color:props.original.Color}} onClick={()=>{ console.log(props); }}><center>{props.value}</center></span>, // Custom cell components!,
                 },
                 {
                     Header: "Next Close",
                     accessor: "Next_Close",
-                    Cell: props => <span style={{color:props.original.Color}} onClick={()=>{ console.log(props); }}>{props.value}</span>, // Custom cell components!,
-                },
+                    Cell: props => <span style={{color:props.original.Color}} onClick={()=>{ console.log(props); }}><center>{props.value}</center></span>, // Custom cell components!,
+                  },
                 ],
             
             },

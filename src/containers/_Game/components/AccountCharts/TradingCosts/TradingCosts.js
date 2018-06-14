@@ -26,7 +26,8 @@ import {
 import { connect } from "react-redux";
 
 const stateToProps = state => ({
-  performance_account_id: state.betting.performance_account_id
+  performance_account_id: state.betting.performance_account_id,
+  themes:state.betting.themes,
 });
 
 const convert = pnlObj => {
@@ -299,7 +300,8 @@ export default class TradingCosts extends Component {
                 },
                 {
                   Header: "Group",
-                  accessor: "Group"
+                  accessor: "Group",
+                  Cell: props => <span><center>{props.value}</center></span>, // Custom cell components!,
                 }
 
               ]
@@ -327,11 +329,18 @@ export default class TradingCosts extends Component {
                   Cell: props => (
                     <span className='number'><center>
                     {parseFloat(props.value) ? (
-                      <img src={parseFloat(props.value) > 0 ? gainIcon : lossIcon} />
-                    ) : null}
+                      <span style={parseFloat(props.value) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
                     <b>
-                    $ {Math.abs(Math.round(parseFloat(props.value))).toLocaleString("en")} 
+                    $ {Math.round(parseFloat(props.value),4).toLocaleString("en")} 
                     </b>
+                    </span>
+                    ) : (
+                      <span style={{color:self.props.themes.live.dialog.text_color}}>
+                    <b>
+                    $ {Math.round(parseFloat(props.value),4).toLocaleString("en")} 
+                    </b>
+                    </span>
+                    )}
                     </center></span>
                   ), // Custom cell components!,
 
@@ -349,7 +358,7 @@ export default class TradingCosts extends Component {
                             />
                           ) : null}
                            <b>
-                            $ {Math.abs(Math.round(performance.commissions_total)).toLocaleString("en")} 
+                            $ {Math.round(Math.round(performance.commissions_total)).toLocaleString("en")} 
                             </b>
                         </center>
                        ):null}
@@ -362,11 +371,18 @@ export default class TradingCosts extends Component {
                   Cell: props => (
                     <span className='number'><center>
                     {parseFloat(props.value) ? (
-                      <img src={parseFloat(props.value) > 0 ? gainIcon : lossIcon} />
-                    ) : null}
+                      <span style={parseFloat(props.value) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
                     <b>
-                    $ {Math.abs(Math.round(parseFloat(props.value))).toLocaleString("en")} 
+                    $ {Math.round(parseFloat(props.value),4).toLocaleString("en")} 
                     </b>
+                    </span>
+                    ) : (
+                      <span style={{color:self.props.themes.live.dialog.text_color}}>
+                    <b>
+                    $ {Math.round(parseFloat(props.value),4).toLocaleString("en")} 
+                    </b>
+                    </span>
+                    )}
                     </center></span>
                   ), // Custom cell components!,
                   Footer: (
@@ -383,7 +399,7 @@ export default class TradingCosts extends Component {
                             />
                           ) : null}
                            <b>
-                            $ {Math.abs(Math.round(performance.slippage_total)).toLocaleString("en")} 
+                            $ {Math.round(Math.round(performance.slippage_total)).toLocaleString("en")} 
                             </b>
                         </center>
                        ):null}
@@ -549,6 +565,7 @@ export default class TradingCosts extends Component {
     //position: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     performance_account_id: PropTypes.string.isRequired,
     toggle:PropTypes.func,
-    initializeHeatmap:PropTypes.func
+    initializeHeatmap:PropTypes.func,
+    themes:PropTypes.object.isRequired
   };
 }
