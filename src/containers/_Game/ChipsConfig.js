@@ -21,7 +21,8 @@ export default [
     totalMargin: 11535.0,
     maxCommissions: 18.9,
     created: 1516006970,
-    updated: 1516006972
+    updated: 1516006972,
+    status:'unlocked',
   },
   {
     accountId: "50K_0_1516105887",
@@ -59,7 +60,9 @@ export default [
     totalMargin: 24471.0,
     maxCommissions: 32.4,
     created: 1516105885,
-    updated: 1516105887
+    updated: 1516105887,
+    status:'unlocked',
+
   },
   {
     accountId: "100K_0_1516105902",
@@ -144,7 +147,9 @@ export default [
     totalMargin: 48925.0,
     maxCommissions: 54.0,
     created: 1516105900,
-    updated: 1516105902
+    updated: 1516105902,
+    status:'unlocked',
+
   }
   // {
   //   accountId: "5000K_0_1516106713",
@@ -201,17 +206,21 @@ export const accounts = {
       accountId: "25K_0_1516006972",
       display: "25K",
       accountValue: 25000,
+      status:'unlocked',
+
     },
     '1': {
         accountId: "50K_0_1516105887",
         display: "50K",
         accountValue: 50000.0,
-    },
+        status:'unlocked',
+      },
     '2': {
         accountId: "100K_0_1516105902",
         display: "0.1M",
         accountValue: 100000.0,
-    }
+        status:'unlocked',
+      }
 }
 
 export const description = {

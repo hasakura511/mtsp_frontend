@@ -507,13 +507,16 @@ export default class Panel extends Component {
 
         var textColor="#000000";
         var bgColor="#86dde0";
-        if (heatmap_selection && heatmap_selection.length > 0) {
-            slotHeatmap['color_fill']=heatmap[heatmap_selection].color_fill[slot.position.toString()];
-            slotHeatmap['color_text']=heatmap[heatmap_selection].color_text[slot.position.toString()];
-            slotHeatmap['rank']=heatmap[heatmap_selection].rank[slot.position.toString()];
-            slotHeatmap['score']=heatmap[heatmap_selection].score[slot.position.toString()];
-            textColor=slotHeatmap['color_text'];
-            bgColor=slotHeatmap['color_fill'];
+
+        if (this.props.isLive) {
+          if (heatmap_selection && heatmap_selection.length > 0) {
+              slotHeatmap['color_fill']=heatmap[heatmap_selection].color_fill[slot.position.toString()];
+              slotHeatmap['color_text']=heatmap[heatmap_selection].color_text[slot.position.toString()];
+              slotHeatmap['rank']=heatmap[heatmap_selection].rank[slot.position.toString()];
+              slotHeatmap['score']=heatmap[heatmap_selection].score[slot.position.toString()];
+              textColor=slotHeatmap['color_text'];
+              bgColor=slotHeatmap['color_fill'];
+          }
         }
         column.push(
           <Slot
