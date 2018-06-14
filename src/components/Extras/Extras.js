@@ -38,11 +38,11 @@ export const withHeaders = str => {
             );
           } else {
             const formatContent = content
-              .split(/[.]\n/)
+              .split(/[\.]\n/)
               .filter(line => line && line !== "\n" && line !== " ")
               .map((line, k) => (
                 <Aux key={"line" + i + j + k}>
-                  <WithLinks str={line + "."} />
+                  <WithLinks str={line + ""} />
                   <br />
                 </Aux>
               ));

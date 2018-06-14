@@ -21,7 +21,8 @@ import {
 import { connect } from "react-redux";
 
 const stateToProps = state => ({
-  performance_account_id: state.betting.performance_account_id
+  performance_account_id: state.betting.performance_account_id,
+  themes:state.betting.themes
 });
 
 
@@ -344,6 +345,7 @@ export default class PerformanceChart extends Component {
     //performance: PropTypes.object,
     //position: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     performance_account_id: PropTypes.string.isRequired,
-    showPerformance:PropTypes.func.isRequired
+    showPerformance:PropTypes.func.isRequired,
+    themes:PropTypes.object.isRequired
   };
 }
