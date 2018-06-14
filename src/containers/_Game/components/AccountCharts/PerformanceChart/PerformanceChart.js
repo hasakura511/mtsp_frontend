@@ -52,6 +52,7 @@ const RED = "#e12f48",
 class CustomTooltip extends Component {
   render() {
     const { payload, active } = this.props;
+    var self=this;
     if (active) {
       let {
         display_date,
@@ -75,67 +76,127 @@ class CustomTooltip extends Component {
       // benchmarkData = { date: "20171221", pnl: "5000", changePercent: "0", cumulative: "0" },
       // position = 7;
 
+
       return (
-        <div className={classes.ToolTip}>
+        <div className={classes.ToolTip} >
           <div className={classes.Row}>{display_date}</div>
           <hr style={{ width: "100%" }} />
-          <div className={classes.Row} style={{ color: BLUE }}>
+          <div className={classes.Row} style={{ color: this.props.colors.account_value }}>
             <p>
-              <span>Account Value:</span> <span>$ {numberWithCommas(account_value.toString())}</span>
+              <span><b>Account Value:</b></span> <span>$ {numberWithCommas(account_value.toString())}</span>
             </p>
           </div>
-          <div className={classes.Row} style={{ color: BLUE }}>
+          <div className={classes.Row} style={{ color: this.props.colors.account_value }}>
             <p>
-              <span>Account Daily %Chg: </span>
-              <span>{account_pnl_pct}%</span>
+              <span><b>Account Daily %Chg: </b></span>
+              <span>
+              {parseFloat(account_pnl_pct) ? (
+                      <span style={parseFloat(account_pnl_pct) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
+                    <b>
+                    {parseFloat(account_pnl_pct).toLocaleString('en-US', { maximumFractionDigits: 12 })} %
+                    </b>
+                    </span>
+                    ) : (
+                      <span style={{color:self.props.themes.live.dialog.text_color}}>
+                    <b>
+                    {parseFloat(account_pnl_pct).toLocaleString('en-US', { maximumFractionDigits: 12 })} % 
+                    </b>
+                    </span>
+                    )}
+              
+              </span>
             </p>
           </div>
-          <div className={classes.Row} style={{ color: BLUE }}>
+          <div className={classes.Row} style={{ color: this.props.colors.account_value }}>
             <p>
-              <span>Account Cum. %Chg: </span>
-              <span>{account_pnl_cumpct}%</span>
+              <span><b>Account Cum. %Chg: </b></span>
+              <span>
+              {parseFloat(account_pnl_cumpct) ? (
+                      <span style={parseFloat(account_pnl_cumpct) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
+                    <b>
+                    {parseFloat(account_pnl_cumpct).toLocaleString('en-US', { maximumFractionDigits: 12 })} %
+                    </b>
+                    </span>
+                    ) : (
+                      <span style={{color:self.props.themes.live.dialog.text_color}}>
+                    <b>
+                    {parseFloat(account_pnl_cumpct).toLocaleString('en-US', { maximumFractionDigits: 12 })} % 
+                    </b>
+                    </span>
+                    )}
+              
+              </span>
             </p>
           </div>
-          <div className={classes.Row} style={{ color: BLUE }}>
+          <div className={classes.Row} style={{ color: this.props.colors.account_value }}>
             <p>
-              <span>Commissions: </span>
+              <span><b>Commissions: </b></span>
               <span>$ {numberWithCommas(commissions.toString())}</span>
             </p>
           </div>
-          <div className={classes.Row} style={{ color: BLUE }}>
+          <div className={classes.Row} style={{ color: this.props.colors.account_value }}>
             <p>
-              <span>Slippage: </span>
+              <span><b>Slippage: </b></span>
               <span>$ {numberWithCommas(slippage).toString()}</span>
             </p>
           </div>
-          <div className={classes.Row} style={{ color: BLUE }}>
+          <div className={classes.Row} style={{ color: this.props.colors.account_value }}>
             <p>
-              <span>Bet: </span>
-              <span></span>
+              <span><b>Bet: </b></span>
+              <span>{this.props.chip.last_selection}</span>
             </p>
           </div>
 
-          <div className={classes.Row} style={{ color: RED }}>
+          <div className={classes.Row} style={{ color: this.props.colors.benchmark_value }}>
             <p>
-              <span>Benchmark Value: </span>
+              <span><b>Benchmark Value: </b></span>
               <span>$ {numberWithCommas(benchmark_value.toString())}</span>
             </p>
           </div>
-          <div className={classes.Row} style={{ color: RED }}>
+          <div className={classes.Row} style={{ color: this.props.colors.benchmark_value }}>
             <p>
-              <span>Benchmark Daily %Chg: </span>
-              <span>{benchmark_pctchg}%</span>
+              <span><b>Benchmark Daily %Chg: </b></span>
+              <span>
+              {parseFloat(benchmark_pctchg) ? (
+                      <span style={parseFloat(benchmark_pctchg) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
+                    <b>
+                    {parseFloat(benchmark_pctchg).toLocaleString('en-US', { maximumFractionDigits: 12 })} %
+                    </b>
+                    </span>
+                    ) : (
+                      <span style={{color:self.props.themes.live.dialog.text_color}}>
+                    <b>
+                    {parseFloat(benchmark_pctchg).toLocaleString('en-US', { maximumFractionDigits: 12 })} % 
+                    </b>
+                    </span>
+                    )}
+                </span>
             </p>
           </div>
-          <div className={classes.Row} style={{ color: RED }}>
+          <div className={classes.Row} style={{ color: this.props.colors.benchmark_value }}>
             <p>
-              <span>Benchmark Cum. %Chg: </span>
-              <span>{benchmark_cumpct}%</span>
+              <span><b>Benchmark Cum. %Chg: </b></span>
+              <span>
+              {parseFloat(benchmark_cumpct) ? (
+                      <span style={parseFloat(benchmark_cumpct) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
+                    <b>
+                    {parseFloat(benchmark_cumpct).toLocaleString('en-US', { maximumFractionDigits: 12 })} %
+                    </b>
+                    </span>
+                    ) : (
+                      <span style={{color:self.props.themes.live.dialog.text_color}}>
+                    <b>
+                    {parseFloat(benchmark_cumpct).toLocaleString('en-US', { maximumFractionDigits: 12 })} % 
+                    </b>
+                    </span>
+                    )}
+              
+              </span>
             </p>
           </div>
-          <div className={classes.Row} style={{ color: RED }}>
+          <div className={classes.Row} style={{ color: this.props.colors.benchmark_value }}>
             <p>
-              <span>Benchmark Symbol: </span>
+              <span><b>Benchmark Symbol: </b></span>
               <span>{benchmark_sym}</span>
             </p>
           </div>
@@ -150,7 +211,10 @@ class CustomTooltip extends Component {
     label: PropTypes.string,
     type: PropTypes.string,
     active: PropTypes.bool,
-    payload: PropTypes.arrayOf(PropTypes.object)
+    payload: PropTypes.arrayOf(PropTypes.object),
+    colors:PropTypes.object,
+    chip:PropTypes.object,
+    themes:PropTypes.object,
   };
 }
 
@@ -228,7 +292,7 @@ export default class PerformanceChart extends Component {
     .catch(performanceError => {
       console.log(performanceError);
       self.setState({
-        performanceLoading: false,
+        performanceLoading: true,
         performanceError: performanceError
       });
     });
@@ -239,20 +303,24 @@ export default class PerformanceChart extends Component {
   render() {
     var { performance, lookback, performanceLoading, performanceError } = this.state;
 
+    var self=this;
     var chartData={};
     var yticks=[];
+    var xticks=[];
 
     if (!performanceLoading) {
+      if (!lookback) {
         Object.keys(performance.chart_specs).map(date => {
-            if (!lookback)
-                lookback=date;
+            lookback=date;
         });
+      }
 
         console.log('chart data');
         chartData=performance.chart_data[lookback];
         console.log(lookback);
         console.log(chartData);
         yticks=performance.chart_specs[lookback].yticks;
+        xticks=performance.chart_specs[lookback].xticks;
         console.log('yticks');
         console.log(yticks);
     }
@@ -300,6 +368,7 @@ export default class PerformanceChart extends Component {
                 dataKey="date"
                 interval={0}
                 tick={props => this.xTick(props)}
+                ticks={xticks}
                 height={100}
               >
                 <Label
@@ -310,24 +379,25 @@ export default class PerformanceChart extends Component {
               </XAxis>
               <YAxis
                 tickFormatter={value =>
-                  `${Math.floor(value).toLocaleString("en")}`
+                  `${Math.floor(value).toLocaleString('en-US', { maximumFractionDigits: 12 })}`
                 }
                 ticks={yticks}
                 domain={[dataMin => dataMin * 0.9, dataMax => dataMax * 1.1]}
               />
               <CartesianGrid strokeDasharray="3 1" />
-              {<Tooltip content={<CustomTooltip />} />}
+              {<Tooltip 
+              content={<CustomTooltip colors={performance.colors} chip={self.props.chip} themes={self.props.themes} />} />}
               <Legend />
               <Line
                 type="monotone"
                 dataKey={"benchmark_value" }
-                stroke={BLUE}
+                stroke={performance.colors.benchmark_value}
                 activeDot={{ r: 8 }}
                />
                 <Line
                 type="monotone"
                 dataKey={"account_value" }
-                stroke={GREEN}
+                stroke={performance.colors.account_value}
                 activeDot={{ r: 8 }}
                />
             
@@ -346,6 +416,7 @@ export default class PerformanceChart extends Component {
     //position: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     performance_account_id: PropTypes.string.isRequired,
     showPerformance:PropTypes.func.isRequired,
-    themes:PropTypes.object.isRequired
+    themes:PropTypes.object.isRequired,
+    chip:PropTypes.object,
   };
 }

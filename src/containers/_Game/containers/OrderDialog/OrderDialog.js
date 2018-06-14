@@ -18,6 +18,7 @@ const stateToProps = state => {
     isLive: state.betting.isLive,
     dictionary_strategy: state.betting.dictionary_strategy,
     mute:state.betting.mute,
+    themes:state.betting.themes,
     
   };
 };
@@ -351,6 +352,13 @@ export default class OrderDialog extends Component {
       isAnti
     } = this.state;
     const { rankingError, rankingData, rankingLoading } = this.props;
+    var self=this;
+    var background='white';
+    var text='black';
+    if (this.props.isLive && this.props.themes) {
+      background=self.props.themes.live.dialog.background;
+      text=self.props.themes.live.dialog.text;
+    }
     return (
       <Modal hidden={!showModal} toggle={this.toggle} isLarge>
         {performanceLoading ? (
@@ -361,7 +369,9 @@ export default class OrderDialog extends Component {
               "Could not load performance data, contact us to report this bug."}
           </h1>
         ) : (
-
+          <div style={{background:background,
+            color:text}}>
+            
           <Order
             {...this.props}
             dictionary_strategy={this.props.dictionary_strategy}
@@ -377,9 +387,11 @@ export default class OrderDialog extends Component {
             submitBetHandler={this.submitBetHandler}
             toggle={this.props.toggle}
             toAntiSystem={this.toAntiSystem}
+            themes={this.props.themes}
             close={this.toggle}
             isAnti={isAnti}
           />
+          </div>
 
         )}
         {showModal && !this.props.mute ? (
@@ -414,6 +426,7 @@ export default class OrderDialog extends Component {
     addTimedToaster: PropTypes.func.isRequired,
     mute:PropTypes.bool.isRequired,
     isPerformance: PropTypes.bool,
-    performance_account_id: PropTypes.string
+    performance_account_id: PropTypes.string,
+    themes:PropTypes.object.isRequired
   };
 }

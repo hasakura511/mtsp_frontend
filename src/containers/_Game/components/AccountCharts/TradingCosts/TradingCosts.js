@@ -264,7 +264,6 @@ export default class TradingCosts extends Component {
                   <img src="/images/infotext_button.png" width="22" style={{"marginRight":"5px"}}/>
                 </span>
 
-           <center><h3>Trading Costs</h3></center>
           <center><h3>{performance.bet}</h3></center>
                 <div className={classes.ChartContainer}>
           <ReactTable
@@ -313,12 +312,45 @@ export default class TradingCosts extends Component {
                 {
                   Header: "Contracts Traded",
                   accessor: "Contracts Traded",
-                  Cell: props => <span className='number'><center>{props.value}</center></span>, // Custom cell components!,
+                  Cell: props => (
+                    <span className='number'><center>
+                    {parseFloat(props.value) ? (
+                      <span style={parseFloat(props.value) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
+                    <b>
+                    {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} 
+                    </b>
+                    </span>
+                    ) : (
+                      <span style={{color:self.props.themes.live.dialog.text_color}}>
+                    <b>
+                    {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} 
+                    </b>
+                    </span>
+                    )}
+                    </center></span>
+                  ), // Custom cell components!,
+
                 },
                 {
                   Header: "Exec vs Close Price",
                   accessor: "Exec vs Close Price",
-                  Cell: props => <span className='number'><center>{props.value}</center></span>, // Custom cell components!,
+                  Cell: props => (
+                    <span className='number'><center>
+                    {props.value && Math.abs(parseFloat(props.value)) != 0 ? (
+                      <span style={parseFloat(props.value) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
+                    <b>
+                    {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} 
+                    </b>
+                    </span>
+                    ) : (
+                      <span style={{color:self.props.themes.live.dialog.text_color}}>
+                    <b>
+                    {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} 
+                    </b>
+                    </span>
+                    )}
+                    </center></span>
+                  ), // Custom cell components!,
                   Footer: (
                     <span style={{'float':'right'}}><b>Total:</b></span>
                   )
@@ -327,17 +359,17 @@ export default class TradingCosts extends Component {
                   Header: "Commissions",
                   accessor: "Commissions",
                   Cell: props => (
-                    <span className='number'><center>
+                    <span className='number'><center style={{color:self.props.themes.live.dialog.text_color}}>
                     {parseFloat(props.value) ? (
                       <span style={parseFloat(props.value) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
                     <b>
-                    $ {Math.round(parseFloat(props.value),4).toLocaleString("en")} 
+                    $ {Math.round(parseFloat(props.value),4).toLocaleString('en-US', { maximumFractionDigits: 12 })} 
                     </b>
                     </span>
                     ) : (
                       <span style={{color:self.props.themes.live.dialog.text_color}}>
                     <b>
-                    $ {Math.round(parseFloat(props.value),4).toLocaleString("en")} 
+                    $ {Math.round(parseFloat(props.value),4).toLocaleString('en-US', { maximumFractionDigits: 12 })} 
                     </b>
                     </span>
                     )}
@@ -358,7 +390,7 @@ export default class TradingCosts extends Component {
                             />
                           ) : null}
                            <b>
-                            $ {Math.round(Math.round(performance.commissions_total)).toLocaleString("en")} 
+                            $ {Math.round(Math.round(performance.commissions_total)).toLocaleString('en-US', { maximumFractionDigits: 12 })} 
                             </b>
                         </center>
                        ):null}
@@ -373,13 +405,13 @@ export default class TradingCosts extends Component {
                     {parseFloat(props.value) ? (
                       <span style={parseFloat(props.value) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
                     <b>
-                    $ {Math.round(parseFloat(props.value),4).toLocaleString("en")} 
+                    $ {Math.round(parseFloat(props.value),4).toLocaleString('en-US', { maximumFractionDigits: 12 })} 
                     </b>
                     </span>
                     ) : (
                       <span style={{color:self.props.themes.live.dialog.text_color}}>
                     <b>
-                    $ {Math.round(parseFloat(props.value),4).toLocaleString("en")} 
+                    $ {Math.round(parseFloat(props.value),4).toLocaleString('en-US', { maximumFractionDigits: 12 })} 
                     </b>
                     </span>
                     )}
@@ -399,7 +431,7 @@ export default class TradingCosts extends Component {
                             />
                           ) : null}
                            <b>
-                            $ {Math.round(Math.round(performance.slippage_total)).toLocaleString("en")} 
+                            $ {Math.round(Math.round(performance.slippage_total)).toLocaleString('en-US', { maximumFractionDigits: 12 })} 
                             </b>
                         </center>
                        ):null}
@@ -412,10 +444,14 @@ export default class TradingCosts extends Component {
             },
             
           ]}
-          //defaultPageSize={20}
+          defaultPageSize={Object.keys(performance.trading_costs).length}
           style={{
-            width: "100%",
-            height: "400px" // This will force the table body to overflow and scroll, since there is not enough room
+            width:"100%",
+            height:innerHeight - 260,
+            maxHeight:"100%",
+            overflow:"auto",
+            fontSize:"12px",
+            fontWeight: 800,
           }}
           className="-striped -highlight"
           showPagination={false}

@@ -269,7 +269,6 @@ export default class PreviousPnL extends Component {
                   <img src="/images/infotext_button.png" width="22" style={{"marginRight":"5px"}}/>
                 </span>
 
-           <center><h3>Previous Bets Profits & Losses</h3></center>
           <center><h3>{performance.bet}</h3></center>
          
           <div className={classes.ChartContainer}>
@@ -324,13 +323,13 @@ export default class PreviousPnL extends Component {
                     {parseFloat(props.value) ? (
                       <span style={parseFloat(props.value) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
                     <b>
-                    {parseFloat(props.value).toLocaleString("en")} %
+                    {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} %
                     </b>
                     </span>
                     ) : (
                       <span style={{color:self.props.themes.live.dialog.text_color}}>
                     <b>
-                    {parseFloat(props.value).toLocaleString("en")} %
+                    {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} %
                     </b>
                     </span>
                     )}
@@ -346,7 +345,23 @@ export default class PreviousPnL extends Component {
                 {
                   Header: "Previous Positions",
                   accessor: "positions",
-                  Cell: props => <span className='number'><center>{props.value}</center></span>, // Custom cell components!,
+                  Cell: props => (
+                    <span className='number'><center>
+                    {parseFloat(props.value) ? (
+                      <span style={parseFloat(props.value) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
+                    <b>
+                    {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} 
+                    </b>
+                    </span>
+                    ) : (
+                      <span style={{color:self.props.themes.live.dialog.text_color}}>
+                    <b>
+                    {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} 
+                    </b>
+                    </span>
+                    )}
+                    </center></span>
+                  ), // Custom cell components!,
                 },
                 {
                   Header: "Position Value",
@@ -356,13 +371,13 @@ export default class PreviousPnL extends Component {
                     {parseFloat(props.value) ? (
                       <span style={parseFloat(props.value) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
                     <b>
-                    $ {Math.round(Math.round(parseFloat(props.value))).toLocaleString("en")} 
+                    $ {Math.round(Math.round(parseFloat(props.value))).toLocaleString('en-US', { maximumFractionDigits: 12 })} 
                     </b>
                     </span>
                     ) : (
                       <span style={{color:self.props.themes.live.dialog.text_color}}>
                     <b>
-                    $ {Math.round(Math.round(parseFloat(props.value))).toLocaleString("en")} 
+                    $ {Math.round(Math.round(parseFloat(props.value))).toLocaleString('en-US', { maximumFractionDigits: 12 })} 
                     </b>
                     </span>
                     )}
@@ -382,7 +397,7 @@ export default class PreviousPnL extends Component {
                     ) : null}
                     &nbsp;
                     <b>
-                      $ {Math.round(Math.round(parseFloat(props.value))).toLocaleString("en")} 
+                      $ {Math.round(Math.round(parseFloat(props.value))).toLocaleString('en-US', { maximumFractionDigits: 12 })} 
                     </b>
                     </center></span>
                   ), // Custom cell components!,
@@ -411,10 +426,14 @@ export default class PreviousPnL extends Component {
             },
             
           ]}
-          //defaultPageSize={20}
+          defaultPageSize={Object.keys(performance.prev_pnl).length}
           style={{
-            width: "100%",
-            height: "400px" // This will force the table body to overflow and scroll, since there is not enough room
+            width:"100%",
+            height:innerHeight - 260,
+            maxHeight:"100%",
+            overflow:"auto",
+            fontSize:"12px",
+            fontWeight: 800,
           }}
           className="-striped -highlight"
           showPagination={false}

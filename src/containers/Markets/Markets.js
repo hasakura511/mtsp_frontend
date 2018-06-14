@@ -109,6 +109,7 @@ export default class Markets extends Component {
       firstPeriod:"",
       refreshing:false,
       heatmap_account_id:'',
+      last_heatmap_params:{},
     };
   }
 
@@ -147,7 +148,7 @@ export default class Markets extends Component {
       this.refreshData();
     } else if (newProps.heatmap_account_id && newProps.heatmap_account_id != this.state.heatmap_account_id) {
       this.refreshData(newProps.heatmap_account_id, 'current', newProps.heatmap_lookup_symbol);
-    } else if (newProps.heatmap_account_id != undefined && newProps.heatmap_account_id == '') {
+    } else if (newProps.heatmap_account_id != undefined && newProps.heatmap_account_id == '' && newProps.heatmap_lookup_symbol) {
       this.refreshData('','',newProps.heatmap_lookup_symbol);
     }
     
@@ -155,8 +156,15 @@ export default class Markets extends Component {
 
   refreshData=(account_id='', link='', sym='') => {
     var self=this;
-    console.log("Refreshing HEATMAP with " + account_id + ',' + link )
-    this.setState({loading:true, heatmap_account_id:account_id})
+    if (self.state.last_heatmap_params.account_id != account_id &&
+        self.state.last_heatmap_params.link != link &&
+        self.state.last_heatmap_params.sym != sym )
+        self.setState({last_heatmap_params:{'account_id':account_id, 'link':link, 'sym':sym}})
+    else
+        return;
+
+    console.log("Refreshing HEATMAP with " + account_id + ',' + link + ',' + sym )
+    this.setState({loading:true, heatmap_account_id:account_id, last_heatmap_params:{'account_id':account_id, 'link':link, 'sym':sym}})
     if (this.state.refreshing)
       return;
     else
@@ -1208,7 +1216,9 @@ export default class Markets extends Component {
               
               <div id="chartArea"  style={{display:"none", width:"100%", textAlign:"left", padding:"10px"}}>
               <span style={{'float':'right'}}><button onClick={()=>{ $('#chartArea').hide(); }}>Close</button></span>
+                  {this.state.specifications.chart_title ? (
                   <center><h3>{this.state.specifications.chart_title} </h3></center>
+                  ) : null }
                   <h4>
                   &nbsp;
                   &nbsp;

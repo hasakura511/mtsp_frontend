@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Slot from "../../containers/Slot/Slot";
 import Chip from "../_Chip/_Chip";
 import classes from "./Order.css";
-import {numberWithCommas} from "../../../../util"
+import {numberWithCommas, toTitleCase} from "../../../../util"
 // import Switch from "../../../../components/UI/Switch/Switch";
 import OrderCharts from "../../containers/OrderCharts/OrderCharts";
 import AccountCharts from "../../components/AccountCharts/AccountCharts";
@@ -24,7 +24,8 @@ const order = props => {
   if (!isPerformance) {
     isNumbered = !isNaN(Number(slot.position));
   }
-
+  var self=this;
+  self.props=props;
   return (
     <div className={classes.Order}>
       {!isPerformance ? (
@@ -116,43 +117,47 @@ const order = props => {
       </div>
     
     ) : (
-
-      <div className={classes.TitleRow}>
+      <div className={classes.TitleRow} style={{background:self.props.themes.live.dialog.background,
+        color:self.props.themes.live.dialog.text, fontSize:"12px", fontWeight:400}}
+        >
         
         <div
           className={classes.ElementContainer}
-          style={{ paddingTop: "15px" }}
+          style={{ paddingTop: "15px",background:self.props.themes.live.dialog.background_inner,
+          color:self.props.themes.live.dialog.text }}
         >
           <Chip chip={chip} />
         </div>
         <div           style={{ minWidth:"100px", padding: "15px" }}
 >
-           {chip.tier}<br/>
+           {toTitleCase(chip.tier)}<br/>
             Tier {chip.chip_tier}<br/>
             {chip.chip_tier_text}<br/>
             Rank: {chip.rank}<br/>
         </div>
         
-      <table style={{border:"none", borderCollapse: "collapse"}}>
+      <table style={{border:"none", borderCollapse: "collapse",
+    background:self.props.themes.live.dialog.background_inner,
+    color:self.props.themes.live.dialog.text }}>
       <thead  style={{border:"none"}}>
         <tr style={{border:"none"}}>
         <th  style={{border:"none"}}>
-            Starting Value:
+            Starting Value
             </th>
             <th  style={{border:"none"}}>
-            Account Value:
+            Account Value
             </th>
             <th  style={{border:"none"}}>
-            Total Margin:
+            Total Margin
             </th>
             <th  style={{border:"none"}}>
-            Cumulative %Chg.
+            Cumulative %Chg
             </th>
             <th  style={{border:"none"}}>
-            Previous %Chg.:
+            Previous %Chg
             </th>
             <th  style={{border:"none"}}>
-            Markets in Portfolio:
+            Markets in Portfolio
             </th>
             <th  style={{border:"none"}}>
               Age
@@ -172,10 +177,38 @@ const order = props => {
             $ {numberWithCommas(chip.total_margin.toString())}
             </td>            
             <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
-            {chip.pnl_cumpct} %
+                      
+                    {parseFloat(chip.pnl_cumpct) ? (
+                      <span style={parseFloat(chip.pnl_cumpct) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
+                    <b>
+                    {parseFloat(chip.pnl_cumpct).toLocaleString("en")} %
+                    </b>
+                    </span>
+                    ) : (
+                      <span style={{color:self.props.themes.live.dialog.text_color}}>
+                    <b>
+                    {parseFloat(chip.pnl_cumpct).toLocaleString("en")} % 
+                    </b>
+                    </span>
+                    )}
+                   
+
             </td>            
             <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
-            {chip.pnl_pct} %
+                      
+                      {parseFloat(chip.pnl_pct) ? (
+                      <span style={parseFloat(chip.pnl_pct) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
+                    <b>
+                    {parseFloat(chip.pnl_pct).toLocaleString("en")} %
+                    </b>
+                    </span>
+                    ) : (
+                      <span style={{color:self.props.themes.live.dialog.text_color}}>
+                    <b>
+                    {parseFloat(chip.pnl_pct).toLocaleString("en")} % 
+                    </b>
+                    </span>
+                    )}
             </td>            
             <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
               {chip.num_markets}
@@ -185,6 +218,11 @@ const order = props => {
             </td></tr>
             </tbody>
             </table>
+            <span style={{"float": "right", "padding":"8px","textAlign": "right"}}>
+            <img src="/images/close_button.png" style={{"marginRight":"5px", "cursor":"pointer"}} 
+            onClick={() => { self.props.toggle(); }}/>
+          </span>
+
       </div>
     )}
       
@@ -237,6 +275,7 @@ order.propTypes = {
   dictionary_strategy:PropTypes.object.isRequired,
   isPerformance:PropTypes.bool,
   performance_account_id:PropTypes.string,
+  themes:PropTypes.object
 };
 
 export default order;

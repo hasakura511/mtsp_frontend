@@ -239,7 +239,7 @@ export default class OpenPositions extends Component {
     var self=this;
 
     var chartData={};
-
+    
     return (
         <div className={classes.OpenPositions}>
         
@@ -263,7 +263,6 @@ export default class OpenPositions extends Component {
                   <img src="/images/infotext_button.png" width="22" style={{"marginRight":"5px"}}/>
                 </span>
 
-           <center><h3>Open Positions</h3></center>
           <center><h3>{performance.bet}</h3></center>
           <div className={classes.ChartContainer}>
           <ReactTable
@@ -307,30 +306,77 @@ export default class OpenPositions extends Component {
               ]
             },
             {
-              Header:  props => <span><center><h4>{performance.last_date}</h4></center></span>, // Custom cell components!,
+              Header:  props => (
+              <span style={{background:self.props.themes.live.dialog.table_left_background}}>
+              <center style={{background:self.props.themes.live.dialog.table_left_background}}>
+              <h4 style={{background:self.props.themes.live.dialog.table_left_background}}>Last Update</h4></center></span>
+              ), // Custom cell components!,
 
               columns: [
                 {
-                  Header: "Current Positions",
-                  accessor: "Positions",
+                  Header: props => (
+                    <span style={{background:self.props.themes.live.dialog.table_left_background}}>
+                    Updated When
+                  </span>),
+                  accessor: "Updated When",
                   Cell: props => <span className='number'><center>{props.value}</center></span>, // Custom cell components!,
+
                 },
                 {
-                  Header: "Position Value",
-                  accessor: "Position Value",
-
+                  Header: props => (
+                    <span style={{background:self.props.themes.live.dialog.table_left_background}}>
+                    % Change
+                  </span>),
+                  accessor: "% Change",
                   Cell: props => (
                     <span className='number'><center>
                     {parseFloat(props.value) ? (
                       <span style={parseFloat(props.value) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
                     <b>
-                    $ {parseFloat(props.value).toLocaleString("en")} 
+                    {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} %
                     </b>
                     </span>
                     ) : (
                       <span style={{color:self.props.themes.live.dialog.text_color}}>
                     <b>
-                    $ {parseFloat(props.value).toLocaleString("en")} 
+                    {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} %
+                    </b>
+                    </span>
+                    )}
+                    </center></span>
+                  ), // Custom cell components!,
+                },
+               
+                
+              ]
+            },
+            {
+              
+              Header:  props => (
+                <span style={{background:self.props.themes.live.dialog.table_right_background}}>
+                <center style={{background:self.props.themes.live.dialog.table_right_background}}>
+                <h4 style={{background:self.props.themes.live.dialog.table_right_background}}>
+                {performance.last_date}
+                </h4></center></span>
+              ),
+              columns: [
+                {
+                  Header: props => (
+                    <span style={{background:self.props.themes.live.dialog.table_right_background}}>Current Positions
+                  </span>),
+                  accessor: "Positions",
+                  Cell: props => (
+                    <span className='number'><center>
+                    {parseFloat(props.value) ? (
+                      <span style={parseFloat(props.value) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
+                    <b>
+                   {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} 
+                    </b>
+                    </span>
+                    ) : (
+                      <span style={{color:self.props.themes.live.dialog.text_color}}>
+                    <b>
+                   {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} 
                     </b>
                     </span>
                     )}
@@ -338,19 +384,41 @@ export default class OpenPositions extends Component {
                   ), // Custom cell components!,
 
                 },
-              ]
-            },
-            {
-              Header:  props => <span><center><h4>Last Update</h4></center></span>, // Custom cell components!,
-              columns: [
                 {
-                  Header: "Updated When",
-                  accessor: "Updated When",
-                  Cell: props => <span className='number'><center>{props.value}</center></span>, // Custom cell components!,
+                  Header: props => (
+                    <span style={{background:self.props.themes.live.dialog.table_right_background}}>
+                    Position Value
+                  </span>),
+                  accessor: "Position Value",
 
+                  Cell: props => (
+                    <span className='number'><center>
+                    {parseFloat(props.value) ? (
+                      <span style={parseFloat(props.value) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
+                    <b>
+                    $ {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} 
+                    </b>
+                    </span>
+                    ) : (
+                      <span style={{color:self.props.themes.live.dialog.text_color}}>
+                    <b>
+                    $ {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} 
+                    </b>
+                    </span>
+                    )}
+                    </center></span>
+                  ), // Custom cell components!,
+                  Footer: (
+                    <span>
+                     <b>Total: </b>
+                      </span>
+                  )
                 },
                 {
-                  Header: "PnL",
+                  Header: props => (
+                    <span style={{background:self.props.themes.live.dialog.table_right_background}}>
+                     Current PnL
+                  </span>),
                   accessor: "PnL",
                   Cell: props => (
                     <span className='number'><center>
@@ -358,7 +426,7 @@ export default class OpenPositions extends Component {
                       <img src={parseFloat(props.value) > 0 ? gainIcon : lossIcon} />
                     ) : null}
                     <b>
-                    $ {Math.round(Math.round(parseFloat(props.value))).toLocaleString("en")} 
+                    $ {Math.round(Math.round(parseFloat(props.value))).toLocaleString('en-US', { maximumFractionDigits: 12 })} 
                     </b>
                     </center></span>
                   ), // Custom cell components!,
@@ -376,22 +444,25 @@ export default class OpenPositions extends Component {
                               }
                             />
                           ) : null}
-                          Total: <b>$  {Math.round(Math.round(performance.pnl_total)).toLocaleString("en")}</b>
+                          <b>$  {Math.round(Math.round(performance.pnl_total)).toLocaleString('en-US', { maximumFractionDigits: 12 })}</b>
                         </center>
                        ):null}
                       </span>
                   )
                 },
-                
               ],
               
             },
             
           ]}
-          //defaultPageSize={20}
+          defaultPageSize={Object.keys(performance.open_positions).length}
           style={{
-            width: "100%",
-            height: "400px" // This will force the table body to overflow and scroll, since there is not enough room
+            width:"100%",
+            height:innerHeight - 260,
+            maxHeight:"100%",
+            overflow:"auto",
+            fontSize:"12px",
+            fontWeight: 800,
           }}
           className="-striped -highlight"
           showPagination={false}

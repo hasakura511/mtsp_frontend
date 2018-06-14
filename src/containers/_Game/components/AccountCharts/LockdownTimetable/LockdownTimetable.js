@@ -29,7 +29,8 @@ const stateToProps = state => ({
   performance_account_id: state.betting.performance_account_id,
   email: state.auth.email,
   liveDateText:state.betting.liveDateText,
-  timetable_dialog:state.betting.timetable_dialog
+  timetable_dialog:state.betting.timetable_dialog,
+  themes:state.betting.themes,
 
 });
 
@@ -67,11 +68,14 @@ export default class LockdownTimetable extends Component {
     liveDateText:PropTypes.string.isRequired,
     timetable_dialog:PropTypes.object.isRequired,
     toggle:PropTypes.func,
-    initializeHeatmap:PropTypes.func.isRequired
+    initializeHeatmap:PropTypes.func.isRequired,
+    gap:PropTypes.number,
+    themes:PropTypes.object.isRequired,
   };
 
   constructor(props) {
     super(props);
+
 
     this.state = {
       lookback: '',
@@ -140,12 +144,16 @@ export default class LockdownTimetable extends Component {
       bhColor=this.props.themes.live.dashboard.lines_horizontal_middle;
     }
     */
+    var adjHeight=0;
+    if (self.props.gap != undefined)
+      adjHeight+=self.props.gap;
     var tableStyle={ fontSize:'12px',background: bgColor, color:bgText, borderLeft: "1px solid " + bdColor, borderRight: "1px solid " + bdColor, borderTop: "0.1px solid " + bhColor, borderBottom: "0.1px solid " + bhColor};
 
     var chartData={};
 
     return (
-        <div className={classes.LockdownTimetable}>
+        <div className={classes.LockdownTimetable} style={{background:self.props.themes.live.dialog.background_inner,
+          color:self.props.themes.live.dialog.text}}>
         
           {performanceLoading ? (
                 <div>
@@ -163,13 +171,17 @@ export default class LockdownTimetable extends Component {
         ) : (
 
         <div className={classes.LockdownTimetable}>
-                <span style={{"float": "right", "width": "100%", "textAlign": "right"}}>
-                  <img src="/images/infotext_button.png" width="22" style={{"marginRight":"5px"}}/>
+                
+                <span style={{"float": "right", "textAlign": "right"}}>
+                  <img src="/images/infotext_button.png" width="22" style={{ "marginTop":"10px","marginRight":"5px"}}/>
                 </span>
 
-           <center><h3>Lockdown Timetables</h3></center>
+           <center><h3 style={{marginTop:"5px"}}>Lockdown Timetables</h3>
+
+           </center>
          
           <div className={classes.ChartContainer}>
+          
           <ReactTable
           
           data={performance}
@@ -214,10 +226,14 @@ export default class LockdownTimetable extends Component {
             },
             
           ]}
-          //defaultPageSize={20}
+          defaultPageSize={performance.length}
           style={{
-            width: "100%",
-            height: "400px" // This will force the table body to overflow and scroll, since there is not enough room
+            width:"100%",
+            height:innerHeight - 230 + adjHeight,
+            maxHeight:"100%",
+            overflow:"auto",
+            fontSize:"12px",
+            fontWeight: 800,
           }}
           className="-striped -highlight"
           showPagination={false}

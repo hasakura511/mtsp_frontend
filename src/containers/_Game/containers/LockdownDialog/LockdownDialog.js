@@ -17,7 +17,7 @@ const stateToProps = state => {
     isLive: state.betting.isLive,
     dictionary_strategy: state.betting.dictionary_strategy,
     mute:state.betting.mute,
-    
+    themes:state.betting.themes,
   };
 };
 
@@ -34,7 +34,8 @@ const dispatchToProps = dispatch => {
 export default class LockdownDialog extends Component {
     static propTypes = {
         mute:PropTypes.bool,
-        showLockdownDialog:PropTypes.func.isRequired
+        showLockdownDialog:PropTypes.func.isRequired,
+        themes:PropTypes.object.isRequired,
     };
   
   /**
@@ -119,8 +120,10 @@ export default class LockdownDialog extends Component {
       showModal,
       isAnti
     } = this.state;
+    var self=this;
     return (
-      <Modal hidden={!showModal} toggle={this.toggle} isLarge>
+      <Modal hidden={!showModal} toggle={this.toggle} isLarge
+       >
         {performanceLoading ? (
           <Spinner />
         ) : performanceError ? (
@@ -129,9 +132,13 @@ export default class LockdownDialog extends Component {
               "Could not load performance data, contact us to report this bug."}
           </h1>
         ) : (
-
-            <LockdownTimetable  />
-            
+          <div  style={{background:self.props.themes.live.dialog.background}}>
+                <span style={{"float": "right", "width": "100%", "textAlign": "right"}}>
+                <img src="/images/close_button.png" style={{"marginRight":"5px", "cursor":"pointer"}} 
+                onClick={() => { self.toggle(); }}/>
+              </span>
+            <LockdownTimetable gap={117} />
+          </div>            
         )}
         {showModal && !this.props.mute ? (
         <Sound

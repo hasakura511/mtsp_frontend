@@ -339,7 +339,7 @@ export default class LiveDashboard extends Component {
                       className={classes.Cell}
                       style={{ justifyContent: "center" }}
                     >
-                      <span style={{'float':'left','marginLeft':"-37px","marginTop":"5px"}}>
+                      <span style={{'float':'left','marginLeft':"0px","paddingRight":"5px","marginTop":"5px"}}>
                       <a href='#viewportfolio' 
                         title="Display PnL Heatmap for this account"
                         onClick={() => { 

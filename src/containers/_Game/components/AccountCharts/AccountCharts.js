@@ -11,6 +11,7 @@ import Spinner from "../../../../components/UI/Spinner/Spinner";
 import * as actions from "../../../../store/actions";
 import { connect } from "react-redux";
 const stateToProps = state => ({
+  themes:state.betting.themes,
   //performance_account_id: state.betting.performance_account_id
 });
 
@@ -50,6 +51,7 @@ export default class AccountCharts extends Component {
     close: PropTypes.func.isRequired,
     toggle:PropTypes.func,
     showPerformance:PropTypes.func.isRequired,
+    themes:PropTypes.object.isRequired,
   };
   constructor(props) {
     super(props);
@@ -76,8 +78,12 @@ export default class AccountCharts extends Component {
       chip,
       slot
     } = this.props;
+    var self=this;
     return (
-      <div className={classes.AccountCharts}>
+      <div className={classes.AccountCharts} style={{background:self.props.themes.live.dialog.background_inner,
+        color:self.props.themes.live.dialog.text}}>
+                
+
         <div className={classes.Row}>
           <div className={classes.Tabs}>
             <div
@@ -95,15 +101,7 @@ export default class AccountCharts extends Component {
               onClick={() => this.setState({isPerformance:false, isOpenPositions:true, isTradingCosts:false, isPreviousPnL:false, isLockdownTimetable:false})
             }
             >
-              Open Positions
-            </div>
-            <div
-              className={classes.Tab + " " + (isTradingCosts ? classes.active : "")}
-              style={{minWidth:'180px'}}
-              onClick={() => this.setState({isPerformance:false, isOpenPositions:false, isTradingCosts:true, isPreviousPnL:false, isLockdownTimetable:false})
-            }
-            >
-              Trading Costs
+              Current PnL
             </div>
             <div
               className={classes.Tab + " " + (isPreviousPnL ? classes.active : "")}
@@ -112,6 +110,14 @@ export default class AccountCharts extends Component {
             }
             >
               Previous PnL
+            </div>
+            <div
+              className={classes.Tab + " " + (isTradingCosts ? classes.active : "")}
+              style={{minWidth:'180px'}}
+              onClick={() => this.setState({isPerformance:false, isOpenPositions:false, isTradingCosts:true, isPreviousPnL:false, isLockdownTimetable:false})
+            }
+            >
+              Trading Costs
             </div>
             <div
               className={classes.Tab + " " + (isLockdownTimetable ? classes.active : "")}
