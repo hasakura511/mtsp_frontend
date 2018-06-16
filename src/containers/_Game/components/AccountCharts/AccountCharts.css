@@ -12,7 +12,7 @@
   .Row {
     width: 100%;
     display: flex;
-    background-color: #bac4cc;
+    background-color: transparent;
   }
   
   .Tabs {

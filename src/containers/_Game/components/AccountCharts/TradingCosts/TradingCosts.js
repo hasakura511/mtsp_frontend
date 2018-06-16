@@ -203,15 +203,22 @@ export default class TradingCosts extends Component {
       var performance = response.data;
       console.log('trading costs data')
       console.log(performance);
-      var dataJson= JSON.parse(performance.trading_costs);
-      performance.trading_costs=dataJson;
-      
-      console.log(performance);
-
-      this.setState({
+      if (performance.data_not_available) {
+        var performanceError=performance.data_not_available_message;
+        this.setState({
           performanceLoading: false,
-          performance
+          performanceError: performanceError
         });
+      } else {
+        var dataJson= JSON.parse(performance.trading_costs);
+        performance.trading_costs=dataJson;
+        
+        console.log(performance);
+          this.setState({
+            performanceLoading: false,
+            performance
+          });
+        }
     })
     .catch(performanceError => {
       console.log(performanceError);
@@ -249,12 +256,15 @@ export default class TradingCosts extends Component {
                     <Spinner />
                 </div>
         ) : performanceError ? (
-            <div>
-                
-          <h1>
-            {performanceError.Message ||
-              "Could not load performance data, contact us to report this bug."}
-          </h1>
+          <div>
+
+          <center>  
+          <br/>
+          <h4>
+            {performanceError ? performanceError + "" :
+              "Data not Available"}
+          </h4>
+          </center>
           
           </div>
         ) : (
@@ -321,7 +331,7 @@ export default class TradingCosts extends Component {
                     </b>
                     </span>
                     ) : (
-                      <span style={{color:self.props.themes.live.dialog.text_color}}>
+                      <span style={{color:self.props.themes.live.dialog.text}}>
                     <b>
                     {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} 
                     </b>
@@ -343,7 +353,7 @@ export default class TradingCosts extends Component {
                     </b>
                     </span>
                     ) : (
-                      <span style={{color:self.props.themes.live.dialog.text_color}}>
+                      <span style={{color:self.props.themes.live.dialog.text}}>
                     <b>
                     {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} 
                     </b>
@@ -359,7 +369,7 @@ export default class TradingCosts extends Component {
                   Header: "Commissions",
                   accessor: "Commissions",
                   Cell: props => (
-                    <span className='number'><center style={{color:self.props.themes.live.dialog.text_color}}>
+                    <span className='number'><center style={{color:self.props.themes.live.dialog.text}}>
                     {parseFloat(props.value) ? (
                       <span style={parseFloat(props.value) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
                     <b>
@@ -367,7 +377,7 @@ export default class TradingCosts extends Component {
                     </b>
                     </span>
                     ) : (
-                      <span style={{color:self.props.themes.live.dialog.text_color}}>
+                      <span style={{color:self.props.themes.live.dialog.text}}>
                     <b>
                     $ {Math.round(parseFloat(props.value),4).toLocaleString('en-US', { maximumFractionDigits: 12 })} 
                     </b>
@@ -409,7 +419,7 @@ export default class TradingCosts extends Component {
                     </b>
                     </span>
                     ) : (
-                      <span style={{color:self.props.themes.live.dialog.text_color}}>
+                      <span style={{color:self.props.themes.live.dialog.text}}>
                     <b>
                     $ {Math.round(parseFloat(props.value),4).toLocaleString('en-US', { maximumFractionDigits: 12 })} 
                     </b>

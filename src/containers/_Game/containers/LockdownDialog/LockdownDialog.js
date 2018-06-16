@@ -132,12 +132,49 @@ export default class LockdownDialog extends Component {
               "Could not load performance data, contact us to report this bug."}
           </h1>
         ) : (
-          <div  style={{background:self.props.themes.live.dialog.background}}>
-                <span style={{"float": "right", "width": "100%", "textAlign": "right"}}>
-                <img src="/images/close_button.png" style={{"marginRight":"5px", "cursor":"pointer"}} 
-                onClick={() => { self.toggle(); }}/>
+          <div  style={{background:self.props.themes.live.dialog.background,
+            color:self.props.themes.live.dialog.text}}
+            >
+         
+              <div style={{ "width": "100%", "padding":"0px", "margin":"0px", background:self.props.themes.live.dialog.background}}>
+              <span style={{
+                float: "left",
+                width: "33.33333%",
+                
+                textAlign: "left"
+                }}
+              >
+              &nbsp;
               </span>
-            <LockdownTimetable gap={117} />
+              <span style={{
+                float: "left",
+                width: "33.33333%",
+                textAlign: "center",
+                marginTop: "5px"
+                }}
+              >
+              <br/><h3>Lockdown Timetables</h3>
+              </span>
+              <span style={{
+                float: "left",
+                width: "33.33333%",
+                textAlign: "right"
+                }}
+              >
+                <br/>
+                <span style={{textAlign:"right",marginTop:"5px", padding:"5px", "cursor":"pointer", background:self.props.themes.live.dialog.background}} 
+                onClick={() => { self.toggle(); }}
+                >
+                  <button onClick={() => {self.toggle(); } } >
+                  <font style={{fontSize:"16px"}}>Close</font>
+                  </button>
+                </span>
+                </span>
+              </div>
+               <div style={{clear: "both"}}></div>​
+
+         
+            <LockdownTimetable gap={107} />
           </div>            
         )}
         {showModal && !this.props.mute ? (

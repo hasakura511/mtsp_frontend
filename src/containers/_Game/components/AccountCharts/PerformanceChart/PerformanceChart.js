@@ -54,7 +54,7 @@ class CustomTooltip extends Component {
     const { payload, active } = this.props;
     var self=this;
     if (active) {
-      let {
+      var {
         display_date,
         date,
         account_value,
@@ -79,17 +79,17 @@ class CustomTooltip extends Component {
 
       return (
         <div className={classes.ToolTip} >
-          <div className={classes.Row}>{display_date}</div>
-          <hr style={{ width: "100%" }} />
+          <div className={classes.Row}><b>{display_date}</b>    </div>
+          <hr style={{ width: "100%", margin:"0px", padding:"0px", border:"1px sold black" }} />
           <div className={classes.Row} style={{ color: this.props.colors.account_value }}>
             <p>
-              <span><b>Account Value:</b></span> <span>$ {numberWithCommas(account_value.toString())}</span>
+              <span><b>Account Value:</b></span> <span style={{color:self.props.themes.live.dialog.text}}>$ {numberWithCommas(account_value.toString())}</span>
             </p>
           </div>
           <div className={classes.Row} style={{ color: this.props.colors.account_value }}>
             <p>
               <span><b>Account Daily %Chg: </b></span>
-              <span>
+              <span >
               {parseFloat(account_pnl_pct) ? (
                       <span style={parseFloat(account_pnl_pct) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
                     <b>
@@ -97,7 +97,7 @@ class CustomTooltip extends Component {
                     </b>
                     </span>
                     ) : (
-                      <span style={{color:self.props.themes.live.dialog.text_color}}>
+                      <span style={{color:self.props.themes.live.dialog.text}}>
                     <b>
                     {parseFloat(account_pnl_pct).toLocaleString('en-US', { maximumFractionDigits: 12 })} % 
                     </b>
@@ -118,7 +118,7 @@ class CustomTooltip extends Component {
                     </b>
                     </span>
                     ) : (
-                      <span style={{color:self.props.themes.live.dialog.text_color}}>
+                      <span style={{color:self.props.themes.live.dialog.text}}>
                     <b>
                     {parseFloat(account_pnl_cumpct).toLocaleString('en-US', { maximumFractionDigits: 12 })} % 
                     </b>
@@ -131,26 +131,26 @@ class CustomTooltip extends Component {
           <div className={classes.Row} style={{ color: this.props.colors.account_value }}>
             <p>
               <span><b>Commissions: </b></span>
-              <span>$ {numberWithCommas(commissions.toString())}</span>
+              <span style={{color:self.props.themes.live.dialog.text}}>$ {numberWithCommas(commissions.toString())}</span>
             </p>
           </div>
           <div className={classes.Row} style={{ color: this.props.colors.account_value }}>
             <p>
               <span><b>Slippage: </b></span>
-              <span>$ {numberWithCommas(slippage).toString()}</span>
+              <span style={{color:self.props.themes.live.dialog.text}}> $ {numberWithCommas(slippage).toString()}</span>
             </p>
           </div>
           <div className={classes.Row} style={{ color: this.props.colors.account_value }}>
             <p>
               <span><b>Bet: </b></span>
-              <span>{this.props.chip.last_selection}</span>
+              <span style={{color:self.props.themes.live.dialog.text}}>{this.props.chip.last_selection}</span>
             </p>
           </div>
 
           <div className={classes.Row} style={{ color: this.props.colors.benchmark_value }}>
             <p>
               <span><b>Benchmark Value: </b></span>
-              <span>$ {numberWithCommas(benchmark_value.toString())}</span>
+              <span style={{color:self.props.themes.live.dialog.text}}>$ {numberWithCommas(benchmark_value.toString())}</span>
             </p>
           </div>
           <div className={classes.Row} style={{ color: this.props.colors.benchmark_value }}>
@@ -164,7 +164,7 @@ class CustomTooltip extends Component {
                     </b>
                     </span>
                     ) : (
-                      <span style={{color:self.props.themes.live.dialog.text_color}}>
+                      <span style={{color:self.props.themes.live.dialog.text}}>
                     <b>
                     {parseFloat(benchmark_pctchg).toLocaleString('en-US', { maximumFractionDigits: 12 })} % 
                     </b>
@@ -184,7 +184,7 @@ class CustomTooltip extends Component {
                     </b>
                     </span>
                     ) : (
-                      <span style={{color:self.props.themes.live.dialog.text_color}}>
+                      <span style={{color:self.props.themes.live.dialog.text}}>
                     <b>
                     {parseFloat(benchmark_cumpct).toLocaleString('en-US', { maximumFractionDigits: 12 })} % 
                     </b>
@@ -197,7 +197,7 @@ class CustomTooltip extends Component {
           <div className={classes.Row} style={{ color: this.props.colors.benchmark_value }}>
             <p>
               <span><b>Benchmark Symbol: </b></span>
-              <span>{benchmark_sym}</span>
+              <span style={{color:self.props.themes.live.dialog.text}}>{benchmark_sym}</span>
             </p>
           </div>
         </div>
@@ -382,7 +382,7 @@ export default class PerformanceChart extends Component {
                   `${Math.floor(value).toLocaleString('en-US', { maximumFractionDigits: 12 })}`
                 }
                 ticks={yticks}
-                domain={[dataMin => dataMin * 0.9, dataMax => dataMax * 1.1]}
+                domain={[yticks[yticks.length-1], yticks[0]]}
               />
               <CartesianGrid strokeDasharray="3 1" />
               {<Tooltip 
@@ -391,11 +391,13 @@ export default class PerformanceChart extends Component {
               <Line
                 type="monotone"
                 dataKey={"benchmark_value" }
+                name={chartData[0].benchmark_sym     }
                 stroke={performance.colors.benchmark_value}
                 activeDot={{ r: 8 }}
                />
                 <Line
                 type="monotone"
+                name={"Account Value"}
                 dataKey={"account_value" }
                 stroke={performance.colors.account_value}
                 activeDot={{ r: 8 }}

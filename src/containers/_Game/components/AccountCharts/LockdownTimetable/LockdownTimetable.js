@@ -102,32 +102,90 @@ export default class LockdownTimetable extends Component {
 
   componentDidMount() {
       var self=this;
-    var performance=self.props.timetable_dialog;
-    var close_text=performance.close_text   ;
-    var group=performance.group;
-    var text_color=performance.text_color;
-    var trigger_text=performance.trigger_text;
-    var data=[];
-    Object.keys(group).map(key => {
-        var item={};
-        var color=text_color[key];
-        if (!color)
-            color='black';
-        item.Markets=key;
-        item.Group=group[key] //{'Value':group[key],'Color':color};
-        item.Next_Trigger=trigger_text[key] //{'value':trigger_text[key],'color':color};
-        item.Next_Close=close_text[key] //{'value':close_text[key],'color':color};
-        item.Color=color;
-        data.push(item);
+   
 
-    })
+     if (self.props.chip && self.props.chip.account_id) {
+      axios
+      .post("/utility/timetables_live/", {
+        /**
+         * @example {"portfolio": ["TU", "BO"], "systems": ["prev1", "prev5"], "target": 500, "account": 5000}
+         *
+         */
+        account_id: self.props.chip.account_id
+      })
+      .then(response => {
+        /**
+         * @namespace {Performance}
+         */
+        var performance = response.data;
+        console.log('timetable data')
+        console.log(performance);
+        var dataJson= JSON.parse(performance.timetable_dialog);
+        performance.timetable_dialog=dataJson;
+        performance=dataJson;
 
-    console.log('data');
-    console.log(data);
-    this.setState({
-    performanceLoading: false,
-    performance:data
-     });
+        var close_text=performance.close_text   ;
+        var group=performance.group;
+        var text_color=performance.text_color;
+        var trigger_text=performance.trigger_text;
+        var data=[];
+      
+        Object.keys(group).map(key => {
+            var item={};
+            var color=text_color[key];
+            if (!color)
+                color='black';
+            item.Markets=key;
+            item.Group=group[key] //{'Value':group[key],'Color':color};
+            item.Next_Trigger=trigger_text[key] //{'value':trigger_text[key],'color':color};
+            item.Next_Close=close_text[key] //{'value':close_text[key],'color':color};
+            item.Color=color;
+            data.push(item);
+
+        })
+        console.log(performance);
+
+        this.setState({
+            performanceLoading: false,
+            performance:data
+          });
+      })
+      .catch(performanceError => {
+        console.log(performanceError);
+        this.setState({
+          performanceLoading: false,
+          performanceError: performanceError
+        });
+      });
+    } else {
+      var performance=self.props.timetable_dialog;
+      var close_text=performance.close_text   ;
+      var group=performance.group;
+      var text_color=performance.text_color;
+      var trigger_text=performance.trigger_text;
+      var data=[];
+     
+      Object.keys(group).map(key => {
+          var item={};
+          var color=text_color[key];
+          if (!color)
+              color='black';
+          item.Markets=key;
+          item.Group=group[key] //{'Value':group[key],'Color':color};
+          item.Next_Trigger=trigger_text[key] //{'value':trigger_text[key],'color':color};
+          item.Next_Close=close_text[key] //{'value':close_text[key],'color':color};
+          item.Color=color;
+          data.push(item);
+  
+      })
+  
+      console.log('data');
+      console.log(data);
+      this.setState({
+      performanceLoading: false,
+      performance:data
+       });
+    }
   }
 
   render() {
@@ -152,8 +210,9 @@ export default class LockdownTimetable extends Component {
     var chartData={};
 
     return (
-        <div className={classes.LockdownTimetable} style={{background:self.props.themes.live.dialog.background_inner,
+        <div className={classes.LockdownTimetable} style={{background:self.props.themes.live.dialog.background,
           color:self.props.themes.live.dialog.text}}>
+               
         
           {performanceLoading ? (
                 <div>
@@ -170,20 +229,15 @@ export default class LockdownTimetable extends Component {
           </div>
         ) : (
 
-        <div className={classes.LockdownTimetable}>
+          <div className={classes.LockdownTimetable} >
                 
-                <span style={{"float": "right", "textAlign": "right"}}>
-                  <img src="/images/infotext_button.png" width="22" style={{ "marginTop":"10px","marginRight":"5px"}}/>
-                </span>
 
-           <center><h3 style={{marginTop:"5px"}}>Lockdown Timetables</h3>
+            <div style={{"width": "100%", margin:"0px", padding:"0px", height:"22px", "textAlign": "right", background:self.props.themes.live.dialog.background_inner,}}>
+                  <img src="/images/infotext_button.png" width="22" style={{"marginRight":"5px"}}/>
+                </div>
 
-           </center>
-         
-          <div className={classes.ChartContainer}>
-          
+            <div className={classes.ChartContainer}>
           <ReactTable
-          
           data={performance}
              
           columns={[

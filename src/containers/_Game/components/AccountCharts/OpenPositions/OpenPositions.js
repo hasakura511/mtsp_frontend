@@ -248,12 +248,15 @@ export default class OpenPositions extends Component {
                     <Spinner />
                 </div>
         ) : performanceError ? (
-            <div>
-                
-          <h1>
-            {performanceError.Message ||
-              "Could not load performance data, contact us to report this bug."}
-          </h1>
+          <div>
+
+          <center>  
+          <br/>
+          <h4>
+            {performanceError ? performanceError + "" :
+              "Data not Available"}
+          </h4>
+          </center>
           
           </div>
         ) : (
@@ -311,6 +314,9 @@ export default class OpenPositions extends Component {
               <center style={{background:self.props.themes.live.dialog.table_left_background}}>
               <h4 style={{background:self.props.themes.live.dialog.table_left_background}}>Last Update</h4></center></span>
               ), // Custom cell components!,
+              headerStyle: {
+                background:self.props.themes.live.dialog.table_left_background
+              },
 
               columns: [
                 {
@@ -318,6 +324,9 @@ export default class OpenPositions extends Component {
                     <span style={{background:self.props.themes.live.dialog.table_left_background}}>
                     Updated When
                   </span>),
+                  headerStyle: {
+                    background:self.props.themes.live.dialog.table_left_background
+                  },
                   accessor: "Updated When",
                   Cell: props => <span className='number'><center>{props.value}</center></span>, // Custom cell components!,
 
@@ -327,6 +336,10 @@ export default class OpenPositions extends Component {
                     <span style={{background:self.props.themes.live.dialog.table_left_background}}>
                     % Change
                   </span>),
+                  headerStyle: {
+                    background:self.props.themes.live.dialog.table_left_background
+                  },
+                  
                   accessor: "% Change",
                   Cell: props => (
                     <span className='number'><center>
@@ -337,7 +350,7 @@ export default class OpenPositions extends Component {
                     </b>
                     </span>
                     ) : (
-                      <span style={{color:self.props.themes.live.dialog.text_color}}>
+                      <span style={{color:self.props.themes.live.dialog.text}}>
                     <b>
                     {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} %
                     </b>
@@ -359,12 +372,18 @@ export default class OpenPositions extends Component {
                 {performance.last_date}
                 </h4></center></span>
               ),
+              headerStyle: {
+                background:self.props.themes.live.dialog.table_right_background
+              },
               columns: [
                 {
                   Header: props => (
                     <span style={{background:self.props.themes.live.dialog.table_right_background}}>Current Positions
                   </span>),
                   accessor: "Positions",
+                  headerStyle: {
+                    background:self.props.themes.live.dialog.table_right_background
+                  },
                   Cell: props => (
                     <span className='number'><center>
                     {parseFloat(props.value) ? (
@@ -374,7 +393,7 @@ export default class OpenPositions extends Component {
                     </b>
                     </span>
                     ) : (
-                      <span style={{color:self.props.themes.live.dialog.text_color}}>
+                      <span style={{color:self.props.themes.live.dialog.text}}>
                     <b>
                    {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} 
                     </b>
@@ -390,6 +409,9 @@ export default class OpenPositions extends Component {
                     Position Value
                   </span>),
                   accessor: "Position Value",
+                  headerStyle: {
+                    background:self.props.themes.live.dialog.table_right_background
+                  },
 
                   Cell: props => (
                     <span className='number'><center>
@@ -400,7 +422,7 @@ export default class OpenPositions extends Component {
                     </b>
                     </span>
                     ) : (
-                      <span style={{color:self.props.themes.live.dialog.text_color}}>
+                      <span style={{color:self.props.themes.live.dialog.text}}>
                     <b>
                     $ {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} 
                     </b>
@@ -420,6 +442,9 @@ export default class OpenPositions extends Component {
                      Current PnL
                   </span>),
                   accessor: "PnL",
+                  headerStyle: {
+                    background:self.props.themes.live.dialog.table_right_background
+                  },
                   Cell: props => (
                     <span className='number'><center>
                     {parseFloat(props.value) ? (

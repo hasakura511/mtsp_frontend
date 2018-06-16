@@ -394,7 +394,7 @@ export default class OrderDialog extends Component {
           </div>
 
         )}
-        {showModal && !this.props.mute ? (
+        {showModal && !this.props.mute && !this.props.isPerformance ? (
         <Sound
             url="/sounds/chipLay2.wav"
             playStatus={Sound.status.PLAYING}

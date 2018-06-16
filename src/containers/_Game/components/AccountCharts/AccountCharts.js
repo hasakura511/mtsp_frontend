@@ -80,48 +80,73 @@ export default class AccountCharts extends Component {
     } = this.props;
     var self=this;
     return (
-      <div className={classes.AccountCharts} style={{background:self.props.themes.live.dialog.background_inner,
-        color:self.props.themes.live.dialog.text}}>
+      <div className={classes.AccountCharts} style={{background:self.props.themes.live.dialog.background,
+        color:self.props.themes.live.dialog.text, borderColor:self.props.themes.live.dialog.lines}}>
                 
 
-        <div className={classes.Row}>
-          <div className={classes.Tabs}>
+        <div className={classes.Row} style={{background:self.props.themes.live.dialog.background,
+        color:self.props.themes.live.dialog.text, borderColor:self.props.themes.live.dialog.lines}}>
+
+          <div className={classes.Tabs} style={{background:self.props.themes.live.dialog.background,
+        color:self.props.themes.live.dialog.text, borderColor:self.props.themes.live.dialog.lines}}>
             <div
-              style={{minWidth:'180px'}}
+              style={ isPerformance ? {background:self.props.themes.live.dialog.tab_color_active, minWidth:'180px'} : {background:self.props.themes.live.dialog.tab_color_inactive, minWidth:'180px'} } 
               className={
-                classes.Tab + " " + (isPerformance ? classes.active : "")
+                classes.Tab
               }
+
               onClick={() => this.setState({isPerformance:true, isOpenPositions:false, isTradingCosts:false, isPreviousPnL:false, isLockdownTimetable:false}) }
             >
               Performance
             </div>
+            <div style={{width:"2px", margin:"0px", paddingLeft:"1px", paddingRight:"1px", paddingTop:"20px", paddingBottom:"20px",color: self.props.themes.live.dialog.lines, background:self.props.themes.live.dialog.lines}}>
+            
+            </div>
+
             <div
-              className={classes.Tab + " " + (isOpenPositions ? classes.active : "")}
-              style={{minWidth:'180px'}}
+              style={ isOpenPositions ? {background:self.props.themes.live.dialog.tab_color_active, minWidth:'180px'} : {background:self.props.themes.live.dialog.tab_color_inactive, minWidth:'180px'} }
+              className={
+                classes.Tab
+              }
               onClick={() => this.setState({isPerformance:false, isOpenPositions:true, isTradingCosts:false, isPreviousPnL:false, isLockdownTimetable:false})
             }
             >
               Current PnL
             </div>
+            <div style={{width:"2px", margin:"0px", paddingLeft:"1px", paddingRight:"1px", paddingTop:"20px", paddingBottom:"20px",color: self.props.themes.live.dialog.lines, background:self.props.themes.live.dialog.lines}}>
+            
+            </div>
             <div
-              className={classes.Tab + " " + (isPreviousPnL ? classes.active : "")}
-              style={{minWidth:'180px'}}
+              style={ isPreviousPnL ? {background:self.props.themes.live.dialog.tab_color_active, minWidth:'180px'} : {background:self.props.themes.live.dialog.tab_color_inactive, minWidth:'180px'} }
+              className={
+                classes.Tab
+              }
               onClick={() => this.setState({isPerformance:false, isOpenPositions:false, isTradingCosts:false, isPreviousPnL:true, isLockdownTimetable:false})
             }
             >
               Previous PnL
             </div>
+            <div style={{width:"2px", margin:"0px", paddingLeft:"1px", paddingRight:"1px", paddingTop:"20px", paddingBottom:"20px",color: self.props.themes.live.dialog.lines, background:self.props.themes.live.dialog.lines}}>
+            
+            </div>
             <div
-              className={classes.Tab + " " + (isTradingCosts ? classes.active : "")}
-              style={{minWidth:'180px'}}
+              style={ isTradingCosts ? {background:self.props.themes.live.dialog.tab_color_active, minWidth:'180px'} : {background:self.props.themes.live.dialog.tab_color_inactive, minWidth:'180px'} }
+              className={
+                classes.Tab
+              }
               onClick={() => this.setState({isPerformance:false, isOpenPositions:false, isTradingCosts:true, isPreviousPnL:false, isLockdownTimetable:false})
             }
             >
               Trading Costs
             </div>
+            <div style={{width:"2px", margin:"0px", paddingLeft:"1px", paddingRight:"1px", paddingTop:"20px", paddingBottom:"20px",color: self.props.themes.live.dialog.lines, background:self.props.themes.live.dialog.lines}}>
+            
+            </div>
             <div
-              className={classes.Tab + " " + (isLockdownTimetable ? classes.active : "")}
-              style={{minWidth:'180px'}}
+              style={ isLockdownTimetable ? {background:self.props.themes.live.dialog.tab_color_active, minWidth:'180px'} : {background:self.props.themes.live.dialog.tab_color_inactive, minWidth:'180px'} }
+              className={
+                classes.Tab
+              }
               onClick={() => this.setState({isPerformance:false, isOpenPositions:false, isTradingCosts:false, isPreviousPnL:false, isLockdownTimetable:true})
             }
             >

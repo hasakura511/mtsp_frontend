@@ -123,7 +123,7 @@ const order = props => {
         
         <div
           className={classes.ElementContainer}
-          style={{ paddingTop: "15px",background:self.props.themes.live.dialog.background_inner,
+          style={{ paddingTop: "15px",background:self.props.themes.live.dialog.background,
           color:self.props.themes.live.dialog.text }}
         >
           <Chip chip={chip} />
@@ -218,10 +218,12 @@ const order = props => {
             </td></tr>
             </tbody>
             </table>
-            <span style={{"float": "right", "padding":"8px","textAlign": "right"}}>
-            <img src="/images/close_button.png" style={{"marginRight":"5px", "cursor":"pointer"}} 
-            onClick={() => { self.props.toggle(); }}/>
-          </span>
+            <div style={{"float": "right", "padding":"8px","textAlign": "right", background:self.props.themes.live.dialog.background,
+        color:self.props.themes.live.dialog.text, fontSize:"12px", fontWeight:400}}>
+                  <button onClick={() => {self.props.toggle(); } } >
+                  <font style={{fontSize:"22px"}}>Close</font>
+                  </button>
+          </div>
 
       </div>
     )}

@@ -254,12 +254,15 @@ export default class PreviousPnL extends Component {
                     <Spinner />
                 </div>
         ) : performanceError ? (
-            <div>
-                
-          <h1>
-            {performanceError.Message ||
-              "Could not load performance data, contact us to report this bug."}
-          </h1>
+          <div>
+
+          <center>  
+          <br/>
+          <h4>
+            {performanceError ? performanceError + "" :
+              "Data not Available"}
+          </h4>
+          </center>
           
           </div>
         ) : (
@@ -313,11 +316,17 @@ export default class PreviousPnL extends Component {
             },
             {
               Header:  props => <span><center><h4>{performance.last_date}</h4></center></span>, // Custom cell components!,
+              headerStyle: {
+                background:self.props.themes.live.dialog.table_left_background
+              },
 
               columns: [
                 {
                   Header: "1 Day %Change",
                   accessor: "last_pctchg",
+                  headerStyle: {
+                    background:self.props.themes.live.dialog.table_left_background
+                  },
                   Cell: props => (
                     <span className='number'><center>
                     {parseFloat(props.value) ? (
@@ -327,7 +336,7 @@ export default class PreviousPnL extends Component {
                     </b>
                     </span>
                     ) : (
-                      <span style={{color:self.props.themes.live.dialog.text_color}}>
+                      <span style={{color:self.props.themes.live.dialog.text}}>
                     <b>
                     {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} %
                     </b>
@@ -340,12 +349,18 @@ export default class PreviousPnL extends Component {
             },
             {
               Header:  props => <span><center><h4>{performance.prev_date}</h4></center></span>, // Custom cell components!,
+              headerStyle: {
+                background:self.props.themes.live.dialog.table_right_background
+              },
 
               columns: [
                 {
                   Header: "Previous Positions",
                   accessor: "positions",
-                  Cell: props => (
+                  headerStyle: {
+                    background:self.props.themes.live.dialog.table_right_background
+                  },
+                      Cell: props => (
                     <span className='number'><center>
                     {parseFloat(props.value) ? (
                       <span style={parseFloat(props.value) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
@@ -354,7 +369,7 @@ export default class PreviousPnL extends Component {
                     </b>
                     </span>
                     ) : (
-                      <span style={{color:self.props.themes.live.dialog.text_color}}>
+                      <span style={{color:self.props.themes.live.dialog.text}}>
                     <b>
                     {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} 
                     </b>
@@ -366,7 +381,10 @@ export default class PreviousPnL extends Component {
                 {
                   Header: "Position Value",
                   accessor: "position_value",
-                  Cell: props => (
+                  headerStyle: {
+                    background:self.props.themes.live.dialog.table_right_background
+                  },
+                      Cell: props => (
                     <span className='number'><center>
                     {parseFloat(props.value) ? (
                       <span style={parseFloat(props.value) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
@@ -375,7 +393,7 @@ export default class PreviousPnL extends Component {
                     </b>
                     </span>
                     ) : (
-                      <span style={{color:self.props.themes.live.dialog.text_color}}>
+                      <span style={{color:self.props.themes.live.dialog.text}}>
                     <b>
                     $ {Math.round(Math.round(parseFloat(props.value))).toLocaleString('en-US', { maximumFractionDigits: 12 })} 
                     </b>
@@ -390,7 +408,10 @@ export default class PreviousPnL extends Component {
                 {
                   Header: "Previous PnL",
                   accessor: "pnl",
-                  Cell: props => (
+                  headerStyle: {
+                    background:self.props.themes.live.dialog.table_right_background
+                  },
+                      Cell: props => (
                     <span className='number'><center>
                     {parseFloat(props.value) ? (
                       <img src={parseFloat(props.value) > 0 ? gainIcon : lossIcon} />
