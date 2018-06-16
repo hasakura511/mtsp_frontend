@@ -447,7 +447,8 @@ export default class PreviousPnL extends Component {
             },
             
           ]}
-          defaultPageSize={Object.keys(performance.prev_pnl).length}
+          defaultPageSize={Object.keys(performance.prev_pnl).length < 13 ? 13 :Object.keys(performance.prev_pnl).length}
+          minRows={13}
           style={{
             width:"100%",
             height:innerHeight - 260,

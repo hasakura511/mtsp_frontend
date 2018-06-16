@@ -480,7 +480,9 @@ export default class OpenPositions extends Component {
             },
             
           ]}
-          defaultPageSize={Object.keys(performance.open_positions).length}
+
+          defaultPageSize={Object.keys(performance.open_positions).length < 13 ? 13 : Object.keys(performance.open_positions).length}
+          minRows={13}
           style={{
             width:"100%",
             height:innerHeight - 260,

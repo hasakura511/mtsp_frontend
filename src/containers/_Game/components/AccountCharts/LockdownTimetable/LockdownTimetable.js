@@ -239,7 +239,6 @@ export default class LockdownTimetable extends Component {
             <div className={classes.ChartContainer}>
           <ReactTable
           data={performance}
-             
           columns={[
             {
               Header: "",
@@ -280,7 +279,9 @@ export default class LockdownTimetable extends Component {
             },
             
           ]}
-          defaultPageSize={performance.length}
+          defaultPageSize={performance.length < 13 ? 13 : performance.length}
+          minRows={13}
+
           style={{
             width:"100%",
             height:innerHeight - 230 + adjHeight,

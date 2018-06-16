@@ -454,7 +454,8 @@ export default class TradingCosts extends Component {
             },
             
           ]}
-          defaultPageSize={Object.keys(performance.trading_costs).length}
+          defaultPageSize={Object.keys(performance.trading_costs).length < 13 ? 13 :Object.keys(performance.trading_costs).length}
+          minRows={13}
           style={{
             width:"100%",
             height:innerHeight - 260,
