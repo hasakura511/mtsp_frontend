@@ -276,7 +276,7 @@ export default class PreviousPnL extends Component {
         ) : (
 
         <div className={classes.PreviousPnL}>
-                <span style={{"float": "right", "width": "100%", "textAlign": "right"}}>
+                <span style={{margin:"0px", background:self.props.themes.live.dialog.tab_color_active, "float": "right", "width": "100%", "textAlign": "right"}}>
                   <img src="/images/infotext_button.png" width="22" style={{"marginRight":"5px"}}/>
                 </span>
 

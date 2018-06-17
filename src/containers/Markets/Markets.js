@@ -74,6 +74,9 @@ const dispatchToProps = dispatch => {
     addTimedToaster: toaster => {
         dispatch(actions.addTimedToaster(toaster, 5000))
     },
+    showPerformance:(action_id) => {
+      dispatch(actions.showPerformance(action_id))
+    },
   };
 };
 
@@ -800,7 +803,8 @@ export default class Markets extends Component {
             themes:response.data.themes,
             selected_period:firstPeriod,
             chartLoading:false,
-            firstPeriod:firstPeriod});
+            firstPeriod:firstPeriod,
+            });
         this.onGetGroupChartDate(symbol, date, firstPeriod)
         $('#chartArea').show()
         
@@ -1296,6 +1300,30 @@ export default class Markets extends Component {
           {this.state.chartLoading || !this.state.date_str? (
             <Spinner />
                 ) : null}
+                {this.state.data.title ? (
+                  <center><h3>{this.state.data.title} </h3></center>
+                  ) : null }
+                {Object.keys(this.state.data.links).map(key => {
+                  var item=this.state.data.links[key];
+                  if (item.active_link) {
+                    return (
+                      <span key={key}> 
+                    <a  href='JavaScript:$(window).scrollTop($("#chartTop").offset().top-111);'  style={{color:self.state.themes.text_active}}
+                     onClick={() => { self.refreshData(item.account_id, item.link)}}>
+                      <font  style={{fontSize:"16px", fontWeight:400,color:self.state.themes.text_active}}><b>{key}</b></font>
+                    </a>&nbsp;&nbsp;&nbsp;
+                    </span>
+                    )
+                  } else {
+                    return (
+                      <span  key={key}>
+                    <span style={{color:self.state.themes.text_inactive, fontSize:"16px", fontWeight:400,}} >
+                      <b>{key}</b>
+                    </span>&nbsp;&nbsp;&nbsp;
+                    </span>
+                    )
+                  }
+                })}
 
         <div className={classes.Markets}>
 

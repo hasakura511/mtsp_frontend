@@ -174,10 +174,10 @@ export default class LockdownDialog extends Component {
                <div style={{clear: "both"}}></div>​
 
          
-            <LockdownTimetable gap={107} />
+            <LockdownTimetable isdialog={true} gap={107} />
           </div>            
         )}
-        {showModal && !this.props.mute ? (
+        {showModal && !this.props.mute  && 1 == 2 ? (
         <Sound
             url="/sounds/chipLay2.wav"
             playStatus={Sound.status.PLAYING}
