@@ -203,21 +203,29 @@ export default class PreviousPnL extends Component {
         var performance = response.data;
         console.log('prev pnl data')
         console.log(performance);
-
-        var dataJson={};
-        if (performance.prev_pnl && typeof(performance.prev_pnl) == 'string') 
-          dataJson=JSON.parse(performance.prev_pnl);
-        else
-          dataJson=performance.prev_pnl;
-          
-        performance.prev_pnl=dataJson;
-        
-        console.log(performance);
-  
-        this.setState({
+        if (performance.data_not_available) {
+          var performanceError=performance.data_not_available_message;
+          this.setState({
             performanceLoading: false,
-            performance
+            performanceError: performanceError
           });
+        } else {
+    
+          var dataJson={};
+          if (performance.prev_pnl && typeof(performance.prev_pnl) == 'string') 
+            dataJson=JSON.parse(performance.prev_pnl);
+          else
+            dataJson=performance.prev_pnl;
+            
+          performance.prev_pnl=dataJson;
+          
+          console.log(performance);
+    
+          this.setState({
+              performanceLoading: false,
+              performance
+            });
+          }
       })
       .catch(performanceError => {
         console.log(performanceError);

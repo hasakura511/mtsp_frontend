@@ -218,7 +218,7 @@ const order = props => {
             </td></tr>
             </tbody>
             </table>
-            <div style={{"float": "right", "padding":"8px","textAlign": "right", background:self.props.themes.live.dialog.background,
+            <div style={{"float": "right", "padding":"9px","textAlign": "right", background:self.props.themes.live.dialog.background_inner,
         color:self.props.themes.live.dialog.text, fontSize:"12px", fontWeight:400}}>
                   <button onClick={() => {self.props.toggle(); } } >
                   <font style={{fontSize:"22px"}}>Close</font>

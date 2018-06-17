@@ -200,17 +200,26 @@ export default class OpenPositions extends Component {
        * @namespace {Performance}
        */
       var performance = response.data;
-      console.log('open positions data')
-      console.log(performance);
-      var dataJson= JSON.parse(performance.open_positions);
-      performance.open_positions=dataJson;
-      
-      console.log(performance);
-
-      this.setState({
+      if (performance.data_not_available) {
+        var performanceError=performance.data_not_available_message;
+        this.setState({
           performanceLoading: false,
-          performance
+          performanceError: performanceError
         });
+      } else {
+
+        console.log('open positions data')
+        console.log(performance);
+        var dataJson= JSON.parse(performance.open_positions);
+        performance.open_positions=dataJson;
+        
+        console.log(performance);
+
+        this.setState({
+            performanceLoading: false,
+            performance
+          });
+        }
     })
     .catch(performanceError => {
       console.log(performanceError);

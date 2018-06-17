@@ -329,31 +329,40 @@ export default class PerformanceChart extends Component {
        */
       var performance = response.data;
       console.log(performance);
-      var specs=Object.keys(performance.chart_specs);
-      var idx=0;
-      var chart_data={};
-      Object.keys(performance.chart_data).map(period => {
-        var dataJson= JSON.parse(performance.chart_data[period]) 
-        var data=[];
-        Object.keys(dataJson).map(date => {
-
-          var item=dataJson[date];
-          item.date=date;
-          data.push(item);
-
-        });
-        chart_data[specs[idx]]=data;
-        idx+=1;
-
-      });
-      performance.chart_data=chart_data;
-      
-      console.log(chart_data);
-
-      self.setState({
+      if (performance.data_not_available) {
+        var performanceError=performance.data_not_available_message;
+        this.setState({
           performanceLoading: false,
-          performance
+          performanceError: performanceError
         });
+      } else {
+        var specs=Object.keys(performance.chart_specs);
+        var idx=0;
+        var chart_data={};
+        Object.keys(performance.chart_data).map(period => {
+          var dataJson= JSON.parse(performance.chart_data[period]) 
+          var data=[];
+          Object.keys(dataJson).map(date => {
+  
+            var item=dataJson[date];
+            item.date=date;
+            data.push(item);
+  
+          });
+          chart_data[specs[idx]]=data;
+          idx+=1;
+  
+        });
+        performance.chart_data=chart_data;
+        
+        console.log(chart_data);
+  
+        self.setState({
+            performanceLoading: false,
+            performance
+          });
+      }
+
     })
     .catch(performanceError => {
       console.log(performanceError);
@@ -398,22 +407,25 @@ export default class PerformanceChart extends Component {
                     <Spinner />
                 </div>
         ) : performanceError ? (
-            <div>
-                
-          <h1>
-            {performanceError.Message ||
-              "Could not load performance data, contact us to report this bug."}
-          </h1>
+          <div>
+
+          <center>  
+          <br/>
+          <h4>
+            {performanceError ? performanceError + "" :
+              "Data not Available"}
+          </h4>
+          </center>
           
           </div>
         ) : (
 
-        <div className={classes.PerformanceChart}>
-            <div className={classes.Tabs}>
+      <div className={classes.PerformanceChart} style={{marginTop:"0px"}}>
+        <div className={classes.Tabs} style={{  margin:"0px", background:self.props.themes.live.dialog.tab_color_active}}>
             {Object.keys(performance.chart_specs).map(date => {
                 console.log(date);
                 return (
-          <div key={date} className={classes.Tab} onClick={() => this.lookbackHandler(date)}>
+          <div key={date} className={classes.Tab}  style={{marginTop: "0px", background:self.props.themes.live.dialog.tab_color_active}} onClick={() => this.lookbackHandler(date)}>
             <p className={lookback === date ? classes.active : ""}>{date}</p>
           </div>
             )

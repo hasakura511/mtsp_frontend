@@ -4,8 +4,8 @@
   
   .ToolTip {
     width: 230px;
-    height: 220px;
-    padding: 20px;
+    height: 175px;
+    padding: 5px;
     box-sizing: border-box;
     display: flex;
     flex-flow: column;
@@ -40,7 +40,6 @@
   
   .Tab>p {
     margin: 0px;
-    color: #919191;
     font-weight: 500;
     font-size: 1.2em;
     width: fit-content;
