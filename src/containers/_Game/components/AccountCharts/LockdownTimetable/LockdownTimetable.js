@@ -236,7 +236,7 @@ export default class LockdownTimetable extends Component {
                   <img src="/images/infotext_button.png" width="22" style={{"marginRight":"5px"}}/>
                 </div>
 
-            <div className={classes.ChartContainer}>
+            <div className={classes.ChartContainer} >
           <ReactTable
           data={performance}
           columns={[
@@ -284,9 +284,9 @@ export default class LockdownTimetable extends Component {
 
           style={{
             width:"100%",
-            height:innerHeight - 230 + adjHeight,
-            maxHeight:"100%",
-            overflow:"auto",
+            height: innerHeight - 230 + adjHeight,
+            maxHeight: "100%",
+            overflow: performance.length > 13 ? "auto" : "hidden",
             fontSize:"12px",
             fontWeight: 800,
           }}
