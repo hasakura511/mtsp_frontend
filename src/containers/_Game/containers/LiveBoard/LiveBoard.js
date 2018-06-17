@@ -764,7 +764,7 @@ export default class LiveBoard extends Component {
                 </a>
                 <a href='#practice_board' style={{textDecoration: "none"}}
                                 onClick={this.toggleMode}
-                                title="Switch to Practice"
+                                title="Switch to Practice Mode"
 
 > 
                 <span className={classes.dot}></span>
