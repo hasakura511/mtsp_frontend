@@ -636,7 +636,11 @@ const reducer = (state = initialState, action) => {
             dashboard_totals,
             liveDate,
             liveDateText,
-            timetable_dialog
+            timetable_dialog,
+            performance_account_id:'',
+            show_lockdown_dialog:false,
+            heatmap_account_id:'',
+            heatmap_lookup_symbol:''
         };
     }
     case actionTypes.SET_MUTE: {
