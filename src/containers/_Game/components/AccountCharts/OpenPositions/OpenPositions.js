@@ -440,7 +440,7 @@ export default class OpenPositions extends Component {
                     </center></span>
                   ), // Custom cell components!,
                   Footer: (
-                    <span>
+                    <span style={{'float':'right'}}>
                      <b>Total: </b>
                       </span>
                   )

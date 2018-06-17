@@ -118,37 +118,45 @@ export default class LockdownTimetable extends Component {
          * @namespace {Performance}
          */
         var performance = response.data;
-        console.log('timetable data')
-        console.log(performance);
-        var dataJson= JSON.parse(performance.timetable_dialog);
-        performance.timetable_dialog=dataJson;
-        performance=dataJson;
-
-        var close_text=performance.close_text   ;
-        var group=performance.group;
-        var text_color=performance.text_color;
-        var trigger_text=performance.trigger_text;
-        var data=[];
-      
-        Object.keys(group).map(key => {
-            var item={};
-            var color=text_color[key];
-            if (!color)
-                color='black';
-            item.Markets=key;
-            item.Group=group[key] //{'Value':group[key],'Color':color};
-            item.Next_Trigger=trigger_text[key] //{'value':trigger_text[key],'color':color};
-            item.Next_Close=close_text[key] //{'value':close_text[key],'color':color};
-            item.Color=color;
-            data.push(item);
-
-        })
-        console.log(performance);
-
-        this.setState({
+        if (performance.data_not_available) {
+          var performanceError=performance.data_not_available_message;
+          this.setState({
             performanceLoading: false,
-            performance:data
+            performanceError: performanceError
           });
+        } else {
+          console.log('timetable data')
+          console.log(performance);
+          var dataJson= JSON.parse(performance.timetable_dialog);
+          performance.timetable_dialog=dataJson;
+          performance=dataJson;
+
+          var close_text=performance.close_text   ;
+          var group=performance.group;
+          var text_color=performance.text_color;
+          var trigger_text=performance.trigger_text;
+          var data=[];
+        
+          Object.keys(group).map(key => {
+              var item={};
+              var color=text_color[key];
+              if (!color)
+                  color='black';
+              item.Markets=key;
+              item.Group=group[key] //{'Value':group[key],'Color':color};
+              item.Next_Trigger=trigger_text[key] //{'value':trigger_text[key],'color':color};
+              item.Next_Close=close_text[key] //{'value':close_text[key],'color':color};
+              item.Color=color;
+              data.push(item);
+
+          })
+          console.log(performance);
+
+          this.setState({
+              performanceLoading: false,
+              performance:data
+            });
+          }
       })
       .catch(performanceError => {
         console.log(performanceError);
@@ -158,6 +166,7 @@ export default class LockdownTimetable extends Component {
         });
       });
     } else {
+      
       var performance=self.props.timetable_dialog;
       var close_text=performance.close_text   ;
       var group=performance.group;

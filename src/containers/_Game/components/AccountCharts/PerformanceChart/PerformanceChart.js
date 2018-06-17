@@ -471,20 +471,20 @@ export default class PerformanceChart extends Component {
               
               content={<CustomTooltip  ref={ref => this.tooltip = ref} colors={performance.colors} chip={self.props.chip} themes={self.props.themes} />} />}
               <Legend />
-              <Line
-                ref={ref => this.area = ref}
-                type="monotone"
-                dataKey={"benchmark_value" }
-                name={chartData[0].benchmark_sym     }
-                stroke={performance.colors.benchmark_value}
-                activeDot={{ r: 8 }}
-               />
                 <Line
                 ref={ref => this.area = ref}
                 type="monotone"
                 name={"Account Value"}
                 dataKey={"account_value" }
                 stroke={performance.colors.account_value}
+                activeDot={{ r: 8 }}
+               />
+              <Line
+                ref={ref => this.area = ref}
+                type="monotone"
+                dataKey={"benchmark_value" }
+                name={chartData[0].benchmark_sym     }
+                stroke={performance.colors.benchmark_value}
                 activeDot={{ r: 8 }}
                />
             

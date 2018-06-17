@@ -87,13 +87,13 @@ export default class AccountCharts extends Component {
         <div className={classes.Row} style={{background:self.props.themes.live.dialog.background,
         color:self.props.themes.live.dialog.text, borderColor:self.props.themes.live.dialog.lines}}>
 
-          <div className={classes.Tabs} style={{background:self.props.themes.live.dialog.background,
+          <div className={classes.Tabs} style={{ border:"1px solid", background:self.props.themes.live.dialog.background,
         color:self.props.themes.live.dialog.text, borderColor:self.props.themes.live.dialog.lines}}>
             <div style={{width:"2px", margin:"0px", paddingLeft:"1px", paddingRight:"1px", paddingTop:"20px", paddingBottom:"20px",color: self.props.themes.live.dialog.lines, background:self.props.themes.live.dialog.lines}}>
             
             </div>
             <div
-              style={ isPerformance ? {borderTop:"2px solid " + self.props.themes.live.dialog.lines, background:self.props.themes.live.dialog.tab_color_active, minWidth:'180px'} : {background:self.props.themes.live.dialog.tab_color_inactive, minWidth:'180px'} } 
+              style={ isPerformance ? {borderTop:"1px solid " + self.props.themes.live.dialog.lines, background:self.props.themes.live.dialog.tab_color_active, minWidth:'180px'} : {background:self.props.themes.live.dialog.tab_color_inactive, minWidth:'180px'} } 
               className={
                 classes.Tab
               }
@@ -107,7 +107,7 @@ export default class AccountCharts extends Component {
             </div>
 
             <div
-              style={ isOpenPositions ? {borderTop:"2px solid " + self.props.themes.live.dialog.lines, background:self.props.themes.live.dialog.tab_color_active, minWidth:'180px'} : {background:self.props.themes.live.dialog.tab_color_inactive, minWidth:'180px'} }
+              style={ isOpenPositions ? {borderTop:"1px solid " + self.props.themes.live.dialog.lines, background:self.props.themes.live.dialog.tab_color_active, minWidth:'180px'} : {background:self.props.themes.live.dialog.tab_color_inactive, minWidth:'180px'} }
               className={
                 classes.Tab
               }
@@ -120,7 +120,7 @@ export default class AccountCharts extends Component {
             
             </div>
             <div
-              style={ isPreviousPnL ? {borderTop:"2px solid " + self.props.themes.live.dialog.lines, background:self.props.themes.live.dialog.tab_color_active, minWidth:'180px'} : {background:self.props.themes.live.dialog.tab_color_inactive, minWidth:'180px'} }
+              style={ isPreviousPnL ? {borderTop:"1px solid " + self.props.themes.live.dialog.lines, background:self.props.themes.live.dialog.tab_color_active, minWidth:'180px'} : {background:self.props.themes.live.dialog.tab_color_inactive, minWidth:'180px'} }
               className={
                 classes.Tab
               }
@@ -133,7 +133,7 @@ export default class AccountCharts extends Component {
             
             </div>
             <div
-              style={ isTradingCosts ? {borderTop:"2px solid " + self.props.themes.live.dialog.lines, background:self.props.themes.live.dialog.tab_color_active, minWidth:'180px'} : {background:self.props.themes.live.dialog.tab_color_inactive, minWidth:'180px'} }
+              style={ isTradingCosts ? {borderTop:"1px solid " + self.props.themes.live.dialog.lines, background:self.props.themes.live.dialog.tab_color_active, minWidth:'180px'} : {background:self.props.themes.live.dialog.tab_color_inactive, minWidth:'180px'} }
               className={
                 classes.Tab
               }
@@ -146,7 +146,7 @@ export default class AccountCharts extends Component {
             
             </div>
             <div
-              style={ isLockdownTimetable ? {borderTop:"2px solid " + self.props.themes.live.dialog.lines, background:self.props.themes.live.dialog.tab_color_active, minWidth:'180px'} : {background:self.props.themes.live.dialog.tab_color_inactive, minWidth:'180px'} }
+              style={ isLockdownTimetable ? {borderTop:"1px solid " + self.props.themes.live.dialog.lines, background:self.props.themes.live.dialog.tab_color_active, minWidth:'180px'} : {background:self.props.themes.live.dialog.tab_color_inactive, minWidth:'180px'} }
               className={
                 classes.Tab
               }

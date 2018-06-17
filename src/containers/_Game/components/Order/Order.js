@@ -142,41 +142,62 @@ const order = props => {
       <thead  style={{border:"none"}}>
         <tr style={{border:"none"}}>
         <th  style={{border:"none"}}>
+          <center>
             Starting Value
+            </center>
             </th>
             <th  style={{border:"none"}}>
+            <center>
             Account Value
+            </center>
             </th>
             <th  style={{border:"none"}}>
+            <center>
             Total Margin
+            </center>
             </th>
             <th  style={{border:"none"}}>
+            <center>
             Cumulative %Chg
+            </center>
             </th>
             <th  style={{border:"none"}}>
+            <center>
             Previous %Chg
+            </center>
             </th>
             <th  style={{border:"none"}}>
+            <center>
             Markets in Portfolio
+            </center>
             </th>
             <th  style={{border:"none"}}>
+            <center>
               Age
+            </center>
             </th>
             </tr>
           </thead>
           <tbody>
             <tr style={{border:"1px", "padding":"1px"}}>
             <td style={{borderLeft:"1px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
+            <center>
             $ {numberWithCommas(chip.starting_value.toString())}
+            </center>
             </td>            
             <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
+            <center>
 
             $ {numberWithCommas(chip.account_value.toString())}
+            </center>
             </td>            
             <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
+            <center>
             $ {numberWithCommas(chip.total_margin.toString())}
+            </center>
             </td>            
             <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
+            <center>
                       
                     {parseFloat(chip.pnl_cumpct) ? (
                       <span style={parseFloat(chip.pnl_cumpct) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
@@ -192,9 +213,11 @@ const order = props => {
                     </span>
                     )}
                    
+                   </center>
 
             </td>            
             <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
+            <center>
                       
                       {parseFloat(chip.pnl_pct) ? (
                       <span style={parseFloat(chip.pnl_pct) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
@@ -209,16 +232,21 @@ const order = props => {
                     </b>
                     </span>
                     )}
+          </center>
             </td>            
             <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
-              {chip.num_markets}
+            <center>
+             {chip.num_markets}
+             </center>
             </td>            
             <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"1px solid black"}}>
+            <center>
               {chip.age}
+            </center>
             </td></tr>
             </tbody>
             </table>
-            <div style={{"float": "right", "padding":"9px","textAlign": "right", background:self.props.themes.live.dialog.background_inner,
+            <div style={{"float": "right", "padding":"9px","textAlign": "right", background:self.props.themes.live.dialog.background,
         color:self.props.themes.live.dialog.text, fontSize:"12px", fontWeight:400}}>
                   <button onClick={() => {self.props.toggle(); } } >
                   <font style={{fontSize:"22px"}}>Close</font>
