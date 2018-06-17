@@ -239,10 +239,12 @@ const order = props => {
              {chip.num_markets}
              </center>
             </td>            
-            <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"1px solid black"}}>
+            <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black", borderRight:"1px solid black"}}>
             <center>
               {chip.age}
             </center>
+            </td>
+            <td style={{width:"1px", margin:"0px", padding:"0px", borderLeft:"1px solid black",borderTop:"1px solid black",borderBottom:"1px solid black", borderRight:"1px solid black"}}>
             </td></tr>
             </tbody>
             </table>

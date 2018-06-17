@@ -228,12 +228,15 @@ export default class LockdownTimetable extends Component {
                     <Spinner />
                 </div>
         ) : performanceError ? (
-            <div>
-                
-          <h1>
-            {performanceError.Message ||
-              "Could not load performance data, contact us to report this bug."}
-          </h1>
+          <div>
+
+          <center>  
+          <br/>
+          <h4>
+            {performanceError ? performanceError + "" :
+              "Data not Available"}
+          </h4>
+          </center>
           
           </div>
         ) : (
