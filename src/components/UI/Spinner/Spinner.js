@@ -9,7 +9,7 @@ const spinner = () => {
       background: "white",
       opacity: "1",
       height: "100%",
-      width: "100%",
+      width: "98%",
       position: "absolute",
       zIndex: "100",
       display: "flex",
