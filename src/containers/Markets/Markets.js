@@ -159,8 +159,8 @@ export default class Markets extends Component {
 
   refreshData=(account_id='', link='', sym='') => {
     var self=this;
-    if (self.state.last_heatmap_params.account_id != account_id &&
-        self.state.last_heatmap_params.link != link &&
+    if (self.state.last_heatmap_params.account_id != account_id ||
+        self.state.last_heatmap_params.link != link ||
         self.state.last_heatmap_params.sym != sym )
         self.setState({last_heatmap_params:{'account_id':account_id, 'link':link, 'sym':sym}})
     else

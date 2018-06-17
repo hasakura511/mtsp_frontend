@@ -71,3 +71,78 @@
     transform: rotate(360deg);
   }
 }
+
+@-webkit-keyframes spinnerClockMinRotate {
+  0% {
+    transform: rotate(0deg) translate(0, -18px);
+  }
+  100% {
+    transform: rotate(360deg) translate(0, -18px);
+  }
+}
+
+@keyframes spinnerClockMinRotate {
+  0% {
+    transform: rotate(0deg) translate(0, -18px);
+  }
+  100% {
+    transform: rotate(360deg) translate(0, -18px);
+  }
+}
+
+@-webkit-keyframes spinnerClockSecRotate {
+  0% {
+    transform: rotate(0deg) translate(0, -22px);
+  }
+  100% {
+    transform: rotate(360deg) translate(0, -22px);
+  }
+}
+
+@keyframes spinnerClockSecRotate {
+  0% {
+    transform: rotate(0deg) translate(0, -22px);
+  }
+  100% {
+    transform: rotate(360deg) translate(0, -22px);
+  }
+}
+
+.spinnerClock {
+  background: none;
+  position: relative;
+  width: 128px;
+  height: 128px;
+}
+
+.spinnerClock__clock {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: white;
+  border: 8px solid #00468c;
+  box-sizing: border-box;
+}
+
+.spinnerClock__minHand {
+  position: absolute;
+  width: 8px;
+  height: 40px;
+  top: 44px;
+  left: 60px;
+  background: #39444e;
+  border-radius: 5px;
+  animation: spinnerClockMinRotate 60s linear infinite;
+}
+
+.spinnerClock__secHand {
+  position: absolute;
+  width: 4px;
+  height: 48px;
+  top: 40px;
+  left: 62px;
+  background: #b4bec8;
+  border-radius: 2px;
+  animation: spinnerClockSecRotate 6s linear infinite;
+}

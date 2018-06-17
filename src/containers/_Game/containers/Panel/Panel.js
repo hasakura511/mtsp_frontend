@@ -246,6 +246,16 @@ export default class Panel extends Component {
       this.setState({performance_account_id:''});
     }
 
+    if (this.state.performance_account_id && this.state.isPerformance) {
+      if (newProps.accounts) {
+          var orderChip='';
+          newProps.accounts.map(account => {
+              if (account.account_id == this.state.performance_account_id)
+                orderChip=account;
+                this.setState({orderChip:orderChip});
+          });
+      }
+    }
   }
 
   /**
