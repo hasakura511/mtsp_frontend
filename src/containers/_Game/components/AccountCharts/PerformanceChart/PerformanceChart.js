@@ -15,7 +15,8 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-  Label
+  Label,
+  Area
 } from "recharts";
 
 import { connect } from "react-redux";
@@ -231,6 +232,15 @@ export default class PerformanceChart extends Component {
       performanceError:'',
       // endDate: 20180201
     };
+
+    this.area = null;
+    this.tooltip = null;
+    this.point = null;
+    this.toolTipX=0
+    this.toolTipY=0
+    
+    this.onChartMouseMove = this.onChartMouseMove.bind(this);
+    this.onChartMouseLeave = this.onChartMouseLeave.bind(this);
   }
 
   lookbackHandler = lookback => {
@@ -245,6 +255,62 @@ export default class PerformanceChart extends Component {
         </text>
       </g>
     );
+  }
+  yTick({ payload, x, y }) {
+    return (
+      <g transform={`translate(${x},${y+5})`}>
+        <text  x={0} y={0} textAnchor="end" >
+          $ {Math.floor(payload.value).toLocaleString('en-US', { maximumFractionDigits: 12 })}
+        </text>
+      </g>
+    );
+  }
+
+  onChartMouseMove(chart) {
+    if (chart.isTooltipActive) {
+      let point = this.area.props.points[chart.activeTooltipIndex];
+
+      if (point != this.point) {
+        this.point = point;
+        this.updateTooltip();
+      }
+    }
+  }
+
+  onChartMouseLeave() {
+    this.point = null;
+    this.updateTooltip();
+  }
+
+  updateTooltip() {
+    if (this.point) {
+      let x = Math.round(this.point.x);
+      let y = Math.round(this.point.y);
+
+      //this.tooltip.style.opacity = '1';
+      //this.tooltip.props.coordinate = { 'x': x, 'y': y } 
+      //this.tooltip.childNodes[0].innerHTML = this.point.payload['value'];
+    
+     if (x > this.tooltip.props.viewBox.width / 2) {
+      this.toolTipX=100
+      this.toolTipY=22
+      if (!this.priorT || this.priorT != 'right')  {
+        this.priorT='right';
+        this.forceUpdate();
+        console.log(this.tooltip)
+        console.log('x'+x, 'y'+y)
+      }
+     } else {
+      this.toolTipX=this.tooltip.props.viewBox.width -200;
+      this.toolTipY=22
+      if (!this.priorT || this.priorT != 'left')  {
+        this.priorT='left';
+        this.forceUpdate();
+        console.log(this.tooltip)
+        console.log('x'+x, 'y'+y)
+      }
+     }
+    }
   }
 
   componentDidMount() {
@@ -363,6 +429,8 @@ export default class PerformanceChart extends Component {
               data={chartData}
               
               margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+              onMouseMove={self.onChartMouseMove}
+              onMouseLeave={self.onChartMouseLeave}
             >
               <XAxis
                 dataKey="date"
@@ -378,17 +446,21 @@ export default class PerformanceChart extends Component {
                 />
               </XAxis>
               <YAxis
-                tickFormatter={value =>
-                  `${Math.floor(value).toLocaleString('en-US', { maximumFractionDigits: 12 })}`
+                tick={props => this.yTick(props)}
+                type={'number'}
+                tickFormatter={(value) =>
+                  {'$ ' + Math.floor(value).toLocaleString('en-US', { maximumFractionDigits: 12 })}
                 }
                 ticks={yticks}
                 domain={[yticks[yticks.length-1], yticks[0]]}
               />
               <CartesianGrid strokeDasharray="3 1" />
-              {<Tooltip 
-              content={<CustomTooltip colors={performance.colors} chip={self.props.chip} themes={self.props.themes} />} />}
+              {<Tooltip  position={{ 'x' :self.toolTipX, 'y' :self.toolTipY}} 
+              
+              content={<CustomTooltip  ref={ref => this.tooltip = ref} colors={performance.colors} chip={self.props.chip} themes={self.props.themes} />} />}
               <Legend />
               <Line
+                ref={ref => this.area = ref}
                 type="monotone"
                 dataKey={"benchmark_value" }
                 name={chartData[0].benchmark_sym     }
@@ -396,6 +468,7 @@ export default class PerformanceChart extends Component {
                 activeDot={{ r: 8 }}
                />
                 <Line
+                ref={ref => this.area = ref}
                 type="monotone"
                 name={"Account Value"}
                 dataKey={"account_value" }
@@ -405,6 +478,7 @@ export default class PerformanceChart extends Component {
             
             </LineChart>
           </ResponsiveContainer>
+          
         </div>
         </div>
         )}
