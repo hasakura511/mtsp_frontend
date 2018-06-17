@@ -239,6 +239,55 @@ export default class Markets extends Component {
       });
   }
 
+  refreshLinkData=(params)  => {
+    var self=this;
+
+    console.log("Refreshing LINK HEATMAP")
+    console.log(params)
+    this.setState({loading:true})
+    
+    axiosOpen
+      .post("/utility/market_heatmap/", params)
+       .then(response => {
+        console.log(response);
+        var data=response.data;
+        var liveDateText=response.data.date;
+        var date_str=response.data.date_str;
+        //alert(response.data.date_str)
+        //alert(response.data.date)
+        var groups= JSON.parse(response.data.groups)
+        var markets= JSON.parse(response.data.markets)
+        var themes = response.data.themes
+        data.groups=groups;
+        data.markets=markets;
+        data.themes=themes;
+        console.log(data);
+        console.log(groups)
+        console.log(markets)
+        console.log(themes)
+        
+       this.setState({
+          //controls: controls,
+          liveDateText:liveDateText,
+          date_str:date_str,
+          data:data,
+          themes:themes,
+          loading: false,
+          fetched: true,
+          refreshing:false,
+
+        });
+        
+      })
+      .catch((error) => {
+        console.log(error);
+        this.setState({ error: true, loading: false,refreshing:false });
+        this.props.addTimedToaster({
+          id: "contact-us-error",
+          text: "Server error, please wait till we fix."
+        });
+      });
+  }
 
   componentDidMount() {
     this.refreshData();
@@ -1308,18 +1357,19 @@ export default class Markets extends Component {
                   if (item.active_link) {
                     return (
                       <span key={key}> 
-                    <a  href='JavaScript:$(window).scrollTop($("#chartTop").offset().top-111);'  style={{color:self.state.themes.text_active}}
-                     onClick={() => { self.refreshData(item.account_id, item.link)}}>
+                    <a  href='#chartTop'  style={{color:self.state.themes.text_active}}
+                     onClick={() => { self.refreshLinkData(item)}}>
                       <font  style={{fontSize:"16px", fontWeight:400,color:self.state.themes.text_active}}><b>{key}</b></font>
                     </a>&nbsp;&nbsp;&nbsp;
                     </span>
                     )
                   } else {
                     return (
-                      <span  key={key}>
-                    <span style={{color:self.state.themes.text_inactive, fontSize:"16px", fontWeight:400,}} >
-                      <b>{key}</b>
-                    </span>&nbsp;&nbsp;&nbsp;
+                      <span key={key}> 
+                    <a  href='#chartTop'  style={{color:self.state.themes.text_inactive}}
+                     onClick={() => { self.refreshLinkData(item)}}>
+                      <font  style={{fontSize:"16px", fontWeight:400,color:self.state.themes.text_inactive}}><b>{key}</b></font>
+                    </a>&nbsp;&nbsp;&nbsp;
                     </span>
                     )
                   }
