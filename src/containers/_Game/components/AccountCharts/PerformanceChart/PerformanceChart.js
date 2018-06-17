@@ -331,6 +331,8 @@ export default class PerformanceChart extends Component {
       console.log(performance);
       if (performance.data_not_available) {
         var performanceError=performance.data_not_available_message;
+        if (!performanceError)
+          performanceError="Data Not Available";
         this.setState({
           performanceLoading: false,
           performanceError: performanceError
@@ -381,9 +383,9 @@ export default class PerformanceChart extends Component {
     var self=this;
     var chartData={};
     var yticks=[];
-    var xticks=[];
+    var xticks=[]; 
 
-    if (!performanceLoading) {
+    if (!performanceLoading && !performanceError && performance.chart_specs) {
       if (!lookback) {
         Object.keys(performance.chart_specs).map(date => {
             lookback=date;
