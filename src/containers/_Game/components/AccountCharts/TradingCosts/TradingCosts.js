@@ -317,12 +317,16 @@ export default class TradingCosts extends Component {
             },
             {
               Header:  props => <span><center><h4>{performance.last_date}</h4></center></span>, // Custom cell components!,
-
+              headerStyle: {
+                background:self.props.themes.live.dialog.table_right_background
+              },
               columns: [
                 {
                   Header: "Contracts Traded",
                   accessor: "Contracts Traded",
-                  Cell: props => (
+                  headerStyle: {
+                    background:self.props.themes.live.dialog.table_right_background
+                  },                  Cell: props => (
                     <span className='number'><center>
                     {parseFloat(props.value) ? (
                       <span style={parseFloat(props.value) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
@@ -343,7 +347,9 @@ export default class TradingCosts extends Component {
                 },
                 {
                   Header: "Exec vs Close Price",
-                  accessor: "Exec vs Close Price",
+                  headerStyle: {
+                    background:self.props.themes.live.dialog.table_right_background
+                  },                  accessor: "Exec vs Close Price",
                   Cell: props => (
                     <span className='number'><center>
                     {props.value && Math.abs(parseFloat(props.value)) != 0 ? (
@@ -367,7 +373,9 @@ export default class TradingCosts extends Component {
                 },
                 {
                   Header: "Commissions",
-                  accessor: "Commissions",
+                  headerStyle: {
+                    background:self.props.themes.live.dialog.table_right_background
+                  },                  accessor: "Commissions",
                   Cell: props => (
                     <span className='number'><center style={{color:self.props.themes.live.dialog.text}}>
                     {parseFloat(props.value) ? (
@@ -409,6 +417,9 @@ export default class TradingCosts extends Component {
                 },
                 {
                   Header: "Slippage",
+                  headerStyle: {
+                    background:self.props.themes.live.dialog.table_right_background
+                  },
                   accessor: "Slippage",
                   Cell: props => (
                     <span className='number'><center>
