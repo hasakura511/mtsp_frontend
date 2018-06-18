@@ -257,9 +257,9 @@ export default class OpenPositions extends Component {
                     <Spinner />
                 </div>
         ) : performanceError ? (
-          <div>
+          <div style={{height: innerHeight - 172 }}>
 
-          <center>  
+          <center >  
           <br/>
           <h4>
             {performanceError ? performanceError + "" :
@@ -270,7 +270,7 @@ export default class OpenPositions extends Component {
           </div>
         ) : (
 
-        <div className={classes.OpenPositions}>
+        <div className={classes.OpenPositions} style={{margin:"0px", background:self.props.themes.live.dialog.tab_color_active}} >
                 <span style={{margin:"0px", background:self.props.themes.live.dialog.tab_color_active, "float": "right", "width": "100%", "textAlign": "right"}}>
                   <img src="/images/infotext_button.png" width="22" style={{"marginRight":"5px"}}/>
                 </span>

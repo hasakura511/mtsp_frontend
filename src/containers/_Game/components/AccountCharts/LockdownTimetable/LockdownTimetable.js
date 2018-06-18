@@ -228,9 +228,9 @@ export default class LockdownTimetable extends Component {
                     <Spinner />
                 </div>
         ) : performanceError ? (
-          <div>
+          <div style={{height: innerHeight - 172 }}>
 
-          <center>  
+          <center >  
           <br/>
           <h4>
             {performanceError ? performanceError + "" :

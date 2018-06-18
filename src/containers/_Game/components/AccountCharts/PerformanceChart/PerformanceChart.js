@@ -409,9 +409,9 @@ export default class PerformanceChart extends Component {
                     <Spinner />
                 </div>
         ) : performanceError ? (
-          <div>
+          <div style={{height: innerHeight - 172 }}>
 
-          <center>  
+          <center >  
           <br/>
           <h4>
             {performanceError ? performanceError + "" :
@@ -422,7 +422,7 @@ export default class PerformanceChart extends Component {
           </div>
         ) : (
 
-      <div className={classes.PerformanceChart} style={{marginTop:"0px"}}>
+      <div className={classes.PerformanceChart} style={{margin:"0px", background:self.props.themes.live.dialog.tab_color_active}}>
         <div className={classes.Tabs} style={{  margin:"0px", background:self.props.themes.live.dialog.tab_color_active}}>
             {Object.keys(performance.chart_specs).map(date => {
                 console.log(date);

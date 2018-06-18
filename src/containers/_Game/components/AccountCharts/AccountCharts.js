@@ -89,7 +89,7 @@ export default class AccountCharts extends Component {
 
           <div className={classes.Tabs} style={{ background:self.props.themes.live.dialog.background,
         color:self.props.themes.live.dialog.text }}>
-            <div style={{width:"2px", margin:"0px", paddingLeft:"1px", paddingRight:"1px", paddingTop:"20px", paddingBottom:"20px",color: self.props.themes.live.dialog.lines, background:self.props.themes.live.dialog.lines}}>
+            <div style={{width:"1px", margin:"0px", paddingLeft:"1px", paddingRight:"0px", paddingTop:"20px", paddingBottom:"20px",color: self.props.themes.live.dialog.lines, background:self.props.themes.live.dialog.lines}}>
             
             </div>
             <div
@@ -103,7 +103,7 @@ export default class AccountCharts extends Component {
             >
               Performance
             </div>
-            <div style={{width:"2px", margin:"0px", paddingLeft:"1px", paddingRight:"1px", paddingTop:"20px", paddingBottom:"20px",color: self.props.themes.live.dialog.lines, background:self.props.themes.live.dialog.lines}}>
+            <div style={{width:"1px", margin:"0px", paddingLeft:"1px", paddingRight:"0px", paddingTop:"20px", paddingBottom:"20px",color: self.props.themes.live.dialog.lines, background:self.props.themes.live.dialog.lines}}>
             
             </div>
 
@@ -118,7 +118,7 @@ export default class AccountCharts extends Component {
             >
               Current PnL
             </div>
-            <div style={{width:"2px", margin:"0px", paddingLeft:"1px", paddingRight:"1px", paddingTop:"20px", paddingBottom:"20px",color: self.props.themes.live.dialog.lines, background:self.props.themes.live.dialog.lines}}>
+            <div style={{width:"1px", margin:"0px", paddingLeft:"1px", paddingRight:"0px", paddingTop:"20px", paddingBottom:"20px",color: self.props.themes.live.dialog.lines, background:self.props.themes.live.dialog.lines}}>
             
             </div>
             <div
@@ -132,7 +132,7 @@ export default class AccountCharts extends Component {
             >
               Previous PnL
             </div>
-            <div style={{width:"2px", margin:"0px", paddingLeft:"1px", paddingRight:"1px", paddingTop:"20px", paddingBottom:"20px",color: self.props.themes.live.dialog.lines, background:self.props.themes.live.dialog.lines}}>
+            <div style={{width:"1px", margin:"0px", paddingLeft:"1px", paddingRight:"0px", paddingTop:"20px", paddingBottom:"20px",color: self.props.themes.live.dialog.lines, background:self.props.themes.live.dialog.lines}}>
             
             </div>
             <div
@@ -146,7 +146,7 @@ export default class AccountCharts extends Component {
             >
               Trading Costs
             </div>
-            <div style={{width:"2px", margin:"0px", paddingLeft:"1px", paddingRight:"1px", paddingTop:"20px", paddingBottom:"20px",color: self.props.themes.live.dialog.lines, background:self.props.themes.live.dialog.lines}}>
+            <div style={{width:"1px", margin:"0px", paddingLeft:"1px", paddingRight:"0px", paddingTop:"20px", paddingBottom:"20px",color: self.props.themes.live.dialog.lines, background:self.props.themes.live.dialog.lines}}>
             
             </div>
             <div
@@ -160,7 +160,7 @@ export default class AccountCharts extends Component {
             >
               Lockdown Timetable
             </div>
-            <div style={{width:"2px", margin:"0px", paddingLeft:"1px", paddingRight:"1px", paddingTop:"20px", paddingBottom:"20px",color: self.props.themes.live.dialog.lines, background:self.props.themes.live.dialog.lines}}>
+            <div style={{width:"1px", margin:"0px", paddingLeft:"1px", paddingRight:"0px", paddingTop:"20px", paddingBottom:"20px",color: self.props.themes.live.dialog.lines, background:self.props.themes.live.dialog.lines}}>
             
             </div>
           </div>
