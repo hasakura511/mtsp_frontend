@@ -352,7 +352,10 @@ const reducer = (state = initialState, action) => {
         var lSys = state.leftSystems;
         var rSys = state.rightSystems;
         var bSys = state.bottomSystems;
+        var acc=state.accounts;
+
         if (state.isLive) {
+          acc=checkChipsLock(acc, liveDate);
           chips.balanceChips=checkChipsLock(chips.balanceChips, liveDate);
           chips.bettingChips=checkChipsLock(chips.bettingChips, liveDate);
           tSys = state.topSystems.map(system => {
@@ -379,6 +382,7 @@ const reducer = (state = initialState, action) => {
             ...state,
             //simulatedDate,
             liveDate,
+            accounts:acc,
             inGameChips:chips,  
             topSystems:tSys,
             leftSystems:lSys,
