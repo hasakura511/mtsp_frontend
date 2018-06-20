@@ -214,6 +214,12 @@ export default class OrderDialog extends Component {
     this._isMounted = true;
   }
 
+  componentWillReceiveProps(newProps) {
+    console.log("OrderDialog Received New Props")
+    console.log(newProps)
+    
+  }
+
   toggleSystem = event => {
     this.setState(prevState => ({ isAnti: !prevState.isAnti }));
   };

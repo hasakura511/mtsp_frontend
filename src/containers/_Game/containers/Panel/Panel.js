@@ -234,7 +234,6 @@ export default class Panel extends Component {
     console.log(newProps);
     //console.log(newProps.balanceChips);
     //console.log(newProps.bettingChips);
-    this.makeBoard(newProps);
     if (newProps.performance_account_id && newProps.performance_account_id != this.state.performance_account_id) {
       var chip='';
       this.props.accounts.map(account => {
@@ -255,7 +254,8 @@ export default class Panel extends Component {
               if (account.account_id == this.state.performance_account_id) {
                 orderChip=account;
                 self.setState({orderChip:orderChip});
-                console.log("new state for chip " + orderChip);
+                console.log("new state for chip " + account.account_id);
+                console.log(orderChip);
               }
           });
           if (updated) 
@@ -263,6 +263,7 @@ export default class Panel extends Component {
 
       }
     }
+    this.makeBoard(newProps);
   }
 
   /**
