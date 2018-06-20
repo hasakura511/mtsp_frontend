@@ -256,6 +256,7 @@ export default class Panel extends Component {
                 self.setState({orderChip:orderChip});
                 console.log("new state for chip " + account.account_id);
                 console.log(orderChip);
+                updated=true;
               }
           });
           if (updated) 

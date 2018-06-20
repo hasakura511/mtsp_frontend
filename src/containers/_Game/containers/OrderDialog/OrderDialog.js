@@ -19,7 +19,8 @@ const stateToProps = state => {
     dictionary_strategy: state.betting.dictionary_strategy,
     mute:state.betting.mute,
     themes:state.betting.themes,
-    
+    accounts:state.betting.accounts,
+
   };
 };
 
@@ -53,6 +54,29 @@ export default class OrderDialog extends Component {
    * @param {any} props
    * @memberof OrderDialog
    */
+
+  static propTypes = {
+    slot: PropTypes.object,
+    chip: PropTypes.object.isRequired,
+    successHandler: PropTypes.func.isRequired,
+    toggle: PropTypes.func.isRequired,
+    rankingLoading: PropTypes.bool.isRequired,
+    rankingData: PropTypes.array,
+    rankingError: PropTypes.object,
+    simulatedDate: PropTypes.string.isRequired,
+    addLast3DaysProfit: PropTypes.func.isRequired,
+    addBet: PropTypes.func.isRequired,
+    isAuth: PropTypes.bool.isRequired,
+    isLive: PropTypes.bool.isRequired,
+    dictionary_strategy:PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
+    addTimedToaster: PropTypes.func.isRequired,
+    mute:PropTypes.bool.isRequired,
+    isPerformance: PropTypes.bool,
+    performance_account_id: PropTypes.string,
+    themes:PropTypes.object.isRequired,
+    accounts:PropTypes.array.isRequired,
+  };
 
   constructor(props) {
     super(props);
@@ -216,8 +240,26 @@ export default class OrderDialog extends Component {
 
   componentWillReceiveProps(newProps) {
     console.log("OrderDialog Received New Props")
-    console.log(newProps)
-    
+    console.log(newProps);
+    if (this.state.performance_account_id && this.state.isPerformance) {
+      if (newProps.accounts) {
+          var orderChip='';
+          var updated=false;
+          newProps.accounts.map(account => {
+              if (account.account_id == this.state.performance_account_id) {
+                orderChip=account;
+                self.setState({orderChip:orderChip});
+                console.log("new state for chip " + account.account_id);
+                console.log(orderChip);
+                updted=true;
+              }
+          });
+          if (updated) 
+            self.forceUpdate();
+
+      }
+    }
+
   }
 
   toggleSystem = event => {
@@ -380,6 +422,7 @@ export default class OrderDialog extends Component {
             
           <Order
             {...this.props}
+            chip={this.props.chip}
             dictionary_strategy={this.props.dictionary_strategy}
             isLive={this.props.isLive}
             isPerformance={this.props.isPerformance}
@@ -414,25 +457,5 @@ export default class OrderDialog extends Component {
     );
   }
 
-  static propTypes = {
-    slot: PropTypes.object,
-    chip: PropTypes.object.isRequired,
-    successHandler: PropTypes.func.isRequired,
-    toggle: PropTypes.func.isRequired,
-    rankingLoading: PropTypes.bool.isRequired,
-    rankingData: PropTypes.array,
-    rankingError: PropTypes.object,
-    simulatedDate: PropTypes.string.isRequired,
-    addLast3DaysProfit: PropTypes.func.isRequired,
-    addBet: PropTypes.func.isRequired,
-    isAuth: PropTypes.bool.isRequired,
-    isLive: PropTypes.bool.isRequired,
-    dictionary_strategy:PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired,
-    addTimedToaster: PropTypes.func.isRequired,
-    mute:PropTypes.bool.isRequired,
-    isPerformance: PropTypes.bool,
-    performance_account_id: PropTypes.string,
-    themes:PropTypes.object.isRequired
-  };
+
 }
