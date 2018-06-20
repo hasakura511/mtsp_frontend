@@ -75,16 +75,46 @@ export default class Order extends React.Component {
       dictionary_strategy:PropTypes.object.isRequired,
       isPerformance:PropTypes.bool,
       performance_account_id:PropTypes.string,
-      themes:PropTypes.object
+      themes:PropTypes.object,
+      accounts:PropTypes.array.isRequired
     };
     
     
   constructor(props) {
     super(props);
+    this.state={}
+
   }
 
+  
+  componentWillReceiveProps(newProps) {
+    console.log("Order Received New Props")
+    console.log(newProps);
+    var self=this;
+    if (this.props.performance_account_id && this.props.isPerformance) {
+      if (newProps.accounts) {
+          var orderChip='';
+          var updated=false;
+          newProps.accounts.map(account => {
+              if (account.account_id == this.props.performance_account_id) {
+                orderChip=account;
+                self.setState({orderChip:orderChip});
+                console.log("new state for chip " + account.account_id);
+                console.log(orderChip);
+                updated=true;
+              }
+          });
+          if (updated) 
+            self.forceUpdate();
+
+      }
+    }
+
+  }
   render() {
-      const { slot, chip, setAnti, setNotAnti, isAnti, toAntiSystem, submitBetHandler, close, isLive,  dictionary_strategy, isPerformance } = this.props;
+      var { slot, chip, setAnti, setNotAnti, isAnti, toAntiSystem, submitBetHandler, close, isLive,  dictionary_strategy, isPerformance, accounts } = this.props;
+      if (this.state.orderChip) 
+        chip=this.state.orderChip;
       console.log(slot);
       var isNumbered;
       if (!isPerformance) {

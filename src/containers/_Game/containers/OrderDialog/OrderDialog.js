@@ -252,7 +252,7 @@ export default class OrderDialog extends Component {
                 self.setState({orderChip:orderChip});
                 console.log("new state for chip " + account.account_id);
                 console.log(orderChip);
-                updted=true;
+                updated=true;
               }
           });
           if (updated) 
@@ -400,7 +400,7 @@ export default class OrderDialog extends Component {
       showModal,
       isAnti
     } = this.state;
-    const { rankingError, rankingData, rankingLoading } = this.props;
+    const { rankingError, rankingData, rankingLoading, accounts } = this.props;
     var self=this;
     var background='white';
     var text='black';
