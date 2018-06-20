@@ -242,20 +242,24 @@ export default class Panel extends Component {
             chip=account;
       });
       self.setState({showOrderDialog:true, performance_account_id:newProps.performance_account_id, orderChip:chip, isPerformance:true});
-      self.forceUpdate();
+      //self.forceUpdate();
     } else if (!newProps.performance_account_id) {
-      self.setState({performance_account_id:''});
+      this.setState({performance_account_id:''});
     }
 
     if (this.state.performance_account_id && this.state.isPerformance) {
       if (newProps.accounts) {
           var orderChip='';
+          var updated=false;
           newProps.accounts.map(account => {
-              if (account.account_id == this.state.performance_account_id)
+              if (account.account_id == this.state.performance_account_id) {
                 orderChip=account;
                 self.setState({orderChip:orderChip});
+                console.log("new state for chip " + orderChip);
+              }
           });
-          self.forceUpdate();
+          if (updated) 
+            self.forceUpdate();
 
       }
     }
