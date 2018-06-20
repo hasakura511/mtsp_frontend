@@ -228,7 +228,7 @@ export default class Panel extends Component {
   }
 
   componentWillReceiveProps(newProps) {
-
+    var self=this;
 
     console.log("Panel received new prop");
     console.log(newProps);
@@ -241,9 +241,10 @@ export default class Panel extends Component {
           if (account.account_id == newProps.performance_account_id)
             chip=account;
       });
-      this.setState({showOrderDialog:true, performance_account_id:newProps.performance_account_id, orderChip:chip, isPerformance:true});
+      self.setState({showOrderDialog:true, performance_account_id:newProps.performance_account_id, orderChip:chip, isPerformance:true});
+      self.forceUpdate();
     } else if (!newProps.performance_account_id) {
-      this.setState({performance_account_id:''});
+      self.setState({performance_account_id:''});
     }
 
     if (this.state.performance_account_id && this.state.isPerformance) {
@@ -252,8 +253,10 @@ export default class Panel extends Component {
           newProps.accounts.map(account => {
               if (account.account_id == this.state.performance_account_id)
                 orderChip=account;
-                this.setState({orderChip:orderChip});
+                self.setState({orderChip:orderChip});
           });
+          self.forceUpdate();
+
       }
     }
   }
