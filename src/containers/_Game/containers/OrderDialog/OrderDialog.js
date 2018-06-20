@@ -241,6 +241,7 @@ export default class OrderDialog extends Component {
   componentWillReceiveProps(newProps) {
     console.log("OrderDialog Received New Props")
     console.log(newProps);
+
     if (this.state.performance_account_id && this.state.isPerformance) {
       if (newProps.accounts) {
           var orderChip='';
