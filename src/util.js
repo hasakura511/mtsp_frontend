@@ -369,3 +369,20 @@ export const numberWithCommas = (x) => {
   else
     return y.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
+
+export const adjustHeaders = (bgColor) => {
+  const tableBody = document.querySelector('.rt-tbody');
+  const tBodyWidth = tableBody.clientWidth;
+  const tBodyStyle = window.getComputedStyle(tableBody);
+  const tBodyOuterWidth = parseInt(tBodyStyle.width.slice(0, -2));
+  const headerRows = document.querySelectorAll('.rt-thead > .rt-tr');
+
+  const margin = tBodyWidth < tBodyOuterWidth ?
+       tBodyOuterWidth - tBodyWidth :
+       0;
+
+  headerRows.forEach(r => {
+      r.style.marginRight = margin + 'px';
+      r.style.background = bgColor;
+  });
+}

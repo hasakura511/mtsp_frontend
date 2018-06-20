@@ -228,7 +228,7 @@ export default class LockdownTimetable extends Component {
                     <Spinner />
                 </div>
         ) : performanceError ? (
-          <div style={{height: innerHeight - 172 }}>
+          <div style={{height: innerHeight - 172,  background: self.props.isdialog ? self.props.themes.live.dialog.background : self.props.themes.live.dialog.tab_color_active} }>
 
           <center >  
           <br/>

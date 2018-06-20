@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { toWordedDate, toSlashDate } from "../../../../../util";
+import { toWordedDate, toSlashDate,adjustHeaders } from "../../../../../util";
 import classes from "./TradingCosts.css";
 import Spinner from "../../../../../components/UI/Spinner/Spinner";
 import axios from "../../../../../axios-gsm";
@@ -218,6 +218,8 @@ export default class TradingCosts extends Component {
             performanceLoading: false,
             performance
           });
+
+         
         }
     })
     .catch(performanceError => {
@@ -256,7 +258,7 @@ export default class TradingCosts extends Component {
                     <Spinner />
                 </div>
         ) : performanceError ? (
-          <div style={{height: innerHeight - 172 }}>
+          <div style={{height: innerHeight - 172,  background: self.props.themes.live.dialog.tab_color_active} }>
 
           <center >  
           <br/>
@@ -267,6 +269,7 @@ export default class TradingCosts extends Component {
           </center>
           
           </div>
+
         ) : (
 
         <div className={classes.TradingCosts} style={{margin:"0px", background:self.props.themes.live.dialog.tab_color_active}}>

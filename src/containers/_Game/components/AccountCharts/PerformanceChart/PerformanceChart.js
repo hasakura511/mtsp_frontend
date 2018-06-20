@@ -68,6 +68,7 @@ class CustomTooltip extends Component {
         benchmark_cumpct,
         benchmark_value,
         benchmark_sym,
+        last_selection,
         //position
       } = payload[0].payload;
       // example payload for testing purpose:
@@ -144,7 +145,7 @@ class CustomTooltip extends Component {
           <div className={classes.Row} style={{ color: this.props.colors.account_value }}>
             <p>
               <span><b>Bet: </b></span>
-              <span style={{color:self.props.themes.live.dialog.text}}>{this.props.chip.last_selection}</span>
+              <span style={{color:self.props.themes.live.dialog.text}}>{last_selection}</span>
             </p>
           </div>
 
@@ -409,10 +410,10 @@ export default class PerformanceChart extends Component {
                     <Spinner />
                 </div>
         ) : performanceError ? (
-          <div style={{height: innerHeight - 172 }}>
+          <div style={{height: innerHeight - 172,  background: self.props.themes.live.dialog.tab_color_active} }>
 
           <center >  
-          <br/>
+          <br/> 
           <h4>
             {performanceError ? performanceError + "" :
               "Data not Available"}
@@ -420,6 +421,7 @@ export default class PerformanceChart extends Component {
           </center>
           
           </div>
+
         ) : (
 
       <div className={classes.PerformanceChart} style={{margin:"0px", background:self.props.themes.live.dialog.tab_color_active}}>

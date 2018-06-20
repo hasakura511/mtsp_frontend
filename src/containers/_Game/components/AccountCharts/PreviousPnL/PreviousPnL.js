@@ -262,7 +262,7 @@ export default class PreviousPnL extends Component {
                     <Spinner />
                 </div>
         ) : performanceError ? (
-          <div style={{height: innerHeight - 172 }}>
+          <div style={{height: innerHeight - 172,  background: self.props.themes.live.dialog.tab_color_active} }>
 
           <center >  
           <br/>
@@ -273,6 +273,7 @@ export default class PreviousPnL extends Component {
           </center>
           
           </div>
+
         ) : (
 
         <div className={classes.PreviousPnL} style={{margin:"0px", background:self.props.themes.live.dialog.tab_color_active}}>

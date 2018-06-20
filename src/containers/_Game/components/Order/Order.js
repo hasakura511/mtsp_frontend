@@ -261,7 +261,7 @@ const order = props => {
       {isLive ? (
 
         <div className={classes.Content}>
-          <AccountCharts {...props} />
+          <AccountCharts chip={chip} {...props} />
         </div>
 
 
