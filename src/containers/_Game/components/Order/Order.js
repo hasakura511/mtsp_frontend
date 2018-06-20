@@ -123,7 +123,7 @@ const order = props => {
         
         <div
           className={classes.ElementContainer}
-          style={{ paddingTop: "15px",background:self.props.themes.live.dialog.background,
+          style={{ paddingTop: "15px",background:self.props.themes.live.dialog.background_inner,
           color:self.props.themes.live.dialog.text }}
         >
           <Chip chip={chip} />
