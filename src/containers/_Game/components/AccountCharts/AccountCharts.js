@@ -93,7 +93,7 @@ export default class AccountCharts extends Component {
             
             </div>
             <div
-              style={ isPerformance ? {borderTop:"1px solid " + self.props.themes.live.dialog.lines,  borderColor:self.props.themes.live.dialog.lines, background:self.props.themes.live.dialog.tab_color_active, minWidth:'180px'}
+              style={ isPerformance ? {borderColor:self.props.themes.live.dialog.lines, borderTop:"1px solid " + self.props.themes.live.dialog.lines, background:self.props.themes.live.dialog.tab_color_active, minWidth:'180px'}
                : {borderTop:"1px solid " + self.props.themes.live.dialog.lines,  borderColor:self.props.themes.live.dialog.lines, background:self.props.themes.live.dialog.tab_color_inactive, minWidth:'180px'} } 
               className={
                 classes.Tab

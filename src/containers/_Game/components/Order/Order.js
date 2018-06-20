@@ -113,8 +113,12 @@ export default class Order extends React.Component {
   }
   render() {
       var { slot, chip, setAnti, setNotAnti, isAnti, toAntiSystem, submitBetHandler, close, isLive,  dictionary_strategy, isPerformance, accounts } = this.props;
-      if (this.state.orderChip) 
+      if (this.state.orderChip)  {
         chip=this.state.orderChip;
+        console.log('Order Rendering Chip')
+        console.log(chip)
+      }
+
       console.log(slot);
       var isNumbered;
       if (!isPerformance) {

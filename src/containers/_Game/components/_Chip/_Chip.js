@@ -20,6 +20,7 @@ const stateToProps = state => {
     //simulatedDate: state.betting.simulatedDate,
     //dashboard_totals:state.betting.dashboard_totals,
     isLive:state.betting.isLive,
+    accounts:state.betting.accounts,
     //heatmap_selection:state.betting.heatmap_selection,
     //liveDate:state.betting.liveDate,
   };
@@ -99,17 +100,47 @@ export default class Chip extends PureComponent {
     dragPreview: PropTypes.any,
     isLive:PropTypes.bool.isRequired,
     showHeatmap:PropTypes.func.isRequired,
+    accounts:PropTypes.array.isRequired,
     //heatmap_selection:PropTypes.string
   };
 
   constructor(props) {
     super(props);
+    this.state={
+      chip:this.props.chip
+    }
 
   }
 
+  componentWillReceiveProps(newProps) {
+    console.log("Chip Received New Props")
+    console.log(newProps);
+    var self=this;
+    if (newProps.chip && newProps.chip != this.state.chip) {
+      self.setState({chip:newProps.chip});
+      
+    }
+    if (newProps.accounts) {
+          var updated=false;
+          newProps.accounts.map(account => {
+              if (account.account_id == self.props.chip.account_id) {
+                self.setState({chip:account});
+                console.log("Chip Received new state for chip " + account.account_id);
+                console.log(account);
+                updated=true;
+              }
+          });
+          if (updated) 
+            self.forceUpdate();
+
+      }
+  }
+
+
 
   render() {
-    const { dragSource, isDragging, dragPreview, canDrag, chip, showHeatmap, isLive } = this.props;
+    const { dragSource, isDragging, dragPreview, canDrag, showHeatmap, isLive } = this.props;
+    const {chip} = this.state;
     const img = new Image();
     img.style = {
       width: "48px",
