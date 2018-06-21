@@ -272,6 +272,7 @@ export default class LiveBoard extends Component {
       return;
     else
       this.setState({refreshing:true})
+    this.forceUpdate();
     
     //console.log(this.props);
     axios
