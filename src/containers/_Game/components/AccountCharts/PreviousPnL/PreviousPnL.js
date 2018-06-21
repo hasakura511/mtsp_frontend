@@ -427,7 +427,7 @@ export default class PreviousPnL extends Component {
                     ) : null}
                     &nbsp;
                     <b>
-                      $ {Math.round(Math.round(parseFloat(props.value))).toLocaleString('en-US', { maximumFractionDigits: 12 })} 
+                      $ {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} 
                     </b>
                     </center></span>
                   ), // Custom cell components!,
@@ -444,7 +444,8 @@ export default class PreviousPnL extends Component {
                               }
                             />
                           ) : null}
-                          <b> $ {performance.pnl_total} </b>
+                          <b> $ {parseFloat(performance.pnl_total).toLocaleString('en-US', { maximumFractionDigits: 12 })}
+                          </b>
                         </center>
                        ):null}
                       </span>

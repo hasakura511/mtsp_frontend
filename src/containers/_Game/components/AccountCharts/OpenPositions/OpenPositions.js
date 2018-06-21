@@ -460,7 +460,7 @@ export default class OpenPositions extends Component {
                       <img src={parseFloat(props.value) > 0 ? gainIcon : lossIcon} />
                     ) : null}
                     <b>
-                    $ {Math.round(Math.round(parseFloat(props.value))).toLocaleString('en-US', { maximumFractionDigits: 12 })} 
+                    $ {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} 
                     </b>
                     </center></span>
                   ), // Custom cell components!,
@@ -478,7 +478,7 @@ export default class OpenPositions extends Component {
                               }
                             />
                           ) : null}
-                          <b>$  {Math.round(Math.round(performance.pnl_total)).toLocaleString('en-US', { maximumFractionDigits: 12 })}</b>
+                          <b>$  {parseFloat(performance.pnl_total).toLocaleString('en-US', { maximumFractionDigits: 12 })}</b>
                         </center>
                        ):null}
                       </span>

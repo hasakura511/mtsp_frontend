@@ -411,7 +411,8 @@ export default class TradingCosts extends Component {
                             />
                           ) : null}
                            <b>
-                            $ {Math.round(Math.round(performance.commissions_total)).toLocaleString('en-US', { maximumFractionDigits: 12 })} 
+                            $ {parseFloat(performance.commissions_total).toLocaleString('en-US', { maximumFractionDigits: 12 })}
+                             
                             </b>
                         </center>
                        ):null}
