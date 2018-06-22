@@ -512,6 +512,7 @@ export default class RankingChart extends Component {
         ) : (
 
       <div className={classes.RankingChart} style={{margin:"0px", background:self.props.themes.live.dialog.tab_color_active}}>
+        <br/>
          <div className={classes.Tabs} style={{  margin:"0px", background:self.props.themes.live.dialog.tab_color_active}}>
             {performance.chart_specs.map(item => {
                 console.log(item);
@@ -547,7 +548,7 @@ export default class RankingChart extends Component {
         <div className={classes.ChartContainer}>
         <ResponsiveContainer
           width="100%"
-          height={innerHeight - 190}
+          height={innerHeight - 230}
           maxHeight="100%"
         >
           <BarChart
