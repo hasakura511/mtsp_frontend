@@ -189,8 +189,12 @@ export default class RankingChart extends Component {
     this.onChartMouseLeave = this.onChartMouseLeave.bind(this);
   }
 
-  lookbackHandler = lookback => {
+  filterHandler = lookback => {
     this.setState({ filter:lookback });
+  };
+
+  lookbackHandler = lookback => {
+    this.setState({ lookback:lookback });
   };
 
   xTick({ payload, x, y }) {
@@ -470,9 +474,7 @@ export default class RankingChart extends Component {
       });
 
       performance.chart_specs.map(period => {
-        if (period != lookback) {
           chartData['color_' + period]=performance.chart_dict[period].color;
-        }
       });
       console.log('chart data');
       console.log(lookback);
@@ -510,16 +512,38 @@ export default class RankingChart extends Component {
         ) : (
 
       <div className={classes.RankingChart} style={{margin:"0px", background:self.props.themes.live.dialog.tab_color_active}}>
-        <div className={classes.Tabs} style={{  margin:"0px", background:self.props.themes.live.dialog.tab_color_active}}>
-            {filters.map(item => {
+         <div className={classes.Tabs} style={{  margin:"0px", background:self.props.themes.live.dialog.tab_color_active}}>
+            {performance.chart_specs.map(item => {
                 console.log(item);
                 return (
-          <div key={item.value} className={classes.Tab}  style={{marginTop: "0px", minWidth: "200px", background:self.props.themes.live.dialog.tab_color_active}} onClick={() => this.lookbackHandler(item.value)}>
-            <p className={filter === item.value ? classes.active : ""}>{item.name}</p>
+          <div key={item} className={classes.Tab}  style={{marginTop: "0px", minWidth: "200px", background:self.props.themes.live.dialog.tab_color_active}} onClick={() => this.lookbackHandler(item)}>
+
+            
+            <div className={classes.box} style={{float:'left', marginTop:"2px", background:chartData['color_' + item]}}>&nbsp;</div>
+            <div style={{float:'left'}}>&nbsp;&nbsp;
+            </div>
+            <p className={lookback === item ? classes.active : ""} style={{float:'left'}}>{item} Day Cumulative %Chg</p>
+            <div style={{"clear": "both"}}></div>
+
           </div>
             )
             })}
         </div>
+        <br/>
+        <br/>
+        <div className={classes.Tabs} style={{  margin:"0px", background:self.props.themes.live.dialog.tab_color_active}}>
+            {filters.map(item => {
+                console.log(item);
+                return (
+          <div key={item.value} className={classes.Tab}  style={{marginTop: "0px", minWidth: "200px", background:self.props.themes.live.dialog.tab_color_active}} onClick={() => this.filterHandler(item.value)}>
+            <center  className={classes.Tab} >
+            <p className={filter === item.value ? classes.active : ""}>{item.name}</p>
+            </center>
+          </div>
+            )
+            })}
+        </div>
+       
         <div className={classes.ChartContainer}>
         <ResponsiveContainer
           width="100%"
@@ -554,7 +578,7 @@ export default class RankingChart extends Component {
               content={<CustomTooltip  ref={ref => this.tooltip = ref} lookback={lookback} chart_specs={performance.chart_specs} slot_position={self.props.slot.position.toString()} chip={self.props.chip} 
               dictionary_strategy={self.props.dictionary_strategy} themes={self.props.themes} />} />  
               
-         
+              {/*
              <Legend
               verticalAlign="top"
               wrapperStyle={{ lineHeight: "40px" }}
@@ -573,6 +597,7 @@ export default class RankingChart extends Component {
 
             }
             />
+          */}
             
             {performance.chart_specs.map(period => {   
               return <Bar
