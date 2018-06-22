@@ -127,6 +127,10 @@ export default class LeaderBoardLive extends Component {
         console.log(performance);
         var dataJson= JSON.parse(performance.leaderboard);
         performance.leaderboard=dataJson;
+        Object.keys(performance.leaderboard).map(key => {
+          performance.leaderboard[key]['chip_id']=key;
+
+        })
         
         console.log(performance);
 
@@ -328,7 +332,7 @@ export default class LeaderBoardLive extends Component {
                             <span key={item} className={classes.Tab}  style={{marginTop: "0px", background:self.props.themes.live.dialog.tab_color_active}} onClick={() => {
                                 console.log("Apply Filter");
                                 self.getData('Paper-Live', key);
-                                
+
                                 self.setState({filter:item});
                             }}>
                             <span className={filter === item ? classes.active : ""}>{item} </span> &nbsp;&nbsp;&nbsp;  
