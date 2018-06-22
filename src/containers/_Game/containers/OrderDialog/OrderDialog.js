@@ -76,6 +76,7 @@ export default class OrderDialog extends Component {
     performance_account_id: PropTypes.string,
     themes:PropTypes.object.isRequired,
     accounts:PropTypes.array.isRequired,
+    moveChipToSlot:PropTypes.func,
   };
 
   constructor(props) {
@@ -440,6 +441,7 @@ export default class OrderDialog extends Component {
             themes={this.props.themes}
             close={this.toggle}
             isAnti={isAnti}
+            moveChipToSlot={this.props.moveChipToSlot}
           />
           </div>
 

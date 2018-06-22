@@ -79,6 +79,7 @@ class OrderCharts extends Component {
                 </p>
               ) : (
                 <RankingChart
+                  moveChipToSlot={this.props.moveChipToSlot}
                   rankingData={rankingData}
                   chip={chip}
                   slot={slot}
@@ -101,7 +102,8 @@ OrderCharts.propTypes = {
   rankingError: PropTypes.object,
   chip: PropTypes.object.isRequired,
   slot: PropTypes.object.isRequired,
-  close: PropTypes.func.isRequired
+  close: PropTypes.func.isRequired,
+  moveChipToSlot:PropTypes.func
 };
 
 export default OrderCharts;

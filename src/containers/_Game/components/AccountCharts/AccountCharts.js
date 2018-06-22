@@ -55,6 +55,7 @@ export default class AccountCharts extends Component {
     showPerformance:PropTypes.func.isRequired,
     themes:PropTypes.object.isRequired,
     isOrder:PropTypes.bool.isRequired,
+    moveChipToSlot:PropTypes.func
   };
   constructor(props) {
     super(props);
@@ -220,7 +221,7 @@ export default class AccountCharts extends Component {
               
               {isRankingChart ? (
                 <div className={classes.Content}>
-                  <RankingChart  chip={this.props.chip} slot={this.props.slot} toggle={this.props.toggle}/>
+                  <RankingChart  moveChipToSlot={this.props.moveChipToSlot} chip={this.props.chip} slot={this.props.slot} toggle={this.props.toggle}/>
                 </div>
               ) : (
               null

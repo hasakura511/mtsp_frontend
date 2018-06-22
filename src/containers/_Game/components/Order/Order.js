@@ -76,7 +76,8 @@ export default class Order extends React.Component {
       isPerformance:PropTypes.bool,
       performance_account_id:PropTypes.string,
       themes:PropTypes.object,
-      accounts:PropTypes.array.isRequired
+      accounts:PropTypes.array.isRequired,
+      moveChipToSlot:PropTypes.func,
     };
     
     
@@ -368,7 +369,7 @@ export default class Order extends React.Component {
 
           ) :  (
               <div className={classes.Content}>
-                <OrderCharts position={slot.position} {...this.props} />
+                <OrderCharts position={slot.position} moveChipToSlot={this.props.moveChipToSlot} {...this.props} />
                 {/* // performance={performance}
                 // rankingError={rankingError}
                 // rankingLoading={rankingLoading}

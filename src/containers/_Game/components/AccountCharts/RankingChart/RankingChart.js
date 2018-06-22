@@ -196,7 +196,13 @@ export default class RankingChart extends Component {
   xTick({ payload, x, y }) {
     return (
       <g transform={`translate(${x},${y})`}>
-        <text x={0} y={0} dy={16} textAnchor="end" transform="rotate(-45)">
+        <text x={0} y={0} dy={16} textAnchor="end" transform="rotate(-45)" style={{cursor:'pointer'}} onClick={() => {
+          console.log("Clicked on " + payload);
+
+          console.log(payload)
+
+        } }>
+        
           {payload.value}
         </text>
       </g>
@@ -327,6 +333,7 @@ export default class RankingChart extends Component {
 
 
   getColor({ x, y, payload }, chartData) {
+    var self=this;
     // tickObj.payload.value will be the string value "1" or "2" or "prev1" etc but with ranks
     const value = payload.index; //value.split("(")[0].trim();
     //console.log(chartData);
@@ -364,6 +371,19 @@ export default class RankingChart extends Component {
           fill={color || "#8884d8"}
           transform="rotate(-70)"
           fontSize={14}
+          style={{cursor:'pointer'}} onClick={() => {
+            console.log("Clicked on " + payload.value);
+            
+            var order=payload.value;
+            order=order.replace(/\ \(.*\)/,'');
+            if (order.match(/^[\d]+$/)) {
+              order=parseInt(order);
+            }
+            self.props.moveChipToSlot(self.props.chip, order);
+
+            console.log(order)
+  
+          } }
         >
           {payload.value}
         </text>
@@ -587,6 +607,7 @@ export default class RankingChart extends Component {
     chip:PropTypes.object,
     liveDateText:PropTypes.string.isRequired,
     slot:PropTypes.object,
-    dictionary_strategy:PropTypes.object.isRequired
+    dictionary_strategy:PropTypes.object.isRequired,
+    moveChipToSlot:PropTypes.func
   };
 }

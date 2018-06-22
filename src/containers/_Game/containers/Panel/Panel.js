@@ -651,6 +651,7 @@ export default class Panel extends Component {
             rankingError={rankingError}
             isPerformance={this.state.isPerformance}
             performance_account_id={this.state.performance_account_id}
+            moveChipToSlot={this.moveChipToSlot}
           />
           </div>
         ) : null}
