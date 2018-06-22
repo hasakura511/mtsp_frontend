@@ -289,46 +289,89 @@ LSM["off"] = "Off";
 
 export const LongShortMap = LSM;
 
-export const toSystem = pos => {
-  if (pos in LSM == false) {
-    return pos.toString().replace(' ','');
-  } else {
-    if (isNaN(Number(pos))) {
-      if (!LSM[pos]) {
-        console.log(pos);
-      }
-      return (
-        LSM[pos]
-          // .replace(/[A-Z]/g, $1 => " " + $1)
-          // .replace(/.{1}/, $1 => $1.toUpperCase())
-          .replace("Anti ", "Anti-")
-      );
+export const toSystemNum = pos => {
+  if (pos) {
+    if (pos.match(/^[\d]+$/)) {
+      return parseInt(pos);
     } else {
+      return pos.toString();
+    }
+  }
+}
+
+export const toSystem = pos => {
+  if (pos) {
+    if (pos in LSM == false) {
       return pos.toString().replace(' ','');
+    } else {
+      if (isNaN(Number(pos))) {
+        if (!LSM[pos]) {
+          console.log(pos);
+        }
+        return (
+          LSM[pos]
+            // .replace(/[A-Z]/g, $1 => " " + $1)
+            // .replace(/.{1}/, $1 => $1.toUpperCase())
+            .replace("Anti ", "Anti-")
+        );
+      } else {
+        return pos.toString().replace(' ','');
+      }
+    }
+  } else {
+    return "";
+  }
+};
+
+export const toAntiSystem = (pos, dictionary_strategy=null) => {
+  if (!pos)
+    return "";
+  if (dictionary_strategy != null) {
+    if (pos in dictionary_strategy) {
+      console.log(dictionary_strategy[pos]);
+      return dictionary_strategy[pos].anti_tile_name;
+    }
+  
+    if (pos.toString().toLowerCase() === "riskon") {
+      return toSystem("riskOff");
+    }
+  
+    if (pos.toString().toLowerCase() === "riskoff") {
+      return toSystem("riskOn");
+    }
+  
+    if (isNaN(Number(pos))) {
+      return toSystem(pos).indexOf("Anti-") === -1 &&
+        toSystem(pos).indexOf("A-") === -1
+        ? "Anti-" + toSystem(pos)
+        : toSystem(pos)
+            .replace("Anti-", "")
+            .replace("A-", "");
+    } else {
+      return "Anti-" + pos;
+    }
+  } else {
+    if (pos.toString().toLowerCase() === "riskon") {
+      return toSystem("riskOff");
+    }
+
+    if (pos.toString().toLowerCase() === "riskoff") {
+      return toSystem("riskOn");
+    }
+
+    if (isNaN(Number(pos))) {
+      return toSystem(pos).indexOf("Anti-") === -1 &&
+        toSystem(pos).indexOf("A-") === -1
+        ? "Anti-" + toSystem(pos)
+        : toSystem(pos)
+            .replace("Anti-", "")
+            .replace("A-", "");
+    } else {
+      return "Anti-" + pos;
     }
   }
 };
 
-export const toAntiSystem = pos => {
-  if (pos.toString().toLowerCase() === "riskon") {
-    return toSystem("riskOff");
-  }
-
-  if (pos.toString().toLowerCase() === "riskoff") {
-    return toSystem("riskOn");
-  }
-
-  if (isNaN(Number(pos))) {
-    return toSystem(pos).indexOf("Anti-") === -1 &&
-      toSystem(pos).indexOf("A-") === -1
-      ? "Anti-" + toSystem(pos)
-      : toSystem(pos)
-          .replace("Anti-", "")
-          .replace("A-", "");
-  } else {
-    return "Anti-" + pos;
-  }
-};
 
 
 export default Config;

@@ -101,6 +101,9 @@ const dispatchToProps = dispatch => {
     addTimedToaster: toaster => {
         dispatch(actions.addTimedToaster(toaster, 5000))
     },
+    showLeaderDialog: (show) => {
+      dispatch(actions.showLeaderDialog(show));
+    },
     updateBet: (topSystems,
       bottomSystems,
       leftSystems,
@@ -267,7 +270,7 @@ export default class LiveBoard extends Component {
 
   }
 
-  initializeLive=() => {
+  initializeLive=(reinitialize=false) => {
     if (this.state.refreshing)
       return;
     else
@@ -275,11 +278,14 @@ export default class LiveBoard extends Component {
     this.forceUpdate();
     
     //console.log(this.props);
+    var reinit='false';
+    if (reinitialize)
+      reinit='true';
     axios
     .post("/utility/initialize_live/", {
     // accounts: [{ portfolio, target, accountValue }],
     'username':  this.props.email,
-    'reinitialize': 'false'
+    'reinitialize': reinit
     },{timeout: 600000})
     .then(({ data }) => {
       console.log('received initialize_live data')
@@ -351,7 +357,7 @@ export default class LiveBoard extends Component {
     var balanceChips=inGameChips.balanceChips;
     var bettingChips=inGameChips.bettingChips;
     
-    if (!chip.position || chip.position == 'off') {
+    if (!chip.position || chip.position.toString().toLowerCase() == 'off') {
       
         balanceChips = inGameChips.balanceChips.map(c => {
           
@@ -819,7 +825,7 @@ export default class LiveBoard extends Component {
           >
             <div>
               <span style={{"marginTop":"-150px","float": "left", "width": "50%", "textAlign": "left", "display": "inline-block","verticalAlign": "top"}}>
-              <a href='#leaderboard' title="Show Global Leaderboards."><img src="/images/leaderboard_button.png" width="120"/></a><br/>
+              <a href='#leaderboard' onClick={() => { self.props.showLeaderDialog(true); }} title="Show Global Leaderboards."><img src="/images/leaderboard_button.png" width="120"/></a><br/>
               </span>
               <span style={{"marginTop":"-150px", "float": "right", "width": "50%",  "textAlign": "right",  "display": "inline-block", "verticalAlign":"top"}}>
                 <img src="/images/infotext_button.png" width="22" style={{"margin":"10px"}} />
@@ -836,6 +842,7 @@ export default class LiveBoard extends Component {
               bettingChips={this.props.inGameChips.bettingChips || []}
               addBettingChip={this.addBettingChip}
               moveToBalance={this.moveToBalance}
+              initializeLive={this.initializeLive}
             />
               <span style={{"marginTop":"30px","float": "left", "width": "50%", "textAlign": "left", "display": "inline-block","verticalAlign": "top"}}>
                 <a href='#accounts' title="Create or configure your accounts."><img src="/images/accounts_button.png" width="120"/></a><br/>

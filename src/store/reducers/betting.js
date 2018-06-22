@@ -67,6 +67,7 @@ const initialState = {
     },
     {}
   ),
+  refresh_markets:false,
   timetable_dialog:{},
   currentBets: ChipsConfig.map(({ accountId }) => accountId).reduce(
     (acc, curr) => {
@@ -100,6 +101,7 @@ const initialState = {
   initializeData: {},
   heatmap_account_id:'',
   show_lockdown_dialog:false,
+  show_leader_dialog:false,
   simulatedDate: getOffsetDate(1),
   liveDate: new moment().tz("US/Eastern"),
   liveDateText: "",
@@ -333,10 +335,18 @@ const reducer = (state = initialState, action) => {
     }
     case actionTypes.SHOW_LOCKDOWN_DIALOG:
     {
-      console.log("LOCKDOWN Dialog Show: " + action.show);
+      console.log("LOCKDOWN Dialog Visible: " + action.show);
       return {
         ...state,
         show_lockdown_dialog:action.show
+      };
+    }
+    case actionTypes.SHOW_LEADER_DIALOG:
+    {
+      console.log("Leader Dialog Visible: " + action.show);
+      return {
+        ...state,
+        show_leader_dialog:action.show
       };
     }
     case actionTypes.UPDATE_DATE:
@@ -388,6 +398,7 @@ const reducer = (state = initialState, action) => {
             leftSystems:lSys,
             rightSystems:rSys,
             bottomSystems:bSys,
+            refresh_markets:false,
         };
     }
     case actionTypes.UPDATE_BET:
@@ -419,7 +430,7 @@ const reducer = (state = initialState, action) => {
           performance_account_id:'',
           show_lockdown_dialog:false,
           heatmap_account_id:action.account_id,
-          heatmap_lookup_symbol:sym
+          heatmap_lookup_symbol:sym,
         };
     }
     case actionTypes.INITIALIZE_DATA:
@@ -623,6 +634,10 @@ const reducer = (state = initialState, action) => {
         
         const isLive=true;
         console.log(initializeData);
+        var refresh_markets=false;
+        if (initializeData.refresh_market_heatmap) {
+          refresh_markets=true;
+        }
         return {
             ...state,
             initializeData,
@@ -644,7 +659,8 @@ const reducer = (state = initialState, action) => {
             performance_account_id:'',
             show_lockdown_dialog:false,
             heatmap_account_id:'',
-            heatmap_lookup_symbol:''
+            heatmap_lookup_symbol:'',
+            refresh_markets:refresh_markets
         };
     }
     case actionTypes.SET_MUTE: {

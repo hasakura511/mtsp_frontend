@@ -169,6 +169,7 @@ export default class Order extends React.Component {
                     id="system-radio"
                     checked={!isAnti}
                     onChange={setNotAnti}
+                    title={"Orders will be placed for the strategy selected here."}
                   />
                   {isLive ? (
 
@@ -188,6 +189,7 @@ export default class Order extends React.Component {
                     id="anti-system-radio"
                     checked={isAnti}
                     onChange={setAnti}
+                    title={"Orders will be placed for the strategy selected here."}
                   />
                   {isLive ? (
                     <label htmlFor="anti-system-radio" style={{ color: "#63a57c" }}>
@@ -201,7 +203,7 @@ export default class Order extends React.Component {
                 </div>
               </div>
               <div className={classes.ActionBar}>
-                <button className={classes.Submit} onClick={submitBetHandler}>
+                <button className={classes.Submit} onClick={submitBetHandler} title={"This order will be placed as a Market-on-Close (MOC) order."}>
                   Place MOC Order
                 </button>
                 <button onClick={close}>Cancel</button>
@@ -360,7 +362,7 @@ export default class Order extends React.Component {
           {isLive ? (
 
             <div className={classes.Content}>
-              <AccountCharts chip={chip} {...this.props} />
+              <AccountCharts isOrder={!isPerformance} chip={chip} slot={slot} {...this.props} />
             </div>
 
 

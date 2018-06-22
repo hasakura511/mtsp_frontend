@@ -48,6 +48,7 @@ const stateToProps = state => {
     email:state.auth.email,
     heatmap_account_id:state.betting.heatmap_account_id,
     heatmap_lookup_symbol:state.betting.heatmap_lookup_symbol,
+    refresh_markets:state.betting.refresh_markets,
   };
 };
 
@@ -125,6 +126,7 @@ export default class Markets extends Component {
     refreshing:PropTypes.bool,
     heatmap_account_id:PropTypes.string,
     heatmap_lookup_symbol:PropTypes.string,
+    refresh_markets:PropTypes.bool.isRequired,
   };
 
   getSubmitTitle(controls) {
@@ -147,7 +149,7 @@ export default class Markets extends Component {
 
   
   componentWillReceiveProps(newProps) {
-    if (newProps.refreshing) {
+    if (newProps.refreshing || newProps.refresh_markets) {
       this.refreshData();
     } else if (newProps.heatmap_account_id && newProps.heatmap_account_id != this.state.heatmap_account_id) {
       this.refreshData(newProps.heatmap_account_id, 'current', newProps.heatmap_lookup_symbol);

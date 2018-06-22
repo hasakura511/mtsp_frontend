@@ -59,7 +59,7 @@ const LINKS = [
 ];
 
 const layout = props => (
-  <Aux>
+  <Aux style={{zIndex:0}}>
     <Toolbar links={LINKS} toggleSideDrawer={props.toggleSideDrawer} />
     {/* <div>SideDrawer, Backdrop</div> */}
     <SideDrawer
@@ -68,10 +68,10 @@ const layout = props => (
       toggle={props.toggleSideDrawer}
     />
     <Backdrop show={props.showSideDrawer} toggle={props.toggleSideDrawer} />
-    <main className={styles.Content}>{props.children}</main>
+    <main style={{zIndex:0}} className={styles.Content}>{props.children}</main>
     <Footer />
-    <Toasters />
     <Dialog />
+    <Toasters />
   </Aux>
 );
 

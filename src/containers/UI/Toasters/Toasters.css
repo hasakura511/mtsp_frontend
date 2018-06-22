@@ -13,4 +13,5 @@
   box-sizing: border-box;
   width: 50%;
   padding-bottom: 0px;
+  z-index:9999999;
 }

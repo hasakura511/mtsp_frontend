@@ -11,6 +11,7 @@ import RightSection from "../../components/Sections/RightSection/RightSection";
 import TopSection from "../../components/Sections/TopSection/TopSection";
 import OrderDialog from "../OrderDialog/OrderDialog";
 import LockdownDialog from "../LockdownDialog/LockdownDialog";
+import LeaderDialog from "../LeaderDialog/LeaderDialog";
 import axios from "../../../../axios-gsm";
 import { connect } from "react-redux";
 import * as actions from "../../../../store/actions";
@@ -32,6 +33,7 @@ const stateToProps = state => {
            mute:state.betting.mute,
            performance_account_id:state.betting.performance_account_id,
            show_lockdown_dialog:state.betting.show_lockdown_dialog,
+           show_leader_dialog:state.betting.show_leader_dialog,
           };
 };
 
@@ -53,8 +55,8 @@ const dispatchToProps = dispatch => {
     showDialog() {
       dispatch(actions.showDialog(...arguments));
     },
-    killDialog() {
-      dispatch(actions.killDialog());
+    silenceDialog() {
+      dispatch(actions.silenceDialog());
     },
     addTimedToaster(toaster) {
       dispatch(actions.addTimedToaster(toaster, -1));
@@ -64,6 +66,9 @@ const dispatchToProps = dispatch => {
     },
     showLockdownDialog(show) {
       dispatch(actions.showLockdownDialog(show));
+    },
+    showLeaderDialog(show) {
+      dispatch(actions.showLeaderDialog(show));
     }
 
   };
@@ -100,7 +105,7 @@ export default class Panel extends Component {
     addBet: PropTypes.func.isRequired,
     simulatedDate: PropTypes.string.isRequired,
     showDialog: PropTypes.func.isRequired,
-    killDialog: PropTypes.func.isRequired,
+    silenceDialog: PropTypes.func.isRequired,
     addTimedToaster: PropTypes.func.isRequired,
     isLive:PropTypes.bool.isRequired,
     heatmap:PropTypes.object.isRequired,
@@ -110,7 +115,10 @@ export default class Panel extends Component {
     mute:PropTypes.bool.isRequired,
     performance_account_id:PropTypes.string.isRequired,
     show_lockdown_dialog:PropTypes.bool.isRequired,
+    show_leader_dialog:PropTypes.bool.isRequired,
     showLockdownDialog:PropTypes.func.isRequired,
+    isReadOnly:PropTypes.bool,
+    initializeLive:PropTypes.func
   };
 
   /**
@@ -209,6 +217,8 @@ export default class Panel extends Component {
       rankingError: null,
       performance_account_id:'',
       isPerformance:false,
+      isReadOnly: props.isReadOnly ? true : false,
+
     };
     this._isMounted = false;
   }
@@ -230,6 +240,8 @@ export default class Panel extends Component {
   componentWillReceiveProps(newProps) {
     var self=this;
 
+    if (this.state.isReadOnly) 
+      return;
     console.log("Panel received new prop");
     console.log(newProps);
     //console.log(newProps.balanceChips);
@@ -332,7 +344,7 @@ export default class Panel extends Component {
       addBet,
       simulatedDate,
       showDialog,
-      killDialog,
+      silenceDialog,
       addTimedToaster
     } = this.props;
     
@@ -384,7 +396,7 @@ export default class Panel extends Component {
         orderChip: chip,
         orderSlot: systemToSlot
       });
-    } else if (position === "off") {
+    } else if (position.toString().toLowerCase() === "off") {
         this.setState({showClearDialog:true})
         
         showDialog(
@@ -420,7 +432,7 @@ export default class Panel extends Component {
 
               // 2. append a new currentBet on off location
               addBet(bet);
-              killDialog();
+              silenceDialog();
               this.setState({showClearDialog:false});
   
             } else {
@@ -434,7 +446,7 @@ export default class Panel extends Component {
 
               // 2. append a new currentBet on off location
               addBet(bet);
-              killDialog();
+              silenceDialog();
               this.setState({showClearDialog:false})
             }
           },
@@ -618,7 +630,14 @@ export default class Panel extends Component {
           showOrderDialog={showOrderDialog}
           heatmap_selection={heatmap_selection}
         />
-        {showOrderDialog ? (
+        {!this.state.isReadOnly && this.props.show_leader_dialog ? (
+          <div             id={"modalDialog"}>
+          <LeaderDialog initializeLive={this.props.initializeLive} />
+          </div>
+        ) : null}
+
+
+        {!this.state.isReadOnly && showOrderDialog ? (
           <div             id={"modalDialog"}>
 
           <OrderDialog
@@ -635,13 +654,14 @@ export default class Panel extends Component {
           />
           </div>
         ) : null}
-        {this.props.show_lockdown_dialog ? (
+
+        {!this.state.isReadOnly && this.props.show_lockdown_dialog ? (
           <div             id={"modalDialog"}>
           <LockdownDialog />
           </div>
         ) : null}
         
-        {!this.props.mute ? (
+        {!this.state.isReadOnly && !this.props.mute ? (
           <Sound
               url="/sounds/chipLay2.wav"
               playStatus={this.state.showClearDialog ? Sound.status.PLAYING: Sound.status.STOPPED}

@@ -25,7 +25,7 @@ const stateToProps = state => {
 
 const dispatchToProps = dispatch => {
   return {
-    killDialog: () => dispatch(actions.killDialog())
+    silenceDialog: () => dispatch(actions.silenceDialog())
   };
 };
 
@@ -39,7 +39,7 @@ export default class Dialog extends Component {
     cancelAction: PropTypes.string,
     successAction: PropTypes.string,
     onSuccess: PropTypes.func,
-    killDialog: PropTypes.func.isRequired,
+    silenceDialog: PropTypes.func.isRequired,
     loading: PropTypes.bool.isRequired
   };
 
@@ -51,7 +51,7 @@ export default class Dialog extends Component {
   cancelHandler = event => {
     event.preventDefault();
     this.props.onCancel && this.props.onCancel();
-    this.props.killDialog();
+    this.props.silenceDialog();
   };
 
   render() {

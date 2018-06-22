@@ -14,7 +14,7 @@ export {
   reactivate
 } from "./auth";
 export { addToaster, removeToaster, addTimedToaster, clearAll } from "./toasters";
-export { killDialog, showDialog, loadingDialog } from "./modal";
+export { silenceDialog, showDialog, loadingDialog } from "./modal";
 export { addBet, 
          nextDay, 
          toggleMode, 
@@ -30,4 +30,5 @@ export { addBet,
          initializeHeatmap,
          showPerformance,
          showLockdownDialog,
+         showLeaderDialog,
       } from "./betting";

@@ -41,6 +41,13 @@ export const showLockdownDialog = show => {
 }
 
 
+export const showLeaderDialog = show => {
+  return {
+    type: actionTypes.SHOW_LEADER_DIALOG,
+    show,
+  }
+}
+
 
 export const initializeHeatmap = (account_id, link, sym='') => {
   return {

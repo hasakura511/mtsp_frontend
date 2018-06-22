@@ -20,9 +20,9 @@ export const showDialog = (
   };
 };
 
-export const killDialog = () => {
+export const silenceDialog = () => {
   return {
-    type: actionTypes.KILL_DIALOG
+    type: actionTypes.SILENCE_DIALOG
   };
 };
 

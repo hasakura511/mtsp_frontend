@@ -60,8 +60,8 @@ const dispatchToProps = dispatch => {
     showDialog: (title, message, onSuccess, onCancel) => {
       dispatch(actions.showDialog(title, message, onSuccess, onCancel));
     },
-    killDialog: () => {
-      dispatch(actions.killDialog());
+    silenceDialog: () => {
+      dispatch(actions.silenceDialog());
     },
     logout: () => {
       dispatch(actions.logout(true));
@@ -202,7 +202,7 @@ export default class Profile extends Component {
   profileDeleteHandler = event => {
     event.preventDefault();
     this.props.showDialog(DELETE_TITLE, DELETE_MESSAGE, () => {
-      this.props.killDialog();
+      this.props.silenceDialog();
       this.setState({ loading: true });
       axios
         .post("/utility/auth/deactivate/", {})
@@ -356,7 +356,7 @@ export default class Profile extends Component {
     authSuccess: PropTypes.func.isRequired,
     addTimedToaster: PropTypes.func.isRequired,
     showDialog: PropTypes.func.isRequired,
-    killDialog: PropTypes.func.isRequired,
+    silenceDialog: PropTypes.func.isRequired,
     logout: PropTypes.func.isRequired,
     reactivate: PropTypes.func.isRequired,
     deactivatedAt: PropTypes.any

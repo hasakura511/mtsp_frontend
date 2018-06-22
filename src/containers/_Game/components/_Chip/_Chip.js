@@ -54,7 +54,7 @@ const chipSource = {
   },
   canDrag(props) {
     const { chip } = props;
-    if (chip.status == undefined || chip.status == 'locked')
+    if (chip.status == undefined || chip.status == 'locked' || chip.isReadOnly)
       return false;
     
     return true;
@@ -101,38 +101,46 @@ export default class Chip extends PureComponent {
     isLive:PropTypes.bool.isRequired,
     showHeatmap:PropTypes.func.isRequired,
     accounts:PropTypes.array.isRequired,
+    isReadOnly:PropTypes.bool,
     //heatmap_selection:PropTypes.string
   };
 
   constructor(props) {
     super(props);
+    var chip=this.props.chip;
+    if (props.isReadOnly) {
+      chip.isReadOnly=true;      
+    }
+
     this.state={
-      chip:this.props.chip
+      chip:chip
     }
 
   }
 
   componentWillReceiveProps(newProps) {
-    console.log("Chip Received New Props")
-    console.log(newProps);
+    //console.log("Chip Received New Props")
+    //console.log(newProps);
     var self=this;
-    if (newProps.chip && newProps.chip != this.state.chip) {
-      self.setState({chip:newProps.chip});
-      
-    }
-    if (newProps.accounts) {
-          var updated=false;
-          newProps.accounts.map(account => {
-              if (account.account_id == self.props.chip.account_id) {
-                self.setState({chip:account});
-                console.log("Chip Received new state for chip " + account.account_id);
-                console.log(account);
-                updated=true;
-              }
-          });
-          if (updated) 
-            self.forceUpdate();
+    if (!this.state.chip.isReadOnly) {
+      if (newProps.chip && newProps.chip != this.state.chip) {
+        self.setState({chip:newProps.chip});
+        
+      }
+      if (newProps.accounts) {
+            var updated=false;
+            newProps.accounts.map(account => {
+                if (account.account_id == self.props.chip.account_id) {
+                  self.setState({chip:account});
+                  //console.log("Chip Received new state for chip " + account.account_id);
+                  //console.log(account);
+                  updated=true;
+                }
+            });
+            if (updated) 
+              self.forceUpdate();
 
+        }
       }
   }
 
@@ -167,15 +175,24 @@ export default class Chip extends PureComponent {
     var title = "";
 
     if (chip.tier != undefined) {
-      title="Tier: " + toTitleCase(chip.tier.toString()) + "\n"; 
-      title+="Lockdown: " + chip.lockdown_text.toString() + "\n"; 
-      title+="Unlock: " + chip.unlocktime_text.toString() + "\n"; 
-      title+="Account Value: " + '$' + numberWithCommas(chip.account_value.toString()) + "\n"; 
-      title+="Cum. % Chg: " + chip.pnl_cumpct.toString() + "%\n";
-      title+="Markets in Portfolio: " + chip.num_markets.toString() + "\n"; 
-      title+="Age: " + chip.age.toString() + "\n";
-      title+="Current Bet: " +  toTitleCase(chip.last_selection.toString()) + "\n";
-      title+="Status: " +  toTitleCase(chip.status.toString());
+      if (chip.tier)
+        title="Tier: " + toTitleCase(chip.tier.toString()) + "\n"; 
+      if (chip.lockdown_text)
+        title+="Lockdown: " + chip.lockdown_text.toString() + "\n"; 
+      if (chip.unlocktime_text)
+        title+="Unlock: " + chip.unlocktime_text.toString() + "\n"; 
+      if (chip.account_value)
+        title+="Account Value: " + '$' + numberWithCommas(chip.account_value.toString()) + "\n"; 
+      if (chip.pnl_cumpct)
+        title+="Cumulative % Chg: " + chip.pnl_cumpct.toString() + "%\n";
+      if (chip.num_markets)
+        title+="Markets in Portfolio: " + chip.num_markets.toString() + "\n"; 
+      if (chip.age)
+        title+="Age: " + chip.age.toString() + "\n";
+      if (chip.last_selection)
+        title+="Current Bet: " +  toTitleCase(chip.last_selection.toString()) + "\n";
+      if (chip.status)
+        title+="Status: " +  toTitleCase(chip.status.toString());
     }
 
     var status=chip.status;

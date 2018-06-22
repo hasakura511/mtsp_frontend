@@ -30,7 +30,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         loading: true
       };
-    case actionTypes.KILL_DIALOG:
+    case actionTypes.SILENCE_DIALOG:
       return {
         ...initialState
       };

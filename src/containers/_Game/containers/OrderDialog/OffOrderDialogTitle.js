@@ -10,8 +10,9 @@ export default props => () => {
         alignItems: "center"
       }}
     >
-      <h2 style={{ marginRight: "4px" }}>OFF</h2>
+     
       <Chip {...props} />
+      &nbsp;&nbsp;<h2 style={{ marginRight: "4px" }}>Off</h2>
     </div>
   );
 };
