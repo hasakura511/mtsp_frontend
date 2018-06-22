@@ -73,6 +73,13 @@ export default class AccountCharts extends Component {
     this.props.showPerformance('');
   }
 
+  componentWillReceiveProps(newProps) {
+    if (newProps.slot) {
+      if (this.state.isRankingChart && newProps.slot.position != this.props.slot.position) {
+        this.setState({isPerformance:true, isOpenPositions:false, isTradingCosts:false, isPreviousPnL:false,  isRankingChart:false});
+      }
+    }
+  }
   render() {
     const { isPerformance, isOpenPositions, isTradingCosts, isPreviousPnL, isLockdownTimetable, isRankingChart } = this.state;
     const {
