@@ -177,7 +177,7 @@ export default class LeaderBoardLive extends Component {
       var res = response.data;
       var message=res.message;
       var reinitialize=res.reinitialize;
-      if (message) {
+      if (message != "OK") {
         self.props.addTimedToaster(
           {
             id: "board_notice_" + Math.random().toFixed(3),
@@ -185,7 +185,7 @@ export default class LeaderBoardLive extends Component {
           },
           5000
           );
-      } else if (message == "OK") {
+      } else {
 
         self.props.initializeLive(reinitialize);
       }
@@ -228,7 +228,7 @@ export default class LeaderBoardLive extends Component {
       var res = response.data;
       var message=res.message;
       var reinitialize=res.reinitialize;
-      if (message) {
+      if (message != "OK") {
         self.props.addTimedToaster(
           {
             id: "board_notice_" + Math.random().toFixed(3),
@@ -236,7 +236,7 @@ export default class LeaderBoardLive extends Component {
           },
           5000
           );
-      } else if (message == "OK") {
+      } else  {
 
         self.props.initializeLive(reinitialize);
       }
@@ -398,17 +398,15 @@ export default class LeaderBoardLive extends Component {
                     chip.account_value=props.original.account_chip_text;
                     chip.total_margin="";
                     return (
-                    <div>
-                    <div style={{'float':'left', width:'18%', height:"12px", lineHeight:"12px", marginTop:"8px"}}>
+                    <div  style={{marginTop:"12px", minWidth: '185px'}}>
+                    <div style={{'float':'left', minWidth:'25px', height:"12px", lineHeight:"12px", marginTop:"12px"}}>
                     <h3>{props.value}.</h3>
-
+                    
                     </div>
-                    &nbsp;&nbsp;&nbsp;
-                    <div  style={{'float':'left', width:'41%'}}>
+                    <div  style={{'float':'left', minWidth: '60px', marginTop:"3px"}}>
                     <Chip chip={chip} isReadOnly={true} />&nbsp;&nbsp;
                     </div>
-                    &nbsp;&nbsp;&nbsp;
-                    <div  style={{'float':'left', width:'41%'}}>
+                    <div  style={{'float':'left', minwidth:'100px', marginTop:"20px"}}>
                     {props.original.player}
                     </div>
 
@@ -496,7 +494,7 @@ export default class LeaderBoardLive extends Component {
                       <span className='number'><center>
                         
 
-                      <a href={'JavaScript:console.log("account performance")'} style={{ cursor:'pointer'  }} onClick={() => {  
+                      <a href={'JavaScript:console.log("account performance")'} style={{ cursor:'pointer'  }} title={"Show Account Performance."} onClick={() => {  
                           
                                 // self.props.toggle();
                                 self.props.showPerformance(props.original.account_id, chip);
@@ -512,7 +510,7 @@ export default class LeaderBoardLive extends Component {
                 {
                   Header: props => (
                     <span style={{background:self.props.themes.live.dialog.table_right_background}}>
-                    Market in Portfolio
+                    Markets in Portfolio
                   </span>),
                   accessor: "num_markets",
                   headerStyle: {
@@ -723,26 +721,68 @@ export default class LeaderBoardLive extends Component {
                         onHide={self.handleClose.bind(this)} 
                         hideWithOutsideClick={true}
                         containerStyle={{ 
-                            marginTop: self.props.gap + -innerHeight + 88 + "px",
-                           
+                            marginTop: self.props.gap + -innerHeight + 27 + "px",
+                            background:self.props.themes.live.dialog.background,
+                            width: "99.9%",
+                            height: "99%",
                         }}
                         style={{
 
                             width: "100%",
                             height: "100%",
+                            background:self.props.themes.live.dialog.background
                             
                         }}
                         >
-                        <div>
+                        <div style={{ background:self.props.themes.live.dialog.background, color:self.props.themes.live.dialog.text }}>
+
+                         <div style={{ "width": "100%", "padding":"0px", "margin":"0px", background:self.props.themes.live.dialog.background}}>
+                          <span style={{
+                            float: "left",
+                            width: "33.33333%",
                             
+                            textAlign: "left"
+                            }}
+                          >
+                          &nbsp;
+                          </span>
+                          <span style={{
+                            float: "left",
+                            width: "33.33333%",
+                            textAlign: "center",
+                            marginTop: "5px"
+                            }}
+                          >
+                          <br/><h3> Preview Board </h3>
+                          </span>
+                          <span style={{
+                            float: "left",
+                            width: "33.33333%",
+                            textAlign: "right"
+                            }}
+                          >
+                            <br/>
+                            <span style={{textAlign:"right",marginTop:"5px", padding:"5px", "cursor":"pointer", background:self.props.themes.live.dialog.background}} 
+                            onClick={() => {  self.handleClose();}}
+                            >
+                              <button onClick={() => { self.handleClose(); } } >
+                              <font style={{fontSize:"16px"}}>Close</font>
+                              </button>
+                            </span>
+                            </span>
+                          </div>
+                          <div style={{clear: "both"}}></div>​
+                          
+                        <center><h3 style={{ color:self.props.themes.live.dialog.text}} ></h3></center>
                         <table style={{border:"none", borderCollapse: "collapse",
         background:self.props.themes.live.dialog.background_inner,
         color:self.props.themes.live.dialog.text,
+        width:"100%",
         fontSize:"20px" }}>
           <thead  style={{border:"none"}}>
             <tr style={{border:"none"}}>
             <th  style={{border:"none"}}>
-                Overall
+                {props.original.filter}
                 </th>
                 <th  style={{border:"none"}}>
                 <center>
@@ -761,12 +801,12 @@ export default class LeaderBoardLive extends Component {
                 </th>
                 <th  style={{border:"none"}}>
                 <center>
-                 Current Bet
+                 Next Bet
                 </center>
                 </th>
                 <th  style={{border:"none"}}>
                 <center>
-                  Previous Bet
+                  Current Bet
                 </center>
                 </th>
                 </tr>
@@ -902,17 +942,19 @@ export default class LeaderBoardLive extends Component {
                       
                       ref={ref => self[copyboard] = ref}
                       onClick={() => {  
-                              if (!performance.enable_board_copy)
+                              if (!performance.enable_board_copy) {
+                                if (performance.enable_board_copy_message) {
+                                  self.props.addTimedToaster(
+                                    {
+                                      id: "board_notice_" + Math.random().toFixed(3),
+                                      text: performance.enable_board_copy_message
+                                    },
+                                    5000
+                                    );
+                                }
                                 return;
-                              if (performance.enable_board_copy_message) {
-                                self.props.addTimedToaster(
-                                  {
-                                    id: "board_notice_" + Math.random().toFixed(3),
-                                    text: performance.enable_board_copy_message
-                                  },
-                                  5000
-                                  );
-                              } else {
+                              }
+                              else {
                                 self.props.showDialog(
                                 " Are you sure you want to copy the board?",
                                 " Your board will be replaced with " + props.original.player + "'s board and all your chips will be placed in the Off location." ,
@@ -964,16 +1006,18 @@ export default class LeaderBoardLive extends Component {
                       
                       ref={ref => self[copyboard] = ref}
                       onClick={() => {  
-                              if (!performance.enable_board_chip_copy)
+                              if (!performance.enable_board_chip_copy) {
+                                if (performance.enable_board_chip_copy_message) {
+                                  self.props.addTimedToaster(
+                                  {
+                                    id: "board_notice_" + Math.random().toFixed(3),
+                                    text: performance.enable_board_chip_copy_message
+                                  },
+                                  5000
+                                  );
+                                
                                 return;
-                              if (performance.enable_board_chip_copy_message) {
-                                self.props.addTimedToaster(
-                                {
-                                  id: "board_notice_" + Math.random().toFixed(3),
-                                  text: performance.enable_board_chip_copy_message
-                                },
-                                5000
-                                );
+                                }
                               } else {
                               
                                 self.props.showDialog(

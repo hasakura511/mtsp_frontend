@@ -58,7 +58,7 @@ const RED = "#e12f48",
 
   class CustomTooltip extends Component {
     render() {
-      const { payload, active, colors, slot_position, dictionary_strategy } = this.props;
+      const { payload, active, colors, slot_position, dictionary_strategy, performance } = this.props;
       var self=this;
       if (active) {
         let {
@@ -192,13 +192,13 @@ const RED = "#e12f48",
             
             <div className={classes.Row} style={{ color: benchmark_color }}>
               <p>
-                <span><b>{toSystem(position)}:</b></span> 
+                <span><b>{performance.benchmark_display} :</b></span> 
                 <span style={{color:self.props.themes.live.dialog.text}}>$ {numberWithCommas(benchmark_value.toString())}</span>
               </p>
             </div>
             <div className={classes.Row} style={{ color:  benchmark_color }}>
               <p>
-                <span><b>{toSystem(position)} Daily %Chg: </b></span>
+                <span><b>{performance.benchmark_display} Daily %Chg: </b></span>
                 <span >
                 {parseFloat(benchmark_per) ? (
                         <span style={parseFloat(benchmark_per) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
@@ -219,7 +219,7 @@ const RED = "#e12f48",
             </div>
             <div className={classes.Row} style={{ color:  benchmark_color }}>
               <p>
-                <span><b>{toSystem(position)} Cumulative %Chg: </b></span>
+                <span><b>{performance.benchmark_display} Cumulative %Chg: </b></span>
                 <span >
                 {parseFloat(benchmark_cumper) ? (
                         <span style={parseFloat(benchmark_cumper) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
@@ -256,7 +256,8 @@ const RED = "#e12f48",
       payload: PropTypes.arrayOf(PropTypes.object),
       colors:PropTypes.object,
       dictionary_strategy:PropTypes.object,
-      slot_position:PropTypes.string
+      slot_position:PropTypes.string,
+      performance:PropTypes.object
     };
   }
   
@@ -520,15 +521,16 @@ export default class PerformanceOrderChart extends Component {
               <Tooltip  position={{ 'x' :self.toolTipX, 'y' :self.toolTipY}} 
               
               content={<CustomTooltip  ref={ref => this.tooltip = ref} slot_position={self.props.slot.position.toString()} colors={performance.colors} chip={self.props.chip} 
-              dictionary_strategy={self.props.dictionary_strategy} themes={self.props.themes} />} />  
+              dictionary_strategy={self.props.dictionary_strategy} performance={performance} themes={self.props.themes} />} />  
               <Legend />
                 <Line
                 ref={ref => this.area = ref}
                 type="monotone"
-                name={"Strategy Value"}
+                name={ self.props.slot.position.toString()}
                 dataKey={"strategy_value" }
                 stroke={performance.colors.strategy}
                 activeDot={{ r: 8 }}
+                strokeWidth={3} 
                />
                <Legend />
                 <Line

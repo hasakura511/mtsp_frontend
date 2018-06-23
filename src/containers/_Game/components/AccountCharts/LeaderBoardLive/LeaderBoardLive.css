@@ -235,7 +235,7 @@ th {
 .Tabs {
   display: inline-flex;
   align-items: end;
-  justify-content: flex-start;
+  justify-content: center;
   /* padding: 10px; */
   padding-left: 100px;
   padding-bottom: 1px;

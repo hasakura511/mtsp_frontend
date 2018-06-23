@@ -172,7 +172,7 @@ export default class RankingChart extends Component {
 
     this.state = {
       lookback: '',
-      filter: 'all',
+      filter: 'board',
       performance:{},
       performanceLoading:true,
       performanceError:'',
@@ -440,7 +440,6 @@ export default class RankingChart extends Component {
       chartData=Object.keys(chartData[filter]).map(key => {
         var item=chartData[filter][key];
         item.key=key;
-        item.cum_pers={};
 
         performance.chart_specs.map(period => {
          
@@ -469,7 +468,7 @@ export default class RankingChart extends Component {
       .map((item, index) => {
         return {
           ...item,
-          name: `${item.chip_location} (${index + 1})`
+          name: `${item.key} (${index + 1})`
         };
       });
 

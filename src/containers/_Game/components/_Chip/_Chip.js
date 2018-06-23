@@ -189,9 +189,13 @@ export default class Chip extends PureComponent {
         title+="Markets in Portfolio: " + chip.num_markets.toString() + "\n"; 
       if (chip.age)
         title+="Age: " + chip.age.toString() + "\n";
-      if (chip.last_selection)
-        title+="Current Bet: " +  toTitleCase(chip.last_selection.toString()) + "\n";
-      if (chip.status)
+      if (chip.last_selection) {
+        if (chip.isReadOnly)
+          title+="Next Bet: " +  toTitleCase(chip.last_selection.toString()) + "\n";
+        else
+         title+="Current Bet: " +  toTitleCase(chip.last_selection.toString()) + "\n";
+      }
+      if (chip.status && !chip.isReadOnly)
         title+="Status: " +  toTitleCase(chip.status.toString());
     }
 
@@ -217,7 +221,11 @@ export default class Chip extends PureComponent {
       zIndex: "100",
             
       };
-          
+    
+      if (chip.isReadOnly) {
+        chipStyle['border'] = "3px solid transparent";
+      }
+      
     /*
     if (chip.status != undefined) {
       if (chip.status == 'locked') {
