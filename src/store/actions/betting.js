@@ -49,6 +49,13 @@ export const showLeaderDialog = show => {
   }
 }
 
+export const refreshMarketDone = () => {
+  return {
+    type: actionTypes.REFRESH_MARKET_DONE,
+  }
+}
+
+
 
 export const initializeHeatmap = (account_id, link, sym='') => {
   return {

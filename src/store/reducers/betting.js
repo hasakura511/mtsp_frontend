@@ -326,6 +326,14 @@ const reducer = (state = initialState, action) => {
         loading
       };
     }
+    case actionTypes.REFRESH_MARKET_DONE:
+    {
+      console.log("Refresh Market DONE received");
+      return {
+        ...state,
+        refresh_markets:false
+      };
+    }
     case actionTypes.SHOW_PERFORMANCE:
     {
       
@@ -400,7 +408,6 @@ const reducer = (state = initialState, action) => {
             leftSystems:lSys,
             rightSystems:rSys,
             bottomSystems:bSys,
-            refresh_markets:false,
         };
     }
     case actionTypes.UPDATE_BET:

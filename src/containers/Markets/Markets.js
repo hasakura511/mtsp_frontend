@@ -78,6 +78,9 @@ const dispatchToProps = dispatch => {
     showPerformance:(action_id) => {
       dispatch(actions.showPerformance(action_id))
     },
+    refreshMarketDone:() => {
+      dispatch(actions.refreshMarketDone())
+    },
   };
 };
 
@@ -127,6 +130,7 @@ export default class Markets extends Component {
     heatmap_account_id:PropTypes.string,
     heatmap_lookup_symbol:PropTypes.string,
     refresh_markets:PropTypes.bool.isRequired,
+    refreshMarketDone:PropTypes.func.isRequired
   };
 
   getSubmitTitle(controls) {
@@ -149,7 +153,8 @@ export default class Markets extends Component {
 
   
   componentWillReceiveProps(newProps) {
-    if (newProps.refreshing || newProps.refresh_markets) {
+    if (newProps.refresh_markets) {
+      console.log("Received Refresh Market Status Check");
       this.refreshData();
     } else if (newProps.heatmap_account_id && newProps.heatmap_account_id != this.state.heatmap_account_id) {
       this.refreshData(newProps.heatmap_account_id, 'current', newProps.heatmap_lookup_symbol);
@@ -165,16 +170,20 @@ export default class Markets extends Component {
         self.state.last_heatmap_params.link != link ||
         self.state.last_heatmap_params.sym != sym )
         self.setState({last_heatmap_params:{'account_id':account_id, 'link':link, 'sym':sym}})
-    else
-        return;
+    //else
+    //    return;
 
-    console.log("Refreshing HEATMAP with " + account_id + ',' + link + ',' + sym )
     this.setState({loading:true, heatmap_account_id:account_id, last_heatmap_params:{'account_id':account_id, 'link':link, 'sym':sym}})
-    if (this.state.refreshing)
+    if (this.state.refreshing) {
+      console.log("Market refresh still in progress" );
+
+      
       return;
+    }
     else
       this.setState({refreshing:true})
-
+    console.log("Starting Market HEATMAP Refresh with Account: " + account_id + ' Link:' + link + ' Sym:' + sym )
+  
     axiosOpen
       .post("/utility/market_heatmap/", {
           'username':  this.props.email,
@@ -230,6 +239,7 @@ export default class Markets extends Component {
         if (sym) {
           self.onGetChart(sym, liveDateText);
         }
+        self.props.refreshMarketDone();
       })
       .catch((error) => {
         console.log(error);
