@@ -53,8 +53,8 @@ const dispatchToProps = dispatch => {
     initializeHeatmap:(account_id, link, sym) => {
       dispatch(actions.initializeHeatmap(account_id, link, sym))
     },
-    showPerformance:(action_id) => {
-        dispatch(actions.showPerformance(action_id))
+    showPerformance:(action_id, chip) => {
+        dispatch(actions.showPerformance(action_id, chip))
     },
     showDialog() {
       dispatch(actions.showDialog(...arguments));
@@ -116,13 +116,21 @@ export default class LeaderBoardLive extends Component {
        */
       var performance = response.data;
       if (performance.data_not_available) {
+        self.props.addTimedToaster(
+          {
+            id: "board_notice_" + Math.random().toFixed(3),
+            text: performance.data_not_available_message
+          },
+          5000
+          );
+        /*
         var performanceError=performance.data_not_available_message;
         this.setState({
           performanceLoading: false,
           performanceError: performanceError
         });
-      } else {
-
+        */
+      } 
         console.log('leaderboard data')
         console.log(performance);
         var dataJson= JSON.parse(performance.leaderboard);
@@ -140,7 +148,7 @@ export default class LeaderBoardLive extends Component {
             performance
           });
         }
-    })
+    )
     .catch(performanceError => {
       console.log(performanceError);
       this.setState({
@@ -383,10 +391,12 @@ export default class LeaderBoardLive extends Component {
          
                     var chip=props.original;
                     chip.display=props.original.account_chip_text;
-                    chip.tier = chip.chip_tier;
+                    chip.tier = "Paper-Live";
                     chip.status = 'unlocked';
                     chip.isReadOnly=true;
-
+                    chip.starting_value=props.original.account_chip_text;
+                    chip.account_value=props.original.account_chip_text;
+                    chip.total_margin="";
                     return (
                     <div>
                     <div style={{'float':'left', width:'18%', height:"12px", lineHeight:"12px", marginTop:"8px"}}>
@@ -475,20 +485,28 @@ export default class LeaderBoardLive extends Component {
                   headerStyle: {
                     background:self.props.themes.live.dialog.table_right_background
                   },
-                  Cell: props => (
-                    <span className='number'><center>
-                      
-
-                    <a href={'JavaScript:console.log("account performance")'} style={{ cursor:'pointer'  }} onClick={() => {  
+                  Cell: props => {
+                    var chip=props.original;
+                    chip.display=props.original.account_chip_text;
+                    chip.tier = "Paper-Live";
+                    chip.status = 'unlocked';
+                    chip.chip_tier_text=chip.filter;
+                    chip.isReadOnly=true;
+                    return (
+                      <span className='number'><center>
                         
-                              // self.props.toggle();
-                              self.props.showPerformance(props.original.account_id);
-                      }}>
-                      {props.value}
-                      </a>
-                   
-                    </center></span>
-                  ), // Custom cell components!,
+
+                      <a href={'JavaScript:console.log("account performance")'} style={{ cursor:'pointer'  }} onClick={() => {  
+                          
+                                // self.props.toggle();
+                                self.props.showPerformance(props.original.account_id, chip);
+                        }}>
+                        {props.value}
+                        </a>
+                    
+                      </center></span>
+                    )
+                  }, // Custom cell components!,
 
                 },
                 {
@@ -589,7 +607,7 @@ export default class LeaderBoardLive extends Component {
                   Cell: props => {
                     var chip=props.original;
                     chip.display=props.original.account_chip_text;
-                    chip.tier = chip.chip_tier;
+                    chip.tier = "Paper-Live";
                     chip.status = 'unlocked';
                     chip.isReadOnly=true;
                     chip.position=toSystemNum(chip.chip_locations)

@@ -328,9 +328,11 @@ const reducer = (state = initialState, action) => {
     }
     case actionTypes.SHOW_PERFORMANCE:
     {
+      
       return {
         ...state,
-        performance_account_id:action.account_id
+        performance_account_id:action.account_id,
+        performance_chip:action.chip
       };
     }
     case actionTypes.SHOW_LOCKDOWN_DIALOG:

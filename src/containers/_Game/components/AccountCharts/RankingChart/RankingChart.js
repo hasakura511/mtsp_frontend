@@ -599,16 +599,26 @@ export default class RankingChart extends Component {
             }
             />
           */}
-            
-            {performance.chart_specs.map(period => {   
-              return <Bar
+             <Bar
                 ref={ref => this.area = ref}
 
-                key={period}
-                dataKey={'cum_pers_' + period}
+                key={lookback}
+                dataKey={'cum_per'}
                 stackId="stack"
-                fill={performance.chart_dict[period].color}
+                fill={performance.chart_dict[lookback].color}
               />
+
+            {performance.chart_specs.map(period => {   
+              if (period != lookback) {
+                return <Bar
+                  ref={ref => this.area = ref}
+
+                  key={period}
+                  dataKey={'cum_pers_' + period}
+                  stackId="stack"
+                  fill={performance.chart_dict[period].color}
+                />
+              }
 
             })}
             <ReferenceLine x={0} stroke="#000" />

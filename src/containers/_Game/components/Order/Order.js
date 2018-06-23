@@ -218,6 +218,128 @@ export default class Order extends React.Component {
             </div> */}
           </div>
         
+        ) : chip.isReadOnly ? (
+          <div className={classes.TitleRow} style={{background:self.props.themes.live.dialog.background,
+            color:self.props.themes.live.dialog.text, fontSize:"12px", fontWeight:400}}
+            >
+            
+            <div
+              className={classes.ElementContainer}
+              style={{ paddingTop: "15px",background:self.props.themes.live.dialog.background_inner,
+              color:self.props.themes.live.dialog.text }}
+            >
+              <Chip chip={chip} />
+            </div>
+            <div           style={{ minWidth:"100px", padding: "15px" }}
+    >
+              {toTitleCase(chip.tier)}<br/>
+                Tier {chip.chip_tier}<br/>
+                {chip.chip_tier_text}<br/>
+                Rank: {chip.rank}<br/>
+            </div>
+            
+          <table style={{border:"none", borderCollapse: "collapse",
+        background:self.props.themes.live.dialog.background_inner,
+        color:self.props.themes.live.dialog.text }}>
+          <thead  style={{border:"none"}}>
+            <tr style={{border:"none"}}>
+            <th  style={{border:"none"}}>
+              <center>
+                Player
+                </center>
+                </th>
+                <th  style={{border:"none"}}>
+                <center>
+                Cumulative %Chg
+                </center>
+                </th>
+                <th  style={{border:"none"}}>
+                <center>
+                Previous %Chg
+                </center>
+                </th>
+                <th  style={{border:"none"}}>
+                <center>
+                  Age
+                </center>
+                </th>
+                <th  style={{border:"none"}}>
+                <center>
+                Markets in Portfolio
+                </center>
+                </th>
+                
+                </tr>
+              </thead>
+              <tbody>
+                <tr style={{border:"1px", "padding":"1px"}}>
+               
+                <td style={{borderLeft:"1px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
+                <center>
+                {chip.player}
+                </center>
+                </td>            
+                <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
+                <center>
+                          
+                        {parseFloat(chip.pnl_cumpct) ? (
+                          <span style={parseFloat(chip.pnl_cumpct) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
+                        <b>
+                        {parseFloat(chip.pnl_cumpct).toLocaleString("en")} %
+                        </b>
+                        </span>
+                        ) : (
+                          <span style={{color:self.props.themes.live.dialog.text_color}}>
+                        <b>
+                        {parseFloat(chip.pnl_cumpct).toLocaleString("en")} % 
+                        </b>
+                        </span>
+                        )}
+                      
+                      </center>
+
+                </td>            
+                <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
+                <center>
+                          
+                          {parseFloat(chip.pnl_pct) ? (
+                          <span style={parseFloat(chip.pnl_pct) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
+                        <b>
+                        {parseFloat(chip.pnl_pct).toLocaleString("en")} %
+                        </b>
+                        </span>
+                        ) : (
+                          <span style={{color:self.props.themes.live.dialog.text_color}}>
+                        <b>
+                        {parseFloat(chip.pnl_pct).toLocaleString("en")} % 
+                        </b>
+                        </span>
+                        )}
+              </center>
+                </td>            
+                <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black", borderRight:"0px solid black"}}>
+                <center>
+                  {chip.age}
+                </center>
+                </td>
+                <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
+                <center>
+                {chip.num_markets}
+                </center>
+                </td>            
+               
+                <td style={{width:"1px", margin:"0px", padding:"0px", borderLeft:"1px solid black",borderTop:"1px solid black",borderBottom:"1px solid black", borderRight:"1px solid black"}}>
+                </td></tr>
+                </tbody>
+                </table>
+                <div style={{"float": "right", "padding":"9px","textAlign": "right", background:self.props.themes.live.dialog.background,
+            color:self.props.themes.live.dialog.text, fontSize:"12px", fontWeight:400}}>
+                      <button onClick={() => {self.props.toggle(); } } >
+                      <font style={{fontSize:"22px"}}>Close</font>
+                      </button>
+              </div>
+
+          </div>
         ) : (
           <div className={classes.TitleRow} style={{background:self.props.themes.live.dialog.background,
             color:self.props.themes.live.dialog.text, fontSize:"12px", fontWeight:400}}

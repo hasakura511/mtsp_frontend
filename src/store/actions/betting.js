@@ -26,10 +26,11 @@ export const initializeData = data => {
   };
 };
 
-export const showPerformance = account_id => {
+export const showPerformance = (account_id, chip=null) => {
   return {
     type: actionTypes.SHOW_PERFORMANCE,
     account_id,
+    chip
   }
 }
 

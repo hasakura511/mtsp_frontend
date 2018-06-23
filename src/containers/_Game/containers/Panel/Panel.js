@@ -32,6 +32,7 @@ const stateToProps = state => {
            themes:state.betting.themes,
            mute:state.betting.mute,
            performance_account_id:state.betting.performance_account_id,
+           performance_chip:state.betting.performance_chip,
            show_lockdown_dialog:state.betting.show_lockdown_dialog,
            show_leader_dialog:state.betting.show_leader_dialog,
           };
@@ -114,6 +115,7 @@ export default class Panel extends Component {
     themes:PropTypes.object,
     mute:PropTypes.bool.isRequired,
     performance_account_id:PropTypes.string.isRequired,
+    performance_chip:PropTypes.object,
     show_lockdown_dialog:PropTypes.bool.isRequired,
     show_leader_dialog:PropTypes.bool.isRequired,
     showLockdownDialog:PropTypes.func.isRequired,
@@ -252,6 +254,11 @@ export default class Panel extends Component {
           if (account.account_id == newProps.performance_account_id)
             chip=account;
       });
+      if (newProps.performance_chip) {
+        console.log('Performance Chip');
+        chip=newProps.performance_chip;
+        console.log(chip);
+      }
       self.setState({showOrderDialog:true, performance_account_id:newProps.performance_account_id, orderChip:chip, isPerformance:true});
       //self.forceUpdate();
     } else if (!newProps.performance_account_id) {
