@@ -22,6 +22,7 @@ import Board from "./containers/_Game/containers/Board/Board";
 import Profile from "./containers/Home/Profile/Profile";
 import Contact from "./containers/Home/Contact/Contact";
 import Markets from "./containers/Markets/Markets";
+import NewBoard from "./containers/_Game/containers/NewBoard/NewBoard"
 import { DragDropContext } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 
@@ -120,6 +121,7 @@ class App extends Component<PropType, { showSideDrawer: boolean }> {
           <Route path="/contact" component={Contact} />
           <Route exact path="/profile" component={Profile} />
           <Route exact path="/markets" component={Markets} />
+          <Route exact path="/new_board" component={NewBoard} />
           <Route
             exact
             path="/profile/updatepassword"

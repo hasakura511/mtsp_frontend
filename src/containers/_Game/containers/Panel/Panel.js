@@ -70,7 +70,7 @@ const dispatchToProps = dispatch => {
     },
     showLeaderDialog(show) {
       dispatch(actions.showLeaderDialog(show));
-    }
+    },
 
   };
 };
@@ -220,6 +220,7 @@ export default class Panel extends Component {
       performance_account_id:'',
       isPerformance:false,
       isReadOnly: props.isReadOnly ? true : false,
+      orderAnti: false,
 
     };
     this._isMounted = false;
@@ -322,6 +323,8 @@ export default class Panel extends Component {
       });
     }
     let position = 1;
+    
+
     bottomSystems.forEach(bottomSystem => {
       topSystems.forEach(topSystem => {
         sideSystems.forEach(sideSystem => {
@@ -339,7 +342,7 @@ export default class Panel extends Component {
     this.setState({ slots, maxHeight, maxWidth });
     this._isMounted = true;
   }
-  moveChipToSlot = (chip, position) => {
+  moveChipToSlot = (chip, position, isAnti=false) => {
     // Open order dialogue
     const {
       topSystems,
@@ -385,7 +388,8 @@ export default class Panel extends Component {
         showOrderDialog: true,
         showClearDialog: false,
         orderChip: chip,
-        orderSlot: slot
+        orderSlot: slot,
+        orderAnti: isAnti
       });
     } else if (system) {
       const systemToSlot = {
@@ -401,7 +405,8 @@ export default class Panel extends Component {
         showOrderDialog: true,
         showClearDialog: false,
         orderChip: chip,
-        orderSlot: systemToSlot
+        orderSlot: systemToSlot,
+        orderAnti: isAnti
       });
     } else if (position.toString().toLowerCase() === "off") {
         this.setState({showClearDialog:true})
@@ -659,6 +664,7 @@ export default class Panel extends Component {
             isPerformance={this.state.isPerformance}
             performance_account_id={this.state.performance_account_id}
             moveChipToSlot={this.moveChipToSlot}
+            orderAnti={this.state.orderAnti}
           />
           </div>
         ) : null}

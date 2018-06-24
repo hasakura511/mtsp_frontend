@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Panel from "../Panel/Panel";
-import classes from "./LiveBoard.css";
+import classes from "./NewBoard.css";
 import bgBoard from "../../../../assets/images/boardBg.png";
 import Config from "../../Config";
 import ChipsConfig from "../../ChipsConfig";
@@ -20,8 +20,6 @@ import axios from "../../../../axios-gsm";
 import ClockLoader from "../../../../components/UI/ClockLoader/ClockLoader";
 import { toSystem, toAntiSystem } from "../../Config";
 import Markets from "../../../Markets/Markets"
-import NewBoard from "../NewBoard/NewBoard"
-import { Link } from "react-router-dom";
 
 // Inserts or removes chip into system
 const insertChip = (systems, column, chip) => {
@@ -132,7 +130,7 @@ const dispatchToProps = dispatch => {
  * @class Board
  * @extends {Component}
  */
-export default class LiveBoard extends Component {
+export default class NewBoard extends Component {
   static propTypes = {
     email: PropTypes.string,
     firstName: PropTypes.string,
@@ -848,8 +846,7 @@ export default class LiveBoard extends Component {
             />
               <span style={{"marginTop":"30px","float": "left", "width": "50%", "textAlign": "left", "display": "inline-block","verticalAlign": "top"}}>
                 <a href='#accounts' title="Create or configure your accounts."><img src="/images/accounts_button.png" width="120"/></a><br/>
-                <Link to="/new_board" title="Edit your board."
-                ><img src="/images/edit_board_button.png" width="120"/></Link><br/>  
+                <a href='#edit_board' title="Edit your board."><img src="/images/edit_board_button.png" width="120"/></a><br/>  
               </span>
               {self.props.mute ? (
               <span style={{"marginTop":"60px", "paddingRight":"5px", "float": "right", "width": "50%", "textAlign": "right", "display": "inline-block","verticalAlign": "top"}}>

@@ -397,18 +397,18 @@ export default class LeaderBoardCopiedChips extends Component {
 
                     //<div  style={{marginTop:"12px", minWidth: '120px'}}>
                     items.push(
-                    <div style={{'float':'left', minWidth:'60px', height:"12px", lineHeight:"12px", marginTop:"20px"}}>
+                    <div key={'item-1'} style={{'float':'left', minWidth:'60px', height:"12px", lineHeight:"12px", marginTop:"20px"}}>
                     {props.original.isSource ? 'From' : 'To'}
                     
                     </div>)
                     items.push(
-                    <div  style={{'float':'left', minWidth: '60px', marginTop:"3px"}}>
+                    <div  key={'item-2'} style={{'float':'left', minWidth: '60px', marginTop:"3px"}}>
                     <Chip chip={chip} isReadOnly={true} />&nbsp;&nbsp;
                     </div>
                     )
                     items.push(
 
-                    <div style={{"clear": "both"}}></div>
+                    <div key={'item-3'} style={{"clear": "both"}}></div>
                     )
                     return items;
 

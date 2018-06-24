@@ -348,6 +348,8 @@ export default class RankingChart extends Component {
 
     let color = chartData[parseInt(value)].x_axis_colors;
     let chip_location = chartData[parseInt(value)].chip_location;
+    let key = chartData[parseInt(value)].key;
+    var dictionary_strategy=this.props.dictionary_strategy;
     //console.log(color)
     /*
     const {
@@ -387,8 +389,11 @@ export default class RankingChart extends Component {
             if (order.match(/^[\d]+$/)) {
               order=parseInt(order);
             }
-
-            self.props.moveChipToSlot(self.props.chip, order);
+            if (chip_location != key)
+              self.props.moveChipToSlot(self.props.chip, order, true);
+            else
+              self.props.moveChipToSlot(self.props.chip, order, false);
+            
 
             //console.log(order)
   

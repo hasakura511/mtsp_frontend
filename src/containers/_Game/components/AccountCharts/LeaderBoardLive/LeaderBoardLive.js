@@ -404,23 +404,23 @@ export default class LeaderBoardLive extends Component {
 
                     //<div  style={{marginTop:"12px", minWidth: '235px'}}>
                     items.push(
-                    <div style={{'float':'left', minWidth:'25px', height:"12px", lineHeight:"12px", marginTop:"12px"}}>
+                    <div key={'item-1'} style={{'float':'left', minWidth:'25px', height:"12px", lineHeight:"12px", marginTop:"12px"}}>
                     <h3>{props.value}.</h3>
                     </div>)
                     items.push(
-                    <div  style={{'float':'left', minWidth: '60px', height:'60px',marginTop:"3px"}}>
+                    <div key={'item-2'} style={{'float':'left', minWidth: '60px', height:'60px',marginTop:"3px"}}>
                     <Chip chip={chip} isReadOnly={true} />&nbsp;&nbsp;
                     </div>
                     )
                     items.push(
 
-                    <div  style={{'float':'left', minwidth:'150px', marginTop:"20px"}}>
+                    <div key={'item-3'} style={{'float':'left', minwidth:'150px', marginTop:"20px"}}>
                     {props.original.player}
                     </div>
                     )
                     items.push(
 
-                    <div style={{"clear": "both"}}></div>
+                    <div key={'item-4'} style={{"clear": "both"}}></div>
                     )
                     return items;
   

@@ -77,11 +77,15 @@ export default class OrderDialog extends Component {
     themes:PropTypes.object.isRequired,
     accounts:PropTypes.array.isRequired,
     moveChipToSlot:PropTypes.func,
+    orderAnti:PropTypes.bool,
   };
 
   constructor(props) {
     super(props);
 
+    var isAnti=false;
+    if (props.orderAnti)
+      isAnti=true;
     this.state = {
       performance_account_id:'',
       /**
@@ -105,7 +109,7 @@ export default class OrderDialog extends Component {
        * Figures out the anti of the given set of systems
        * @type {boolean}
        */
-      isAnti: false,
+      isAnti: isAnti,
 
       /**
        * Stores the last 3 days profits object
@@ -248,6 +252,9 @@ export default class OrderDialog extends Component {
       if (newProps.slot.position != this.props.slot.position) {
         this.setState({ isAnti: false});
       }
+    }
+    if (newProps.orderAnti && !this.props.orderAnti) {
+      this.setState({isAnti:true});
     }
     if (this.state.performance_account_id && this.state.isPerformance) {
       if (newProps.accounts) {
