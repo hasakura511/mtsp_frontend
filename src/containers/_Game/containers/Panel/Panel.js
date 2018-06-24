@@ -751,6 +751,8 @@ export default class Panel extends Component {
           lookback: 23
         })
         .then(({ data }) => {
+          console.log("Practice Ranking Data")
+          console.log(data)
           // eslint-disable-next-line react/no-is-mounted
           this._isMounted &&
             this.setState({

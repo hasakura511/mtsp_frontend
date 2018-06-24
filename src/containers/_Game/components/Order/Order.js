@@ -127,7 +127,7 @@ export default class Order extends React.Component {
       }
       var self=this;
       return (
-        <div className={classes.Order} style={{background: themes.live.dialog.background}}>
+        <div className={classes.Order} style={isLive ? {background: themes.live.dialog.background} : {}}>
           {!isPerformance ? isLive ? (
             
 
