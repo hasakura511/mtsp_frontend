@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Modal from "../../../../components/UI/Modal/Modal";
 import Spinner from "../../../../components/UI/Spinner/Spinner";
 import LockdownTimetable from "../../../../containers/_Game/components/AccountCharts/LockdownTimetable/LockdownTimetable";
-import LeaderboardCopiedChips from "../../../../containers/_Game/components/AccountCharts/LeaderboardCopiedChips/LeaderboardCopiedChips";
+import LeaderBoardCopiedChips from "../../../../containers/_Game/components/AccountCharts/LeaderBoardCopiedChips/LeaderBoardCopiedChips";
 import LeaderBoardLive from "../../../../containers/_Game/components/AccountCharts/LeaderBoardLive/LeaderBoardLive";
 import Order from "../../components/Order/Order";
 import axios from "../../../../axios-gsm";
@@ -221,7 +221,7 @@ export default class LeaderDialog extends Component {
 
               {isLeaderboardCopiedChips ? (
                 <div className={classes.Content}>
-                 <LeaderBoardLive initializeLive={this.props.initializeLive} isdialog={true} gap={107} toggle={self.toggle} />
+                 <LeaderBoardCopiedChips initializeLive={this.props.initializeLive} isdialog={true} gap={107} toggle={self.toggle} />
                 </div>
               ) : (
               null

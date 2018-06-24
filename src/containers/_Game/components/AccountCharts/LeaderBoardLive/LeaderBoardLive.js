@@ -388,18 +388,19 @@ export default class LeaderBoardLive extends Component {
                 {
                   Header: "Player",
                   accessor: "rank",
+                  width: 240,
                   Cell: props => {
          
                     var chip=props.original;
                     chip.display=props.original.account_chip_text;
-                    chip.tier = "Paper-Live";
+                    chip.tier = props.original.tier;
                     chip.status = 'unlocked';
                     chip.isReadOnly=true;
                     chip.starting_value=props.original.account_chip_text;
                     chip.account_value=props.original.account_chip_text;
                     chip.total_margin="";
                     return (
-                    <div  style={{marginTop:"12px", minWidth: '185px'}}>
+                    <div  style={{marginTop:"12px", minWidth: '235px'}}>
                     <div style={{'float':'left', minWidth:'25px', height:"12px", lineHeight:"12px", marginTop:"12px"}}>
                     <h3>{props.value}.</h3>
                     
@@ -407,7 +408,7 @@ export default class LeaderBoardLive extends Component {
                     <div  style={{'float':'left', minWidth: '60px', marginTop:"3px"}}>
                     <Chip chip={chip} isReadOnly={true} />&nbsp;&nbsp;
                     </div>
-                    <div  style={{'float':'left', minwidth:'100px', marginTop:"20px"}}>
+                    <div  style={{'float':'left', minwidth:'150px', marginTop:"20px"}}>
                     {props.original.player}
                     </div>
 
@@ -487,7 +488,7 @@ export default class LeaderBoardLive extends Component {
                   Cell: props => {
                     var chip=props.original;
                     chip.display=props.original.account_chip_text;
-                    chip.tier = "Paper-Live";
+                    chip.tier = props.original.tier;
                     chip.status = 'unlocked';
                     chip.chip_tier_text=chip.filter;
                     chip.isReadOnly=true;
@@ -606,7 +607,7 @@ export default class LeaderBoardLive extends Component {
                   Cell: props => {
                     var chip=props.original;
                     chip.display=props.original.account_chip_text;
-                    chip.tier = "Paper-Live";
+                    chip.tier = props.original.tier;
                     chip.status = 'unlocked';
                     chip.isReadOnly=true;
                     chip.position=toSystemNum(chip.chip_locations)
