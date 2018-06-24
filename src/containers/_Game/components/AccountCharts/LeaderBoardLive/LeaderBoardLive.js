@@ -399,23 +399,32 @@ export default class LeaderBoardLive extends Component {
                     chip.starting_value=props.original.account_chip_text;
                     chip.account_value=props.original.account_chip_text;
                     chip.total_margin="";
-                    return (
-                    <div  style={{marginTop:"12px", minWidth: '235px'}}>
+
+                    var items=[];
+
+                    //<div  style={{marginTop:"12px", minWidth: '235px'}}>
+                    items.push(
                     <div style={{'float':'left', minWidth:'25px', height:"12px", lineHeight:"12px", marginTop:"12px"}}>
                     <h3>{props.value}.</h3>
-                    
-                    </div>
-                    <div  style={{'float':'left', minWidth: '60px', marginTop:"3px"}}>
+                    </div>)
+                    items.push(
+                    <div  style={{'float':'left', minWidth: '60px', height:'60px',marginTop:"3px"}}>
                     <Chip chip={chip} isReadOnly={true} />&nbsp;&nbsp;
                     </div>
+                    )
+                    items.push(
+
                     <div  style={{'float':'left', minwidth:'150px', marginTop:"20px"}}>
                     {props.original.player}
                     </div>
+                    )
+                    items.push(
 
                     <div style={{"clear": "both"}}></div>
+                    )
+                    return items;
   
 
-                </div>)
                   }, // Custom cell components!,
 
 
