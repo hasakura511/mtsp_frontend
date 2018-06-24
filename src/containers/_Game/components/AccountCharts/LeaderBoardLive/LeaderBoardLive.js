@@ -161,6 +161,7 @@ export default class LeaderBoardLive extends Component {
   
   copyBoard = (leader_board_config) => {
     var self=this;
+    
     axios
     .post("/utility/update_board_live/", {
       /**
@@ -343,7 +344,7 @@ export default class LeaderBoardLive extends Component {
 
                                 self.setState({filter:item});
                             }}>
-                            <span className={filter === item ? classes.active : ""}>{item} </span> &nbsp;&nbsp;&nbsp;  
+                            <span className={filter === item ? classes.active : ""} style={filter == item ? {color:self.props.themes.live.dialog.button_color_active} : {color:self.props.themes.live.dialog.button_color}}>{item} </span> &nbsp;&nbsp;&nbsp;  
                           </span>
                 
                           );

@@ -273,7 +273,8 @@ export default class PerformanceOrderChart extends Component {
       performance:{},
       performanceLoading:true,
       performanceError:'',
-      // endDate: 20180201
+      isAnti:false
+      // endDate:   20180201
     };
 
     this.area = null;
@@ -399,8 +400,14 @@ export default class PerformanceOrderChart extends Component {
   
         });
         performance.chart_dict=chart_dict;
-        
-        
+        $('#system-label').css('color',performance.colors.strategy)
+        $('#anti-system-label').css('color',performance.colors.anti_strategy)
+        $('#system-radio').on('click', function(e) {
+          self.setState({isAnti:false});
+        });      
+        $('#anti-system-radio').on('click', function(e) {
+          self.setState({isAnti:true});
+        });      
         console.log(performance);
   
         self.setState({
@@ -475,7 +482,7 @@ export default class PerformanceOrderChart extends Component {
                 console.log(date);
                 return (
           <div key={date} className={classes.Tab}  style={{marginTop: "0px", background:self.props.themes.live.dialog.tab_color_active}} onClick={() => this.lookbackHandler(date)}>
-            <p className={lookback === date ? classes.active : ""}>{date}</p>
+            <p className={lookback === date ? classes.active : "" }  style={lookback == date ? {color:self.props.themes.live.dialog.button_color_active} : {color:self.props.themes.live.dialog.button_color}}>{date}</p>
           </div>
             )
             })}
@@ -530,7 +537,7 @@ export default class PerformanceOrderChart extends Component {
                 dataKey={"strategy_value" }
                 stroke={performance.colors.strategy}
                 activeDot={{ r: 8 }}
-                strokeWidth={3} 
+                strokeWidth={self.state.isAnti ? 1 : 3} 
                />
                <Legend />
                 <Line
@@ -540,6 +547,7 @@ export default class PerformanceOrderChart extends Component {
                 dataKey={"anti_value" }
                 stroke={performance.colors.anti_strategy}
                 activeDot={{ r: 8 }}
+                strokeWidth={self.state.isAnti ? 3 : 1} 
                />
               <Line
                 ref={ref => this.area = ref}

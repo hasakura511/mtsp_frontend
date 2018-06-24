@@ -4,18 +4,19 @@ import { clone, toSlashDate, uniq, toIntegerDate, clean, getOffsetDate, getOffse
 var moment = require('moment-timezone');
 
 const checkChip = (chip, liveDate) => {
-  var locktime=new moment.tz(chip.locktime.replace(' EST',''),"US/Eastern");
-  var unlocktime=new moment.tz(chip.unlocktime.replace(' EST',''),"US/Eastern");
-  chip['lockdown']=locktime;
-  chip['lockdown_text']=locktime.format('MM/DD HH:mm:ss A') + " EST";
-  chip['unlock']=unlocktime;
-  chip['unlocktime_text']=unlocktime.format('MM/DD HH:mm:ss A') + " EST";
-  if ( liveDate < locktime  || liveDate > unlocktime) {
-    chip['status']='unlocked';
-  } else {
-    chip['status']='locked';
+  if (!chip.isReadOnly) {
+    var locktime=new moment.tz(chip.locktime.replace(' EST',''),"US/Eastern");
+    var unlocktime=new moment.tz(chip.unlocktime.replace(' EST',''),"US/Eastern");
+    chip['lockdown']=locktime;
+    chip['lockdown_text']=locktime.format('MM/DD HH:mm:ss A') + " EST";
+    chip['unlock']=unlocktime;
+    chip['unlocktime_text']=unlocktime.format('MM/DD HH:mm:ss A') + " EST";
+    if ( liveDate < locktime  || liveDate > unlocktime) {
+      chip['status']='unlocked';
+    } else {
+      chip['status']='locked';
+    }
   }
-
   return chip;
 }
 const insertChip = (systems, column, chip) => {

@@ -113,7 +113,7 @@ export default class Order extends React.Component {
 
   }
   render() {
-      var { slot, chip, setAnti, setNotAnti, isAnti, toAntiSystem, submitBetHandler, close, isLive,  dictionary_strategy, isPerformance, accounts } = this.props;
+      var { slot, chip, setAnti, setNotAnti, isAnti, toAntiSystem, submitBetHandler, close, isLive,  dictionary_strategy, isPerformance, accounts, themes } = this.props;
       if (this.state.orderChip)  {
         chip=this.state.orderChip;
         console.log('Order Rendering Chip')
@@ -128,12 +128,15 @@ export default class Order extends React.Component {
       var self=this;
       return (
         <div className={classes.Order}>
-          {!isPerformance ? (
-          <div className={classes.TitleRow}>
+          {!isPerformance ? isLive ? (
+            
+
+
+          <div className={classes.TitleRow} style={{background: themes.live.dialog.background}}>
             <div className={classes.Left}>
               <div
                 className={classes.ElementContainer}
-                style={{ padding: "0px", width: !isNumbered ? "160px" : "auto" }}
+                style={{ padding: "0px", width: !isNumbered ? "160px" : "auto", background: themes.live.dialog.background_inner }}
               >
                 <Slot
                   {...slot}
@@ -157,13 +160,13 @@ export default class Order extends React.Component {
               </div>
               <div
                 className={classes.ElementContainer}
-                style={{ paddingTop: "15px" }}
+                style={{ paddingTop: "15px",background: themes.live.dialog.background_inner }}
               >
                 <Chip chip={chip} />
               </div>
             </div>
-            <div className={classes.Right}>
-              <div className={classes.ElementContainer}>
+            <div className={classes.Right} style={{background: themes.live.dialog.background_inner}}>
+              <div className={classes.ElementContainer} style={{background: themes.live.dialog.background_inner}}>
                 <div style={{ display: "flex", width: "100%" }}>
                   <input
                     type="radio"
@@ -174,7 +177,7 @@ export default class Order extends React.Component {
                   />
                   {isLive ? (
 
-                      <label htmlFor="system-radio" style={{ color: "#8884d8" }}>
+                      <label id="system-label" htmlFor="system-radio" style={{ color: "#8884d8" }}>
                         {toSystem(slot.position)}
                       </label>
 
@@ -193,7 +196,7 @@ export default class Order extends React.Component {
                     title={"Orders will be placed for the strategy selected here."}
                   />
                   {isLive ? (
-                    <label htmlFor="anti-system-radio" style={{ color: "#63a57c" }}>
+                    <label id="anti-system-label" htmlFor="anti-system-radio" style={{ color: "#63a57c" }}>
                       {toAntiSystem(slot.position)}
                     </label>
                   ) : (
@@ -203,7 +206,7 @@ export default class Order extends React.Component {
                   )}
                 </div>
               </div>
-              <div className={classes.ActionBar}>
+              <div className={classes.ActionBar} style={{background: themes.live.dialog.background_inner}}>
                 <button className={classes.Submit} onClick={submitBetHandler} title={"This order will be placed as a Market-on-Close (MOC) order."}>
                   Place MOC Order
                 </button>
@@ -217,7 +220,99 @@ export default class Order extends React.Component {
               <p style={{ color: "#63a57c" }}>Anti-System</p>
             </div> */}
           </div>
-        
+          ) : (
+            
+
+
+          <div className={classes.TitleRow}>
+          <div className={classes.Left}>
+            <div
+              className={classes.ElementContainer}
+              style={{ padding: "0px", width: !isNumbered ? "160px" : "auto" }}
+            >
+              <Slot
+                {...slot}
+                dictionary_strategy={ dictionary_strategy}
+                heldChips={[]}
+                width={!isNumbered ? "160px" : "60px"}
+                fontSize={!isNumbered ? "1.5em" : "2.2em"}
+              />
+            </div>
+            <div
+              className={classes.Systems}
+              style={isNumbered ? {} : { visibility: "hidden" }}
+            >
+              <ul>
+                {getSystems(slot).map(system => (
+                  <li key={`${system.id}${Math.random().toFixed(3)}`}>
+                    <p>{system.display}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div
+              className={classes.ElementContainer}
+              style={{ paddingTop: "15px" }}
+            >
+              <Chip chip={chip} />
+            </div>
+          </div>
+          <div className={classes.Right}>
+            <div className={classes.ElementContainer}>
+              <div style={{ display: "flex", width: "100%" }}>
+                <input
+                  type="radio"
+                  id="system-radio"
+                  checked={!isAnti}
+                  onChange={setNotAnti}
+                  title={"Orders will be placed for the strategy selected here."}
+                />
+                {isLive ? (
+
+                    <label htmlFor="system-radio" style={{ color: "#8884d8" }}>
+                      {toSystem(slot.position)}
+                    </label>
+
+                    ) : (
+                    <label htmlFor="system-radio" style={{ color: "#8884d8" }}>
+                      {toSystem(slot.position)}
+                    </label>
+                    )}
+              </div>
+              <div style={{ display: "flex", width: "100%" }}>
+                <input
+                  type="radio"
+                  id="anti-system-radio"
+                  checked={isAnti}
+                  onChange={setAnti}
+                  title={"Orders will be placed for the strategy selected here."}
+                />
+                {isLive ? (
+                  <label htmlFor="anti-system-radio" style={{ color: "#63a57c" }}>
+                    {toAntiSystem(slot.position)}
+                  </label>
+                ) : (
+                  <label htmlFor="anti-system-radio" style={{ color: "#63a57c" }}>
+                    {toAntiSystem(slot.position)}
+                  </label>
+                )}
+              </div>
+            </div>
+            <div className={classes.ActionBar}>
+              <button className={classes.Submit} onClick={submitBetHandler} title={"This order will be placed as a Market-on-Close (MOC) order."}>
+                Place MOC Order
+              </button>
+              <button onClick={close}>Cancel</button>
+            </div>
+          </div>
+
+          {/* <div className={classes.Right}>
+            <p style={{ color: "#8884d8" }}>System</p>
+            <Switch toggle={toggleSystem} />
+            <p style={{ color: "#63a57c" }}>Anti-System</p>
+          </div> */}
+        </div>
+          
         ) : chip.isReadOnly ? (
           <div className={classes.TitleRow} style={{background:self.props.themes.live.dialog.background,
             color:self.props.themes.live.dialog.text, fontSize:"12px", fontWeight:400}}

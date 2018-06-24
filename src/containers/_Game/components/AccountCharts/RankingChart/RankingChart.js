@@ -336,8 +336,10 @@ export default class RankingChart extends Component {
   }
 
 
-  getColor({ x, y, payload }, chartData) {
+  getColor(props, chartData) {
     var self=this;
+    //console.log(props);
+    var { x, y, payload } = props;
     // tickObj.payload.value will be the string value "1" or "2" or "prev1" etc but with ranks
     const value = payload.index; //value.split("(")[0].trim();
     //console.log(chartData);
@@ -345,6 +347,7 @@ export default class RankingChart extends Component {
     //console.log(payload);
 
     let color = chartData[parseInt(value)].x_axis_colors;
+    let chip_location = chartData[parseInt(value)].chip_location;
     //console.log(color)
     /*
     const {
@@ -376,16 +379,18 @@ export default class RankingChart extends Component {
           transform="rotate(-70)"
           fontSize={14}
           style={{cursor:'pointer'}} onClick={() => {
-            console.log("Clicked on " + payload.value);
+            console.log("Clicked on " + chip_location);
             
-            var order=payload.value;
+            
+            var order=chip_location;
             order=order.replace(/\ \(.*\)/,'');
             if (order.match(/^[\d]+$/)) {
               order=parseInt(order);
             }
+
             self.props.moveChipToSlot(self.props.chip, order);
 
-            console.log(order)
+            //console.log(order)
   
           } }
         >
@@ -522,7 +527,8 @@ export default class RankingChart extends Component {
             <div className={classes.box} style={{float:'left', marginTop:"2px", background:chartData['color_' + item]}}>&nbsp;</div>
             <div style={{float:'left'}}>&nbsp;&nbsp;
             </div>
-            <p className={lookback === item ? classes.active : ""} style={{float:'left'}}>{item} Day Cumulative %Chg</p>
+            <p className={lookback === item ? classes.active : "" }  style={lookback == item ? {float:'left', color:self.props.themes.live.dialog.button_color_active} 
+            : {float:'left', color:self.props.themes.live.dialog.button_color}} >{item} Day Cumulative %Chg</p>
             <div style={{"clear": "both"}}></div>
 
           </div>
@@ -537,7 +543,7 @@ export default class RankingChart extends Component {
                 return (
           <div key={item.value} className={classes.Tab}  style={{marginTop: "0px", minWidth: "200px", background:self.props.themes.live.dialog.tab_color_active}} onClick={() => this.filterHandler(item.value)}>
             <center  className={classes.Tab} >
-            <p className={filter === item.value ? classes.active : ""}>{item.name}</p>
+            <p className={filter === item.value ? classes.active : ""}  style={filter == item.value ? {color:self.props.themes.live.dialog.button_color_active} : {color:self.props.themes.live.dialog.button_color}}>{item.name}</p>
             </center>
           </div>
             )

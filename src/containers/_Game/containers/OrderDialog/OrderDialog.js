@@ -236,6 +236,7 @@ export default class OrderDialog extends Component {
         } chip. If you don't have an account please sign up first.`
       });
     }
+    
     this._isMounted = true;
   }
 
@@ -243,6 +244,11 @@ export default class OrderDialog extends Component {
     console.log("OrderDialog Received New Props")
     console.log(newProps);
 
+    if (newProps.slot && this.props.slot) {
+      if (newProps.slot.position != this.props.slot.position) {
+        this.setState({ isAnti: false});
+      }
+    }
     if (this.state.performance_account_id && this.state.isPerformance) {
       if (newProps.accounts) {
           var orderChip='';
