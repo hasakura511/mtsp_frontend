@@ -430,7 +430,7 @@ export default class PerformanceChart extends Component {
                 console.log(date);
                 return (
           <div key={date} className={classes.Tab}  style={{marginTop: "0px", background:self.props.themes.live.dialog.tab_color_active}} onClick={() => this.lookbackHandler(date)}>
-            <p className={lookback === date ? classes.active : ""}>{date}</p>
+            <p className={lookback === date ? classes.active : ""}  style={lookback == date ? {color:self.props.themes.live.dialog.button_color_active} : {color:self.props.themes.live.dialog.button_color}}>{date}</p>
           </div>
             )
             })}

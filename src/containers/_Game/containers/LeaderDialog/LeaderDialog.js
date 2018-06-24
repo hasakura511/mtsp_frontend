@@ -198,8 +198,8 @@ export default class LeaderDialog extends Component {
                      Paper-Live
                     </div>
                     <div
-                      style={ isLeaderboardCopiedChips ? {borderColor:self.props.themes.live.dialog.lines,  borderLeft:"1px solid " + self.props.themes.live.dialog.lines, borderTop:"1px solid " + self.props.themes.live.dialog.lines,  background:self.props.themes.live.dialog.tab_color_active, minWidth:'180px'} 
-                      : {borderTop:"1px solid " + self.props.themes.live.dialog.lines,   borderLeft:"1px solid " + self.props.themes.live.dialog.lines, borderColor:self.props.themes.live.dialog.lines, background:self.props.themes.live.dialog.tab_color_inactive, minWidth:'180px'} }
+                      style={ isLeaderboardCopiedChips ? {borderColor:self.props.themes.live.dialog.lines,  borderRight:"1px solid " + self.props.themes.live.dialog.lines, borderLeft:"1px solid " + self.props.themes.live.dialog.lines, borderTop:"1px solid " + self.props.themes.live.dialog.lines,  background:self.props.themes.live.dialog.tab_color_active, minWidth:'180px'} 
+                      : {borderTop:"1px solid " + self.props.themes.live.dialog.lines,   borderLeft:"1px solid " + self.props.themes.live.dialog.lines,  borderRight:"1px solid " + self.props.themes.live.dialog.lines, borderColor:self.props.themes.live.dialog.lines, background:self.props.themes.live.dialog.tab_color_inactive, minWidth:'180px'} }
                       className={
                         classes.Tab
                       }

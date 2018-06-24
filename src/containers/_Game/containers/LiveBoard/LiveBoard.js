@@ -706,7 +706,7 @@ export default class LiveBoard extends Component {
           <Aux>
             
             <center>
-             <ClockLoader show={loading} />
+             <ClockLoader show={true} />
              <br/><br/>
              <b>Please wait while we load your board. This could take a couple of minutes.</b>
             </center>

@@ -579,7 +579,8 @@ export default class Order extends React.Component {
           
           {isLive ? (
 
-            <div className={classes.Content}>
+            <div className={classes.Content}  style={{background:self.props.themes.live.dialog.background,
+              color:self.props.themes.live.dialog.text, borderColor:self.props.themes.live.dialog.lines}}>
               <AccountCharts isOrder={!isPerformance} chip={chip} slot={slot} {...this.props} />
             </div>
 

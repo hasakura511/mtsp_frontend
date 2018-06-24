@@ -452,7 +452,7 @@ export default class LeaderBoardLive extends Component {
                 {
                   Header: props => (
                     <span style={{background:self.props.themes.live.dialog.table_left_background}}>
-                    Prev % Change
+                    Prev % Chg
                   </span>),
                   headerStyle: {
                     background:self.props.themes.live.dialog.table_left_background
@@ -523,7 +523,7 @@ export default class LeaderBoardLive extends Component {
                     <span className='number'><center>
                         
                     <a href='JavaScript:console.log("popover called")' style={{ cursor:'pointer'  }} 
-                    
+                    title={"Show Account Portfolio."}
                     ref={ref => self[props.original.rank] = ref}
                     onClick={() => {  
                                 var portfolio=JSON.parse(props.original.portfolio)
@@ -542,11 +542,12 @@ export default class LeaderBoardLive extends Component {
                         hideWithOutsideClick={true}
                         containerStyle={{ 
                             marginTop: self.props.gap + "px",
-                           
+                            padding:"0px"
                         }}
                         style={{
 
                             width: "400px",
+                            padding:"0px"
                         }}
                         >
                         <div>

@@ -215,7 +215,8 @@ export default class AccountCharts extends Component {
         </div>
         
         {self.props.isOrder ? (
-            <div className={classes.Contents}>
+            <div className={classes.Contents}  style={{background:self.props.themes.live.dialog.background,
+              color:self.props.themes.live.dialog.text, borderColor:self.props.themes.live.dialog.lines}}>
               {isPerformance ? (
                 <div className={classes.Content}>
                   <PerformanceOrderChart  chip={this.props.chip} slot={this.props.slot} toggle={this.props.toggle} />
