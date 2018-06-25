@@ -195,9 +195,9 @@ export default class Chip extends PureComponent {
         title+="Age: " + chip.age.toString() + "\n";
       if (chip.last_selection) {
         if (chip.isReadOnly)
-          title+="Next Bet: " +  toTitleCase(chip.last_selection.toString()) + "\n";
+          title+="Next Bet: " +  toTitleCase(chip.last_selection.toString()) + "";
         else
-         title+="Current Bet: " +  toTitleCase(chip.last_selection.toString()) + "\n";
+          title+="Current Bet: " +  toTitleCase(chip.last_selection.toString()) + "\n";
       }
       if (chip.status && !chip.isReadOnly)
         title+="Status: " +  toTitleCase(chip.status.toString());
@@ -247,7 +247,7 @@ export default class Chip extends PureComponent {
     }
     */
     if (isDragging) {
-    return  <ChipPreview {...this.props} getChipStyle={this.getChipStyle} chip={chip} />
+      return  <ChipPreview {...this.props} getChipStyle={this.getChipStyle} chip={chip} />
     } else {
       return dragSource(
             <div className={classes.Chip} style={chipStyle} title={title}>
