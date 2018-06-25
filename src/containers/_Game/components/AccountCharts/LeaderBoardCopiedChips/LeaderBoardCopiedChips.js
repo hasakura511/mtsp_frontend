@@ -475,7 +475,7 @@ export default class LeaderBoardCopiedChips extends Component {
                 {
                   Header: props => (
                     <span style={{background:self.props.themes.live.dialog.table_left_background}}>
-                     Cumulative %Chg
+                     Cumulative %
                      </span>),
                   headerStyle: {
                     background:self.props.themes.live.dialog.table_left_background
@@ -504,7 +504,7 @@ export default class LeaderBoardCopiedChips extends Component {
                 {
                   Header: props => (
                     <span style={{background:self.props.themes.live.dialog.table_left_background}}>
-                    Prev % Chg
+                    Prev %
                   </span>),
                   headerStyle: {
                     background:self.props.themes.live.dialog.table_left_background
@@ -654,7 +654,7 @@ export default class LeaderBoardCopiedChips extends Component {
                 {
                   Header: props => (
                     <span style={{background:self.props.themes.live.dialog.table_right_background}}>
-                     Preview Board
+                     Preview
                   </span>),
                   accessor: "account_id",
                   headerStyle: {
@@ -1053,7 +1053,7 @@ export default class LeaderBoardCopiedChips extends Component {
                   {
                     Header: props => (
                       <span style={{background:self.props.themes.live.dialog.table_right_background}}>
-                       Copy Board & Chip
+                       Copy Board&Chip
                     </span>),
                     accessor: "account_id",
                     headerStyle: {
