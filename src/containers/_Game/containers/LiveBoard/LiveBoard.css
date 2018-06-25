@@ -21,11 +21,13 @@
   border-radius: 2px;
 }
 
-@media screen and (max-width: 1100px) and (max-height: 800px) {
-  .Board {
-    display: flex;
-    justify-content: center;
-  }
+
+.Board {
+  width: 100%;
+  /*
+  display: flex;
+  justify-content: center;
+  */
 }
 
 @-webkit-keyframes bounce {

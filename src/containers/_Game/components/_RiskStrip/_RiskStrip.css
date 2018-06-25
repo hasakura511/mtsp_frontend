@@ -1,4 +1,12 @@
 .RiskStrip{
   border-bottom: 5px solid;
+  
+  /*
   width: 58px;
+  */
+  justify-content: stretch; /* center items vertically, in this case */
+  align-items: stretch;  
+  width:100%;
+  height:100%;
+
 }

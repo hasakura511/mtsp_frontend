@@ -161,17 +161,17 @@ export default class Clock extends PureComponent {
                                    var seconds2=ts2.seconds;
                                    */
                                    if (dashboard_totals.lockdown_text.next_refresh_time < new moment().tz("US/Eastern")) {
-                                     if (this.props.isLive && !this.props.loading) {  
-                                       if (seconds < 10 && !this.state.refreshing) {
-                                         this.setState({refreshing:true});
-                                         this.props.initializeLive();
+                                     if (self.props.isLive && !self.props.loading) {  
+                                       if (seconds < 10 && !self.state.refreshing) {
+                                         self.setState({refreshing:true});
+                                         self.props.initializeLive();
 
                                          
                                        }
                                      }
                                     }
-                                    if (seconds > 50 && this.state.refreshing) {
-                                      this.setState({refreshing:false});
+                                    if (seconds > 50 && self.state.refreshing) {
+                                      self.setState({refreshing:false});
                                     }
 
                                    if (minutes < 10)

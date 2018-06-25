@@ -301,7 +301,7 @@ export default class LiveBoard extends Component {
       this.setState({
         loading:false,
         rankingLoading: false,
-        rankingData: data.rankingData,
+        //rankingData: data.rankingData,
         refreshing:false
       });
      
@@ -702,14 +702,14 @@ export default class LiveBoard extends Component {
       toggleActive,
     } = this.state;
 
-    if (this.state.loading || this.state.refreshing) {
+    if (this.state.loading) {
         return ( 
 
           <Aux>
             
             <center>
              <ClockLoader show={true} />
-             <br/><br/>
+             <br/>
              <b>Please wait while we load your board. This could take a couple of minutes.</b>
             </center>
           </Aux>
@@ -821,8 +821,9 @@ export default class LiveBoard extends Component {
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "cover",
                 paddingTop: "150px",
-                paddingBottom: "100px"
-              } // marginTop: "5%",
+                paddingBottom: "100px",
+                //paddingRight: "150px",
+                            } // marginTop: "5%",
             }
           >
             <div>

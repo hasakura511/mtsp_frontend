@@ -363,7 +363,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.UPDATE_DATE:
     {
         var date = new moment().tz("US/Eastern");
-        console.log(date.format('HH:mm:ss A'));
+        //console.log(date.format('HH:mm:ss A'));
         const liveDate = date;
 
 
@@ -395,7 +395,7 @@ const reducer = (state = initialState, action) => {
             system.heldChips=checkChipsLock(system.heldChips, liveDate);
             return system;
           });
-          console.log(chips);
+          //console.log(chips);
         }
         /*
           */

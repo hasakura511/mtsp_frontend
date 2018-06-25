@@ -193,6 +193,7 @@ export default class NewBoard extends Component {
   }
 
   componentWillReceiveProps(newProps) {
+    /*
     !Object.values(this.props.currentBets)
       .map(o => o.position)
       .reduce((acc, o) => {
@@ -201,6 +202,7 @@ export default class NewBoard extends Component {
       }, {})["notoff"] &&
       this.props.currentBets !== newProps.currentBets &&
       this.setState({ animateSimulateButton: true });
+      */
   }
 
   componentDidUpdate() {
@@ -272,6 +274,7 @@ export default class NewBoard extends Component {
   }
 
   initializeLive=(reinitialize=false) => {
+    console.log("NEW BOARD Initialize")
     var self=this;
     if (this.state.refreshing)
       return;
@@ -365,7 +368,7 @@ export default class NewBoard extends Component {
 
   }
   componentDidMount() {
-
+      console.log("NEW Board Initialize")
       this.initializeLive();
 
   }

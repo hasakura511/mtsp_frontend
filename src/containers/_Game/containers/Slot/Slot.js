@@ -193,7 +193,7 @@ export default class Slot extends Component {
       <div className={classes.Slot} style={{zIndex: "0"}}>
           {rank ? (
             <span style={{
-              width: "60px",
+              width: "100%",
               "marginTop": "-10px",
               backgroundColor: canDrop ? bgColor : "transparent",
               color: highlightTextColor,
@@ -234,7 +234,7 @@ export default class Slot extends Component {
                             
           <span style={{
             "marginTop": "0px",
-            minWidth: "60px",
+            minWidth: "100%",
             backgroundColor: canDrop ? bgColor : "transparent",
             color: canDrop ? highlightTextColor : textColor,
             opacity: isOver?0.7:1,
@@ -249,7 +249,7 @@ export default class Slot extends Component {
         </Square>
         {score ? (
             <span style={{
-                          width: "60px",
+                          width: "100%",
                           "marginTop": "0px",
                           backgroundColor: canDrop ? bgColor : "transparent",
                           color: highlightTextColor,

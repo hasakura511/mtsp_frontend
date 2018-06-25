@@ -55,7 +55,7 @@ export default class BottomSection extends PureComponent {
                       borderTopColor: color,
                       background: bgColor,
                       text: textColor,
-                      width: WIDTH > 0 ? WIDTH : 60,
+                      //width: WIDTH > 0 ? WIDTH : 60,
                       textAlign: "center",
                     }}
                     title={mesg}

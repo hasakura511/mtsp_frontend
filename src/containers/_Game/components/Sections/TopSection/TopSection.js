@@ -6,8 +6,16 @@ import ChipsPanel from "../../ChipsPanel/ChipsPanel";
 import Container from "../Container";
 
 const topSection = props => {
+
+  var size=props.systems.length / 12 * 100;
+
   return (
-    <div className={classes.TopSection}>
+    <div className={classes.TopSection}
+      style={{
+        width: size + '%',
+
+      }}
+    >
 
       {props.systems.map(
         ({ id, color, display, description, position, column, heldChips, short, type }) => {
@@ -38,6 +46,7 @@ const topSection = props => {
               style={{ borderTopColor: color,
                 backgroundColor: bgColor,
                 text: textColor,
+
               }}
               title={mesg}
               
@@ -58,7 +67,6 @@ const topSection = props => {
           ) : null;
         }
       )}
-      <ChipsPanel {...props} balanceChips={props.balanceChips} />
     </div>
   );
 };

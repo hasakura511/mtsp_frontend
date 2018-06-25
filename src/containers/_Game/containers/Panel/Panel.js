@@ -18,6 +18,7 @@ import * as actions from "../../../../store/actions";
 import { toSlashDate,  getDateNowStr  } from "../../../../util";
 import Title from "../OrderDialog/OffOrderDialogTitle";
 import Sound from 'react-sound';
+import ChipsPanel from "../../components/ChipsPanel/ChipsPanel";
 
 /**
  * returns state to `Props` mapping object with keys that would later become props.
@@ -245,10 +246,10 @@ export default class Panel extends Component {
 
     if (this.state.isReadOnly) 
       return;
-    console.log("Panel received new prop");
-    console.log(newProps);
-    //console.log(newProps.balanceChips);
-    //console.log(newProps.bettingChips);
+    //console.log("Panel received new prop");
+    //console.log(newProps);
+    ////console.log(newProps.balanceChips);
+    ////console.log(newProps.bettingChips);
     if (newProps.performance_account_id && newProps.performance_account_id != this.state.performance_account_id) {
       var chip='';
       this.props.accounts.map(account => {
@@ -256,9 +257,9 @@ export default class Panel extends Component {
             chip=account;
       });
       if (newProps.performance_chip) {
-        console.log('Performance Chip');
+        //console.log('Performance Chip');
         chip=newProps.performance_chip;
-        console.log(chip);
+        //console.log(chip);
       }
       self.setState({showOrderDialog:true, performance_account_id:newProps.performance_account_id, orderChip:chip, isPerformance:true});
       //self.forceUpdate();
@@ -274,8 +275,8 @@ export default class Panel extends Component {
               if (account.account_id == this.state.performance_account_id) {
                 orderChip=account;
                 self.setState({orderChip:orderChip});
-                console.log("new state for chip " + account.account_id);
-                console.log(orderChip);
+                //console.log("new state for chip " + account.account_id);
+                //console.log(orderChip);
                 updated=true;
               }
           });
@@ -529,7 +530,7 @@ export default class Panel extends Component {
       heatmap,
       showHeatmap
     } = this.props;
-    console.log("heatmap selection" + heatmap_selection);
+    ////console.log("heatmap selection" + heatmap_selection);
     let slot = null;
 
     var panelBgColor="#86dde0";
@@ -599,49 +600,77 @@ export default class Panel extends Component {
       sectionHeatmap=heatmap[heatmap_selection];
     }
 
+    var scale=1.0
+    //scale=innerWidth / (1850);
+    var intFramesetWidth = self.innerWidth;
+    console.log(intFramesetWidth)
+
+    console.log(innerWidth)
+    console.log(outerWidth)
+    
+    console.log(scale)
+   
+    var padding=150 * scale;
 
     const panel = (
-      <div className={classes.Panel} style={{"background": panelBgColor, "text":panelTextColor}}>
+      <div  style={{"background": "transparent", paddingRight: padding + "px", paddingLeft: padding + "px", "text":panelTextColor, }}>
+        <ChipsPanel
+        systems={this.state.bottomSystems}
+        topSystems={this.state.topSystems}
+        moveChipToSlot={this.moveChipToSlot}
+        sectionHeatmap={sectionHeatmap}
+        bgColor={panelBgColor}
+        textColor={panelTextColor}
+        showOrderDialog={showOrderDialog}
+        heatmap_selection={heatmap_selection}
+        balanceChips={this.props.balanceChips} />
 
-        {slotsGrid}
-        <BottomSection
-          systems={this.state.bottomSystems}
-          topSystems={this.state.topSystems}
-          moveChipToSlot={this.moveChipToSlot}
-          sectionHeatmap={sectionHeatmap}
-          bgColor={panelBgColor}
-          textColor={panelTextColor}
-          showOrderDialog={showOrderDialog}
-          heatmap_selection={heatmap_selection}
-        />
-        <LeftSection
-          systems={this.state.leftSystems}
-          moveChipToSlot={this.moveChipToSlot}
-          sectionHeatmap={sectionHeatmap}
-          bgColor={panelBgColor}
-          textColor={panelTextColor}
-          showOrderDialog={showOrderDialog}
-          heatmap_selection={heatmap_selection}
-        />
-        <RightSection
-          systems={this.state.rightSystems}
-          moveChipToSlot={this.moveChipToSlot}
-          sectionHeatmap={sectionHeatmap}
-          bgColor={panelBgColor}
-          textColor={panelTextColor}
-          showOrderDialog={showOrderDialog}
-          heatmap_selection={heatmap_selection}
-        />
-        <TopSection
-          systems={this.state.topSystems}
-          balanceChips={this.props.balanceChips}
-          moveChipToSlot={this.moveChipToSlot}
-          sectionHeatmap={sectionHeatmap}
-          bgColor={panelBgColor}
-          textColor={panelTextColor}
-          showOrderDialog={showOrderDialog}
-          heatmap_selection={heatmap_selection}
-        />
+        <div className={classes.Panel} style={{ "background": panelBgColor, "text":panelTextColor, transform: "scale(" + scale + ")"}}>
+        
+          {slotsGrid}
+          <TopSection
+            systems={this.state.topSystems}
+            balanceChips={this.props.balanceChips}
+            moveChipToSlot={this.moveChipToSlot}
+            sectionHeatmap={sectionHeatmap}
+            bgColor={panelBgColor}
+            textColor={panelTextColor}
+            showOrderDialog={showOrderDialog}
+            heatmap_selection={heatmap_selection}
+          />
+
+          <BottomSection
+            systems={this.state.bottomSystems}
+            topSystems={this.state.topSystems}
+            moveChipToSlot={this.moveChipToSlot}
+            sectionHeatmap={sectionHeatmap}
+            bgColor={panelBgColor}
+            textColor={panelTextColor}
+            showOrderDialog={showOrderDialog}
+            heatmap_selection={heatmap_selection}
+            
+          />
+          <LeftSection
+            systems={this.state.leftSystems}
+            moveChipToSlot={this.moveChipToSlot}
+            sectionHeatmap={sectionHeatmap}
+            bgColor={panelBgColor}
+            textColor={panelTextColor}
+            showOrderDialog={showOrderDialog}
+            heatmap_selection={heatmap_selection}
+          />
+          <RightSection
+            systems={this.state.rightSystems}
+            moveChipToSlot={this.moveChipToSlot}
+            sectionHeatmap={sectionHeatmap}
+            bgColor={panelBgColor}
+            textColor={panelTextColor}
+            showOrderDialog={showOrderDialog}
+            heatmap_selection={heatmap_selection}
+          />
+
+
+        </div>
         {!this.state.isReadOnly && this.props.show_leader_dialog ? (
           <div             id={"modalDialog"}>
           <LeaderDialog initializeLive={this.props.initializeLive} />
@@ -757,8 +786,8 @@ export default class Panel extends Component {
           lookback: 23
         })
         .then(({ data }) => {
-          console.log("Practice Ranking Data")
-          console.log(data)
+          ////console.log("Practice Ranking Data")
+          ////console.log(data)
           // eslint-disable-next-line react/no-is-mounted
           this._isMounted &&
             this.setState({

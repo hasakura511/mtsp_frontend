@@ -954,7 +954,7 @@ export default class LeaderBoardCopiedChips extends Component {
                             backgroundSize: "cover",
                             paddingTop: "150px",
                             paddingBottom: "100px",
-                            paddingRight: "150px",
+                            //paddingRight: "150px",
                           } // 
                         }
                       >
