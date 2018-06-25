@@ -733,7 +733,7 @@ export default class LiveBoard extends Component {
       
       return (
 
-        <Aux>
+        <Aux id={'liveboard'}>
           
           <LiveDashboard sendNotice={this.sendNotice} initializeLive={this.initializeLive}
             />

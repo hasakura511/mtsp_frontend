@@ -34,12 +34,14 @@ export default class BettingChips extends Component {
     heatmap_selection: PropTypes.string,
     isLive:PropTypes.bool,
     showOrderDialog:PropTypes.bool
+
   };
 
   constructor(props) {
     super(props);
     this.state = {
       isPopoverOpen:false,
+      isDragging:false
 
     };
     this.myRef = React.createRef();
@@ -58,6 +60,11 @@ export default class BettingChips extends Component {
  
   handleClose(e) {
     this.setState({ isPopoverOpen: !this.state.isPopoverOpen })
+  }
+
+  dragNotice=(isDragging, chip) => {
+    console.log("#bettingchip_" + chip.chip_id)
+    this.setState({isDragging:isDragging, draggingChip:chip});
   }
 
   render() {
@@ -110,12 +117,13 @@ export default class BettingChips extends Component {
             }
           }
           total+=row.account_value;
+          if (!this.state.isDragging || (this.state.isDragging && this.state.draggingChip.chip_id == row.chip_id))
           chipHtml.push(
             <span key={"chiploc-" + row.chip_id }
                   style={{ "position":"absolute",
-                          
+                           
                           "marginLeft": margin + "px" 
-                          }}><Chip chip={row} key={"multichip-" + row.chip_id } canDrag={true} /></span>
+                          }}><Chip chip={row} key={"multichip-" + row.chip_id } dragNotice={this.dragNotice} canDrag={true} /></span>
           );
           margin += 48;
         }
@@ -130,8 +138,7 @@ export default class BettingChips extends Component {
         chipImg="/images/locked_multi.png";
         if (status == 'mixed')
         chipImg="/images/mixed_multi.png";
-    
-  
+      
       return (
         <div className={classes.BettingChips}
             style={{"overflowX": "visible",
@@ -145,7 +152,10 @@ export default class BettingChips extends Component {
              
         <Popover
           position='right'
-
+          containerStyle={{
+            overflow:'visible',
+            opacity:  this.state.isDragging ? 0.3 : 1,
+            }}
           content={
             (          
               <div className={classes.MSquare}
@@ -154,16 +164,20 @@ export default class BettingChips extends Component {
 
                     //onMouseOut={self.handleClick.bind(this)}
                     style={{
-                      "width":margin + "px",
-                      "height": "60px",
+                      "height":  this.state.isDragging ? "0px" : 60 + "px",
+                      "minHeight":  this.state.isDragging ? "0px" : 60 + "px",
+                      "width": margin + "px",
+                      opacity:  this.state.isDragging ? 0.5 : 1,
+                      //"transform": this.state.isDragging ?  "translate(0px, 0px )" : "translate(0%, 0%)",
+                      
                       /*
                       "marginTop": "-12px",
                      "marginLeft": "-50%",
-                     "transform": "translate(-50%, 0%)",
                       */   
 
-                     "zIndex":100000,          
-                     background: bgColor,
+                     zIndex: 100,          
+                     background: this.state.isDragging ? "transparent" : bgColor,
+                     border: this.state.isDragging ? "0px" : "1px solid black",
                       color:textColor,
                   }}
                           
@@ -171,7 +185,7 @@ export default class BettingChips extends Component {
               )
           }
           
-          isOpen={popoverVisible}
+          isOpen={popoverVisible || this.state.isDragging ? true : false}
           onClickOutside={this.handleClose.bind(this)} 
           >
           <a
@@ -194,7 +208,8 @@ export default class BettingChips extends Component {
               <span style={{"position":"absolute","marginTop":"-15px", "marginLeft":"15px",  "background":"transparent", 
                 "color":textColor}}><img width="25" height="25" src={chipImg} /></span>
               <br/>
-              <span style={{"position":"absolute","marginTop":"15px",  
+              <span style={{"position":"absolute",
+                          "marginTop":"15px",  
                           "fontSize":"12px",
                           "width": "50px",
                           "border": "0px solid black",
@@ -206,9 +221,10 @@ export default class BettingChips extends Component {
               </span>
           </a>
         </Popover>
-
+        
         </div>
       );
+    
     }
   }  
 }

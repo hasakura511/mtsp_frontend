@@ -24,7 +24,8 @@ import Contact from "./containers/Home/Contact/Contact";
 import Markets from "./containers/Markets/Markets";
 import NewBoard from "./containers/_Game/containers/NewBoard/NewBoard"
 import { DragDropContext } from "react-dnd";
-import HTML5Backend from "react-dnd-html5-backend";
+import { default as TouchBackend } from 'react-dnd-touch-backend';
+//import HTML5Backend from "react-dnd-html5-backend";
 
 type PropType = {
   checkAuth: Function,
@@ -162,5 +163,5 @@ export default withRouter(
         dispatch(actions.checkAuth());
       }
     })
-  )(DragDropContext(HTML5Backend)(App))
+  )(DragDropContext(TouchBackend({ enableMouseEvents: true }))(App))
 );

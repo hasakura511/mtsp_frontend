@@ -7,7 +7,7 @@ import ChipsConfig from "../../ChipsConfig";
 import protectedComponent from "../../../../hoc/ProtectedComponent/ProtectedComponent";
 import Aux from "../../../../hoc/_Aux/_Aux";
 // import Dashboard from "../../components/Dashboard/Dashboard";
-import LiveDashboard from "../LiveDashboard/LiveDashboard";
+import ChipSelector from "./components/ChipSelector/ChipSelector";
 import Bettings from "../../BettingConfig";
 import { connect } from "react-redux";
 import * as actions from "../../../../store/actions";
@@ -187,6 +187,7 @@ export default class NewBoard extends Component {
       initializeData:{},
       refreshing:false,
       heatmapData:{},
+      editData:{},
     };
   
   }
@@ -271,6 +272,7 @@ export default class NewBoard extends Component {
   }
 
   initializeLive=(reinitialize=false) => {
+    var self=this;
     if (this.state.refreshing)
       return;
     else
@@ -296,10 +298,54 @@ export default class NewBoard extends Component {
         this.sendNotice("Board Refreshed with New Data");
 
 
+      self.initializeNewBoard(true);
+     
+    })
+    .catch(error => {
+      this.sendNotice('Account Data not received: ' + JSON.stringify(error));
+      console.log('error initializing')
+      console.log(error)
+    // eslint-disable-next-line react/no-is-mounted
+      this.setState({
+        rankingLoading: false,
+        rankingError: error,
+        loading:false,
+        refreshing:false
+      });
+    });
+
+  }
+
+  initializeNewBoard=(reinitialize=false, chip_id="", last_date="", board_config="") => {
+
+    //if (this.state.refreshing)
+    //  return;
+    //else
+    //  this.setState({refreshing:true})
+    //this.forceUpdate();
+    
+    //console.log(this.props);
+    var reinit='false';
+    if (reinitialize)
+      reinit='true';
+    axios
+    .post("/utility/new_board_live/", {
+    // accounts: [{ portfolio, target, accountValue }],
+    'initialize': reinit,
+    'username':  this.props.email,
+    'chip_id':chip_id,
+    'last_date':last_date,
+    'board_config':board_config
+    },{timeout: 600000})
+    .then(({ data }) => {
+      console.log('received new board data')
+      console.log(data);
+
+
       this.setState({
         loading:false,
         rankingLoading: false,
-        rankingData: data.rankingData,
+        editData:data,
         refreshing:false
       });
      
@@ -318,7 +364,6 @@ export default class NewBoard extends Component {
     });
 
   }
-
   componentDidMount() {
 
       this.initializeLive();
@@ -733,7 +778,7 @@ export default class NewBoard extends Component {
 
         <Aux>
           
-          <LiveDashboard sendNotice={this.sendNotice} initializeLive={this.initializeLive}
+          <ChipSelector editData={this.state.editData} sendNotice={this.sendNotice} initializeLive={this.initializeLive}
             />
 
 
@@ -825,7 +870,6 @@ export default class NewBoard extends Component {
           >
             <div>
               <span style={{"marginTop":"-150px","float": "left", "width": "50%", "textAlign": "left", "display": "inline-block","verticalAlign": "top"}}>
-              <a href='#leaderboard' onClick={() => { self.props.showLeaderDialog(true); }} title="Show Global Leaderboards."><img src="/images/leaderboard_button.png" width="120"/></a><br/>
               </span>
               <span style={{"marginTop":"-150px", "float": "right", "width": "50%",  "textAlign": "right",  "display": "inline-block", "verticalAlign":"top"}}>
                 <img src="/images/infotext_button.png" width="22" style={{"margin":"10px"}} />
@@ -833,6 +877,8 @@ export default class NewBoard extends Component {
             </div>
             <Panel
               isLive={true}
+              isReadOnly={true}
+              isEdit={true}
               accounts={this.props.accounts || {}}
               leftSystems={leftSystems || []}
               rightSystems={rightSystems || []}
@@ -844,26 +890,11 @@ export default class NewBoard extends Component {
               moveToBalance={this.moveToBalance}
               initializeLive={this.initializeLive}
             />
-              <span style={{"marginTop":"30px","float": "left", "width": "50%", "textAlign": "left", "display": "inline-block","verticalAlign": "top"}}>
-                <a href='#accounts' title="Create or configure your accounts."><img src="/images/accounts_button.png" width="120"/></a><br/>
-                <a href='#edit_board' title="Edit your board."><img src="/images/edit_board_button.png" width="120"/></a><br/>  
-              </span>
-              {self.props.mute ? (
-              <span style={{"marginTop":"60px", "paddingRight":"5px", "float": "right", "width": "50%", "textAlign": "right", "display": "inline-block","verticalAlign": "top"}}>
-                <a title="Turn sounds on" href='#soundbutton' onClick={() => { self.props.setMute(false);  } }><img src="/images/sound_off_button.png" width="30"/></a><br/>
-              </span>
-              ) :
-              (
-              <span style={{"marginTop":"60px","paddingRight":"5px","float": "right", "width": "50%", "textAlign": "right", "display": "inline-block","verticalAlign": "top"}}>
-                <a title="Turn sounds off" href='#soundbutton' onClick={() => { self.props.setMute(true); } }><img src="/images/sound_on_button.png" width="30"/></a><br/>
-              </span>
-
-              )}
+             
 
 
 
           </div>
-          <Markets refreshing={this.state.refreshing} />
         </Aux>
       );
     }

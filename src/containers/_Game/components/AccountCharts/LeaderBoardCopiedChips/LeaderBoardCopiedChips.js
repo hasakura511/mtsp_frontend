@@ -992,12 +992,13 @@ export default class LeaderBoardCopiedChips extends Component {
                     },
                     Cell: props =>{
                       var copyboard='copy_board_' + props.original.idx;
-                      if (!props.original.isSource) {
+                      /*if (!props.original.isSource) {
                           return (
                             <span className='number'><center></center></span>
 
                           )
                       } else {
+                        */
                         return (
 
                       <span className='number'><center>
@@ -1047,13 +1048,13 @@ export default class LeaderBoardCopiedChips extends Component {
 
                       
                     )// Custom cell components!,
-                  }
+                  //}
                    },
                   },
                   {
                     Header: props => (
                       <span style={{background:self.props.themes.live.dialog.table_right_background}}>
-                       Copy Board&Chip
+                       Copy Chip
                     </span>),
                     accessor: "account_id",
                     headerStyle: {
@@ -1061,12 +1062,14 @@ export default class LeaderBoardCopiedChips extends Component {
                     },
                     Cell: props =>{
                       var copyboard='copy_board_chip_' + props.original.idx;
+                      /*
                       if (!props.original.isSource) {
                         return (
                           <span className='number'><center></center></span>
 
                         )
-                    } else {
+                    } else { 
+                      */
                       return (
 
                       <span className='number'><center>
@@ -1116,7 +1119,7 @@ export default class LeaderBoardCopiedChips extends Component {
 
                       
                     )// Custom cell components!,
-                  }
+                    //}
                    },
 
                    

@@ -1002,7 +1002,7 @@ export default class LeaderBoardLive extends Component {
                   {
                     Header: props => (
                       <span style={{background:self.props.themes.live.dialog.table_right_background}}>
-                       Copy Board&Chip
+                       Copy Chip
                     </span>),
                     accessor: "account_id",
                     headerStyle: {

@@ -13,7 +13,7 @@ import { compose } from 'redux'
 import Popover from 'react-tiny-popover'
 import Sound from 'react-sound';
 import { toTitleCase, numberWithCommas } from "../../../../util";
-
+import ChipPreview from './ChipPreview'
 
 const stateToProps = state => {
   return {
@@ -50,6 +50,8 @@ const chipSource = {
     props.chip.isPlaying=true;
     props.chip.isDonePlaying=false;
     console.log("beginning")
+    if (props.dragNotice)
+      props.dragNotice(true, props.chip);
     return props.chip;
   },
   canDrag(props) {
@@ -65,6 +67,8 @@ const chipSource = {
     props.showHeatmap("");
     props.chip.isPlaying=false;
     props.chip.isDonePlaying=true;
+    if (props.dragNotice)
+      props.dragNotice(false, props.chip);
     return props.chip;
   },
 
@@ -102,6 +106,7 @@ export default class Chip extends PureComponent {
     showHeatmap:PropTypes.func.isRequired,
     accounts:PropTypes.array.isRequired,
     isReadOnly:PropTypes.bool,
+    dragNotice:PropTypes.func
     //heatmap_selection:PropTypes.string
   };
 
@@ -145,8 +150,7 @@ export default class Chip extends PureComponent {
   }
 
 
-
-  render() {
+  getChipStyle = () => {
     const { dragSource, isDragging, dragPreview, canDrag, showHeatmap, isLive } = this.props;
     const {chip} = this.state;
     const img = new Image();
@@ -226,6 +230,12 @@ export default class Chip extends PureComponent {
         chipStyle['border'] = "3px solid transparent";
       }
       
+      return {chipStyle, title};
+  }
+  render() {
+    const { dragSource, isDragging, dragPreview, canDrag, showHeatmap, isLive } = this.props;
+    const {chip} = this.state;
+    const {chipStyle, title}=this.getChipStyle();
     /*
     if (chip.status != undefined) {
       if (chip.status == 'locked') {
@@ -236,18 +246,17 @@ export default class Chip extends PureComponent {
       }
     }
     */
-    dragPreview(
-      <div className={classes.Chip} style={chipStyle} title={title}>
-        <p>{chip.display}</p>
-      </div>
-    );
-
-    return dragSource(
-      <div className={classes.Chip} style={chipStyle} title={title}>
-        <p>{chip.display}</p>
-        
-      </div>
-    );
+    if (isDragging) {
+    return  <ChipPreview {...this.props} getChipStyle={this.getChipStyle} chip={chip} />
+    } else {
+      return dragSource(
+            <div className={classes.Chip} style={chipStyle} title={title}>
+          
+            <p>{chip.display}</p>
+            
+            </div>
+      );
+    }
   }
 }
 
