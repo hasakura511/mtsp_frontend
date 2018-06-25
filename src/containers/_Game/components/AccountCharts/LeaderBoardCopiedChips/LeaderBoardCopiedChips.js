@@ -134,16 +134,20 @@ export default class LeaderBoardCopiedChips extends Component {
         var dataJson= JSON.parse(performance.copied_from_accounts);
         var dataJson2= JSON.parse(performance.copied_to_accounts);
         var dictionary_strategy= JSON.parse(performance.dictionary_strategy);
+        
+        Object.keys(dataJson).map(key => {
+          dataJson[key]['chip_id']=key;
+
+        })
+        
+        Object.keys(dataJson2).map(key => {
+          dataJson2[key]['chip_id']=key;
+
+        })
         performance.copied_from_accounts=dataJson;
         performance.copied_to_accounts=dataJson2;
         performance.dictionary_strategy=dictionary_strategy;
 
-        /*
-        Object.keys(performance.leaderboard).map(key => {
-          performance.leaderboard[key]['chip_id']=key;
-
-        })
-        */
         
         console.log(performance);
 
@@ -395,17 +399,21 @@ export default class LeaderBoardCopiedChips extends Component {
                     chip.total_margin="";
                     var items=[];
 
+
                     //<div  style={{marginTop:"12px", minWidth: '120px'}}>
                     items.push(
                     <div key={'item-1'} style={{'float':'left', minWidth:'60px', height:"12px", lineHeight:"12px", marginTop:"20px"}}>
-                    {props.original.isSource ? 'From' : 'To'}
+                    {props.original.copied}
+                    {/* 
+                    props.original.isSource ? 'From' : 'To'
+                    */}
                     
                     </div>)
                     items.push(
-                    <div  key={'item-2'} style={{'float':'left', minWidth: '60px', marginTop:"3px"}}>
-                    <Chip chip={chip} isReadOnly={true} />&nbsp;&nbsp;
-                    </div>
-                    )
+                      <div key={'item-2'} style={{'float':'left', minWidth: '60px', height:'60px', padding:"1px", marginTop:"1px", marginBottom:"-10px"}}>
+                      <Chip chip={chip} isReadOnly={true} />&nbsp;&nbsp;
+                      </div>
+                      )
                     items.push(
 
                     <div key={'item-3'} style={{"clear": "both"}}></div>
@@ -557,7 +565,7 @@ export default class LeaderBoardCopiedChips extends Component {
                 {
                   Header: props => (
                     <span style={{background:self.props.themes.live.dialog.table_right_background}}>
-                    Markets in Portfolio
+                    Portfolio
                   </span>),
                   accessor: "num_markets",
                   headerStyle: {

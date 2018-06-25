@@ -273,7 +273,7 @@ export default class PerformanceOrderChart extends Component {
       performance:{},
       performanceLoading:true,
       performanceError:'',
-      isAnti:false
+      //isAnti:false
       // endDate:   20180201
     };
 
@@ -291,6 +291,10 @@ export default class PerformanceOrderChart extends Component {
     this.setState({ lookback });
   };
 
+  componentWillReceiveProps(newProps) {
+    console.log("PerformanceOrder Received New Props")
+
+  }
   xTick({ payload, x, y }) {
     return (
       <g transform={`translate(${x},${y})`}>
@@ -402,12 +406,14 @@ export default class PerformanceOrderChart extends Component {
         performance.chart_dict=chart_dict;
         $('#system-label').css('color',performance.colors.strategy)
         $('#anti-system-label').css('color',performance.colors.anti_strategy)
-        $('#system-radio').on('click', function(e) {
+        
+        /*$('#system-radio').on('click', function(e) {
           self.setState({isAnti:false});
         });      
         $('#anti-system-radio').on('click', function(e) {
           self.setState({isAnti:true});
-        });      
+        });
+        */      
         console.log(performance);
   
         self.setState({
@@ -430,12 +436,13 @@ export default class PerformanceOrderChart extends Component {
   
   render() {
     var { performance, lookback, performanceLoading, performanceError } = this.state;
+    var isAnti=this.props.isAnti;
 
     var self=this;
     var chartData={};
     var yticks=[];
     var xticks=[]; 
-
+    
     if (!performanceLoading && !performanceError && performance.chart_specs) {
       if (!lookback) {
         Object.keys(performance.chart_specs).map(date => {
@@ -537,7 +544,7 @@ export default class PerformanceOrderChart extends Component {
                 dataKey={"strategy_value" }
                 stroke={performance.colors.strategy}
                 activeDot={{ r: 8 }}
-                strokeWidth={self.state.isAnti ? 1 : 3} 
+                strokeWidth={isAnti ? 1 : 3} 
                />
                <Legend />
                 <Line
@@ -547,7 +554,7 @@ export default class PerformanceOrderChart extends Component {
                 dataKey={"anti_value" }
                 stroke={performance.colors.anti_strategy}
                 activeDot={{ r: 8 }}
-                strokeWidth={self.state.isAnti ? 3 : 1} 
+                strokeWidth={isAnti ? 3 : 1} 
                />
               <Line
                 ref={ref => this.area = ref}
@@ -578,6 +585,7 @@ export default class PerformanceOrderChart extends Component {
     chip:PropTypes.object,
     liveDateText:PropTypes.string.isRequired,
     slot:PropTypes.object,
-    dictionary_strategy:PropTypes.object.isRequired
+    dictionary_strategy:PropTypes.object.isRequired,
+    isAnti:PropTypes.bool
   };
 }

@@ -404,14 +404,14 @@ export default class LeaderBoardLive extends Component {
 
                     //<div  style={{marginTop:"12px", minWidth: '235px'}}>
                     items.push(
-                    <div key={'item-1'} style={{'float':'left', minWidth:'25px', height:"12px", lineHeight:"12px", marginTop:"12px"}}>
-                    <h3>{props.value}.</h3>
+                    <div key={'item-1'} style={{'float':'left', minWidth:'25px', height:"12px", fontSize:'24px', marginTop:"12px"}}>
+                     {props.value}.
                     </div>)
                     items.push(
-                    <div key={'item-2'} style={{'float':'left', minWidth: '60px', height:'60px',marginTop:"3px"}}>
-                    <Chip chip={chip} isReadOnly={true} />&nbsp;&nbsp;
-                    </div>
-                    )
+                      <div key={'item-2'} style={{'float':'left', minWidth: '60px', height:'60px', padding:"1px", marginTop:"1px", marginBottom:"-10px"}}>
+                      <Chip chip={chip} isReadOnly={true} />&nbsp;&nbsp;
+                      </div>
+                      )
                     items.push(
 
                     <div key={'item-3'} style={{'float':'left', minwidth:'150px', marginTop:"20px"}}>
@@ -521,7 +521,7 @@ export default class LeaderBoardLive extends Component {
                 {
                   Header: props => (
                     <span style={{background:self.props.themes.live.dialog.table_right_background}}>
-                    Markets in Portfolio
+                    Portfolio
                   </span>),
                   accessor: "num_markets",
                   headerStyle: {
@@ -908,6 +908,7 @@ export default class LeaderBoardLive extends Component {
                             paddingTop: "150px",
                             paddingBottom: "100px",
                             paddingRight: "150px",
+                            //paddingLeft: "150px",
                           } // 
                         }
                       >
@@ -941,7 +942,7 @@ export default class LeaderBoardLive extends Component {
                     </span>),
                     accessor: "account_id",
                     headerStyle: {
-                      background:self.props.themes.live.dialog.table_right_background
+                      background:self.props.themes.live.dialog.table_right_background,
                     },
                     Cell: props =>{
                       var copyboard='copy_board_' + props.original.rank;
@@ -1005,7 +1006,8 @@ export default class LeaderBoardLive extends Component {
                     </span>),
                     accessor: "account_id",
                     headerStyle: {
-                      background:self.props.themes.live.dialog.table_right_background
+                      background:self.props.themes.live.dialog.table_right_background,
+                      whiteSpace: 'unset' 
                     },
                     Cell: props =>{
                       var copyboard='copy_board_chip_' + props.original.rank;

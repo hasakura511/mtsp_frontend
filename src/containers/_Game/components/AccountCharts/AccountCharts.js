@@ -55,7 +55,8 @@ export default class AccountCharts extends Component {
     showPerformance:PropTypes.func.isRequired,
     themes:PropTypes.object.isRequired,
     isOrder:PropTypes.bool.isRequired,
-    moveChipToSlot:PropTypes.func
+    moveChipToSlot:PropTypes.func,
+    isAnti:PropTypes.bool,
   };
   constructor(props) {
     super(props);
@@ -219,7 +220,7 @@ export default class AccountCharts extends Component {
               color:self.props.themes.live.dialog.text, borderColor:self.props.themes.live.dialog.lines}}>
               {isPerformance ? (
                 <div className={classes.Content}>
-                  <PerformanceOrderChart  chip={this.props.chip} slot={this.props.slot} toggle={this.props.toggle} />
+                  <PerformanceOrderChart  chip={this.props.chip} slot={this.props.slot} isAnti={this.props.isAnti} toggle={this.props.toggle} />
               </div>
               ) : (
               null

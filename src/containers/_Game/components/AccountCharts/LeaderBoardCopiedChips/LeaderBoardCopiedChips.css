@@ -113,3 +113,11 @@ th {
 .Cell > p > img {
   margin-right: 10px;
 }
+
+
+
+.Board {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}

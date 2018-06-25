@@ -63,7 +63,7 @@ class CustomTooltip extends Component {
     const { payload, active, dictionary_strategy, chart_specs, lookback, themes } = this.props;
     var self=this;
     if (active) {
-      console.log(payload[0].payload);
+      //console.log(payload[0].payload);
       var {
         start,
         end,
@@ -224,8 +224,8 @@ export default class RankingChart extends Component {
 
   onChartMouseMove(chart) {
     if (chart.isTooltipActive) {
-      console.log('area props')
-      console.log(this.area.props);
+      //console.log('area props')
+      //console.log(this.area.props);
       let point = this.area.props.data[chart.activeTooltipIndex];
 
       if (point != this.point) {
@@ -255,8 +255,8 @@ export default class RankingChart extends Component {
       if (!this.priorT || this.priorT != 'right')  {
         this.priorT='right';
         this.forceUpdate();
-        console.log(this.tooltip)
-        console.log('x'+x, 'y'+y)
+        //console.log(this.tooltip)
+        //console.log('x'+x, 'y'+y)
       }
      } else {
       this.toolTipX=this.tooltip.props.viewBox.width -200;
@@ -264,8 +264,8 @@ export default class RankingChart extends Component {
       if (!this.priorT || this.priorT != 'left')  {
         this.priorT='left';
         this.forceUpdate();
-        console.log(this.tooltip)
-        console.log('x'+x, 'y'+y)
+        //console.log(this.tooltip)
+        //console.log('x'+x, 'y'+y)
       }
      }
     }
@@ -411,7 +411,7 @@ export default class RankingChart extends Component {
     if (match.match(" Day Cumulative %Chg")) {
       match=match.replace(" Day Cumulative %Chg","");
       if (match) {
-        console.log("setting lookback " + match);
+        //console.log("setting lookback " + match);
         this.setState({lookback:match});
       }
     }
@@ -524,7 +524,7 @@ export default class RankingChart extends Component {
         <br/>
          <div className={classes.Tabs} style={{  margin:"0px", background:self.props.themes.live.dialog.tab_color_active}}>
             {performance.chart_specs.map(item => {
-                console.log(item);
+                //console.log(item);
                 return (
           <div key={item} className={classes.Tab}  style={{marginTop: "0px", minWidth: "200px", background:self.props.themes.live.dialog.tab_color_active}} onClick={() => this.lookbackHandler(item)}>
 
@@ -544,7 +544,7 @@ export default class RankingChart extends Component {
         <br/>
         <div className={classes.Tabs} style={{  margin:"0px", background:self.props.themes.live.dialog.tab_color_active}}>
             {filters.map(item => {
-                console.log(item);
+                //console.log(item);
                 return (
           <div key={item.value} className={classes.Tab}  style={{marginTop: "0px", minWidth: "200px", background:self.props.themes.live.dialog.tab_color_active}} onClick={() => this.filterHandler(item.value)}>
             <center  className={classes.Tab} >

@@ -92,6 +92,7 @@ export default class Order extends React.Component {
     console.log("Order Received New Props")
     console.log(newProps);
     var self=this;
+   
     if (this.props.performance_account_id && this.props.isPerformance) {
       if (newProps.accounts) {
           var orderChip='';
