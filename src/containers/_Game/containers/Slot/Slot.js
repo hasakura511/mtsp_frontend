@@ -190,7 +190,7 @@ export default class Slot extends Component {
     }
     
     return dropTarget(
-      <div className={classes.Slot} style={{zIndex: "0"}}>
+      <div className={classes.Slot} style={{zIndex: "5", opacity:isOver ? 0.5:1}}>
           {rank ? (
             <span style={{
               width: "100%",
@@ -215,7 +215,7 @@ export default class Slot extends Component {
             borderRightColor: rightSystem.color,
             backgroundColor: canDrop ? bgColor : "transparent",
             color:  textColor,
-            zIndex: "0",
+            zIndex: 0,
             opacity: canDrop ? (isOver ? 0.99 : 0.8) : 1,
             width,
             fontSize
@@ -227,7 +227,7 @@ export default class Slot extends Component {
            chips={heldChips} 
            showOrderDialog={this.props.showOrderDialog}
            heatmap_selection={this.props.heatmap_selection}
-           style={{zIndex: "3",
+           style={{zIndex: 3,
           }}
            /> 
            
@@ -254,7 +254,7 @@ export default class Slot extends Component {
                           backgroundColor: canDrop ? bgColor : "transparent",
                           color: highlightTextColor,
                           opacity: 1,
-                          zIndex: "-1",
+                          zIndex: -1,
             
                           "whiteSpace": "nowrap",
                           textAlign: "center"

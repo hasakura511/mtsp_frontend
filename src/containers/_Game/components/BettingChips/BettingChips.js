@@ -85,9 +85,9 @@ export default class BettingChips extends Component {
     } else if (chips.length == 1) {
       return (
         <div className={classes.BettingChips}
-            style={{"overflowX": "visible",
+            style={{"overflow": "visible",
                     "opacity": !visible ? 0.3 : 1}}>
-          <Chip  key={"singlechip-" + chips[0].chip_id } chip={chips[0]} canDrag={true} />
+            <Chip  key={"singlechip-" + chips[0].chip_id } chip={chips[0]} canDrag={true} />
         </div>
       );
 

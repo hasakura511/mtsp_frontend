@@ -604,7 +604,7 @@ export default class Panel extends Component {
     var padding=150 * scale;
 
     const panel = (
-      <div  style={{"background": "transparent", paddingRight: padding + "px", paddingLeft: padding + "px", "text":panelTextColor, }}>
+      <div  style={{"background": "transparent",  zIndex: 0,  paddingRight: padding + "px", paddingLeft: padding + "px", "text":panelTextColor, }}>
         <ChipsPanel
         systems={this.state.bottomSystems}
         topSystems={this.state.topSystems}
@@ -616,7 +616,7 @@ export default class Panel extends Component {
         heatmap_selection={heatmap_selection}
         balanceChips={this.props.balanceChips} />
 
-        <div className={classes.Panel} style={{ "background": panelBgColor, "text":panelTextColor, transform: "scale(" + scale + ")"}}>
+        <div className={classes.Panel} style={{ zIndex: 0, "background": panelBgColor, "text":panelTextColor, transform: "scale(" + scale + ")"}}>
         
           {slotsGrid}
           <TopSection

@@ -17,6 +17,6 @@ square.propTypes = {
     borderTopColor: PropTypes.string,
     borderBottomColor: PropTypes.string,
   }).isRequired,
-  title: PropTypes.string
+  title: PropTypes.string,
 };
 export default square;

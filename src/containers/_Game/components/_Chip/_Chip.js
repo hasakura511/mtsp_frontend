@@ -222,7 +222,7 @@ export default class Chip extends PureComponent {
       ,
       "backgroundSize": "48px 48px",
       "backgroundPosition": "-3px -3px",
-      zIndex: "100",
+      zIndex: "1000",
             
       };
     
