@@ -328,15 +328,26 @@ export default class LeaderBoardLive extends Component {
     if (this.state.refreshing) {
       return ( 
 
-        <div style={{ height: innerHeight - 172, background:self.props.themes.live.dialog.tab_color_active }}>
+        <div style={{ height: outerHeight + 100,
+                      top: 0, left:0, 
+                      position: 'absolute', 
+                      width: innerWidth + 2000,
+                      marginLeft: "-1000px",
+                      marginTop: "-100px",
+                      overflow: "hide",
+                      background:self.props.themes.live.dialog.tab_color_active }}>
           
           <center>
+            <br/>
+            <br/>
+            <br/>
            <ClockLoader show={true} />
            <br/>
            <b>Please wait while we load your board. This could take a couple of minutes.</b>
           </center>
         </div>
       );
+
 
     }
     return (
