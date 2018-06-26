@@ -601,15 +601,6 @@ export default class Panel extends Component {
     }
 
     var scale=1.0
-    //scale=innerWidth / (1850);
-    var intFramesetWidth = self.innerWidth;
-    console.log(intFramesetWidth)
-
-    console.log(innerWidth)
-    console.log(outerWidth)
-    
-    console.log(scale)
-   
     var padding=150 * scale;
 
     const panel = (

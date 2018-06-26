@@ -7,11 +7,12 @@ const clockLoader = ({ show }) =>
   show ? (
     <div
       style={{
-        background: "white",
+        background: "transparent",
         opacity: "0.7",
         height: "100%",
         width: "100%",
-        position: "absolute",
+        padding: "100px",
+        position: "relative",
         zIndex: "100",
         display: "flex",
         flexFlow: "row",

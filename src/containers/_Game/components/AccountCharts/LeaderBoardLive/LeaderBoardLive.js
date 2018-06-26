@@ -13,6 +13,7 @@ import Chip from "../../_Chip/_Chip";
 import Panel from "../../../containers/Panel/Panel";
 import Popover  from 'react-simple-popover'
 import { toSystem, toAntiSystem, toSystemNum } from "../../../Config";
+import ClockLoader from "../../../../../components/UI/ClockLoader/ClockLoader";
 
 import {
   LineChart,
@@ -80,6 +81,7 @@ export default class LeaderBoardLive extends Component {
       performanceError:'',
       isPopoverOpen :{},
       filter:'Overall',
+      refreshing: false,
       // endDate: 20180201
     };
   }
@@ -186,9 +188,16 @@ export default class LeaderBoardLive extends Component {
           },
           5000
           );
+          self.setState({refreshing:false})
       } else {
 
-        self.props.initializeLive(reinitialize);
+        const loaded = () => {
+          self.setState({refreshing:false})
+          self.props.silenceDialog();
+  
+        }
+        self.props.initializeLive(reinitialize, loaded);
+        
       }
       
       
@@ -237,9 +246,15 @@ export default class LeaderBoardLive extends Component {
           },
           5000
           );
+          self.setState({refreshing:false})
       } else  {
 
-        self.props.initializeLive(reinitialize);
+        const loaded = () => {
+          self.setState({refreshing:false})
+          self.props.silenceDialog();
+  
+        }
+        self.props.initializeLive(reinitialize, loaded);
       }
       
       
@@ -303,11 +318,26 @@ export default class LeaderBoardLive extends Component {
     var self=this;
 
     var chartData={};
-    var content=<div>test</div>;
 
     if (performance && performance.leaderboard) {
         console.log(performance);
         console.log(performance.chip_tiers);
+    }
+
+    
+    if (this.state.refreshing) {
+      return ( 
+
+        <div style={{ height: innerHeight - 172, background:self.props.themes.live.dialog.tab_color_active }}>
+          
+          <center>
+           <ClockLoader show={true} />
+           <br/>
+           <b>Please wait while we load your board. This could take a couple of minutes.</b>
+          </center>
+        </div>
+      );
+
     }
     return (
         <div className={classes.LeaderBoardLive}>
@@ -973,6 +1003,7 @@ export default class LeaderBoardLive extends Component {
                                 " Your board will be replaced with " + props.original.player + "'s board and all your chips will be placed in the Off location." ,
                                 () => {
                                     console.log("Copy Board Start");
+                                    self.setState({refreshing:true})
                                     self.copyBoard(props.original.board_config)
 
                                     self.props.silenceDialog();
@@ -1039,6 +1070,8 @@ export default class LeaderBoardLive extends Component {
                                 " Your board will be replaced with " + props.original.player + "'s board and all your chips other than the new chip will be placed in the Off location." ,
                                   () => {
                                     console.log("Copy Board & Chip Start");
+                                    self.setState({refreshing:true})
+
                                     self.copyBoardChip(props.original.account_id, props.original.chip_id, props.original.board_config)
                                     self.props.silenceDialog();
                                     

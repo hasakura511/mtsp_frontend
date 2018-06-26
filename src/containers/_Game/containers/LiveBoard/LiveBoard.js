@@ -272,7 +272,7 @@ export default class LiveBoard extends Component {
 
   }
 
-  initializeLive=(reinitialize=false) => {
+  initializeLive=(reinitialize=false, callback=undefined) => {
     if (this.state.refreshing)
       return;
     else
@@ -304,6 +304,9 @@ export default class LiveBoard extends Component {
         //rankingData: data.rankingData,
         refreshing:false
       });
+
+      if (callback)
+        callback();
      
     })
     .catch(error => {

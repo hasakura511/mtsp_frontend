@@ -1,8 +1,8 @@
 .TopSection {
   position: absolute;
-  height: 100px;
+  height: 55px;
   width:100%;
-  top: -100px;
+  top: -55px;
   left: 0px;
   padding: 0px 0px;
   display: flex;
@@ -20,7 +20,7 @@
   height: 100%;
   width: 50%;
   /* border: 1px solid #aaaaaa; */
-  padding-top: 6px;
+  padding-top: 0px;
   border-top: 5px solid;
   box-shadow: 1px 1px 2px #aaaaaa;
   box-sizing: border-box;
