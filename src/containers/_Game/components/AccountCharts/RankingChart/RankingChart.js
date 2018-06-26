@@ -111,7 +111,7 @@ class CustomTooltip extends Component {
             items.push(
                 <div key={lookback + '_' + idx} className={classes.Row} style={{ color: color }}>
                   <p>
-                    <span><b>{lookback} Day Cumulative %Chg: </b></span>
+                    <span><b>{lookback} Day Cumulative %: </b></span>
                     <span >
                     {parseFloat(cumper) ? (
                             <span style={parseFloat(cumper) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
@@ -408,8 +408,8 @@ export default class RankingChart extends Component {
   changeLookbackHandler = ({ value }) => {
     
     var match=value;
-    if (match.match(" Day Cumulative %Chg")) {
-      match=match.replace(" Day Cumulative %Chg","");
+    if (match.match(" Day Cumulative %")) {
+      match=match.replace(" Day Cumulative %","");
       if (match) {
         //console.log("setting lookback " + match);
         this.setState({lookback:match});
@@ -533,7 +533,7 @@ export default class RankingChart extends Component {
             <div style={{float:'left'}}>&nbsp;&nbsp;
             </div>
             <p className={lookback === item ? classes.active : "" }  style={lookback == item ? {float:'left', color:self.props.themes.live.dialog.button_color_active} 
-            : {float:'left', color:self.props.themes.live.dialog.button_color}} >{item} Day Cumulative %Chg</p>
+            : {float:'left', color:self.props.themes.live.dialog.button_color}} >{item} Day Cumulative %</p>
             <div style={{"clear": "both"}}></div>
 
           </div>
@@ -598,9 +598,9 @@ export default class RankingChart extends Component {
                  
                   performance.chart_specs.map(period => {
                     return {
-                    value: period + " Day Cumulative %Chg",
+                    value: period + " Day Cumulative %",
                     type: "square",
-                    id: period + " Day  Cumulative %Chg",
+                    id: period + " Day  Cumulative %",
                     color:performance.chart_dict[period].color
                   
                     }

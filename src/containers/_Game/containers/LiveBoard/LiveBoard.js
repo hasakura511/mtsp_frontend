@@ -823,17 +823,17 @@ export default class LiveBoard extends Component {
                 //backgroundImage: "url(" + bgBoard + ")",
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "cover",
-                paddingTop: "150px",
+                paddingTop: "50px",
                 paddingBottom: "100px",
                 //paddingRight: "150px",
                             } // marginTop: "5%",
             }
           >
             <div>
-              <span style={{"marginTop":"-150px","float": "left", "width": "50%", "textAlign": "left", "display": "inline-block","verticalAlign": "top"}}>
+              <span style={{"marginTop":"-50px","float": "left", "width": "50%", "textAlign": "left", "display": "inline-block","verticalAlign": "top"}}>
               <a href='#leaderboard' onClick={() => { self.props.showLeaderDialog(true); }} title="Show Global Leaderboards."><img src="/images/leaderboard_button.png" width="120"/></a><br/>
               </span>
-              <span style={{"marginTop":"-150px", "float": "right", "width": "50%",  "textAlign": "right",  "display": "inline-block", "verticalAlign":"top"}}>
+              <span style={{"marginTop":"-50px", "float": "right", "width": "50%",  "textAlign": "right",  "display": "inline-block", "verticalAlign":"top"}}>
                 <img src="/images/infotext_button.png" width="22" style={{"margin":"10px"}} />
               </span>
             </div>

@@ -439,7 +439,7 @@ export default class LeaderBoardLive extends Component {
                     </div>)
                     items.push(
                       <div key={'item-2'} style={{'float':'left', minWidth: '60px', height:'60px', padding:"1px", marginTop:"1px", marginBottom:"-10px"}}>
-                      <Chip chip={chip} isReadOnly={true} />&nbsp;&nbsp;
+                      <Chip chip={chip} isReadOnly={true} account_chip_text={props.original.account_chip_text} />&nbsp;&nbsp;
                       </div>
                       )
                     items.push(
@@ -935,7 +935,7 @@ export default class LeaderBoardLive extends Component {
                             //backgroundImage: "url(" + bgBoard + ")",
                             backgroundRepeat: "no-repeat",
                             backgroundSize: "cover",
-                            paddingTop: "150px",
+                            paddingTop: "100px",
                             paddingBottom: "100px",
                             //paddingRight: "150px",
                             //paddingLeft: "150px",
@@ -985,16 +985,17 @@ export default class LeaderBoardLive extends Component {
                       
                       ref={ref => self[copyboard] = ref}
                       onClick={() => {  
+                        if (performance.enable_board_copy_message) {
+                          self.props.addTimedToaster(
+                            {
+                              id: "board_notice_" + Math.random().toFixed(3),
+                              text: performance.enable_board_copy_message
+                            },
+                            5000
+                            );
+                        }
                               if (!performance.enable_board_copy) {
-                                if (performance.enable_board_copy_message) {
-                                  self.props.addTimedToaster(
-                                    {
-                                      id: "board_notice_" + Math.random().toFixed(3),
-                                      text: performance.enable_board_copy_message
-                                    },
-                                    5000
-                                    );
-                                }
+                               
                                 return;
                               }
                               else {
@@ -1051,19 +1052,20 @@ export default class LeaderBoardLive extends Component {
                       
                       ref={ref => self[copyboard] = ref}
                       onClick={() => {  
-                              if (!performance.enable_board_chip_copy) {
-                                if (performance.enable_board_chip_copy_message) {
-                                  self.props.addTimedToaster(
-                                  {
-                                    id: "board_notice_" + Math.random().toFixed(3),
-                                    text: performance.enable_board_chip_copy_message
-                                  },
-                                  5000
-                                  );
+                        if (performance.enable_board_chip_copy_message) {
+                          self.props.addTimedToaster(
+                          {
+                            id: "board_notice_" + Math.random().toFixed(3),
+                            text: performance.enable_board_chip_copy_message
+                          },
+                          5000
+                          );
+                        }
+                        if (!performance.enable_board_chip_copy) {
+                               
                                 
                                 return;
-                                }
-                              } else {
+                        } else {
                               
                                 self.props.showDialog(
                                 " Are you sure you want to copy the board & chip?",

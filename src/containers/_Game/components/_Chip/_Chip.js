@@ -127,12 +127,12 @@ export default class Chip extends PureComponent {
     //console.log("Chip Received New Props")
     //console.log(newProps);
     var self=this;
-    if (!this.state.chip.isReadOnly) {
       if (newProps.chip && newProps.chip != this.state.chip) {
         self.setState({chip:newProps.chip});
         
       }
-      if (newProps.accounts) {
+    if (!this.state.chip.isReadOnly) {
+        if (newProps.accounts) {
             var updated=false;
             newProps.accounts.map(account => {
                 if (account.account_id == self.props.chip.account_id) {

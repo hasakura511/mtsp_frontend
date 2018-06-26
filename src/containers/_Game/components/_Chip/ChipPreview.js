@@ -29,7 +29,7 @@ class DragPreview extends Component {
         chipStyle['position']='relative';
         chipStyle['pointerEvents']='none';
         chipStyle['WebkitTransform']= displayOffset ? `translate(${displayOffset.x}px, ${displayOffset.y}px)` : '';
-        chipStyle['zAxis']=1000;
+        chipStyle['zAxis']=10;
         chipStyle['display']='inline-block'
         if (!isDragging) {
             return ( <div></div>)       

@@ -1038,16 +1038,16 @@ export default class LeaderBoardCopiedChips extends Component {
                       
                       ref={ref => self[copyboard] = ref}
                       onClick={() => {  
-                              if (!performance.enable_board_copy) {
-                                if (performance.enable_board_copy_message) {
-                                  self.props.addTimedToaster(
-                                    {
-                                      id: "board_notice_" + Math.random().toFixed(3),
-                                      text: performance.enable_board_copy_message
-                                    },
-                                    5000
-                                    );
-                                }
+                        if (performance.enable_board_copy_message) {
+                          self.props.addTimedToaster(
+                            {
+                              id: "board_notice_" + Math.random().toFixed(3),
+                              text: performance.enable_board_copy_message
+                            },
+                            5000
+                            );
+                        }
+                      if (!performance.enable_board_copy) {
                                 return;
                               }
                               else {
@@ -1110,18 +1110,18 @@ export default class LeaderBoardCopiedChips extends Component {
                       
                       ref={ref => self[copyboard] = ref}
                       onClick={() => {  
-                              if (!performance.enable_board_chip_copy) {
-                                if (performance.enable_board_chip_copy_message) {
-                                  self.props.addTimedToaster(
-                                  {
-                                    id: "board_notice_" + Math.random().toFixed(3),
-                                    text: performance.enable_board_chip_copy_message
-                                  },
-                                  5000
-                                  );
-                                
+                        if (performance.enable_board_chip_copy_message) {
+                          self.props.addTimedToaster(
+                          {
+                            id: "board_notice_" + Math.random().toFixed(3),
+                            text: performance.enable_board_chip_copy_message
+                          },
+                          5000
+                          );
+                        
+                        }
+                      if (!performance.enable_board_chip_copy) {
                                 return;
-                                }
                               } else {
                               
                                 self.props.showDialog(
