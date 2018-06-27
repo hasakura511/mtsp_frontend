@@ -7,12 +7,11 @@ import Container from "../Container";
 
 const topSection = props => {
 
-  var size=props.systems.length / 12 * 100;
-
+  var indSize=1/12*100 - 2;
   return (
     <div className={classes.TopSection}
       style={{
-        width: size + '%',
+        width: '100%',
 
       }}
     >
@@ -46,6 +45,7 @@ const topSection = props => {
               style={{ borderTopColor: color,
                 backgroundColor: bgColor,
                 text: textColor,
+                width: indSize + '%',
 
               }}
               title={mesg}

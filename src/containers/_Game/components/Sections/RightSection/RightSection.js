@@ -4,6 +4,9 @@ import classes from "./RightSection.css";
 import Container from "../Container";
 
 const rightSection = props => {
+  var height=props.maxHeight;
+  var size=1 / height * 100 - 10;
+
   return (
     <div className={classes.RightSection}>
       {props.systems.map(
@@ -33,6 +36,7 @@ const rightSection = props => {
                 borderLeftColor: color, 
                 backgroundColor: bgColor,
                 text: textColor,
+                height:size + "%"
               }}
               title={mesg}
             >
@@ -57,8 +61,9 @@ rightSection.propTypes = {
   bgColor:PropTypes.string,
   textColor:PropTypes.string,
   showOrderDialog:PropTypes.bool,
-  heatmap_selection:PropTypes.string
-  
+  heatmap_selection:PropTypes.string,
+  maxHeight:PropTypes.number.isRequired
+
 
 };
 export default rightSection;

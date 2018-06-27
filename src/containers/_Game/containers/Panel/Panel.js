@@ -121,7 +121,8 @@ export default class Panel extends Component {
     show_leader_dialog:PropTypes.bool.isRequired,
     showLockdownDialog:PropTypes.func.isRequired,
     isReadOnly:PropTypes.bool,
-    initializeLive:PropTypes.func
+    initializeLive:PropTypes.func,
+    isEdit:PropTypes.bool
   };
 
   /**
@@ -298,24 +299,51 @@ export default class Panel extends Component {
    *
    */
 
-  makeBoard = (propData) => {
-    const { topSystems, leftSystems, rightSystems, bottomSystems } = propData;
-    this.setState({
-      topSystems: topSystems && topSystems.length ? topSystems : [blankSystem],
-      bottomSystems:
-        bottomSystems && bottomSystems.length ? bottomSystems : [blankSystem],
-      leftSystems: leftSystems,
-      rightSystems: rightSystems
-    });
+  makeEditBoard = (propData) => {
+    
+    const blankSystem = {
+      id: "BLANK",
+      color: "black",
+      position: "bottom",
+      display: "Blank",
+      description: "Blank",
+      column: "Blank",
+      heldChips: []
+    };
+    const reqSystem = {
+      id: "BLANK",
+      color: "red",
+      position: "bottom",
+      display: "Required",
+      description: "Required",
+      column: "Required",
+      heldChips: []
+    };
+    const optSystem = {
+      id: "OPTIONAL",
+      color: "blue",
+      position: "bottom",
+      display: "Optional",
+      description: "Optional",
+      column: "Optional",
+      heldChips: []
+    };
+    var { topSystems, leftSystems, rightSystems, bottomSystems } = propData;
+    var isEdit=this.props.isEdit;
+    topSystems =  topSystems && topSystems.length  ? topSystems : [reqSystem],
+    bottomSystems=bottomSystems && bottomSystems.length ? bottomSystems : [blankSystem],
+    leftSystems= leftSystems && leftSystems.length ? leftSystems : [optSystem],
+    rightSystems= rightSystems && rightSystems.length ? rightSystems : [blankSystem]
     var slots = [],
       sideSystems = [],
       maxHeight = Math.max(leftSystems.length, rightSystems.length),
-      maxWidth =
+      maxWidth = 12;
+      /*
         topSystems.length * bottomSystems.length ||
         topSystems.length ||
         bottomSystems.length;
-
-    if (maxHeight < 3) maxHeight+=1;
+    */
+    //if (maxHeight < 3) maxHeight+=1;
     
     for (let i = 0; i < maxHeight; i++) {
       sideSystems.push({
@@ -325,23 +353,75 @@ export default class Panel extends Component {
     }
     let position = 1;
     
-
-    bottomSystems.forEach(bottomSystem => {
-      topSystems.forEach(topSystem => {
-        sideSystems.forEach(sideSystem => {
+    for (let xIndex = 0; xIndex < maxWidth; xIndex++) {
+      for (let yIndex = 0; yIndex < maxHeight; yIndex++) {
+          //slot = slots[xIndex * maxHeight + yIndex];
+          var sideSystem=sideSystems[yIndex];
+          var topSystem=topSystems[0];
+          var bottomSystem=bottomSystems[0];
           slots.push({
             leftSystem: sideSystem.left,
             rightSystem: sideSystem.right,
-            topSystem,
-            bottomSystem,
+            topSystem:topSystem,
+            bottomSystem:bottomSystem,
             position
           });
           position++;
+        }
+      }
+    this.setState({ slots, maxHeight, maxWidth, topSystems, bottomSystems, leftSystems, rightSystems });
+    this._isMounted = true;
+
+  }
+  makeBoard = (propData) => {
+    const { topSystems, leftSystems, rightSystems, bottomSystems } = propData;
+    var isEdit=this.props.isEdit;
+    if (isEdit) {
+      this.makeEditBoard(propData);
+    } else {
+      this.setState({
+        topSystems: topSystems && topSystems.length ? topSystems : [blankSystem],
+        bottomSystems:
+          bottomSystems && bottomSystems.length ? bottomSystems : [blankSystem],
+        leftSystems: leftSystems,
+        rightSystems: rightSystems
+      });
+      var slots = [],
+        sideSystems = [],
+        maxHeight = Math.max(leftSystems.length, rightSystems.length),
+        maxWidth =
+          topSystems.length * bottomSystems.length ||
+          topSystems.length ||
+          bottomSystems.length;
+
+      if (maxHeight < 3) maxHeight+=1;
+      
+      for (let i = 0; i < maxHeight; i++) {
+        sideSystems.push({
+          left: leftSystems[i] || blankSystem,
+          right: rightSystems[i] || blankSystem
+        });
+      }
+      let position = 1;
+      
+
+      bottomSystems.forEach(bottomSystem => {
+        topSystems.forEach(topSystem => {
+          sideSystems.forEach(sideSystem => {
+            slots.push({
+              leftSystem: sideSystem.left,
+              rightSystem: sideSystem.right,
+              topSystem,
+              bottomSystem,
+              position
+            });
+            position++;
+          });
         });
       });
-    });
-    this.setState({ slots, maxHeight, maxWidth });
-    this._isMounted = true;
+      this.setState({ slots, maxHeight, maxWidth });
+      this._isMounted = true;
+    }
   }
   moveChipToSlot = (chip, position, isAnti=false) => {
     // Open order dialogue
@@ -562,29 +642,58 @@ export default class Panel extends Component {
               bgColor=slotHeatmap['color_fill'];
           }
         }
-        column.push(
-          <Slot
-            key={"slot-" + xIndex + "-" + yIndex}
-            position={slot.position}
-            slotHeatmap={slotHeatmap}
-            topSystem={slot.topSystem}
-            bottomSystem={slot.bottomSystem}
-            leftSystem={slot.leftSystem}
-            rightSystem={slot.rightSystem}
-            heldChips={this.heldChips(yIndex + maxHeight * xIndex + 1)}
-            moveChipToSlot={this.moveChipToSlot}
-            bgColor={panelBgColor}
-            textColor={panelTextColor}
-            showOrderDialog={showOrderDialog}
-            heatmap_selection={heatmap_selection}
+        if (this.props.isEdit) {
+          column.push(
+            <Slot
+              key={"slot-" + xIndex + "-" + yIndex}
+              position={slot.position}
+              slotHeatmap={slotHeatmap}
+              topSystem={slot.topSystem}
+              bottomSystem={slot.bottomSystem}
+              leftSystem={slot.leftSystem}
+              rightSystem={slot.rightSystem}
+              heldChips={[]}
+              moveChipToSlot={this.moveChipToSlot}
+              bgColor={panelBgColor}
+              textColor={panelTextColor}
+              showOrderDialog={showOrderDialog}
+              heatmap_selection={heatmap_selection}
+              isReadOnly={true}
+              isEdit={true}
+              style={{
+                backgroundColor: bgColor,
+                text: textColor,
+                zIndex:1,
+              }}
+            />
+          );
   
-            style={{
-              backgroundColor: bgColor,
-              text: textColor,
-              zIndex:1,
-            }}
-          />
-        );
+        } else {
+          column.push(
+            <Slot
+              key={"slot-" + xIndex + "-" + yIndex}
+              position={slot.position}
+              slotHeatmap={slotHeatmap}
+              topSystem={slot.topSystem}
+              bottomSystem={slot.bottomSystem}
+              leftSystem={slot.leftSystem}
+              rightSystem={slot.rightSystem}
+              heldChips={this.heldChips(yIndex + maxHeight * xIndex + 1)}
+              moveChipToSlot={this.moveChipToSlot}
+              bgColor={panelBgColor}
+              textColor={panelTextColor}
+              showOrderDialog={showOrderDialog}
+              heatmap_selection={heatmap_selection}
+    
+              style={{
+                backgroundColor: bgColor,
+                text: textColor,
+                zIndex:1,
+              }}
+            />
+          );
+            
+        }
       }
       slotsGrid.push(
         <div key={"slotColumn-" + xIndex} className={classes.Column}>
@@ -608,7 +717,8 @@ export default class Panel extends Component {
         
 
         <div className={classes.Panel} style={{ zIndex: 0, "background": panelBgColor, "text":panelTextColor, transform: "scale(" + scale + ")"}}>
-
+        {!this.props.isEdit ? 
+          (
         <ChipsPanel
         systems={this.state.bottomSystems}
         topSystems={this.state.topSystems}
@@ -619,7 +729,7 @@ export default class Panel extends Component {
         showOrderDialog={showOrderDialog}
         heatmap_selection={heatmap_selection}
         balanceChips={this.props.balanceChips} /> 
-
+          ) : null}
 
 
           {slotsGrid}
@@ -633,6 +743,8 @@ export default class Panel extends Component {
             textColor={panelTextColor}
             showOrderDialog={showOrderDialog}
             heatmap_selection={heatmap_selection}
+            maxHeight={this.state.maxHeight}
+            isEdit={this.props.isEdit}
           />
          
           <BottomSection
@@ -644,6 +756,7 @@ export default class Panel extends Component {
             textColor={panelTextColor}
             showOrderDialog={showOrderDialog}
             heatmap_selection={heatmap_selection}
+            isEdit={this.props.isEdit}
             
           />
           <LeftSection
@@ -654,6 +767,8 @@ export default class Panel extends Component {
             textColor={panelTextColor}
             showOrderDialog={showOrderDialog}
             heatmap_selection={heatmap_selection}
+            maxHeight={this.state.maxHeight}
+            isEdit={this.props.isEdit}
           />
           <RightSection
             systems={this.state.rightSystems}
@@ -663,6 +778,8 @@ export default class Panel extends Component {
             textColor={panelTextColor}
             showOrderDialog={showOrderDialog}
             heatmap_selection={heatmap_selection}
+            maxHeight={this.state.maxHeight}
+            isEdit={this.props.isEdit}
           />
 
 

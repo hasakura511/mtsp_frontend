@@ -95,7 +95,7 @@ export default class ChipSelector extends React.Component {
       return (
         <div style={containerStyle}>
             <span key={item.value}>
-                <Chip chip={item.chip} />
+                <Chip chip={item.chip} isReadOnly={true} />
             </span>
 
          

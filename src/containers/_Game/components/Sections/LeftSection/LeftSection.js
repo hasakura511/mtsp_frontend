@@ -5,6 +5,8 @@ import Config, * as SystemTypes from "../../../Config";
 import Container from "../Container";
 
 const leftSection = props => {
+  var height=props.maxHeight;
+  var size=1 / height * 100 - 10;
   return (
     <div className={classes.LeftSection}>
       {props.systems.map(
@@ -33,6 +35,7 @@ const leftSection = props => {
                 borderRightColor: color,
                 backgroundColor: bgColor,
                 text: textColor,
+                height: size + '%',
               }}
               title={mesg}
             >
@@ -57,7 +60,8 @@ leftSection.propTypes = {
   bgColor:PropTypes.string,
   textColor:PropTypes.string,
   showOrderDialog:PropTypes.bool,
-  heatmap_selection:PropTypes.string
+  heatmap_selection:PropTypes.string,
+  maxHeight:PropTypes.number.isRequired
   
 
 };

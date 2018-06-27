@@ -63,7 +63,9 @@ const stateToProps = state => {
     bottomSystems:state.betting.bottomSystems,
     themes:state.betting.themes,
     mute:state.betting.mute,
-    liveDateText:state.betting.liveDateText
+    liveDateText:state.betting.liveDateText,
+    dictionary_strategy:state.betting.dictionary_strategy,
+    isLive:state.betting.isLive
     
   };
 };
@@ -163,11 +165,14 @@ export default class NewBoard extends Component {
     mute:PropTypes.bool.isRequired,
     setMute:PropTypes.func.isRequired,
     liveDateText:PropTypes.string,
+    dictionary_strategy:PropTypes.object.isRequired,
+    isLive:PropTypes.bool.isRequired,
   };
 
   constructor(props) {
     super(props);
 
+    
     this.state = {
       /**
        * Systems on four sides, left/right/top/bottom
@@ -190,11 +195,93 @@ export default class NewBoard extends Component {
       refreshing:false,
       heatmapData:{},
       editData:{},
+
+      leftSystems:[],
+      rightSystems:[],
+      topSystems:[],
+      bottomSystems:[],
     };
   
   }
 
   componentWillReceiveProps(newProps) {
+    if (newProps.isLive) {
+      var props=newProps;
+      var accounts=props.accounts;
+      var themes=props.themes;  
+      var leftSystems=[];
+      var topSystems=[];
+      var rightSystems=[];
+      var bottomSystems=[];
+      var hasSystem=false;
+      var dictionary_strategy=props.dictionary_strategy;
+      accounts.map(function(account) {
+        const board_config=account.board_config_fe;
+        console.log("Board Config")
+        console.log(account)
+      
+        var chip=account;
+        chip['count']=1;
+        chip['qty']={};
+        chip['display']=chip.account_chip_text;
+        chip['chip_styles']=themes.chip_styles;
+
+        /*
+        balanceChips.push(chip);
+        account_list.push(accounts[key]); 
+        */
+        if (!hasSystem) {
+          Object.keys(board_config).map(function(key) {
+            var name, strat;
+            
+            if (board_config[key].position == 'left') {
+              name=board_config[key].id;
+              strat=dictionary_strategy[name];
+              strat.heldChips=[];       
+              strat.column=name;
+              strat.display=name;         
+              strat.id=name;
+              strat.short=strat.board_name;
+              strat.position="left";
+              leftSystems.push(strat);
+            } else if (board_config[key].position == 'right') {
+              name=board_config[key].id;
+              strat=dictionary_strategy[name];
+              strat.heldChips=[];       
+              strat.column=name;
+              strat.display=name;         
+              strat.id=name;
+              strat.short=strat.board_name;
+              strat.position="right";
+              rightSystems.push(strat);
+            } else if (board_config[key].position == 'top') {
+              name=board_config[key].id;
+              strat=dictionary_strategy[name];
+              strat.heldChips=[];       
+              strat.column=name;
+              strat.display=name;         
+              strat.id=name;
+              strat.short=strat.board_name;
+              strat.position="top";
+              topSystems.push(strat);
+            } else if (board_config[key].position == 'bottom') {
+              name=board_config[key].id;
+              strat=dictionary_strategy[name];
+              strat.heldChips=[];       
+              strat.column=name;
+              strat.display=name;         
+              strat.id=name;
+              strat.short=strat.board_name;
+              strat.position="bottom";
+              bottomSystems.push(strat);
+            }  
+
+          });
+          hasSystem=true;
+        }
+      });
+      this.setState({leftSystems:[], topSystems:[], rightSystems:[],bottomSystems:[]})
+    }
     /*
     !Object.values(this.props.currentBets)
       .map(o => o.position)
@@ -717,13 +804,17 @@ export default class NewBoard extends Component {
       tosAccepted,
       simulatedDate,
       last3DaysProfits,
+      
+      inGameChips,
+      themes
+    } = this.props;
+
+    const {
       leftSystems,
       rightSystems,
       topSystems,
       bottomSystems,
-      inGameChips,
-      themes
-    } = this.props;
+    } = this.state;
     //console.log(this.props);
     const dates = uniq(
       Object.values(last3DaysProfits)
@@ -781,10 +872,13 @@ export default class NewBoard extends Component {
       
       return (
 
-        <Aux>
+        <div className={classes.NewBoard}>
           
+          <img src={'/images/edit_board_button.png'} height={48} /> <br/>
+          <div style={{ zIndex:2, border: "1px solid black" }}>
           <StrategyToolbox editData={this.state.editData} sendNotice={this.sendNotice} initializeLive={this.initializeLive}
             />
+          </div>
 
 
           <div className={classes.ActionRow} style={{background:actionBg, backgroundRepeat: "no-repeat",
@@ -800,20 +894,21 @@ export default class NewBoard extends Component {
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "cover",
                 paddingTop: "50px",
-                paddingBottom: "100px"
+                paddingBottom: "100px",
+                zIndex:0
               } // marginTop: "5%",
             }
           >
             <div>
-              <span style={{"marginTop":"-150px","float": "left", "width": "50%", "textAlign": "left", "display": "inline-block","verticalAlign": "top"}}>
+              <span style={{"marginTop":"-81px","float": "left", "width": "50%", "textAlign": "left", "display": "inline-block","verticalAlign": "top"}}>
               </span>
-              <span style={{"marginTop":"-150px", "float": "right", "width": "50%",  "textAlign": "right",  "display": "inline-block", "verticalAlign":"top"}}>
+              <span style={{"marginTop":"-81px", "float": "right", "width": "50%",  "textAlign": "right",  "display": "inline-block", "verticalAlign":"top"}}>
                 <img src="/images/infotext_button.png" width="22" style={{"margin":"10px"}} />
               </span>
             </div>
             <Panel
               isLive={true}
-              isReadOnly={true}
+              isReadOnly={false}
               isEdit={true}
               accounts={this.props.accounts || {}}
               leftSystems={leftSystems || []}
@@ -831,7 +926,7 @@ export default class NewBoard extends Component {
 
 
           </div>
-        </Aux>
+        </div>
       );
     }
   }
