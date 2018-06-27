@@ -870,7 +870,7 @@ export default class LiveBoard extends Component {
 
 
           </div>
-          <Markets refreshing={this.state.refreshing} />
+          <Markets link={'board'} refreshing={this.state.refreshing} />
         </Aux>
       );
     }

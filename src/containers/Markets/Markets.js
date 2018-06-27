@@ -130,7 +130,8 @@ export default class Markets extends Component {
     heatmap_account_id:PropTypes.string,
     heatmap_lookup_symbol:PropTypes.string,
     refresh_markets:PropTypes.bool.isRequired,
-    refreshMarketDone:PropTypes.func.isRequired
+    refreshMarketDone:PropTypes.func.isRequired,
+    link:PropTypes.string,
   };
 
   getSubmitTitle(controls) {
@@ -302,7 +303,10 @@ export default class Markets extends Component {
   }
 
   componentDidMount() {
-    this.refreshData();
+    var link='';
+    if (!this.props.link)
+      link='header';
+    this.refreshData('',link);
   }
 
   inputChangeHandler = (event, identifier) => {

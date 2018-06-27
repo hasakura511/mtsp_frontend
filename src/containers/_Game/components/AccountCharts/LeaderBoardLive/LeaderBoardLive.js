@@ -194,7 +194,8 @@ export default class LeaderBoardLive extends Component {
         const loaded = () => {
           self.setState({refreshing:false})
           self.props.silenceDialog();
-  
+          self.props.toggle();
+          
         }
         self.props.initializeLive(reinitialize, loaded);
         
@@ -252,7 +253,8 @@ export default class LeaderBoardLive extends Component {
         const loaded = () => {
           self.setState({refreshing:false})
           self.props.silenceDialog();
-  
+          self.props.toggle();
+          
         }
         self.props.initializeLive(reinitialize, loaded);
       }

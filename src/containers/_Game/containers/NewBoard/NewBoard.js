@@ -8,6 +8,8 @@ import protectedComponent from "../../../../hoc/ProtectedComponent/ProtectedComp
 import Aux from "../../../../hoc/_Aux/_Aux";
 // import Dashboard from "../../components/Dashboard/Dashboard";
 import ChipSelector from "./components/ChipSelector/ChipSelector";
+import StrategySelector from "./components/StrategySelector/StrategySelector";
+import StrategyToolbox from "./components/StrategyToolbox/StrategyToolbox";
 import Bettings from "../../BettingConfig";
 import { connect } from "react-redux";
 import * as actions from "../../../../store/actions";
@@ -781,82 +783,13 @@ export default class NewBoard extends Component {
 
         <Aux>
           
-          <ChipSelector editData={this.state.editData} sendNotice={this.sendNotice} initializeLive={this.initializeLive}
+          <StrategyToolbox editData={this.state.editData} sendNotice={this.sendNotice} initializeLive={this.initializeLive}
             />
 
 
           <div className={classes.ActionRow} style={{background:actionBg, backgroundRepeat: "no-repeat",
                 backgroundSize: "62px 62px",color:heatmapTxt}}>
-              <span style={{color:switchTxt, "float": "left", "width": "30%", "height":"75px", "textAlign": "left", "verticalAlign":"middle", zIndex:1}}>
-
-               <a href='#practice_board' style={{textDecoration: "none"}}
-                               onClick={this.toggleMode}
-                               title="Switch to Practice Mode"
-
-               > 
-              <div style={{
-                  
-                  background:switchBg, 
-                  color:switchTxt, 
-                  marginTop:"3px",
-                  height:"60px", 
-                  lineHeight:"10px", 
-                  verticalAlign:"middle",
-                  borderRadius: "200px",
-                  width:"200px",
-                  zIndex:2,
-                 
-                }}
-
-                >
-              <span style={{marginTop:"0px",  color:switchTxt, zIndex:3,}}>
-              <h2 style={{marginLeft:"70px", paddingTop:"12px"}} > 
-              Live
-              </h2>
-
-              </span>
-                </div>
-                </a>
-                <a href='#practice_board' style={{textDecoration: "none"}}
-                                onClick={this.toggleMode}
-                                title="Switch to Practice Mode"
-
-> 
-                <span className={classes.dot}></span>
-                </a>
-
-                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-              </span>
-              <span  style={{"float": "left", "width": "40%",  "minWidth":"600px", "height":"75px","whiteSpace": "nowrap","textAlign": "left", "verticalAlign":"top"}}>
-                
-                <Clock  loading={this.state.refreshing} sendNotice={this.sendNotice} initializeLive={this.initializeLive} />
-              </span>
-              <span style={{"float": "left", "width": "30%", "height":"90px", "textAlign": "right", "verticalAlign":"middle"}}>
-                  <span style={{"float": "left", "width": "80%", "height":"90px", "textAlign": "left", "verticalAlign":"middle"}}> 
-                    <div className="isLive">
-                      <center><b style={{color:heatmapTxt}} >{this.props.themes.live.heatmap.top_text}</b></center>
-                      <div style={{  "border": "1px solid",
-                                      "background": themes_bg,
-                                      "width":"100%",
-                                      "height":"45px",  
-                                    }}>
-                                    &nbsp;
-                                    <br/>
-                      </div>
-                      <div>
-                        <span style={{"float": "left", "width": "50%", "textAlign": "left", color:heatmapTxt}}>
-                        {this.props.themes.live.heatmap.bottom_left}
-                        </span>
-                        <span style={{"float": "left", "width": "50%", "textAlign": "right", color:heatmapTxt}}>
-                        {this.props.themes.live.heatmap.bottom_right}
-                        </span>
-                      </div>
-                    </div>
-                </span>
-                <span style={{"float": "left", "width": "20%", "height":"90px", "textAlign": "right", "verticalAlign":"top"}}>
-                    <img src="/images/infotext_button.png" width="22"/>
-                </span>
-          </span>
+             
         </div>
         <div
             className={classes.Board}
@@ -866,7 +799,7 @@ export default class NewBoard extends Component {
                 //backgroundImage: "url(" + bgBoard + ")",
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "cover",
-                paddingTop: "150px",
+                paddingTop: "50px",
                 paddingBottom: "100px"
               } // marginTop: "5%",
             }

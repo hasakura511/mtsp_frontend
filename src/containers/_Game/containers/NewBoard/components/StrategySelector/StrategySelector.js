@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
-import classes from "./ChipSelector.css";
+import classes from "./StrategySelector.css";
 import { DragSource } from "react-dnd";
 import { connect } from "react-redux";
 import * as actions from "../../../../../../store/actions";
@@ -10,7 +10,7 @@ import Sound from 'react-sound';
 import { toTitleCase, numberWithCommas } from "../../../../../../util";
 import Dropdown from 'react-toolbox/lib/dropdown';
 import StrategyButton from '../StrategyButton/StrategyButton';
-import Chip from '../../../../components/_Chip/_Chip'
+
 
 const stateToProps = state => {
   return {
@@ -33,7 +33,7 @@ const dispatchToProps = dispatch => {
 
 
 @connect(stateToProps, dispatchToProps)
-export default class ChipSelector extends React.Component {
+export default class StrategySelector extends React.Component {
 
     static propTypes = {
         dragSource: PropTypes.func,
@@ -44,6 +44,7 @@ export default class ChipSelector extends React.Component {
         showHeatmap:PropTypes.func.isRequired,
         accounts:PropTypes.array.isRequired,
         isReadOnly:PropTypes.bool,
+        items:PropTypes.object.isRequired,
         //heatmap_selection:PropTypes.string
       };
     
@@ -52,13 +53,15 @@ export default class ChipSelector extends React.Component {
         
         var items=[];
         var itemSelected='';
-        props.accounts.map(account => {
-          if (!itemSelected) 
-              itemSelected=account.account_id;
-                items.push({ value:account.account_id, 
-                         chip: account
-                         
+        Object.keys(this.props.items).map(button_key => {
+            var buttons=this.props.items[button_key]
+            buttons.map(button => {
+                if (!itemSelected) 
+                    itemSelected=button.strategy;
+                items.push({ value:button.strategy, 
+                         strategy: button 
                         });
+            }) 
         })
         this.state={
             items:items,
@@ -77,7 +80,7 @@ export default class ChipSelector extends React.Component {
     customItem (item) {
       const containerStyle = {
         display: 'flex',
-        flexDirection: 'row'
+        flexDirection: 'row',
       };
   
      
@@ -94,8 +97,10 @@ export default class ChipSelector extends React.Component {
 
       return (
         <div style={containerStyle}>
-            <span key={item.value}>
-                <Chip chip={item.chip} />
+            <span key={item.value} style={{ 
+                                                //zIndex: 500 
+                                            }}>
+                <StrategyButton strategy={item.strategy} />
             </span>
 
          
@@ -110,18 +115,19 @@ export default class ChipSelector extends React.Component {
     render () {
         const imageStyle = {
             display: 'flex',
-            height: '48px',
+            height: '50px',
             flexGrow: 0,
             marginLeft: '-30px',
-            marginTop: "30px",
+            marginTop: "27px",
+            marginRight: "30px",
             backgroundColor: 'transparent'
           };
           const containerStyle = {
             display: 'flex',
-            flexDirection: 'row'
+            flexDirection: 'row',
           };
           const contentStyle = {
-              width:"80px"
+              width:"150px",
           };
       
       return (
@@ -136,7 +142,7 @@ export default class ChipSelector extends React.Component {
         
           />
           </span>
-          <span>
+          <span style={{ pointerEvents:'none'}}>
            <img src={'/images/dropdown_rec.png'} style={imageStyle}/>
            </span>
         </div>

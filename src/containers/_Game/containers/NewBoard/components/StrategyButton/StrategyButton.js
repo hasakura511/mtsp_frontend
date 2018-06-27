@@ -8,7 +8,7 @@ import { compose } from 'redux'
 import Popover from 'react-tiny-popover'
 import Sound from 'react-sound';
 import { toTitleCase, numberWithCommas } from "../../../../../../util";
-
+import StrategyPreview from './StrategyPreview'
 
 const stateToProps = state => {
   return {
@@ -116,18 +116,29 @@ export default class StrategyButton extends PureComponent {
   }
 
 
+  getChipStyle = () => {
+    const { dragSource, isDragging, dragPreview, canDrag, showHeatmap, isLive, strategy } = this.props;
+    var title=strategy.rank;
+    var chipStyle={borderColor:strategy.color_border, 
+                   background:strategy.color_fill,
+                   color:strategy.color,
+                   zIndex: 0,
+                };
+      
+      return {chipStyle, title};
+  }
 
   render() {
     var self=this;
     const { dragSource, isDragging, dragPreview, canDrag, showHeatmap, isLive, strategy } = this.props;
-    var title=strategy.rank;
-    var strategyStyle={borderColor:strategy.color_border, 
-                   background:strategy.color_fill,
-                   color:strategy.color,
-                };
-    console.log(strategy);
-    dragPreview(
-        <div className={classes.StrategyButton} style={strategyStyle} title={title}>
+    const {chipStyle, title}=this.getChipStyle();
+
+
+    if (isDragging) {
+      return  <StrategyPreview {...this.props} getChipStyle={this.getChipStyle} strategy={strategy} />
+    } else {
+      return dragSource(
+        <div className={classes.StrategyButton} style={chipStyle} title={title}>
         <p>
          <span style={{fontSize:"15px"}}>{strategy.strategy}<br/>
          </span>
@@ -136,19 +147,10 @@ export default class StrategyButton extends PureComponent {
          </span>
         </p>
         </div>
-    );
-
-    return dragSource(
-        <div className={classes.StrategyButton} style={strategyStyle} title={title}>
-         <p>
-          <span style={{fontSize:"15px"}}>{strategy.strategy}<br/>
-          </span>
-          <span style={{fontSize:"9px"}}>
-            {strategy.rank}
-          </span>
-         </p>
-         </div>
-    );
+      );
+    }
   }
+
+ 
 }
 

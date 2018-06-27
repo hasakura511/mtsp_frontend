@@ -203,6 +203,8 @@ export default class LeaderBoardCopiedChips extends Component {
           const loaded = () => {
             self.setState({refreshing:false})
             self.props.silenceDialog();
+            self.props.toggle();
+        
     
           }
           self.props.initializeLive(reinitialize, loaded);
@@ -260,7 +262,8 @@ export default class LeaderBoardCopiedChips extends Component {
         const loaded = () => {
           self.setState({refreshing:false})
           self.props.silenceDialog();
-  
+          self.props.toggle();
+          
         }
         self.props.initializeLive(reinitialize, loaded);
       }
@@ -333,18 +336,19 @@ export default class LeaderBoardCopiedChips extends Component {
     if (performance && performance.copied_from_accounts) {
         var idx=0;
         console.log(performance);
-        {Object.keys(performance.copied_from_accounts).map(key=> { 
+        {Object.keys(performance.copied_to_accounts).map(key=> { 
           //console.log(account);
-          var item=performance.copied_from_accounts[key];
-          item.isSource=true;
-          
-          var copied_to=item.copied_to;
-          var item2=performance.copied_to_accounts[copied_to];
+          var item2=performance.copied_to_accounts[key];
           item2.isSource=false;
-          item2.idx=idx;
+          
+          var copied_from=item2.copied_from;
+          var item=performance.copied_from_accounts[copied_from];
+          item.isSource=true;
+
+          item.idx=idx;
           chartData.push(item2);
           idx+=1;
-          item.idx=idx;
+          item2.idx=idx;
           chartData.push(item);
           idx+=1;          
     
@@ -592,7 +596,6 @@ export default class LeaderBoardCopiedChips extends Component {
 
                       <a href={'JavaScript:console.log("account performance")'} style={{ cursor:'pointer'  }} title={"Show Account Performance."} onClick={() => {  
                           
-                                // self.props.toggle();
                                 self.props.showPerformance(props.original.account_id, chip);
                         }}>
                         {props.value}
@@ -1069,7 +1072,7 @@ export default class LeaderBoardCopiedChips extends Component {
                                     self.setState({refreshing:true})
                                     self.copyBoard(props.original.board_config)
 
-                                    self.props.silenceDialog();
+                                
 
                                   },
                                   null,

@@ -1,8 +1,8 @@
-.StrategyButton {
+.StrategySelector {
     /* margin-left: 10px; */
     width: 120px;
     height: 48px;
-    border-radius: 32px 0px 0px 32px;
+    border-radius: 32px;
     padding-top: 10px;
     font-size: 12px;
     font-weight: 800;
