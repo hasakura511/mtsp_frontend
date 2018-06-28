@@ -45,8 +45,14 @@ export default class BottomSection extends PureComponent {
                     slotHeatmap['score']=sectionHeatmap.score[column.toString()];
                     textColor=slotHeatmap['color_text'];
                     bgColor=slotHeatmap['color_fill'];
-                    rank="Rank: " + slotHeatmap['rank'].toString();
-                    score="Score: " + slotHeatmap['score'].toString();
+                    if (slotHeatmap['rank']) 
+                      rank="Rank: " + slotHeatmap['rank'].toString();
+                    else
+                      rank=''
+                    if (slotHeatmap['score'])
+                      score="Score: " + slotHeatmap['score'].toString();
+                    else
+                      score=''
                 }
                 return position ? (
                   <div

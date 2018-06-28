@@ -776,7 +776,7 @@ export default class Panel extends Component {
     }
 
     var scale=1.0
-    var padding=150 * scale;
+    var padding=120 * scale;
 
     const panel = (
       <div  style={{"background": "transparent",  zIndex: 0, paddingRight: padding + "px", paddingLeft: padding + "px", "text":panelTextColor, }}>
