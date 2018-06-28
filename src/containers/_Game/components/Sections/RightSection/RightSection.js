@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import classes from "./RightSection.css";
 import Container from "../Container";
+import EditContainer from "../EditContainer";
 
 const rightSection = props => {
   var height=props.maxHeight;
@@ -40,13 +41,22 @@ const rightSection = props => {
               }}
               title={mesg}
             >
-              <Container {...props}  slotHeatmap={slotHeatmap} column={column} heldChips={heldChips} 
+            {props.isEdit ? (
+              <EditContainer {...props}  slotHeatmap={slotHeatmap} column={column}   display={display} heldChips={heldChips} 
+              bgColor={bgColor}
+              textColor={textColor}              
+              showOrderDialog={props.showOrderDialog}
+              heatmap_selection={props.heatmap_selection}
+
+            />) :
+            (
+            <Container {...props}  slotHeatmap={slotHeatmap} column={column} heldChips={heldChips} 
                 bgColor={bgColor}
                 textColor={textColor}              
                 showOrderDialog={props.showOrderDialog}
                 heatmap_selection={props.heatmap_selection}
 
-              />
+              />)}
               <font color={textColor}>{display}</font>
             </div>
           );
@@ -62,7 +72,9 @@ rightSection.propTypes = {
   textColor:PropTypes.string,
   showOrderDialog:PropTypes.bool,
   heatmap_selection:PropTypes.string,
-  maxHeight:PropTypes.number.isRequired
+  maxHeight:PropTypes.number.isRequired,
+  isEdit: PropTypes.bool,
+  
 
 
 };

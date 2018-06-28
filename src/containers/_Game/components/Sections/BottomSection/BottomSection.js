@@ -2,6 +2,7 @@ import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import classes from "./BottomSection.css";
 import Container from "../Container";
+import EditContainer from "../EditContainer";
 
 
 export default class BottomSection extends PureComponent {
@@ -12,7 +13,8 @@ export default class BottomSection extends PureComponent {
     bgColor:PropTypes.string,
     textColor:PropTypes.string,
     showOrderDialog:PropTypes.bool,
-    heatmap_selection:PropTypes.string
+    heatmap_selection:PropTypes.string,
+    isEdit: PropTypes.bool
     
   };
 
@@ -60,7 +62,15 @@ export default class BottomSection extends PureComponent {
                     }}
                     title={mesg}
                   >
-
+                    {this.props.isEdit ? 
+                    <EditContainer {...this.props} slotHeatmap={slotHeatmap} column={column} display={display} heldChips={heldChips}
+                     bgColor={bgColor}
+                     textColor={textColor}
+                     showOrderDialog={this.props.showOrderDialog}
+                     heatmap_selection={this.props.heatmap_selection}
+           
+                    />
+                    :
                     <Container {...this.props} slotHeatmap={slotHeatmap} column={column} heldChips={heldChips}
                      bgColor={bgColor}
                      textColor={textColor}
@@ -68,6 +78,7 @@ export default class BottomSection extends PureComponent {
                      heatmap_selection={this.props.heatmap_selection}
            
                     />
+                    }
                     <font color={textColor}>{display}</font>
 
                   </div>

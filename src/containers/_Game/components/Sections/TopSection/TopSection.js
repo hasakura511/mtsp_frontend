@@ -4,6 +4,7 @@ import classes from "./TopSection.css";
 import Clock from "../../../containers/Clock/Clock";
 import ChipsPanel from "../../ChipsPanel/ChipsPanel";
 import Container from "../Container";
+import EditContainer from "../EditContainer";
 
 const topSection = props => {
 
@@ -51,14 +52,21 @@ const topSection = props => {
               title={mesg}
               
               >
-              
-              <Container {...props}  slotHeatmap={slotHeatmap} column={column} heldChips={heldChips} 
+              {props.isEdit ? (
+              <EditContainer {...props}  slotHeatmap={slotHeatmap} column={column} display={display} heldChips={heldChips} 
                 bgColor={bgColor}
                 textColor={textColor}              
                 showOrderDialog={props.showOrderDialog}
                 heatmap_selection={props.heatmap_selection}
       
+              />) : (
+                <Container {...props}  slotHeatmap={slotHeatmap} column={column} heldChips={heldChips} 
+                bgColor={bgColor}
+                textColor={textColor}              
+                showOrderDialog={props.showOrderDialog}
+                heatmap_selection={props.heatmap_selection}      
               />
+              )}
 
                 <font color={textColor}>{display}</font>
               
@@ -78,7 +86,8 @@ topSection.propTypes = {
   bgColor:PropTypes.string,
   textColor:PropTypes.string,
   showOrderDialog:PropTypes.bool,
-  heatmap_selection:PropTypes.string
+  heatmap_selection:PropTypes.string,
+  isEdit: PropTypes.bool
   
 
 };

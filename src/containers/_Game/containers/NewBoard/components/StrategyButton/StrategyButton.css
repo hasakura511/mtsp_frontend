@@ -1,5 +1,23 @@
 .StrategyButton {
     /* margin-left: 10px; */
+    width: 88px;
+    height: 48px;
+    border-radius: 32px 0px 0px 32px;
+    padding-top: 10px;
+    font-size: 12px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    border: 3px solid #002040;
+    color: white;
+    cursor: move;
+    outline: none;
+  }
+  
+  .StrategyButton2 {
+    /* margin-left: 10px; */
     width: 120px;
     height: 48px;
     border-radius: 32px 0px 0px 32px;
@@ -14,6 +32,7 @@
     color: white;
     cursor: move;
     outline: none;
+    z-index: 1000;
   }
   
   .StrategyButton p {

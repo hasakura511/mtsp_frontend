@@ -94,10 +94,10 @@ export default class StrategySelector extends React.Component {
 
       return (
         <div style={containerStyle}>
-            <span key={item.value} style={{ 
-                                                //zIndex: 500 
-                                            }}>
                 <StrategyButton strategy={item.strategy} />
+            <span key={item.value} style={{ 
+                                            //zIndex: 500 
+                                        }}>
             </span>
 
          
@@ -124,7 +124,7 @@ export default class StrategySelector extends React.Component {
             flexDirection: 'row',
           };
           const contentStyle = {
-              width:"150px",
+              width:"118px",
           };
       
       return (

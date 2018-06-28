@@ -103,7 +103,8 @@ export default class StrategyButton extends PureComponent {
     var strategy=this.props.strategy;
    
     this.state={
-      strategy:strategy
+      strategy:strategy,
+      zIndex: 0
     }
 
   }
@@ -122,7 +123,7 @@ export default class StrategyButton extends PureComponent {
     var chipStyle={borderColor:strategy.color_border, 
                    background:strategy.color_fill,
                    color:strategy.color,
-                   zIndex: 0,
+                   zIndex: this.state.zIndex,
                 };
       
       return {chipStyle, title};
@@ -131,14 +132,16 @@ export default class StrategyButton extends PureComponent {
   render() {
     var self=this;
     const { dragSource, isDragging, dragPreview, canDrag, showHeatmap, isLive, strategy } = this.props;
-    const {chipStyle, title}=this.getChipStyle();
+    var {chipStyle, title}=this.getChipStyle();
 
-
+    //console.log(chipStyle);
     if (isDragging) {
       return  <StrategyPreview {...this.props} getChipStyle={this.getChipStyle} strategy={strategy} />
     } else {
       return dragSource(
-        <div className={classes.StrategyButton} style={chipStyle} title={title}>
+        <div className={classes.StrategyButton} style={chipStyle}
+
+      title={title}>
         <p>
          <span style={{fontSize:"15px"}}>{strategy.strategy}<br/>
          </span>

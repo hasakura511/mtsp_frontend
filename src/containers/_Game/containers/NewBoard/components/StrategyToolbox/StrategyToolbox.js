@@ -147,7 +147,7 @@ export default class StrategyToolbox extends Component {
                                           {Object.keys(items).map(key2 => {
                                             var itemList=items[key2];
                                             if (itemList) {
-                                              console.log(itemList);
+                                              //console.log(itemList);
                                               idx+=1;
                                               return (
                                                     <div key={idx} style={{float:'left', zIndex: 10, }}>

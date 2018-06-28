@@ -155,6 +155,10 @@ export default class Panel extends Component {
           : [blankSystem],
       leftSystems: props.leftSystems,
       rightSystems: props.rightSystems,
+      topStrats:[],
+      rightStrats:[],
+      leftStrats:[],
+      bottomStrats:[],
       /**
        * Related to Order Dialogue
        */
@@ -330,27 +334,17 @@ export default class Panel extends Component {
     };
     var { topSystems, leftSystems, rightSystems, bottomSystems } = propData;
     var isEdit=this.props.isEdit;
-    topSystems =  topSystems && topSystems.length  ? topSystems : [reqSystem],
-    bottomSystems=bottomSystems && bottomSystems.length ? bottomSystems : [blankSystem],
-    leftSystems= leftSystems && leftSystems.length ? leftSystems : [optSystem],
-    rightSystems= rightSystems && rightSystems.length ? rightSystems : [blankSystem]
+    
+    
+    topSystems =  topSystems && topSystems.length  ? topSystems : [Object.assign({}, reqSystem)],
+    bottomSystems=bottomSystems && bottomSystems.length ? bottomSystems : [Object.assign({}, optSystem)],
+    leftSystems= leftSystems && leftSystems.length ? leftSystems : [Object.assign({}, optSystem)],
+    rightSystems= rightSystems && rightSystems.length ? rightSystems : [Object.assign({}, optSystem)]
     var slots = [],
       sideSystems = [],
       maxHeight = Math.max(leftSystems.length, rightSystems.length),
       maxWidth = 12;
-      /*
-        topSystems.length * bottomSystems.length ||
-        topSystems.length ||
-        bottomSystems.length;
-    */
-    //if (maxHeight < 3) maxHeight+=1;
-    
-    for (let i = 0; i < maxHeight; i++) {
-      sideSystems.push({
-        left: leftSystems[i] || blankSystem,
-        right: rightSystems[i] || blankSystem
-      });
-    }
+     
     let position = 1;
     
     for (let xIndex = 0; xIndex < maxWidth; xIndex++) {
@@ -360,8 +354,8 @@ export default class Panel extends Component {
           var topSystem=topSystems[0];
           var bottomSystem=bottomSystems[0];
           slots.push({
-            leftSystem: sideSystem.left,
-            rightSystem: sideSystem.right,
+            leftSystem: leftSystems[yIndex],
+            rightSystem:  rightSystems[yIndex],
             topSystem:topSystem,
             bottomSystem:bottomSystem,
             position
@@ -369,6 +363,35 @@ export default class Panel extends Component {
           position++;
         }
       }
+    
+    topSystems=topSystems.map(item => {
+      item.id=item.display;
+      item.column='top'
+      item.position=item.column;
+      item.heldChips=[];
+      return item;
+    })
+    bottomSystems=bottomSystems.map(item => {
+      item.id=item.display;
+      item.column='bottom'
+      item.position=item.column;
+      item.heldChips=[];
+      return item;
+    })
+    leftSystems=leftSystems.map(item => {
+      item.id=item.display;
+      item.column='left'
+      item.position=item.column;
+      item.heldChips=[];
+      return item;
+    })
+    rightSystems=rightSystems.map(item => {
+      item.id=item.display;
+      item.column='right'
+      item.position=item.column;
+      item.heldChips=[];
+      return item;
+    })
     this.setState({ slots, maxHeight, maxWidth, topSystems, bottomSystems, leftSystems, rightSystems });
     this._isMounted = true;
 
@@ -423,6 +446,49 @@ export default class Panel extends Component {
       this._isMounted = true;
     }
   }
+  moveStratToSlot = (strat, position, isAnti=false) => {
+    // Open order dialogue
+    var {
+      topStrats,
+      rightStrats,
+      bottomStrats,
+      leftStrats
+    } = this.state;
+
+    console.log("Dropped Strat")
+    console.log(strat);
+    console.log(position);  
+    strat.display=strat.strategy;
+
+    if (position == 'top') {
+      strat.column='top';
+      topStrats.push(strat);
+    } else if (position == 'left') {
+      strat.column='left';
+      leftStrats.push(strat);
+    } else if (position == 'right') {
+      strat.column='right';
+      rightStrats.push(strat);
+    } else if (position == 'bottom') {
+      strat.column='bottom';
+      bottomStrats.push(strat);
+    }
+      this.setState({
+        topStrats:topStrats,
+        leftStrats:leftStrats,
+        bottomStrats:bottomStrats,
+        rightStrats:rightStrats
+      });
+
+      var obj={};
+      obj.topSystems=topStrats;
+      obj.leftSystems=leftStrats;
+      obj.bottomSystems=bottomStrats;
+      obj.rightSystems=rightStrats;
+      obj.isEdit=true;
+      this.makeEditBoard(obj);
+      
+  };
   moveChipToSlot = (chip, position, isAnti=false) => {
     // Open order dialogue
     const {
@@ -745,6 +811,8 @@ export default class Panel extends Component {
             heatmap_selection={heatmap_selection}
             maxHeight={this.state.maxHeight}
             isEdit={this.props.isEdit}
+            moveStratToSlot={this.moveStratToSlot}
+            heldStrats={this.state.topStrats}
           />
          
           <BottomSection
@@ -757,6 +825,8 @@ export default class Panel extends Component {
             showOrderDialog={showOrderDialog}
             heatmap_selection={heatmap_selection}
             isEdit={this.props.isEdit}
+            moveStratToSlot={this.moveStratToSlot}
+            heldStrats={this.state.bottomStrats}
             
           />
           <LeftSection
@@ -769,6 +839,8 @@ export default class Panel extends Component {
             heatmap_selection={heatmap_selection}
             maxHeight={this.state.maxHeight}
             isEdit={this.props.isEdit}
+            moveStratToSlot={this.moveStratToSlot}
+            heldStrats={this.state.leftStrats}
           />
           <RightSection
             systems={this.state.rightSystems}
@@ -780,6 +852,8 @@ export default class Panel extends Component {
             heatmap_selection={heatmap_selection}
             maxHeight={this.state.maxHeight}
             isEdit={this.props.isEdit}
+            moveStratToSlot={this.moveStratToSlot}
+            heldStrats={this.state.rightStrats}
           />
 
 

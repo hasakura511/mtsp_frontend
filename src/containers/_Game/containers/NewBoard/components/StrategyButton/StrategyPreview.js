@@ -35,7 +35,7 @@ class DragPreview extends Component {
         } else {
             //ReactDOM.render(
         return (
-            <div className={classes.StrategyButton} style={chipStyle} title={title}>
+            <div className={classes.StrategyButton2} style={chipStyle} title={title}>
                 <p>
                 <span style={{fontSize:"15px"}}>{strategy.strategy}<br/>
                 </span>

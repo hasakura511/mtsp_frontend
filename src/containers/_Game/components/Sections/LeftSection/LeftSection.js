@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import classes from "./LeftSection.css";
 import Config, * as SystemTypes from "../../../Config";
 import Container from "../Container";
+import EditContainer from "../EditContainer";
 
 const leftSection = props => {
   var height=props.maxHeight;
@@ -39,6 +40,15 @@ const leftSection = props => {
               }}
               title={mesg}
             >
+            {props.isEdit ? (
+             <EditContainer {...props}  slotHeatmap={slotHeatmap} column={column} display={display} heldChips={heldChips} 
+                bgColor={bgColor}
+                textColor={textColor}         
+                showOrderDialog={props.showOrderDialog}
+                heatmap_selection={props.heatmap_selection}
+           
+              />
+            ) : (
               <Container {...props}  slotHeatmap={slotHeatmap} column={column} heldChips={heldChips} 
                 bgColor={bgColor}
                 textColor={textColor}         
@@ -46,6 +56,7 @@ const leftSection = props => {
                 heatmap_selection={props.heatmap_selection}
            
               />
+            )}
               <font color={textColor}>{display}</font>
             </div>
           );
@@ -61,8 +72,8 @@ leftSection.propTypes = {
   textColor:PropTypes.string,
   showOrderDialog:PropTypes.bool,
   heatmap_selection:PropTypes.string,
-  maxHeight:PropTypes.number.isRequired
-  
+  maxHeight:PropTypes.number.isRequired,
+  isEdit: PropTypes.bool
 
 };
 export default leftSection;
