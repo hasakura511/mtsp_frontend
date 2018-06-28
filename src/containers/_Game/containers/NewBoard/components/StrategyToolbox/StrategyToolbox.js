@@ -139,21 +139,25 @@ export default class StrategyToolbox extends Component {
                                 <br/>
                                 {Object.keys(strat_dict).map(key => {
                                     var items=strat_dict[key];
+                                    //console.log(items);
+                                    var idx=0;
                                     return (
-                                        <div key={key} sylte={{ zIndex: 0 }}>
-                                        {key}<br/>
-                                        <div style={{float:'left', zIndex: 10, }}>
-                                        <StrategySelector key={1} items={items} />
-                                        </div>
-                                        <div style={{float:'left'}}>
-                                        <StrategySelector key={2} items={items} />
-                                        </div>
-                                        <div style={{float:'left'}}>
-                                        <StrategySelector key={3} items={items} />
-                                        </div>
-                                        <div style={{float:'left'}}>
-                                        <StrategySelector key={4} items={items} />
-                                        </div>
+                                        <div key={key} style={{ zIndex: 0 }}>
+                                          {key}<br/>
+                                          {Object.keys(items).map(key2 => {
+                                            var itemList=items[key2];
+                                            if (itemList) {
+                                              console.log(itemList);
+                                              idx+=1;
+                                              return (
+                                                    <div key={idx} style={{float:'left', zIndex: 10, }}>
+                                                      <StrategySelector items={itemList} />
+                                                    </div>
+                                                      );
+                                                    }
+
+                                          })}
+
 
                                         <div style={{"clear": "both"}}></div>
                                         </div>

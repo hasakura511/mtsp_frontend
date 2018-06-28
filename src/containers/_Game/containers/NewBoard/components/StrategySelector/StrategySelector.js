@@ -44,7 +44,7 @@ export default class StrategySelector extends React.Component {
         showHeatmap:PropTypes.func.isRequired,
         accounts:PropTypes.array.isRequired,
         isReadOnly:PropTypes.bool,
-        items:PropTypes.object.isRequired,
+        items:PropTypes.array.isRequired,
         //heatmap_selection:PropTypes.string
       };
     
@@ -53,15 +53,12 @@ export default class StrategySelector extends React.Component {
         
         var items=[];
         var itemSelected='';
-        Object.keys(this.props.items).map(button_key => {
-            var buttons=this.props.items[button_key]
-            buttons.map(button => {
+        this.props.items.map(button => {
                 if (!itemSelected) 
                     itemSelected=button.strategy;
                 items.push({ value:button.strategy, 
                          strategy: button 
                         });
-            }) 
         })
         this.state={
             items:items,
