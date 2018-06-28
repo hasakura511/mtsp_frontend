@@ -435,6 +435,7 @@ const reducer = (state = initialState, action) => {
         var sym='';
         if (action.sym)
           sym=action.sym;
+        
         return {
           ...state,
           performance_account_id:'',

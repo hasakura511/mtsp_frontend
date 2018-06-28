@@ -119,7 +119,7 @@ const RED = "#e12f48",
             </div>
             <div className={classes.Row} style={{ color:  strategy_color }}>
               <p>
-                <span><b>{toSystem(position)} Cumulative %Chg: </b></span>
+                <span><b>{toSystem(position)} Cum. %Chg: </b></span>
                 <span >
                 {parseFloat(strategy_cumper) ? (
                         <span style={parseFloat(strategy_cumper) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
@@ -169,7 +169,7 @@ const RED = "#e12f48",
             </div>
             <div className={classes.Row} style={{ color:  anti_strategy_color }}>
               <p>
-                <span><b>{toAntiSystem(position, self.props.dictionary_strategy)} Cumulative %Chg: </b></span>
+                <span><b>{toAntiSystem(position, self.props.dictionary_strategy)} Cum. %Chg: </b></span>
                 <span >
                 {parseFloat(anti_cumper) ? (
                         <span style={parseFloat(anti_cumper) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
@@ -219,7 +219,7 @@ const RED = "#e12f48",
             </div>
             <div className={classes.Row} style={{ color:  benchmark_color }}>
               <p>
-                <span><b>{performance.benchmark_display} Cumulative %Chg: </b></span>
+                <span><b>{performance.benchmark_display} Cum. %Chg: </b></span>
                 <span >
                 {parseFloat(benchmark_cumper) ? (
                         <span style={parseFloat(benchmark_cumper) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >

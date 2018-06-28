@@ -308,7 +308,7 @@ export default class PreviousPnL extends Component {
                     console.log(props);
                     var sym= props.value;
                     sym=sym.substr(0, sym.indexOf(' ')); 
-                    self.props.initializeHeatmap(self.props.performance_account_id,'current',sym);
+                    self.props.initializeHeatmap(self.props.performance_account_id,'previous',sym);
                     if (self.props.toggle)
                       self.props.toggle();
                     $(window).scrollTop($("#marketTop").offset().top-111);

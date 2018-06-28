@@ -161,7 +161,7 @@ export default class Markets extends Component {
     if (newProps.refresh_markets) {
       console.log("Received Refresh Market Status Check");
       this.refreshData();
-    } else if (newProps.heatmap_account_id && newProps.heatmap_account_id != this.state.heatmap_account_id) {
+    } else if (newProps.heatmap_account_id && newProps.heatmap_account_id != this.props.heatmap_account_id) {
       console.log("Received Refresh Market Status Check");
       this.refreshData(newProps.heatmap_account_id, 'current', newProps.heatmap_lookup_symbol);
     } else if (newProps.heatmap_account_id != undefined && newProps.heatmap_account_id == '' && newProps.heatmap_lookup_symbol && newProps.heatmap_lookup_symbol != this.state.last_heatmap_params.sym) {
@@ -262,8 +262,8 @@ export default class Markets extends Component {
 
     console.log("Refreshing LINK HEATMAP")
     console.log(params)
-    this.setState({loading:true})
-    this.props.initializeHeatmap('');
+    this.setState({loading:true, heatmap_account_id:''})
+    this.props.initializeHeatmap('','','');
     axiosOpen
       .post("/utility/market_heatmap/", params)
        .then(response => {

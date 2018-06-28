@@ -247,14 +247,14 @@ export default class LockdownTimetable extends Component {
 
           <div className={classes.LockdownTimetable} >
                 
-                <div style={{"width": "90%", margin:"0px", padding:"0px", height:"22px", "float":"left", background: self.props.isdialog ? self.props.themes.live.dialog.background : self.props.themes.live.dialog.tab_color_active}}>
+                <div style={{"width": "90%", margin:"0px", padding:"5px", height:"30px", "float":"left", background: self.props.isdialog ? self.props.themes.live.dialog.background : self.props.themes.live.dialog.tab_color_active}}>
                   <center><h4>
                   {this.state.title ? 
                     this.state.title
                    : null }
                   </h4></center>
                 </div>
-            <div style={{"width": "10%", margin:"0px", padding:"0px", height:"22px", "float":"left", "textAlign": "right", background: self.props.isdialog ? self.props.themes.live.dialog.background : self.props.themes.live.dialog.tab_color_active}}>
+            <div style={{"width": "10%", margin:"0px", padding:"0px", height:"30px", "float":"left", "textAlign": "right", background: self.props.isdialog ? self.props.themes.live.dialog.background : self.props.themes.live.dialog.tab_color_active}}>
                   <img src="/images/infotext_button.png" width="22" style={{"marginRight":"5px"}}/>
                 </div>
 

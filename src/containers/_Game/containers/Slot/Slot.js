@@ -217,7 +217,6 @@ export default class Slot extends Component {
             color:  textColor,
             zIndex: 0,
             opacity: canDrop ? (isOver ? 0.99 : 0.8) : 1,
-            width,
             fontSize
           }}
           title={name}
@@ -234,7 +233,7 @@ export default class Slot extends Component {
                             
           <span style={{
             "marginTop": "0px",
-            minWidth: "100%",
+            width: "100%",
             backgroundColor: canDrop ? bgColor : "transparent",
             color: canDrop ? highlightTextColor : textColor,
             opacity: isOver?0.7:1,
