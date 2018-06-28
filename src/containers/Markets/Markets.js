@@ -48,6 +48,7 @@ const stateToProps = state => {
     email:state.auth.email,
     heatmap_account_id:state.betting.heatmap_account_id,
     heatmap_lookup_symbol:state.betting.heatmap_lookup_symbol,
+    heatmap_lookup_link:state.betting.heatmap_lookup_link,
     refresh_markets:state.betting.refresh_markets,
   };
 };
@@ -132,6 +133,7 @@ export default class Markets extends Component {
     refreshing:PropTypes.bool,
     heatmap_account_id:PropTypes.string,
     heatmap_lookup_symbol:PropTypes.string,
+    heatmap_lookup_link:PropTypes.string,
     refresh_markets:PropTypes.bool.isRequired,
     refreshMarketDone:PropTypes.func.isRequired,
     link:PropTypes.string,
@@ -161,10 +163,16 @@ export default class Markets extends Component {
     if (newProps.refresh_markets) {
       console.log("Received Refresh Market Status Check");
       this.refreshData();
-    } else if (newProps.heatmap_account_id && newProps.heatmap_account_id != this.props.heatmap_account_id) {
+    } else if (newProps.heatmap_account_id && (newProps.heatmap_account_id != this.props.heatmap_account_id || newProps.heatmap_lookup_symbol != this.props.heatmap_lookup_symbol || newProps.heatmap_lookup_link != this.props.heatmap_lookup_link)) {
       console.log("Received Refresh Market Status Check");
-      this.refreshData(newProps.heatmap_account_id, 'current', newProps.heatmap_lookup_symbol);
-    } else if (newProps.heatmap_account_id != undefined && newProps.heatmap_account_id == '' && newProps.heatmap_lookup_symbol && newProps.heatmap_lookup_symbol != this.state.last_heatmap_params.sym) {
+      var sym=''
+      var link='current'
+      if (newProps.heatmap_lookup_symbol)
+        sym=newProps.heatmap_lookup_symbol
+      if (newProps.heatmap_lookup_link)
+        link=newProps.heatmap_lookup_link
+      this.refreshData(newProps.heatmap_account_id, link, sym);
+    } else if (newProps.heatmap_account_id != undefined && newProps.heatmap_account_id == '' && newProps.heatmap_lookup_symbol && (newProps.heatmap_lookup_symbol != this.props.heatmap_lookup_symbol || newProps.heatmap_lookup_symbol != this.props.heatmap_lookup_link)) {
       this.refreshData('','',newProps.heatmap_lookup_symbol);
     }
     
