@@ -69,6 +69,9 @@ const dispatchToProps = dispatch => {
       dispatch(actions.initializeData(data));
       
     },
+    initializeHeatmap:(action_id) => {
+      dispatch(actions.initializeHeatmap(action_id, 'current'))
+    },
     authSuccess: (user, token) => {
       dispatch(actions.authSuccess(user, token));
     },
@@ -132,6 +135,7 @@ export default class Markets extends Component {
     refresh_markets:PropTypes.bool.isRequired,
     refreshMarketDone:PropTypes.func.isRequired,
     link:PropTypes.string,
+    initializeHeatmap:PropTypes.func.isRequired,
   };
 
   getSubmitTitle(controls) {
@@ -158,8 +162,9 @@ export default class Markets extends Component {
       console.log("Received Refresh Market Status Check");
       this.refreshData();
     } else if (newProps.heatmap_account_id && newProps.heatmap_account_id != this.state.heatmap_account_id) {
+      console.log("Received Refresh Market Status Check");
       this.refreshData(newProps.heatmap_account_id, 'current', newProps.heatmap_lookup_symbol);
-    } else if (newProps.heatmap_account_id != undefined && newProps.heatmap_account_id == '' && newProps.heatmap_lookup_symbol) {
+    } else if (newProps.heatmap_account_id != undefined && newProps.heatmap_account_id == '' && newProps.heatmap_lookup_symbol && newProps.heatmap_lookup_symbol != this.state.last_heatmap_params.sym) {
       this.refreshData('','',newProps.heatmap_lookup_symbol);
     }
     
@@ -258,7 +263,7 @@ export default class Markets extends Component {
     console.log("Refreshing LINK HEATMAP")
     console.log(params)
     this.setState({loading:true})
-    
+    this.props.initializeHeatmap('');
     axiosOpen
       .post("/utility/market_heatmap/", params)
        .then(response => {

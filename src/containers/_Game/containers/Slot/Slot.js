@@ -254,8 +254,8 @@ export default class Slot extends Component {
                           backgroundColor: canDrop ? bgColor : "transparent",
                           color: highlightTextColor,
                           opacity: 1,
-                          zIndex: -1,
-            
+                          zIndex: 2,
+                          
                           "whiteSpace": "nowrap",
                           textAlign: "center"
 
