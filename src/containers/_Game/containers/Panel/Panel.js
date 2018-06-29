@@ -19,6 +19,7 @@ import { toSlashDate,  getDateNowStr  } from "../../../../util";
 import Title from "../OrderDialog/OffOrderDialogTitle";
 import Sound from 'react-sound';
 import ChipsPanel from "../../components/ChipsPanel/ChipsPanel";
+import RemoveContainer from "../../components/Sections/RemoveContainer"
 
 /**
  * returns state to `Props` mapping object with keys that would later become props.
@@ -36,6 +37,7 @@ const stateToProps = state => {
            performance_chip:state.betting.performance_chip,
            show_lockdown_dialog:state.betting.show_lockdown_dialog,
            show_leader_dialog:state.betting.show_leader_dialog,
+           email:state.auth.email,
           };
 };
 
@@ -122,7 +124,8 @@ export default class Panel extends Component {
     showLockdownDialog:PropTypes.func.isRequired,
     isReadOnly:PropTypes.bool,
     initializeLive:PropTypes.func,
-    isEdit:PropTypes.bool
+    isEdit:PropTypes.bool,
+    email:PropTypes.string
   };
 
   /**
@@ -227,6 +230,7 @@ export default class Panel extends Component {
       isPerformance:false,
       isReadOnly: props.isReadOnly ? true : false,
       orderAnti: false,
+      isEditComplete: false,
 
     };
     this._isMounted = false;
@@ -312,47 +316,151 @@ export default class Panel extends Component {
       display: "Blank",
       description: "Blank",
       column: "Blank",
+      isUnfilled:true,
       heldChips: []
     };
     const reqSystem = {
       id: "BLANK",
-      color: "red",
+      color: "orange",
+      color_fill: "orange",
+      color_text: "white",
       position: "bottom",
       display: "Required",
       description: "Required",
+      isUnfilled:true,
+
       column: "Required",
       heldChips: []
     };
     const optSystem = {
       id: "OPTIONAL",
-      color: "blue",
+      color: "skyblue",
+      color_fill: "skyblue",
+      color_text: "white",
       position: "bottom",
       display: "Optional",
       description: "Optional",
+      isUnfilled:true,
       column: "Optional",
       heldChips: []
     };
     var { topSystems, leftSystems, rightSystems, bottomSystems } = propData;
+    var {topStrats, leftStrats, rightStrats, bottomStrats} = this.state;
     var isEdit=this.props.isEdit;
     
+    var isEditComplete=true;
+
+    topSystems =  topStrats.slice(0);
+    if (! topSystems.length ) {
+      isEditComplete=false;
+      topSystems.push(Object.assign({}, reqSystem));
+    }
     
-    topSystems =  topSystems && topSystems.length  ? topSystems : [Object.assign({}, reqSystem)],
-    bottomSystems=bottomSystems && bottomSystems.length ? bottomSystems : [Object.assign({}, optSystem)],
-    leftSystems= leftSystems && leftSystems.length ? leftSystems : [Object.assign({}, optSystem)],
+    leftSystems= leftSystems && leftSystems.length ? leftSystems : [Object.assign({}, optSystem)]
+    bottomSystems=bottomSystems && bottomSystems.length ? bottomSystems : [Object.assign({}, optSystem)]
     rightSystems= rightSystems && rightSystems.length ? rightSystems : [Object.assign({}, optSystem)]
-    var slots = [],
-      sideSystems = [],
-      maxHeight = Math.max(leftSystems.length, rightSystems.length),
-      maxWidth = 12;
-     
-    let position = 1;
+ 
+
+    if (topStrats.length > 0 && topStrats.length < 6) {
+        topSystems=topStrats.slice(0);
+        var rem=12%topSystems.length;
+        var bottomNum=Math.ceil(12/topSystems.length);
+        if (bottomStrats.length +2 <= bottomNum) {
+          if (rem) {
+            isEditComplete=false;
+            topSystems.push(Object.assign({}, reqSystem))
+          } else
+            topSystems.push(Object.assign({}, optSystem))
+        }
+        if (bottomStrats.length < bottomNum) {
+          var systems=bottomStrats.slice(0);
+          var sysToAdd=bottomNum-bottomStrats.length;
+          for (var i=0; i < sysToAdd; i++) {
+            isEditComplete=false;
+            systems.push(Object.assign({}, reqSystem));
+          }
+          bottomSystems=systems;
+        }
+    } 
+    var numToAdd=0;
+    var k=0;
+    if (leftStrats.length >= 0) {
+      leftSystems=leftStrats.slice(0);
+      leftSystems.push(Object.assign({}, optSystem))
+      numToAdd=rightStrats.length-leftStrats.length;
+      if (numToAdd > 0) {
+        for (k=0; k < numToAdd; k++) {
+          leftSystems.push(Object.assign({}, optSystem))
+          
+        }
+      }
+
+      
+    }
+    if (rightStrats.length >= 0) {
+      rightSystems=rightStrats.slice(0);
+      rightSystems.push(Object.assign({}, optSystem))
+      numToAdd=leftStrats.length-rightStrats.length;
+      if (numToAdd > 0) {
+        for (k=0; k < numToAdd; k++) {
+          rightSystems.push(Object.assign({}, optSystem))
+          
+        }
+      }
+      
+    }
     
+    console.log(leftSystems)
+    console.log(rightSystems)
+    var slots = [],
+    sideSystems = [],
+    maxHeight = Math.max(leftSystems.length, rightSystems.length),
+    maxWidth = 12;
+   
+    let position = 1;
+    /*
+    var slots = [],
+        sideSystems = [],
+        maxHeight = Math.max(leftSystems.length, rightSystems.length),
+        maxWidth =
+          topSystems.length * bottomSystems.length ||
+          topSystems.length ||
+          bottomSystems.length;
+
+      if (maxHeight < 3) maxHeight+=1;
+      
+      for (let i = 0; i < maxHeight; i++) {
+        sideSystems.push({
+          left: leftSystems[i] || blankSystem,
+          right: rightSystems[i] || blankSystem
+        });
+      }
+      let position = 1;
+      
+
+      bottomSystems.forEach(bottomSystem => {
+        topSystems.forEach(topSystem => {
+          sideSystems.forEach(sideSystem => {
+            slots.push({
+              leftSystem: sideSystem.left,
+              rightSystem: sideSystem.right,
+              topSystem,
+              bottomSystem,
+              position
+            });
+            position++;
+          });
+        });
+      });
+      */
     for (let xIndex = 0; xIndex < maxWidth; xIndex++) {
       for (let yIndex = 0; yIndex < maxHeight; yIndex++) {
           //slot = slots[xIndex * maxHeight + yIndex];
-          var sideSystem=sideSystems[yIndex];
-          var topSystem=topSystems[0];
-          var bottomSystem=bottomSystems[0];
+          //var sideSystem=sideSystems[yIndex];
+          var topIdx=xIndex % topSystems.length;
+          var bottomIdx=xIndex% bottomSystems.length;
+          var topSystem=topSystems[topIdx];
+          var bottomSystem=bottomSystems[bottomIdx];
           slots.push({
             leftSystem: leftSystems[yIndex],
             rightSystem:  rightSystems[yIndex],
@@ -392,7 +500,7 @@ export default class Panel extends Component {
       item.heldChips=[];
       return item;
     })
-    this.setState({ slots, maxHeight, maxWidth, topSystems, bottomSystems, leftSystems, rightSystems });
+    this.setState({ slots, maxHeight, maxWidth, topSystems, bottomSystems, leftSystems, rightSystems, isEditComplete });
     this._isMounted = true;
 
   }
@@ -446,6 +554,91 @@ export default class Panel extends Component {
       this._isMounted = true;
     }
   }
+  
+  clearStrats = () => {
+    var {
+      topStrats,
+      rightStrats,
+      bottomStrats,
+      leftStrats
+    } = this.state;
+    console.log("Clear Strat")
+
+    topStrats=[];
+    rightStrats=[];
+    bottomStrats=[]
+    leftStrats=[];
+      this.setState({
+        topStrats:topStrats,
+        leftStrats:leftStrats,
+        bottomStrats:bottomStrats,
+        rightStrats:rightStrats
+      });
+
+      var obj={};
+      obj.topSystems=topStrats;
+      obj.leftSystems=leftStrats;
+      obj.bottomSystems=bottomStrats;
+      obj.rightSystems=rightStrats;
+      obj.isEdit=true;
+      this.makeEditBoard(obj);
+  }
+
+  removeStratFromSlot = (strat) => {
+      var {
+        topStrats,
+        rightStrats,
+        bottomStrats,
+        leftStrats
+      } = this.state;
+      console.log("Remove Strat")
+      console.log(strat);
+      strat.display=strat.strategy;
+      strat.color=strat.color_border;
+
+      var strats=[];
+      topStrats=topStrats.map(s => {
+        if (s.strategy != strat.strategy)
+          strats.push(s);
+      })
+      topStrats=strats.slice(0);
+
+      strats=[];
+      leftStrats=leftStrats.map(s => {
+        if (s.strategy != strat.strategy)
+          strats.push(s)
+      })
+      leftStrats=strats.slice(0)
+
+      strats=[];
+      rightStrats=rightStrats.map(s => {
+        if (s.strategy != strat.strategy)
+          strats.push(s);
+      })
+
+      strats=[];
+      bottomStrats=bottomStrats.map(s => {
+        if (s.strategy != strat.strategy)
+          strats.push(s)
+      })
+      bottomStrats=strats.slice(0);
+      
+      this.setState({
+        topStrats:topStrats,
+        leftStrats:leftStrats,
+        bottomStrats:bottomStrats,
+        rightStrats:rightStrats
+      });
+
+      var obj={};
+      obj.topSystems=topStrats;
+      obj.leftSystems=leftStrats;
+      obj.bottomSystems=bottomStrats;
+      obj.rightSystems=rightStrats;
+      obj.isEdit=true;
+      this.makeEditBoard(obj);
+  }
+
   moveStratToSlot = (strat, position, isAnti=false) => {
     // Open order dialogue
     var {
@@ -459,19 +652,42 @@ export default class Panel extends Component {
     console.log(strat);
     console.log(position);  
     strat.display=strat.strategy;
+    strat.color=strat.color_border;
 
+
+    var found=false;
     if (position == 'top') {
       strat.column='top';
-      topStrats.push(strat);
+      topStrats.map(s => {
+        if (s.strategy == strat.strategy)
+          found=true;
+      })
+      if (!found) 
+        topStrats.push(strat);
     } else if (position == 'left') {
       strat.column='left';
-      leftStrats.push(strat);
+      leftStrats.map(s => {
+        if (s.strategy == strat.strategy)
+          found=true;
+      })
+      if (!found) 
+        leftStrats.push(strat);
     } else if (position == 'right') {
       strat.column='right';
-      rightStrats.push(strat);
+      rightStrats.map(s => {
+        if (s.strategy == strat.strategy)
+          found=true;
+      })
+      if (!found) 
+        rightStrats.push(strat);
     } else if (position == 'bottom') {
       strat.column='bottom';
-      bottomStrats.push(strat);
+      bottomStrats.map(s => {
+        if (s.strategy == strat.strategy)
+          found=true;
+      })
+      if (!found) 
+        bottomStrats.push(strat);
     }
       this.setState({
         topStrats:topStrats,
@@ -656,7 +872,7 @@ export default class Panel extends Component {
    */
 
   render() {
-
+    var self=this;
     const slotsGrid = [];
     const {
       maxWidth,
@@ -783,19 +999,19 @@ export default class Panel extends Component {
         
 
         <div className={classes.Panel} style={{ zIndex: 0, "background": panelBgColor, "text":panelTextColor, transform: "scale(" + scale + ")"}}>
-        {!this.props.isEdit ? 
-          (
-        <ChipsPanel
-        systems={this.state.bottomSystems}
-        topSystems={this.state.topSystems}
-        moveChipToSlot={this.moveChipToSlot}
-        sectionHeatmap={sectionHeatmap}
-        bgColor={panelBgColor}
-        textColor={panelTextColor}
-        showOrderDialog={showOrderDialog}
-        heatmap_selection={heatmap_selection}
-        balanceChips={this.props.balanceChips} /> 
-          ) : null}
+          {!this.props.isEdit ? 
+            (
+          <ChipsPanel
+          systems={this.state.bottomSystems}
+          topSystems={this.state.topSystems}
+          moveChipToSlot={this.moveChipToSlot}
+          sectionHeatmap={sectionHeatmap}
+          bgColor={panelBgColor}
+          textColor={panelTextColor}
+          showOrderDialog={showOrderDialog}
+          heatmap_selection={heatmap_selection}
+          balanceChips={this.props.balanceChips} /> 
+            ) : null}
 
 
           {slotsGrid}
@@ -855,7 +1071,66 @@ export default class Panel extends Component {
             moveStratToSlot={this.moveStratToSlot}
             heldStrats={this.state.rightStrats}
           />
+          
+          {this.props.isEdit ? (
+              <div style={{
+                  width:(innerWidth -37) + "px",
+                  position:'absolute',marginTop: (71 + (60*this.state.maxHeight))+ "px", marginLeft: '-111px'}}>
+                <div style={{float:'left', width: "161px"}}>
+                <img src={"/images/clear_board.png"} height={30} width={161} />
+                </div>
+                <div style={{ marginLeft: '-118px', marginTop: '2px', fontSize: "18px", color:"black", float:"left", cursor:'pointer'}}
+                  onClick={() => {
+                      self.clearStrats();
 
+                  }}
+                >
+                  Clear Board
+                </div>
+                <div style={{float:'left', width: "350px"}}>
+                  <RemoveContainer removeStratFromSlot={this.removeStratFromSlot} />
+                </div>
+
+                <div style={{float:'right', cursor:'pointer'}}
+                 onClick={() => {
+                  if (this.state.isEditComplete) 
+                    self.saveEditBoard();
+                  else
+                    self.props.addTimedToaster({
+                      id: "save-error",
+                      text: "Please Make Sure all the Requirements are Met"
+                    });
+          
+                }}
+                >
+                    <div style={{float:'right', width: "161px" }} 
+                   >
+                   {this.state.isEditComplete ? 
+                      <img src={"/images/save_enabled.png"} height={30} width={161} />
+                    :
+                      <img src={"/images/save_disabled.png"} height={30} width={161} />
+                   }
+                    </div>
+                    <div style={{ marginRight: '-151px', marginTop: '2px', fontSize: "18px", color:"#ffffff", float:"right"}}
+                    
+                    >
+                      Save Board
+                    </div>
+                </div>
+                <div style={{float:'right', width: "100px"}}>
+                <img src={"/images/cancel.png"}  height={30} />
+                </div>
+                <div style={{ marginRight: '-80px', marginTop: '2px', fontSize: "18px", color:"black", float:"right", cursor:'pointer'}}
+                  onClick={() => {
+                  window.location='/board';
+                }}
+                >
+                  Cancel
+                </div>
+                
+                <div style={{"clear": "both"}}></div>
+              </div>
+          ) : null}
 
         </div>
         {!this.state.isReadOnly && this.props.show_leader_dialog ? (
@@ -993,6 +1268,69 @@ export default class Panel extends Component {
       }
   }
 
+  saveEditBoard = () => {
+    var self=this;
+    var board=[];
+    var {leftStrats, rightStrats, bottomStrats, topStrats}=this.state;
+    leftStrats.map(strat => {
+      var item={}
+      item.id=strat.id;
+      item.position='left';
+      board.push(item);
+    })
+    rightStrats.map(strat => {
+      var item={}
+      item.id=strat.id;
+      item.position='right';
+      board.push(item);
+    })
+    bottomStrats.map(strat => {
+      var item={}
+      item.id=strat.id;
+      item.position='bottom';
+      board.push(item);
+    })
+    topStrats.map(strat => {
+      var item={}
+      item.id=strat.id;
+      item.position='top';
+      board.push(item);
+    })
+    console.log("Saving Board");
+    console.log(self.props.email);
+    console.log(board);
+    axios
+    .post("/utility/update_board_live/", {
+      // .get("https://api.myjson.com/bins/11pqxf", {
+      //only 5k chip for tier 0
+      // accounts: [{ portfolio, target, accountValue }],
+      username: self.props.email,
+      board_config: JSON.stringify(board),
+      })
+    .then(({ data }) => {
+      ////console.log("Practice Ranking Data")
+      ////console.log(data)
+      // eslint-disable-next-line react/no-is-mounted
+      console.log("Save Board Response")
+      console.log(data);
+      if (data.message != "OK") {
+        self.props.addTimedToaster({
+          id: "save-error",
+          text: data.message
+        });
+      } else {
+        window.location='/board';
+      }
+    })
+    .catch(error => {
+      // eslint-disable-next-line react/no-is-mounted
+      this._isMounted &&
+        this.setState({
+          rankingLoading: false,
+          rankingError: error
+        });
+    });
+  }
   /**
    * Set the _isMounted property to be false for the component to handle Promise case.
    * @function componentWillUnmount as the name suggests its pre-unmount hook for the panel component

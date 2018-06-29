@@ -7,11 +7,12 @@ import EditContainer from "../EditContainer";
 const rightSection = props => {
   var height=props.maxHeight;
   var size=1 / height * 100 - 10;
-
+  var idx=0;
   return (
     <div className={classes.RightSection}>
       {props.systems.map(
-        ({ id, color, display, description, column, heldChips,short, type }) => {
+        (system) => {
+          var { id, color, display, description, column, heldChips,short, type } = system
           var mesg=" Name: " + id + "\n Full Name: " + short + "\n Type: " + type + "\n Description: " + description;
 
           var sectionHeatmap=props.sectionHeatmap;
@@ -28,10 +29,10 @@ const rightSection = props => {
               textColor=slotHeatmap['color_text'];
               bgColor=slotHeatmap['color_fill'];
           }
-
+          idx+=1;
           return (
             <div
-              key={"right-" + id}
+              key={"right-" + id + '-' + idx}
               className={classes.RightCell}
               style={{ borderRightColor: color, 
                 borderLeftColor: color, 
@@ -42,7 +43,7 @@ const rightSection = props => {
               title={mesg}
             >
             {props.isEdit ? (
-              <EditContainer {...props}  slotHeatmap={slotHeatmap} column={column}   display={display} heldChips={heldChips} 
+              <EditContainer {...props}  slotHeatmap={slotHeatmap} column={column}  strategy={system} display={display} heldChips={heldChips} 
               bgColor={bgColor}
               textColor={textColor}              
               showOrderDialog={props.showOrderDialog}
@@ -57,7 +58,9 @@ const rightSection = props => {
                 heatmap_selection={props.heatmap_selection}
 
               />)}
+              {!props.isEdit ? 
               <font color={textColor}>{display}</font>
+              :null}
             </div>
           );
         }

@@ -122,7 +122,7 @@ export default class StrategyButton extends PureComponent {
     var title=strategy.rank;
     var chipStyle={borderColor:strategy.color_border, 
                    background:strategy.color_fill,
-                   color:strategy.color,
+                   color:strategy.color_text,
                    zIndex: this.state.zIndex,
                 };
       

@@ -124,7 +124,7 @@ export default class StrategySelector extends React.Component {
             flexDirection: 'row',
           };
           const contentStyle = {
-              width:"118px",
+              width:"150px",
           };
       
       return (

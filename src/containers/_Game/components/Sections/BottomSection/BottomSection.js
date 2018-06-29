@@ -25,10 +25,12 @@ export default class BottomSection extends PureComponent {
 
   render() {
     var WIDTH = 60 + (this.props.topSystems.length - 1) * 80;
+    var idx=0;
     return (
           <div className={classes.BottomSection}>
             {this.props.systems.map(
-              ({ id, color, display, description, position, column, heldChips, short, type }) => {
+              (system) => {
+                var { id, color, display, description, position, column, heldChips, short, type } = system;
                 var mesg=" Name: " + id + "\n Full Name: " + short + "\n Type: " + type + "\n Description: " + description;
                 
                 var sectionHeatmap=this.props.sectionHeatmap;
@@ -54,9 +56,10 @@ export default class BottomSection extends PureComponent {
                     else
                       score=''
                 }
+                idx+=1;
                 return position ? (
                   <div
-                    key={"bottom-" + id}
+                    key={"bottom-" + id + '-' + idx}
                     className={classes.BottomCell}
                     style={{
                       borderBottomColor: color,
@@ -69,7 +72,7 @@ export default class BottomSection extends PureComponent {
                     title={mesg}
                   >
                     {this.props.isEdit ? 
-                    <EditContainer {...this.props} slotHeatmap={slotHeatmap} column={column} display={display} heldChips={heldChips}
+                    <EditContainer {...this.props} slotHeatmap={slotHeatmap} column={column} strategy={system} display={display} heldChips={heldChips}
                      bgColor={bgColor}
                      textColor={textColor}
                      showOrderDialog={this.props.showOrderDialog}
@@ -85,8 +88,9 @@ export default class BottomSection extends PureComponent {
            
                     />
                     }
+                  {!this.props.isEdit ? 
                     <font color={textColor}>{display}</font>
-
+                     : null }
                   </div>
                 ) : null;
               }

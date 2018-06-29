@@ -68,7 +68,8 @@ export default class EditContainer extends PureComponent {
     heatmap_selection:PropTypes.string,
     moveStratToSlot:PropTypes.func,
     isEdit:PropTypes.bool,
-    heldStrats:PropTypes.array
+    heldStrats:PropTypes.array,
+    strategy:PropTypes.object
   
     
   };
@@ -81,13 +82,26 @@ export default class EditContainer extends PureComponent {
 
   
   render() {
-    var { dropTarget, isOver, canDrop, heldChips, slotHeatmap, column, display, heldStrats } = this.props;
+    var { dropTarget, isOver, canDrop, heldChips, slotHeatmap, column, display, heldStrats, strategy } = this.props;
     var bgColor=this.props.bgColor;
     var textColor=this.props.textColor;
     var chipBgColor=this.props.bgColor;
     var rank="";
     var score="";
     var idx=0;
+    if (strategy) {
+      if (strategy.color_fill) {
+        bgColor=strategy.color_fill;
+        chipBgColor=strategy.color_fill;
+      }
+      if (strategy.color_text) {
+        textColor=strategy.color_text;
+      }
+      if (strategy.rank) {
+        rank=strategy.rank;
+      }
+    }
+    /*
     if (slotHeatmap != undefined && slotHeatmap.color_fill != undefined) {
       bgColor=slotHeatmap.color_fill;
       chipBgColor=bgColor;
@@ -101,19 +115,17 @@ export default class EditContainer extends PureComponent {
     if (slotHeatmap != undefined && slotHeatmap.score != undefined) {
       score="Score: " + slotHeatmap.score.toString();
     }
+    */
      return dropTarget(
       <div
         className={classes.EditContainer}
         style={{
-          backgroundColor: heldChips.length
-            ? chipBgColor
-            : canDrop ? bgColor : "transparent",
+          backgroundColor: bgColor,
           color: textColor,
           opacity: canDrop ? (isOver ? 1:1) : 1,
           textAlign: "center",
         }}
       >
-          {rank ? (
               <span style={{
                 "marginTop": "0px",
                 "paddingTop": "5px",
@@ -129,37 +141,19 @@ export default class EditContainer extends PureComponent {
                 width:"100%",
                 lineHeight:"10px"
             }}>
-            
-            <font style={{opacity: canDrop ? (isOver ? 0.2:1) : 1}} color={textColor}>{display}</font>
-            <br/>
-            <span style={{ "fontSize":"9px" }}>{rank}</span>
-            <br/>
-            <span style={{ "fontSize":"9px" }}>{score}</span>
+                <br/>
+                <font style={{opacity: canDrop ? (isOver ? 0.2:1) : 1}} color={textColor}>{display}</font>
+                <br/>
+                <span style={{ "fontSize":"9px" }}>{rank}</span>
             </span>
-            ) : null}
-
-          {!rank && (canDrop || heldChips.length) ? 
-                (
-                  <span style={{
-                    "marginTop": "-5px",
-                    "paddingBottom": "5px",
-                    "marginLeft": "-50%",
-                    opacity: 1,
-                    position:"absolute",
-                    textAlign: "center",
-                    width:"100%",
-                }}>
-                <br/>
-                <font color={textColor}>{display}</font>
-                <br/>
-                </span>
-                ) : null
-              }
-          {heldStrats.map(strat => {
+      
+        {heldStrats.map(strat => {
               idx+=1;
+              /*
               return (
                 <StrategyButton key={strat.strategy + idx} strategy={strat} />
               )
+              */
           })}
            
            

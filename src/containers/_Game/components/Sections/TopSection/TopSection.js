@@ -9,6 +9,7 @@ import EditContainer from "../EditContainer";
 const topSection = props => {
 
   var indSize=1/12*100 - 2;
+  var idx=0;
   return (
     <div className={classes.TopSection}
       style={{
@@ -18,7 +19,8 @@ const topSection = props => {
     >
 
       {props.systems.map(
-        ({ id, color, display, description, position, column, heldChips, short, type }) => {
+        (system) => {
+          var { id, color, display, description, position, column, heldChips, short, type } = system;
           var mesg=" Name: " + id + "\n Full Name: " + short + "\n Type: " + type + "\n Description: " + description;
           
 
@@ -37,11 +39,11 @@ const topSection = props => {
               bgColor=slotHeatmap['color_fill'];
           }
 
-
+          idx+=1;
           return position ? (
 
             <div
-              key={"top-" + id}
+              key={"top-" + id + '-' + idx}
               className={classes.TopCell}
               style={{ borderTopColor: color,
                 backgroundColor: bgColor,
@@ -53,7 +55,7 @@ const topSection = props => {
               
               >
               {props.isEdit ? (
-              <EditContainer {...props}  slotHeatmap={slotHeatmap} column={column} display={display} heldChips={heldChips} 
+              <EditContainer {...props}  slotHeatmap={slotHeatmap} strategy={system} column={column} display={display} heldChips={heldChips} 
                 bgColor={bgColor}
                 textColor={textColor}              
                 showOrderDialog={props.showOrderDialog}
@@ -67,8 +69,9 @@ const topSection = props => {
                 heatmap_selection={props.heatmap_selection}      
               />
               )}
-
+              {!props.isEdit ? 
                 <font color={textColor}>{display}</font>
+                : null}
               
               
             </div>

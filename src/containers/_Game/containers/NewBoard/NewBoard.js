@@ -362,6 +362,41 @@ export default class NewBoard extends Component {
 
   }
 
+  checkLock=() => {
+    console.log("Lock Check")
+    var self=this;
+    
+    //console.log(this.props);
+    axios
+    .post("/utility/lock_check/", {
+    // accounts: [{ portfolio, target, accountValue }],
+    'username':  this.props.email,
+    'chip_id': 'ALL'
+    },{timeout: 600000})
+    .then(({ data }) => {
+      console.log('received lock check')
+      console.log(data);
+      if (data.message != "OK")
+        this.sendNotice(data.message);
+      else
+        self.initializeNewBoard(true);
+     
+    })
+    .catch(error => {
+      this.sendNotice('Account Data not received: ' + JSON.stringify(error));
+      console.log('error initializing')
+      console.log(error)
+    // eslint-disable-next-line react/no-is-mounted
+      this.setState({
+        rankingLoading: false,
+        rankingError: error,
+        loading:false,
+        refreshing:false
+      });
+    });
+
+  }
+
   initializeLive=(reinitialize=false) => {
     console.log("NEW BOARD Initialize")
     var self=this;
@@ -389,8 +424,12 @@ export default class NewBoard extends Component {
       if (!this.state.loading)
         this.sendNotice("Board Refreshed with New Data");
 
-
-      self.initializeNewBoard(true);
+        this.setState({
+          loading:false,
+          rankingLoading: false,
+          refreshing:false
+        });
+  
      
     })
     .catch(error => {
@@ -417,6 +456,7 @@ export default class NewBoard extends Component {
     //this.forceUpdate();
     
     //console.log(this.props);
+    var self=this;
     var reinit='false';
     if (reinitialize)
       reinit='true';
@@ -433,12 +473,10 @@ export default class NewBoard extends Component {
       console.log('received new board data')
       console.log(data);
 
+      self.initializeLive();
 
       this.setState({
-        loading:false,
-        rankingLoading: false,
         editData:data,
-        refreshing:false
       });
      
     })
@@ -458,7 +496,7 @@ export default class NewBoard extends Component {
   }
   componentDidMount() {
       console.log("NEW Board Initialize")
-      this.initializeLive();
+      this.checkLock();
 
   }
 

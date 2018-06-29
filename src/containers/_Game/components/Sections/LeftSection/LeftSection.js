@@ -8,10 +8,12 @@ import EditContainer from "../EditContainer";
 const leftSection = props => {
   var height=props.maxHeight;
   var size=1 / height * 100 - 10;
+  var idx=0;
   return (
     <div className={classes.LeftSection}>
       {props.systems.map(
-        ({ id, color, display, description, column, heldChips, short, type }) => {
+        (system) => {
+          var { id, color, display, description, column, heldChips, short, type }=system;
           var mesg=" Name: " + id + "\n Full Name: " + short + "\n Type: " + type + "\n Description: " + description;
           
           var sectionHeatmap=props.sectionHeatmap;
@@ -27,10 +29,10 @@ const leftSection = props => {
               textColor=slotHeatmap['color_text'];
               bgColor=slotHeatmap['color_fill'];
           }
-
+          idx+=1;
           return (
             <div
-              key={"left-" + id}
+              key={"left-" + id + '-' + idx}
               className={classes.LeftCell}
               style={{ borderLeftColor: color, 
                 borderRightColor: color,
@@ -41,7 +43,7 @@ const leftSection = props => {
               title={mesg}
             >
             {props.isEdit ? (
-             <EditContainer {...props}  slotHeatmap={slotHeatmap} column={column} display={display} heldChips={heldChips} 
+             <EditContainer {...props}  slotHeatmap={slotHeatmap} strategy={system} column={column} display={display} heldChips={heldChips} 
                 bgColor={bgColor}
                 textColor={textColor}         
                 showOrderDialog={props.showOrderDialog}
@@ -57,7 +59,9 @@ const leftSection = props => {
            
               />
             )}
+             {!props.isEdit ?
               <font color={textColor}>{display}</font>
+              :null}
             </div>
           );
         }
