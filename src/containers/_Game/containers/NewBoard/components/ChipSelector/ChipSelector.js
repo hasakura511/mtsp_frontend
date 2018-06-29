@@ -44,6 +44,8 @@ export default class ChipSelector extends React.Component {
         showHeatmap:PropTypes.func.isRequired,
         accounts:PropTypes.array.isRequired,
         isReadOnly:PropTypes.bool,
+        checkLock:PropTypes.func.isRequired,
+        itemSelected:PropTypes.string.isRequired
         //heatmap_selection:PropTypes.string
       };
     
@@ -51,14 +53,16 @@ export default class ChipSelector extends React.Component {
         super(props);
         
         var items=[];
-        var itemSelected='';
+        var itemSelected=this.props.itemSelected;
+        console.log('item selected');
+        console.log(this.props.itemSelected);
         props.accounts.map(account => {
           if (!itemSelected) 
-              itemSelected=account.account_id;
-                items.push({ value:account.account_id, 
-                         chip: account
-                         
-                        });
+                itemSelected='None';
+          items.push({ value:account.chip_id, 
+                    chip: account
+                    
+                  });
         })
         this.state={
             items:items,
@@ -70,6 +74,14 @@ export default class ChipSelector extends React.Component {
 
   
     handleItemChange = (value) => {
+      console.log(value);
+      var self=this;
+      this.props.accounts.map(account => {
+        if (value == account.chip_id) {
+            var last_date=account.date.replace(/-/g,'');
+            self.props.checkLock(false, account.chip_id, last_date, account.board_config_fe);
+        }
+      })
       this.setState({itemSelected: value});
     };
   
@@ -135,6 +147,10 @@ export default class ChipSelector extends React.Component {
             value={this.state.itemSelected}
         
           />
+          {this.state.itemSelected == 'None' ? 
+          <div style={{marginTop:"-35px"}}><b>None</b></div>
+          : null}
+
           </span>
           <span>
            <img src={'/images/dropdown_rec.png'} style={imageStyle}/>

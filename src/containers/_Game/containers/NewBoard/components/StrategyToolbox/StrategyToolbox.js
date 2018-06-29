@@ -38,7 +38,10 @@ export default class StrategyToolbox extends Component {
     isLive:PropTypes.bool,
     showOrderDialog:PropTypes.bool,
     themes:PropTypes.object.isRequired,
-    editData:PropTypes.object.isRequired
+    editData:PropTypes.object.isRequired,
+    checkLock:PropTypes.func.isRequired,
+    itemSelected:PropTypes.string.isRequired,
+    optimizeBoard:PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -88,7 +91,7 @@ export default class StrategyToolbox extends Component {
     var strat_dict=this.props.editData.strat_dict;
     var editThemes=this.props.editData.themes;
     var optimized_board=this.props.editData.optimized_board;
-    
+    var editData=this.props.editData;
       return (
         <div className={classes.StrategyToolbox}
            
@@ -97,14 +100,37 @@ export default class StrategyToolbox extends Component {
             <img src={'/images/chip_selector.png'} height={20} /> Chip Selector - Place one account chip here to heatmap the strategies and sort by performance for that specific chip.
            </span>
            <br/>
-           <div style={{ border: "1px solid black", padding:"10px"}}>
+           <div style={{ border: "1px solid black", padding:"10px", background:editThemes.page.background.chip_selector}}>
                 <div style={{width:"120px", float:"left"}}>
-                    <ChipSelector  />
+                    <ChipSelector checkLock={this.props.checkLock} itemSelected={this.props.itemSelected} />
                 </div>
-                <div style={{width:"200px", marginTop: "25px", float:"left"}}>
-                    <img src={'/images/optimize_disabled.png'} height={60} />
+                {editData.optimized_board.toString().length > 2 ? 
+                <div  style={{
+                  cursor:'pointer',
+                  float:'left'
+                }}
+                onClick={()=>{
+
+                  self.props.optimizeBoard();
+                }}
+                  >
+                  <div style={{width:"200px", marginTop: "25px", float:"left"}}>
+                      <img src={'/images/optimize_enabled.png'} height={60} 
+                      />
+                     
+                    </div>
+                     <div style={{ marginLeft: '-115px', marginTop: '40px', fontSize: "18px", color:"#ffffff", float:"left"}}>Optimize Board</div>
                 </div>
-                <div style={{ marginLeft: '-115px', marginTop: '40px', fontSize: "18px", color:"#ffffff", float:"left"}}>Optimize Board</div>
+                :
+                <div style={{float:'left'}}>
+                  <div style={{width:"200px", marginTop: "25px", float:"left"}}>
+                    <img src={'/images/optimize_disabled.png'} height={60}
+                  
+                    />
+                  </div>
+                   <div style={{ marginLeft: '-115px', marginTop: '40px', fontSize: "18px", color:"#ffffff", float:"left"}}>Optimize Board</div>
+                  </div>
+                }
                 <div style={{"clear": "both"}}></div>
            </div>
            <br/>
@@ -113,8 +139,8 @@ export default class StrategyToolbox extends Component {
            </span>
           
            <br/>
-           <div style={{ border: "1px solid black", padding:"10px"}}>
-                    <div className="isLive">
+           <div style={{ border: "1px solid black", padding:"10px", background:editThemes.page.background.strategy_selector}}>
+                    <div className="isLive" style={{ background:editThemes.page.background.strategy_selector}}>
                                 <div style={{width:"25%", float:"right"}}>
                                         <center><b style={{color:heatmapTxt}} >{this.props.themes.live.heatmap.top_text}</b></center>
                                         <div style={{  "border": "1px solid",

@@ -125,7 +125,9 @@ export default class Panel extends Component {
     isReadOnly:PropTypes.bool,
     initializeLive:PropTypes.func,
     isEdit:PropTypes.bool,
-    email:PropTypes.string
+    email:PropTypes.string,
+    editData:PropTypes.object,
+    optimize:PropTypes.bool,
   };
 
   /**
@@ -246,8 +248,10 @@ export default class Panel extends Component {
 
   componentWillMount() {
 
-    
-    this.makeBoard(this.props);
+    if (this.props.isEdit)
+      this.makeEditBoard(this.props)
+    else
+      this.makeBoard(this.props);
   }
 
   componentWillReceiveProps(newProps) {
@@ -259,6 +263,11 @@ export default class Panel extends Component {
     //console.log(newProps);
     ////console.log(newProps.balanceChips);
     ////console.log(newProps.bettingChips);
+    if (this.props.isEdit) {
+      if (newProps.optimize && !this.props.optimize) {
+        self.optimizeBoard();
+      }
+    }
     if (newProps.performance_account_id && newProps.performance_account_id != this.state.performance_account_id) {
       var chip='';
       this.props.accounts.map(account => {
@@ -307,6 +316,7 @@ export default class Panel extends Component {
    *
    */
 
+  
   makeEditBoard = (propData) => {
     
     const blankSystem = {
@@ -319,14 +329,31 @@ export default class Panel extends Component {
       isUnfilled:true,
       heldChips: []
     };
+    var reqColor="orange";
+    var reqText="white";
+    var reqDesc="Required";
+    if (this.props.editData && this.props.editData.themes) {
+      reqColor=this.props.editData.themes.required.color_fill;
+      reqText=this.props.editData.themes.required.color_text;
+      reqDesc=this.props.editData.themes.required.text;
+    }
+
+    var optColor="skyblue";
+    var optText="white";
+    var optDesc="Optional";
+    if (this.props.editData && this.props.editData.themes) {
+      optColor=this.props.editData.themes.optional.color_fill;
+      optText=this.props.editData.themes.optional.color_text;
+      optDesc=this.props.editData.themes.optional.text;
+    }
     const reqSystem = {
       id: "BLANK",
-      color: "orange",
-      color_fill: "orange",
-      color_text: "white",
+      color: reqColor,
+      color_fill: reqColor,
+      color_text: reqText,
       position: "bottom",
-      display: "Required",
-      description: "Required",
+      display: reqDesc,
+      description: reqDesc,
       isUnfilled:true,
 
       column: "Required",
@@ -334,20 +361,35 @@ export default class Panel extends Component {
     };
     const optSystem = {
       id: "OPTIONAL",
-      color: "skyblue",
-      color_fill: "skyblue",
-      color_text: "white",
+      color: optColor,
+      color_fill: optColor,
+      color_text: optText,
       position: "bottom",
-      display: "Optional",
-      description: "Optional",
+      display: optDesc,
+      description: optDesc,
       isUnfilled:true,
       column: "Optional",
       heldChips: []
     };
     var { topSystems, leftSystems, rightSystems, bottomSystems } = propData;
     var {topStrats, leftStrats, rightStrats, bottomStrats} = this.state;
+    if (propData.topStrats)
+      topStrats=propData.topStrats;
+    if (propData.leftStrats)
+      leftStrats=propData.leftStrats;
+    if (propData.rightStrats)
+      rightStrats=propData.rightStrats;
+    if (propData.bottomStrats)
+      bottomStrats=propData.bottomStrats;
+        
     var isEdit=this.props.isEdit;
-    
+    console.log('Making Edit Board')
+    //console.log(propData)
+    //console.log(topStrats)
+    //console.log(leftStrats)
+    //console.log(rightStrats)
+    //console.log(bottomStrats)
+
     var isEditComplete=true;
 
     topSystems =  topStrats.slice(0);
@@ -410,8 +452,6 @@ export default class Panel extends Component {
       
     }
     
-    console.log(leftSystems)
-    console.log(rightSystems)
     var slots = [],
     sideSystems = [],
     maxHeight = Math.max(leftSystems.length, rightSystems.length),
@@ -501,14 +541,21 @@ export default class Panel extends Component {
       return item;
     })
     this.setState({ slots, maxHeight, maxWidth, topSystems, bottomSystems, leftSystems, rightSystems, isEditComplete });
+    console.log("Making Edit Board Complete");
+    console.log(topSystems);
+    console.log(leftSystems);
+    console.log(rightSystems);
+    console.log(bottomSystems);
+    
     this._isMounted = true;
-
+    
   }
   makeBoard = (propData) => {
     const { topSystems, leftSystems, rightSystems, bottomSystems } = propData;
     var isEdit=this.props.isEdit;
     if (isEdit) {
-      this.makeEditBoard(propData);
+      console.log("make board");
+      //this.makeEditBoard(propData);
     } else {
       this.setState({
         topSystems: topSystems && topSystems.length ? topSystems : [blankSystem],
@@ -555,6 +602,87 @@ export default class Panel extends Component {
     }
   }
   
+
+  optimizeBoard = () => {
+    var self=this;
+    if (this.props.isEdit) {
+      console.log('optimize board called')
+      //this.clearStrats();
+      var board=  JSON.parse(this.props.editData.optimized_board);
+      var topStrats=[];
+      var rightStrats=[];
+      var leftStrats=[];
+      var bottomStrats=[];
+      var stratDict={};
+      //console.log(board);
+      Object.keys(this.props.editData.strat_dict).map(key => {
+        var items=this.props.editData.strat_dict[key];
+        Object.keys(items).map(key2 => {
+          var items2=items[key2];
+          items2.map(item => {
+            //console.log(item);
+            item.id=item.strategy;
+            item.display=item.strategy;
+            item.color=item.color_border;
+            stratDict[item.strategy]=Object.assign({}, item);
+          })
+  
+        })
+      })
+      //console.log(stratDict);
+      var s={};
+      board.map(strat => {
+        //console.log(strat);
+        if (strat.position == 'top') {
+          if (strat.id in stratDict) {
+            s=stratDict[strat.id]
+            topStrats.push(Object.assign({}, s));
+          }
+        }
+        if (strat.position == 'left') {
+          if (strat.id in stratDict) {
+            s=stratDict[strat.id]
+            leftStrats.push(Object.assign({}, s));
+          }
+        }
+        if (strat.position == 'right') {
+          if (strat.id in stratDict) {
+            s=stratDict[strat.id]
+            rightStrats.push(Object.assign({}, s));
+          }
+        }
+        if (strat.position == 'bottom') {
+          if (strat.id in stratDict) {
+            s=stratDict[strat.id]
+            bottomStrats.push(Object.assign({}, s));
+          }
+        }
+      })
+      console.log('boardstrats')
+      //console.log(topStrats)
+      //console.log(leftStrats)
+      //console.log(rightStrats)
+      //console.log(bottomStrats)
+      self.setState({
+        topStrats:topStrats,
+        leftStrats:leftStrats,
+        bottomStrats:bottomStrats,
+        rightStrats:rightStrats
+      });
+
+      var obj={};
+      obj.topSystems=topStrats;
+      obj.leftSystems=leftStrats;
+      obj.bottomSystems=bottomStrats;
+      obj.rightSystems=rightStrats;
+      obj.topStrats=topStrats;
+      obj.leftStrats=leftStrats;
+      obj.rightStrats=rightStrats;
+      obj.bottomStrats=bottomStrats;
+      obj.isEdit=true;
+      self.makeEditBoard(obj);
+    }
+  }
   clearStrats = () => {
     var {
       topStrats,
@@ -1115,6 +1243,7 @@ export default class Panel extends Component {
                     
                     >
                       Save Board
+
                     </div>
                 </div>
                 <div style={{float:'right', width: "100px"}}>
@@ -1161,7 +1290,9 @@ export default class Panel extends Component {
         ) : null}
 
         {!this.state.isReadOnly && this.props.show_lockdown_dialog ? (
-          <div             id={"modalDialog"}>
+          <div             
+            id={"modalDialog"}
+          >
           <LockdownDialog />
           </div>
         ) : null}

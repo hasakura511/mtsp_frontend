@@ -105,6 +105,12 @@ const dispatchToProps = dispatch => {
     addTimedToaster: toaster => {
         dispatch(actions.addTimedToaster(toaster, 5000))
     },
+    showDialog() {
+      dispatch(actions.showDialog(...arguments));
+    },
+    silenceDialog() {
+      dispatch(actions.silenceDialog());
+    },
     showLeaderDialog: (show) => {
       dispatch(actions.showLeaderDialog(show));
     },
@@ -167,6 +173,8 @@ export default class NewBoard extends Component {
     liveDateText:PropTypes.string,
     dictionary_strategy:PropTypes.object.isRequired,
     isLive:PropTypes.bool.isRequired,
+    showDialog:PropTypes.func.isRequired,
+    silenceDialog:PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -200,6 +208,8 @@ export default class NewBoard extends Component {
       rightSystems:[],
       topSystems:[],
       bottomSystems:[],
+      itemSelected:'None',
+      optimize:false,
     };
   
   }
@@ -308,6 +318,23 @@ export default class NewBoard extends Component {
     
   }
 
+  optimizeBoard= () => {
+    var self=this;
+    self.props.showDialog(
+      " Are you sure you want to load the optimized board?",
+      <center>Your changes to the editable board below will be discarded.</center>,
+      () => {
+          console.log("Optimize Board Start");
+
+          self.setState({optimize:true})
+          self.props.silenceDialog();
+
+        },
+        null,
+        "OK",
+        "Cancel"
+    );
+  }
   
   initializeHeatmap=(account_id) => {
     /*
@@ -362,7 +389,7 @@ export default class NewBoard extends Component {
 
   }
 
-  checkLock=() => {
+  checkLock=(reinitialize=true, chip_id="", last_date="", board_config="") => {
     console.log("Lock Check")
     var self=this;
     
@@ -379,7 +406,7 @@ export default class NewBoard extends Component {
       if (data.message != "OK")
         this.sendNotice(data.message);
       else
-        self.initializeNewBoard(true);
+        self.initializeNewBoard(reinitialize, chip_id, last_date, board_config);
      
     })
     .catch(error => {
@@ -467,18 +494,22 @@ export default class NewBoard extends Component {
     'username':  this.props.email,
     'chip_id':chip_id,
     'last_date':last_date,
-    'board_config':board_config
+    'board_config':board_config,
+    
     },{timeout: 600000})
     .then(({ data }) => {
       console.log('received new board data')
       console.log(data);
+      var itemSelected = chip_id ?  chip_id : 'None';
+      this.setState({
+        editData:data,
+        itemSelected:itemSelected,
+        optimize:false,
+      });
+     
 
       self.initializeLive();
 
-      this.setState({
-        editData:data,
-      });
-     
     })
     .catch(error => {
       this.sendNotice('Account Data not received: ' + JSON.stringify(error));
@@ -907,14 +938,19 @@ export default class NewBoard extends Component {
         switchTxt=this.props.themes.live.action_row.switch_text;
 
       }
+      var editThemes=this.state.editData.themes;
       
+      //console.log(editThemes);
       return (
 
-        <div className={classes.NewBoard}>
+        <div className={classes.NewBoard} style={{background: editThemes.page.background}}>
           
           <img src={'/images/edit_board_button.png'} height={48} /> <br/>
-          <div style={{ zIndex:2, border: "1px solid black" }}>
+          <div style={{ zIndex:2, border: "1px solid black", }}>
           <StrategyToolbox editData={this.state.editData} sendNotice={this.sendNotice} initializeLive={this.initializeLive}
+            checkLock={this.checkLock}
+            itemSelected={this.state.itemSelected}
+            optimizeBoard={this.optimizeBoard}
             />
           </div>
 
@@ -948,6 +984,7 @@ export default class NewBoard extends Component {
               isLive={true}
               isReadOnly={false}
               isEdit={true}
+              editData={this.state.editData || {}}
               accounts={this.props.accounts || {}}
               leftSystems={leftSystems || []}
               rightSystems={rightSystems || []}
@@ -958,6 +995,7 @@ export default class NewBoard extends Component {
               addBettingChip={this.addBettingChip}
               moveToBalance={this.moveToBalance}
               initializeLive={this.initializeLive}
+              optimize={this.state.optimize}
             />
              
 
