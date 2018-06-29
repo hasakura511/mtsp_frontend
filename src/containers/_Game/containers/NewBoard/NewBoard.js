@@ -945,7 +945,7 @@ export default class NewBoard extends Component {
 
         <div className={classes.NewBoard} style={{background: editThemes.page.background}}>
           
-          <img src={'/images/edit_board_button.png'} height={48} /> <br/>
+          <h4>&nbsp;<img src={'/images/new_board_icon.png'} height={24}/> <b>New Board</b></h4>
           <div style={{ zIndex:2, border: "1px solid black", }}>
           <StrategyToolbox editData={this.state.editData} sendNotice={this.sendNotice} initializeLive={this.initializeLive}
             checkLock={this.checkLock}
