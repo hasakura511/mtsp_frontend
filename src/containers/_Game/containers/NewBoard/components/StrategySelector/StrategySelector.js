@@ -61,13 +61,13 @@ export default class StrategySelector extends React.Component {
       var items=[];
       var itemSelected='';
       var stratDict={};
-      console.log('Updated Strategy Selector')
+      //console.log('Updated Strategy Selector')
       if (strats) {
         strats.map(strat => {
           stratDict[strat.strategy]=strat;
         })
       }
-      console.log(stratDict)
+      //console.log(stratDict)
       this.props.items.map(button => {
         if (!strats || !(button.strategy in stratDict)) {
           if (!itemSelected) 
@@ -81,7 +81,7 @@ export default class StrategySelector extends React.Component {
         items:items,
         itemSelected: itemSelected
       }
-      console.log(res);
+      //console.log(res);
       return res;
       
     }
@@ -111,8 +111,8 @@ export default class StrategySelector extends React.Component {
       };
   
       /*
-      console.log("strategy selector button:")
-      console.log(item);
+      //console.log("strategy selector button:")
+      //console.log(item);
       */
 
       return (
