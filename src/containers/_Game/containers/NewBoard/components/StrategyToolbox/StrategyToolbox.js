@@ -41,7 +41,8 @@ export default class StrategyToolbox extends Component {
     editData:PropTypes.object.isRequired,
     checkLock:PropTypes.func.isRequired,
     itemSelected:PropTypes.string.isRequired,
-    optimizeBoard:PropTypes.func.isRequired
+    optimizeBoard:PropTypes.func.isRequired,
+    strats:PropTypes.array.isRequired
   };
 
   constructor(props) {
@@ -69,11 +70,11 @@ export default class StrategyToolbox extends Component {
   }
 
   render() {
-    const {chips} = this.props;
+    var self=this;
+    const {strats} = this.props;
     var bgColor="#FFF2CC";
     var textColor="#000000";
     var totalBoxColor="#FFFFFF";
-    var self=this;
     var themes_bg="linear-gradient(90deg," + this.props.themes.live.heatmap.heatmap_cold + ", " + this.props.themes.live.heatmap.heatmap_hot + ")";
     var board_bg="linear-gradient(180deg," + this.props.themes.live.background.top + ", " + this.props.themes.live.background.middle + ", " + this.props.themes.live.background.bottom + ")";
     //console.log(themes_bg);
@@ -177,7 +178,7 @@ export default class StrategyToolbox extends Component {
                                               idx+=1;
                                               return (
                                                     <div key={idx} style={{float:'left', zIndex: 10, }}>
-                                                      <StrategySelector items={itemList} />
+                                                      <StrategySelector items={itemList} strats={strats}/>
                                                     </div>
                                                       );
                                                     }

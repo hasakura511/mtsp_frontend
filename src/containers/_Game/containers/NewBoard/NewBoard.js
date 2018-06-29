@@ -210,7 +210,9 @@ export default class NewBoard extends Component {
       bottomSystems:[],
       itemSelected:'None',
       optimize:false,
+      strats:[],
     };
+    this.strats=[];
   
   }
 
@@ -507,8 +509,8 @@ export default class NewBoard extends Component {
         optimize:false,
       });
      
-
-      self.initializeLive();
+      if (!chip_id)
+        self.initializeLive();
 
     })
     .catch(error => {
@@ -830,6 +832,14 @@ export default class NewBoard extends Component {
     }, 1000);
   };
 
+  updateStrats = (strats) => {
+    var self=this;
+    console.log("Update Strats")
+    console.log(strats);
+    this.strats=strats;
+    this.setState({ strats:strats })
+    this.forceUpdate();
+  }
   toggleMode= () => {
     if (this.state.boardMode == 'live') {
       window.location.href='/practice_board';
@@ -951,6 +961,7 @@ export default class NewBoard extends Component {
             checkLock={this.checkLock}
             itemSelected={this.state.itemSelected}
             optimizeBoard={this.optimizeBoard}
+            strats={this.strats}
             />
           </div>
 
@@ -996,6 +1007,7 @@ export default class NewBoard extends Component {
               moveToBalance={this.moveToBalance}
               initializeLive={this.initializeLive}
               optimize={this.state.optimize}
+              updateStrats={this.updateStrats}
             />
              
 

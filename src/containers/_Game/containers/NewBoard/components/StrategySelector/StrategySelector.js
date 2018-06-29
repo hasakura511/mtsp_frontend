@@ -45,30 +45,53 @@ export default class StrategySelector extends React.Component {
         accounts:PropTypes.array.isRequired,
         isReadOnly:PropTypes.bool,
         items:PropTypes.array.isRequired,
+        strats:PropTypes.array.isRequired
         //heatmap_selection:PropTypes.string
       };
     
       constructor(props) {
         super(props);
         
-        var items=[];
-        var itemSelected='';
-        this.props.items.map(button => {
-                if (!itemSelected) 
-                    itemSelected=button.strategy;
-                items.push({ value:button.strategy, 
-                         strategy: button 
-                        });
-        })
-        this.state={
-            items:items,
-            itemSelected: itemSelected
-        }
-    
+        this.state=this.getItemList(props.strats);
+      
       }
 
+    getItemList = (strats) => {
+      var self=this;
+      var items=[];
+      var itemSelected='';
+      var stratDict={};
+      console.log('Updated Strategy Selector')
+      if (strats) {
+        strats.map(strat => {
+          stratDict[strat.strategy]=strat;
+        })
+      }
+      console.log(stratDict)
+      this.props.items.map(button => {
+        if (!strats || !(button.strategy in stratDict)) {
+          if (!itemSelected) 
+              itemSelected=button.strategy;
+                 items.push({ value:button.strategy, 
+              strategy: button 
+            }); 
+          }
+      })
+      var res= {
+        items:items,
+        itemSelected: itemSelected
+      }
+      console.log(res);
+      return res;
+      
+    }
 
-  
+    componentWillReceiveProps(newProps) {
+      if (newProps.strats) {
+        this.setState(this.getItemList(newProps.strats));
+      }
+
+    }
     handleItemChange = (value) => {
       this.setState({itemSelected: value});
     };

@@ -128,6 +128,7 @@ export default class Panel extends Component {
     email:PropTypes.string,
     editData:PropTypes.object,
     optimize:PropTypes.bool,
+    updateStrats:PropTypes.func,
   };
 
   /**
@@ -458,41 +459,7 @@ export default class Panel extends Component {
     maxWidth = 12;
    
     let position = 1;
-    /*
-    var slots = [],
-        sideSystems = [],
-        maxHeight = Math.max(leftSystems.length, rightSystems.length),
-        maxWidth =
-          topSystems.length * bottomSystems.length ||
-          topSystems.length ||
-          bottomSystems.length;
-
-      if (maxHeight < 3) maxHeight+=1;
-      
-      for (let i = 0; i < maxHeight; i++) {
-        sideSystems.push({
-          left: leftSystems[i] || blankSystem,
-          right: rightSystems[i] || blankSystem
-        });
-      }
-      let position = 1;
-      
-
-      bottomSystems.forEach(bottomSystem => {
-        topSystems.forEach(topSystem => {
-          sideSystems.forEach(sideSystem => {
-            slots.push({
-              leftSystem: sideSystem.left,
-              rightSystem: sideSystem.right,
-              topSystem,
-              bottomSystem,
-              position
-            });
-            position++;
-          });
-        });
-      });
-      */
+    
     for (let xIndex = 0; xIndex < maxWidth; xIndex++) {
       for (let yIndex = 0; yIndex < maxHeight; yIndex++) {
           //slot = slots[xIndex * maxHeight + yIndex];
@@ -546,8 +513,10 @@ export default class Panel extends Component {
     console.log(leftSystems);
     console.log(rightSystems);
     console.log(bottomSystems);
-    
-    this._isMounted = true;
+    const liveStrats = [...topStrats, ...leftStrats,...rightStrats,...bottomStrats];
+    console.log(liveStrats);
+    this.props.updateStrats(liveStrats);
+    //this._isMounted = true;
     
   }
   makeBoard = (propData) => {
