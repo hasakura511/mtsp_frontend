@@ -37,6 +37,7 @@ const stateToProps = state => {
            performance_chip:state.betting.performance_chip,
            show_lockdown_dialog:state.betting.show_lockdown_dialog,
            show_leader_dialog:state.betting.show_leader_dialog,
+           dictionary_strategy:state.betting.dictionary_strategy,
            email:state.auth.email,
           };
 };
@@ -129,6 +130,7 @@ export default class Panel extends Component {
     editData:PropTypes.object,
     optimize:PropTypes.bool,
     updateStrats:PropTypes.func,
+    dictionary_strategy:PropTypes.object
   };
 
   /**
@@ -400,7 +402,7 @@ export default class Panel extends Component {
     }
     
     leftSystems= leftSystems && leftSystems.length ? leftSystems : [Object.assign({}, optSystem)]
-    bottomSystems=bottomSystems && bottomSystems.length ? bottomSystems : [Object.assign({}, optSystem)]
+    bottomSystems=bottomSystems && bottomSystems.length ? bottomSystems : [Object.assign({}, reqSystem)]
     rightSystems= rightSystems && rightSystems.length ? rightSystems : [Object.assign({}, optSystem)]
  
 
@@ -427,14 +429,18 @@ export default class Panel extends Component {
     } 
     var numToAdd=0;
     var k=0;
+    var heightMax=3;
     if (leftStrats.length >= 0) {
       leftSystems=leftStrats.slice(0);
-      leftSystems.push(Object.assign({}, optSystem))
+      if (leftSystems.length + 1<= heightMax) {
+        leftSystems.push(Object.assign({}, optSystem))
+      }
       numToAdd=rightStrats.length-leftStrats.length;
       if (numToAdd > 0) {
         for (k=0; k < numToAdd; k++) {
-          leftSystems.push(Object.assign({}, optSystem))
-          
+          if (leftSystems.length + 1<= heightMax) {
+            leftSystems.push(Object.assign({}, optSystem))
+          }
         }
       }
 
@@ -442,17 +448,20 @@ export default class Panel extends Component {
     }
     if (rightStrats.length >= 0) {
       rightSystems=rightStrats.slice(0);
-      rightSystems.push(Object.assign({}, optSystem))
+      if (rightSystems.length  + 1 <= heightMax) {
+        rightSystems.push(Object.assign({}, optSystem))
+      }
       numToAdd=leftStrats.length-rightStrats.length;
       if (numToAdd > 0) {
         for (k=0; k < numToAdd; k++) {
-          rightSystems.push(Object.assign({}, optSystem))
-          
+          if (rightSystems.length  + 1 <= heightMax) {
+            rightSystems.push(Object.assign({}, optSystem))
+          }
         }
       }
       
     }
-    
+
     var slots = [],
     sideSystems = [],
     maxHeight = Math.max(leftSystems.length, rightSystems.length),
@@ -484,6 +493,12 @@ export default class Panel extends Component {
       item.column='top'
       item.position=item.column;
       item.heldChips=[];
+      if (item.id in this.props.dictionary_strategy) {
+        const desc=this.props.dictionary_strategy[item.id];
+        item.short=desc.board_name;
+        item.description=desc.description;
+        item.type=desc.type;
+      }
       return item;
     })
     bottomSystems=bottomSystems.map(item => {
@@ -491,6 +506,12 @@ export default class Panel extends Component {
       item.column='bottom'
       item.position=item.column;
       item.heldChips=[];
+      if (item.id in this.props.dictionary_strategy) {
+        const desc=this.props.dictionary_strategy[item.id];
+        item.short=desc.board_name;
+        item.description=desc.description;
+        item.type=desc.type;
+      }
       return item;
     })
     leftSystems=leftSystems.map(item => {
@@ -498,13 +519,26 @@ export default class Panel extends Component {
       item.column='left'
       item.position=item.column;
       item.heldChips=[];
+      if (item.id in this.props.dictionary_strategy) {
+        const desc=this.props.dictionary_strategy[item.id];
+        item.short=desc.board_name;
+        item.description=desc.description;
+        item.type=desc.type;
+      }
       return item;
     })
+    console.log(rightSystems);
     rightSystems=rightSystems.map(item => {
       item.id=item.display;
       item.column='right'
       item.position=item.column;
       item.heldChips=[];
+      if (item.id in this.props.dictionary_strategy) {
+        const desc=this.props.dictionary_strategy[item.id];
+        item.short=desc.board_name;
+        item.description=desc.description;
+        item.type=desc.type;
+      }
       return item;
     })
     this.setState({ slots, maxHeight, maxWidth, topSystems, bottomSystems, leftSystems, rightSystems, isEditComplete });
@@ -678,6 +712,11 @@ export default class Panel extends Component {
       obj.bottomSystems=bottomStrats;
       obj.rightSystems=rightStrats;
       obj.isEdit=true;
+      obj.topStrats=topStrats;
+      obj.leftStrats=leftStrats;
+      obj.rightStrats=rightStrats;
+      obj.bottomStrats=bottomStrats;
+
       this.makeEditBoard(obj);
   }
 
@@ -695,27 +734,28 @@ export default class Panel extends Component {
 
       var strats=[];
       topStrats=topStrats.map(s => {
-        if (s.strategy != strat.strategy)
+        if (s && s.strategy != strat.strategy)
           strats.push(s);
       })
       topStrats=strats.slice(0);
 
       strats=[];
       leftStrats=leftStrats.map(s => {
-        if (s.strategy != strat.strategy)
+        if (s && s.strategy != strat.strategy)
           strats.push(s)
       })
       leftStrats=strats.slice(0)
 
       strats=[];
       rightStrats=rightStrats.map(s => {
-        if (s.strategy != strat.strategy)
+        if (s && s.strategy != strat.strategy)
           strats.push(s);
       })
+      rightStrats=strats.slice(0)
 
       strats=[];
       bottomStrats=bottomStrats.map(s => {
-        if (s.strategy != strat.strategy)
+        if (s && s.strategy != strat.strategy)
           strats.push(s)
       })
       bottomStrats=strats.slice(0);
@@ -761,6 +801,8 @@ export default class Panel extends Component {
       })
       if (!found) 
         topStrats.push(strat);
+
+
     } else if (position == 'left') {
       strat.column='left';
       leftStrats.map(s => {
@@ -770,9 +812,10 @@ export default class Panel extends Component {
       if (!found) 
         leftStrats.push(strat);
     } else if (position == 'right') {
+
       strat.column='right';
       rightStrats.map(s => {
-        if (s.strategy == strat.strategy)
+        if (s && s.strategy == strat.strategy)
           found=true;
       })
       if (!found) 

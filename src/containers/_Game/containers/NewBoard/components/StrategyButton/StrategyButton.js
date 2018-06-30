@@ -16,6 +16,7 @@ const stateToProps = state => {
     //dashboard_totals:state.betting.dashboard_totals,
     isLive:state.betting.isLive,
     accounts:state.betting.accounts,
+    dictionary_strategy:state.betting.dictionary_strategy,
     //heatmap_selection:state.betting.heatmap_selection,
     //liveDate:state.betting.liveDate,
   };
@@ -81,8 +82,8 @@ const collect = (connect, monitor) => {
 };
 
 
-@connect(stateToProps, dispatchToProps)
 @DragSource("StrategyButton", strategySource,  collect)
+@connect(stateToProps, dispatchToProps)
 
 export default class StrategyButton extends PureComponent {
   static propTypes = {
@@ -95,13 +96,24 @@ export default class StrategyButton extends PureComponent {
     accounts:PropTypes.array.isRequired,
     isReadOnly:PropTypes.bool,
     strategy:PropTypes.object.isRequired,
+    viewMode:PropTypes.string,
+    dictionary_strategy:PropTypes.object.isRequired
     //heatmap_selection:PropTypes.string
   };
 
   constructor(props) {
     super(props);
     var strategy=this.props.strategy;
-   
+    var dictionary_strategy=this.props.dictionary_strategy;
+    if (strategy.strategy in dictionary_strategy) {
+      const desc=dictionary_strategy[strategy.strategy];
+      strategy.short=desc.board_name;
+      strategy.description=desc.description;
+      strategy.type=desc.type;
+      strategy.display=strategy.strategy;
+      strategy.id=strategy.strategy;
+        
+    }
     this.state={
       strategy:strategy,
       zIndex: 0
@@ -113,13 +125,16 @@ export default class StrategyButton extends PureComponent {
     //console.log("StrategyButton Received New Props")
     //console.log(newProps);
     var self=this;
- 
+    
   }
 
 
   getChipStyle = () => {
-    const { dragSource, isDragging, dragPreview, canDrag, showHeatmap, isLive, strategy } = this.props;
-    var title=strategy.rank;
+    const { dragSource, isDragging, dragPreview, canDrag, showHeatmap, isLive, strategy, dictionary_strategy } = this.props;
+    
+    var mesg=" Name: " + strategy.id + "\n Full Name: " + strategy.short + "\n Type: " + strategy.type + "\n Description: " + strategy.description + "\n Rank: " + strategy.rank;
+
+    var title=mesg;
     var chipStyle={borderColor:strategy.color_border, 
                    background:strategy.color_fill,
                    color:strategy.color_text,
@@ -131,26 +146,71 @@ export default class StrategyButton extends PureComponent {
 
   render() {
     var self=this;
-    const { dragSource, isDragging, dragPreview, canDrag, showHeatmap, isLive, strategy } = this.props;
+    const { dragSource, isDragging, dragPreview, canDrag, showHeatmap, isLive, strategy, dictionary_strategy } = this.props;
     var {chipStyle, title}=this.getChipStyle();
+   
+    var score="";
+    var idx=0;
+    var bgColor=strategy.color_fill;
+    var chipBgColor=strategy.color_fill;
+    var textColor=strategy.color_text;
+    var rank=strategy.rank;
 
+    
     //console.log(chipStyle);
     if (isDragging) {
-      return  <StrategyPreview {...this.props} getChipStyle={this.getChipStyle} strategy={strategy} />
+      return  <StrategyPreview {...this.props} viewMode={this.props.viewMode} getChipStyle={this.getChipStyle} strategy={strategy} />
     } else {
-      return dragSource(
-        <div className={classes.StrategyButton} style={chipStyle}
+      if (this.props.viewMode && this.props.viewMode=='tab') {
+        return dragSource (
 
-      title={title}>
-        <p>
-         <span style={{fontSize:"15px"}}>{strategy.strategy}<br/>
-         </span>
-         <span style={{fontSize:"9px"}}>
-           {strategy.rank}
-         </span>
-        </p>
-        </div>
-      );
+          <div
+        className={classes.TabContainer}
+        style={{
+          backgroundColor: bgColor,
+          color: textColor,
+          opacity: 1,
+          textAlign: "center",
+          cursor:'pointer'
+        }}
+      >
+              <span style={{
+                "marginTop": "0px",
+                "paddingTop": "5px",
+                "paddingBottom": "5px",
+                "marginLeft": "-50%",
+                "whiteSpace": "nowrap",
+                backgroundColor: bgColor,
+                color: textColor,
+                opacity: 1,
+                position:"absolute",
+                textAlign: "center",
+                height:"24px",
+                width:"100%",
+                lineHeight:"10px"
+            }}>
+                <br/>
+                <font style={{opacity: 1}} color={textColor}>{strategy.display}</font>
+                <br/>
+                <span style={{ "fontSize":"9px" }}>{strategy.rank}</span>
+            </span>
+            </div>
+        )
+      } else {
+        return dragSource(
+          <div className={classes.StrategyButton} style={chipStyle}
+
+        title={title}>
+          <p>
+          <span style={{fontSize:"15px"}}>{strategy.strategy}<br/>
+          </span>
+          <span style={{fontSize:"9px"}}>
+            {strategy.rank}
+          </span>
+          </p>
+          </div>
+        );
+      }
     }
   }
 

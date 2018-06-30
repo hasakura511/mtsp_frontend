@@ -79,7 +79,12 @@ export default class StrategySelector extends React.Component {
       })
       var res= {
         items:items,
-        itemSelected: itemSelected
+        itemSelected: itemSelected,
+        contentStyle : {
+          width:"150px",
+          overflowY: "visible",
+          overflowX: "visible",
+        }
       }
       //console.log(res);
       return res;
@@ -146,20 +151,40 @@ export default class StrategySelector extends React.Component {
             display: 'flex',
             flexDirection: 'row',
           };
-          const contentStyle = {
-              width:"150px",
-          };
+          
       
       return (
         <div style={containerStyle}>
-          <span style={contentStyle}>
+          <span style={this.state.contentStyle}
+           
+          >
           <Dropdown
-            auto={true}
+            auto={false}
             source={this.state.items}
             onChange={this.handleItemChange}
             template={this.customItem}
             value={this.state.itemSelected}
-        
+            onFocus={
+              () => {
+                this.setState({contentStyle : {
+                  width:"150px",
+                  overflowY: "auto",
+                  overflowX: "hidden",
+                  zIndex:100,
+                }});
+              }
+            }
+            onBlur={
+              () => {
+                this.setState({contentStyle : {
+                  width:"150px",
+                  overflowY: "visible",
+                  overflowX: "visible",
+                  opacity: 1,
+                  zIndex:100,
+                }});
+              }
+            }
           />
           </span>
           <span style={{ pointerEvents:'none'}}>

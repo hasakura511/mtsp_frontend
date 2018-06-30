@@ -21,6 +21,11 @@ class DragPreview extends Component {
         if (!isDragging) { 
             return null; 
         }
+        var bgColor=strategy.color_fill;
+        var chipBgColor=strategy.color_fill;
+        var textColor=strategy.color_text;
+        var rank=strategy.rank;
+
         var {chipStyle, title}=this.props.getChipStyle();
         chipStyle['transform']= displayOffset ? `translate(${displayOffset.x}px, ${displayOffset.y}px)` : '';
         chipStyle['pointerEvents']='none';
@@ -34,17 +39,59 @@ class DragPreview extends Component {
             return ( <div></div>)       
         } else {
             //ReactDOM.render(
-        return (
-            <div className={classes.StrategyButton2} style={chipStyle} title={title}>
-                <p>
-                <span style={{fontSize:"15px"}}>{strategy.strategy}<br/>
-                </span>
-                <span style={{fontSize:"9px"}}>
-                {strategy.rank}
-                </span>
-                </p>
-                </div>
-        );
+                if (this.props.viewMode && this.props.viewMode=='tab') {
+                    return (
+            
+                      <div
+                    className={classes.TabContainer}
+                    style={{
+                      backgroundColor: bgColor,
+                      color: textColor,
+                      opacity: 1,
+                      textAlign: "center",
+                      cursor:'pointer',
+                      transform:chipStyle['transform'],
+                      pointerEvents:chipStyle['pointerEvents'],
+                      WebkitTransform:chipStyle['WebkitTransform'],
+                      zIndex: 1000000,
+                    }}
+                  >
+                          <span style={{
+                            "marginTop": "0px",
+                            "paddingTop": "5px",
+                            "paddingBottom": "5px",
+                            "marginLeft": "-50%",
+                            "whiteSpace": "nowrap",
+                            backgroundColor: bgColor,
+                            color: textColor,
+                            opacity: 1,
+                            position:"absolute",
+                            textAlign: "center",
+                            height:"24px",
+                            width:"100%",
+                            lineHeight:"10px"
+                        }}>
+                            <br/>
+                            <font style={{opacity: 1}} color={textColor}>{strategy.display}</font>
+                            <br/>
+                            <span style={{ "fontSize":"9px" }}>{strategy.rank}</span>
+                        </span>
+                        </div>
+                    )
+                } else {
+                        return (
+
+                            <div className={classes.StrategyButton2} style={chipStyle} title={title}>
+                                <p>
+                                <span style={{fontSize:"15px"}}>{strategy.strategy}<br/>
+                                </span>
+                                <span style={{fontSize:"9px"}}>
+                                {strategy.rank}
+                                </span>
+                                </p>
+                            </div>
+                        );
+                    }
     }
     }
 }
@@ -68,6 +115,7 @@ DragPreview.propTypes = {
     accounts:PropTypes.array.isRequired,
     isReadOnly:PropTypes.bool,
     getChipStyle:PropTypes.func,
+    viewMode:PropTypes.string
 };
 
 

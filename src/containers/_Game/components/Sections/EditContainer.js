@@ -146,15 +146,9 @@ export default class EditContainer extends PureComponent {
                 <br/>
                 <span style={{ "fontSize":"9px" }}>{rank}</span>
             </span>
-      
-        {heldStrats.map(strat => {
-              idx+=1;
-              /*
-              return (
-                <StrategyButton key={strat.strategy + idx} strategy={strat} />
-              )
-              */
-          })}
+            {strategy.id != 'Required' && strategy.id != 'Optional' ?
+                <StrategyButton viewMode={'tab'} strategy={strategy} />
+                : null }
            
            
 
