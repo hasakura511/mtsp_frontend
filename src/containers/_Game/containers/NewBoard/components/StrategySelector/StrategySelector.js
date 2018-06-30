@@ -122,17 +122,7 @@ export default class StrategySelector extends React.Component {
 
       return (
         <div style={containerStyle}>
-                <StrategyButton strategy={item.strategy} />
-            <span key={item.value} style={{ 
-                                            zIndex: 500 
-                                        }}>
-            </span>
-
-         
-          <div style={contentStyle}>
-            <strong>{item.artist}</strong>
-            <small>{item.album}</small>
-          </div>
+            <StrategyButton strategy={item.strategy} />
         </div>
       );
     }

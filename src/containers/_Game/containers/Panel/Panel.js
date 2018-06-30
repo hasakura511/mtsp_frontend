@@ -473,7 +473,8 @@ export default class Panel extends Component {
       for (let yIndex = 0; yIndex < maxHeight; yIndex++) {
           //slot = slots[xIndex * maxHeight + yIndex];
           //var sideSystem=sideSystems[yIndex];
-          var topIdx=xIndex % topSystems.length;
+          var topnum=topStrats.length == 0 ? 1 : topStrats.length;
+          var topIdx=xIndex % topnum;
           var num=topStrats.length == 0 ? 1 : topStrats.length;
           var bottomIdx=Math.min(bottomSystems.length-1, Math.floor(xIndex / num))
           var topSystem=topSystems[topIdx];
@@ -1097,6 +1098,8 @@ export default class Panel extends Component {
               }}
             />
           );
+         
+
   
         } else {
           column.push(
@@ -1125,12 +1128,24 @@ export default class Panel extends Component {
             
         }
       }
-      slotsGrid.push(
-        <div key={"slotColumn-" + xIndex} className={classes.Column}>
-          <RiskStrip system={topSystems[xIndex % topSystems.length]} />
-          {column} 
-        </div>
-      );
+      if (this.props.isEdit) {
+        var topnum=this.state.topStrats.length == 0 ? 1 : this.state.topStrats.length;
+        var topIdx=xIndex % topnum;
+
+        slotsGrid.push(
+          <div key={"slotColumn-" + xIndex} className={classes.Column}>
+            <RiskStrip system={topSystems[topIdx]} />
+            {column} 
+          </div>
+        );
+      } else {
+        slotsGrid.push(
+          <div key={"slotColumn-" + xIndex} className={classes.Column}>
+            <RiskStrip system={topSystems[xIndex % topSystems.length]} />
+            {column} 
+          </div>
+        );
+      }
     }
 
     var sectionHeatmap={};
