@@ -400,9 +400,14 @@ export default class Panel extends Component {
       isEditComplete=false;
       topSystems.push(Object.assign({}, reqSystem));
     }
-    
+
+    bottomSystems=bottomStrats.slice(0);
+    if (! bottomSystems.length ) {
+      isEditComplete=false;
+      bottomSystems.push(Object.assign({}, reqSystem));
+    }
+
     leftSystems= leftSystems && leftSystems.length ? leftSystems : [Object.assign({}, optSystem)]
-    bottomSystems=bottomSystems && bottomSystems.length ? bottomSystems : [Object.assign({}, reqSystem)]
     rightSystems= rightSystems && rightSystems.length ? rightSystems : [Object.assign({}, optSystem)]
  
 
@@ -833,12 +838,23 @@ export default class Panel extends Component {
     }
     
     if (topStrats.length > 0) {
+      if (topStrats.length > 6) {
+        topStrats=topStrats.slice(0,6);
+      }
       var bottomNum=Math.ceil(12/topStrats.length);
       if (bottomNum < bottomStrats.length) {
         bottomStrats=bottomStrats.slice(0,bottomNum);
       }
+
     }
-      this.setState({
+
+    if (rightStrats.length > 3) {
+        rightStrats=rightStrats.slice(0,3);
+    }
+    if (leftStrats.length > 3) {
+       leftStrats=leftStrats.slice(0,3);
+  }
+    this.setState({
         topStrats:topStrats,
         leftStrats:leftStrats,
         bottomStrats:bottomStrats,
