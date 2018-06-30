@@ -45,6 +45,8 @@ const strategySource = {
     //props.showHeatmap(props.strategy.strategy+"");
     props.strategy.isPlaying=true;
     props.strategy.isDonePlaying=false;
+    $('.dropdown').trigger('blur');
+
     console.log("beginning")
     return props.strategy;
   },

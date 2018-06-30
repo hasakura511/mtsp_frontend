@@ -122,11 +122,11 @@ export default class StrategySelector extends React.Component {
 
       return (
         <div style={containerStyle}>
-            <StrategyButton strategy={item.strategy} />
+            <StrategyButton id={'select_' + item.strategy } strategy={item.strategy} />
         </div>
       );
     }
-  
+
     render () {
         const imageStyle = {
             display: 'flex',
@@ -135,11 +135,13 @@ export default class StrategySelector extends React.Component {
             marginLeft: '-30px',
             marginTop: "27px",
             marginRight: "30px",
-            backgroundColor: 'transparent'
+            backgroundColor: 'transparent',
+            //position:'absolute',
           };
           const containerStyle = {
             display: 'flex',
             flexDirection: 'row',
+            
           };
           
       
@@ -149,7 +151,8 @@ export default class StrategySelector extends React.Component {
            
           >
           <Dropdown
-            auto={false}
+            className={'dropdown'}
+            auto={true}
             source={this.state.items}
             onChange={this.handleItemChange}
             template={this.customItem}
@@ -158,9 +161,12 @@ export default class StrategySelector extends React.Component {
               () => {
                 this.setState({contentStyle : {
                   width:"150px",
+                  height:"300px",
                   overflowY: "auto",
                   overflowX: "hidden",
                   zIndex:100,
+                  marginBottom: "-300px",
+            
                 }});
               }
             }
@@ -171,7 +177,7 @@ export default class StrategySelector extends React.Component {
                   overflowY: "visible",
                   overflowX: "visible",
                   opacity: 1,
-                  zIndex:100,
+                  //zIndex:100,
                 }});
               }
             }
