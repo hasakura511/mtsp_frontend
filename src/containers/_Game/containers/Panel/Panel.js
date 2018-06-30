@@ -830,6 +830,13 @@ export default class Panel extends Component {
       if (!found) 
         bottomStrats.push(strat);
     }
+    
+    if (topStrats.length > 0) {
+      var bottomNum=Math.ceil(12/topStrats.length);
+      if (bottomNum < bottomStrats.length) {
+        bottomStrats=bottomStrats.slice(0,bottomNum);
+      }
+    }
       this.setState({
         topStrats:topStrats,
         leftStrats:leftStrats,

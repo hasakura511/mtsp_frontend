@@ -124,7 +124,7 @@ export default class StrategySelector extends React.Component {
         <div style={containerStyle}>
                 <StrategyButton strategy={item.strategy} />
             <span key={item.value} style={{ 
-                                            //zIndex: 500 
+                                            zIndex: 500 
                                         }}>
             </span>
 
