@@ -324,7 +324,7 @@ export default class Panel extends Component {
     
     const blankSystem = {
       id: "BLANK",
-      color: "black",
+      color: "transparent",
       position: "bottom",
       display: "Blank",
       description: "Blank",
@@ -351,7 +351,7 @@ export default class Panel extends Component {
     }
     const reqSystem = {
       id: "BLANK",
-      color: reqColor,
+      color: "transparent",
       color_fill: reqColor,
       color_text: reqText,
       position: "bottom",
@@ -364,7 +364,7 @@ export default class Panel extends Component {
     };
     const optSystem = {
       id: "OPTIONAL",
-      color: optColor,
+      color: "transparent",
       color_fill: optColor,
       color_text: optText,
       position: "bottom",
@@ -474,7 +474,8 @@ export default class Panel extends Component {
           //slot = slots[xIndex * maxHeight + yIndex];
           //var sideSystem=sideSystems[yIndex];
           var topIdx=xIndex % topSystems.length;
-          var bottomIdx=xIndex% bottomSystems.length;
+          var num=topStrats.length == 0 ? 1 : topStrats.length;
+          var bottomIdx=Math.min(bottomSystems.length-1, Math.floor(xIndex / num))
           var topSystem=topSystems[topIdx];
           var bottomSystem=bottomSystems[bottomIdx];
           slots.push({
