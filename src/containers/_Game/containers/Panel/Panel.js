@@ -20,7 +20,7 @@ import Title from "../OrderDialog/OffOrderDialogTitle";
 import Sound from 'react-sound';
 import ChipsPanel from "../../components/ChipsPanel/ChipsPanel";
 import RemoveContainer from "../../components/Sections/RemoveContainer"
-
+import Bounce from 'bounce.js'
 /**
  * returns state to `Props` mapping object with keys that would later become props.
  * @function stateToProps
@@ -1417,6 +1417,7 @@ export default class Panel extends Component {
         /> 
         ) : null}
         
+        
       </div>
     );
 
@@ -1437,33 +1438,7 @@ export default class Panel extends Component {
    */
 
   componentDidMount() {
-    // Do the api call for ranking charts
-    // the request params would be containing
-    // array of chip configurations, call it accounts array
-    // array of tiles-systems configurations
-    // response would be lookback(1, 5, 20) scoped aggregated pnl for all the tiles
-    //   for all the different account sizes.
-    // example params:
-    // {
-    //   "accounts": [
-    //     {
-    //       "portfolio": ["TU", "BO"],
-    //       "target": "500",
-    //       "accountValue": 5000
-    //     }
-    //   ],
-    //   "slots": [
-    //     {
-    //       "position": 1,
-    //       "systems": ["prev1", "prev5"]
-    //     },
-    //     {
-    //       "position": 2,
-    //       "systems": ["lowEq", "antiHighEq"]
-    //     }
-    //   ],
-    //   "lookback": 23
-    // }
+    
     const { slots } = this.state;
     if (!this.props.isLive) {
       this.setState({ rankingLoading: true });
@@ -1505,6 +1480,36 @@ export default class Panel extends Component {
               rankingError: error
             });
         });
+      }
+
+      if (this.props.isEdit) {
+          const makeJiggle= () => {
+            var bounce = new Bounce();
+            bounce
+              .translate({
+                from: { x: -300, y: 0 },
+                to: { x: 0, y: 0 },
+                duration: 600,
+                stiffness: 4
+              })
+              .scale({
+                from: { x: 1, y: 1 },
+                to: { x: 0.1, y: 2.3 },
+                easing: "sway",
+                duration: 800,
+                delay: 65,
+                stiffness: 2
+              })
+              .scale({
+                from: { x: 1, y: 1},
+                to: { x: 5, y: 1 },
+                easing: "sway",
+                duration: 300,
+                delay: 30,
+              })
+              .applyTo(document.querySelectorAll(".required"));
+            }
+            setInterval(makeJiggle, 5000);
       }
   }
 

@@ -118,7 +118,7 @@ export default class EditContainer extends PureComponent {
     */
      return dropTarget(
       <div
-        className={classes.EditContainer}
+        className={classes.EditContainer + (strategy.id == 'Required' ? " required" : "")}
         style={{
           backgroundColor: bgColor,
           color: textColor,
