@@ -70,10 +70,13 @@ export default class StrategySelector extends React.Component {
         })
       }
       //console.log(stratDict)
+      var item="";
       this.props.items.map(button => {
         if (!strats || !(button.strategy in stratDict)) {
-          if (!itemSelected) 
+          if (!itemSelected)  {
               itemSelected=button.strategy;
+              item=button;
+          }
                  items.push({ value:button.strategy, 
               strategy: button 
             }); 
@@ -82,11 +85,13 @@ export default class StrategySelector extends React.Component {
       var res= {
         items:items,
         itemSelected: itemSelected,
+
+        item:item,
         contentStyle : {
           width:"150px",
           overflowY: "visible",
           overflowX: "visible",
-          
+          display:'none'
         }
       }
       //console.log(res);
@@ -101,7 +106,13 @@ export default class StrategySelector extends React.Component {
 
     }
     handleItemChange = (value) => {
-      this.setState({itemSelected: value});
+      var item="";
+      this.props.items.map(button => {
+        if (value == button.strategy) {
+          item=button;
+        }
+      });
+      this.setState({itemSelected: value, item:item});
     };
   
   
@@ -145,51 +156,102 @@ export default class StrategySelector extends React.Component {
           const containerStyle = {
             display: 'flex',
             flexDirection: 'row',
+            width:"200px",
+            marginTop:"-22px",
             
           };
           
-      
+      var id=Math.round(Math.random() * 1000000);
+      var id2=Math.round(Math.random() * 1000000);
+      var id3=Math.round(Math.random() * 1000000);
+      var id4=Math.round(Math.random() * 1000000);
       return (
         <div style={containerStyle}>
-          <span style={this.state.contentStyle}
-           
+          <span  id={id} style={this.state.contentStyle}
+           onMouseLeave={
+                () => {
+                  this.setState({contentStyle : {
+                    width:"150px",
+                    overflowY: "visible",
+                    overflowX: "visible",
+                    opacity: 1,
+                    //zIndex:100,
+                  }});
+                  $('#' + id3).show();
+                  $('#' + id).hide();
+                  $('#' + id2).hide();
+              
+             }
+           }
           >
-          <Dropdown
-            className={'dropdown'}
-            auto={true}
-            source={this.state.items}
-            onChange={this.handleItemChange}
-            template={this.customItem}
-            value={this.state.itemSelected}
-            onFocus={
-              () => {
-                this.setState({contentStyle : {
-                  width:"150px",
-                  height:"300px",
-                  overflowY: "auto",
-                  overflowX: "hidden",
-                  zIndex:100,
-                  marginBottom: "-200px",
-                 
-                }});
-                   
-              }
-            }
-            onBlur={
-              () => {
-                this.setState({contentStyle : {
-                  width:"150px",
-                  overflowY: "visible",
-                  overflowX: "visible",
-                  opacity: 1,
-                  //zIndex:100,
-                }});
-              }
-            }
-          />
+                <Dropdown
+                  id={id2}
+                  className={'dropdown'}
+                  auto={true}
+                  source={this.state.items}
+                  onChange={this.handleItemChange}
+                  template={this.customItem}
+                  value={this.state.itemSelected}
+                  onFocus={
+                    () => {
+                      this.setState({contentStyle : {
+                        width:"150px",
+                        height:"300px",
+                        overflowY: "auto",
+                        overflowX: "hidden",
+                        zIndex:100,
+                        marginBottom: "-200px",
+                      
+                      }});
+                        
+                    }
+                  }
+                  onBlur={
+                    () => {
+                      this.setState({contentStyle : {
+                        width:"150px",
+                        overflowY: "visible",
+                        overflowX: "visible",
+                        opacity: 1,
+                        //zIndex:100,
+                      }});
+                      $('#' + id3).show();
+                      $('#' + id).hide();
+                      $('#' + id2).hide();
+                    }
+                  }
+                />
+               
+
+               
           </span>
-          <span style={{ pointerEvents:'none'}}>
-           <img src={'/images/dropdown_rec.png'} style={imageStyle}/>
+          <span id={id3} style={{marginTop:'28px', zIndex:10}}>
+                {this.state.item ? 
+                <StrategyButton id={'select_' + this.state.item.strategy } strategy={this.state.item} />
+                : null}
+                </span>
+          <span id={id4} style={{
+              marginLeft:'151px',
+              position:'absolute',
+          }}>
+           
+           <img src={'/images/dropdown_rec.png'} onClick={() => {
+             
+             $('#' + id3).hide();
+             $('#' + id).show();
+             $('#' + id2).show();
+             $('#' + id2).trigger('click');
+             $('#' + id2).trigger('focus');
+             this.setState({contentStyle : {
+              width:"150px",
+              height:"300px",
+              overflowY: "auto",
+              overflowX: "hidden",
+              zIndex:100,
+              marginBottom: "-200px",
+              //osition:'absolute'
+            }});
+           }} style={imageStyle}/>
            </span>
         </div>
       );

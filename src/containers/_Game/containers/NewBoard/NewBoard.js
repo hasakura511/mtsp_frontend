@@ -954,7 +954,6 @@ export default class NewBoard extends Component {
 
       }
       var editThemes=this.state.editData.themes;
-      
       //console.log(editThemes);
       return (
 

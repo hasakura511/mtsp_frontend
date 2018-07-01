@@ -187,7 +187,7 @@ export default class StrategyToolbox extends Component {
                                           })}
 
 
-                                        <div style={{"clear": "both"}}></div>
+                                            <div style={{"clear": "both"}}></div>
                                         </div>
                                     )
                                     
