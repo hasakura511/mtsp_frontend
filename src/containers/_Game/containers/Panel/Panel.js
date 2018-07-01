@@ -401,11 +401,12 @@ export default class Panel extends Component {
       isEditComplete=false;
       topSystems.push(Object.assign({}, reqSystem));
     }
-
+    var hasBottomReq=false;
     bottomSystems=bottomStrats.slice(0);
     if (! bottomSystems.length ) {
       isEditComplete=false;
       bottomSystems.push(Object.assign({}, reqSystem));
+      hasBottomReq=true;
     }
 
     leftSystems= leftSystems && leftSystems.length ? leftSystems : [Object.assign({}, optSystem)]
@@ -432,12 +433,13 @@ export default class Panel extends Component {
           for (var i=0; i < sysToAdd; i++) {
             isEditComplete=false;
             systems.push(Object.assign({}, reqSystem));
+            hasBottomReq=true;
           }
           bottomSystems=systems;
         }
     } 
 
-    if (topStrats.length == 0 && bottomStrats.length == 1 && bottomSystems.length == 1) {
+    if (topStrats.length == 0 && bottomStrats.length < 12 && bottomSystems.length < 12 && !hasBottomReq) {
       bottomSystems.push(Object.assign({}, optSystem))
 
     }
@@ -899,7 +901,10 @@ export default class Panel extends Component {
     }
     if (leftStrats.length > 3) {
        leftStrats=leftStrats.slice(0,3);
-  }
+    }
+    if (bottomStrats.length > 12) {
+       bottomStrats=bottomStrats.slice(0,12);
+    }
   /*
     this.setState({
         topStrats:topStrats,

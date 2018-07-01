@@ -8,9 +8,8 @@ import { compose } from 'redux'
 import Popover from 'react-tiny-popover'
 import Sound from 'react-sound';
 import { toTitleCase, numberWithCommas } from "../../../../../../util";
-import Dropdown from 'react-toolbox/lib/dropdown';
+import { Dropdown } from 'react-toolbox/lib/dropdown';
 import StrategyButton from '../StrategyButton/StrategyButton';
-
 
 const stateToProps = state => {
   return {
@@ -120,6 +119,7 @@ export default class StrategySelector extends React.Component {
       const containerStyle = {
         display: 'flex',
         flexDirection: 'row',
+                
       };
   
      
@@ -135,9 +135,11 @@ export default class StrategySelector extends React.Component {
       */
 
       return (
-        <div style={containerStyle}>
-            <StrategyButton id={'select_' + item.strategy } strategy={item.strategy} />
-        </div>
+          <div style={containerStyle}>
+              <StrategyButton id={'select_' + item.strategy } strategy={item.strategy} />
+              
+          </div>
+        
       );
     }
 
@@ -184,14 +186,16 @@ export default class StrategySelector extends React.Component {
              }
            }
           >
+
                 <Dropdown
                   id={id2}
-                  className={'dropdown'}
+                  className={'dropdown' }
                   auto={true}
                   source={this.state.items}
                   onChange={this.handleItemChange}
                   template={this.customItem}
                   value={this.state.itemSelected}
+                  
                   onFocus={
                     () => {
                       this.setState({contentStyle : {
@@ -251,11 +255,11 @@ export default class StrategySelector extends React.Component {
               marginBottom: "-200px",
               //osition:'absolute'
             }});
-           }} style={imageStyle}/>
+            
+          }} style={imageStyle}/>
            </span>
         </div>
       );
     }
   }
-  
   
