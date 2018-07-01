@@ -8,18 +8,26 @@ import PerformanceOrderChart from "../AccountCharts/PerformanceOrderChart/Perfor
 import OpenPositions from "../AccountCharts/OpenPositions/OpenPositions";
 import PreviousPnL from "../AccountCharts/PreviousPnL/PreviousPnL";
 import TradingCosts from "../AccountCharts/TradingCosts/TradingCosts";
+import AccountsLive from "./AccountsLive/AccountsLive"
 import Spinner from "../../../../components/UI/Spinner/Spinner";
 //import RankingChart from "./RankingChart/RankingChart";
 import * as actions from "../../../../store/actions";
 import { connect } from "react-redux";
 import axios from "../../../../axios-gsm";
 import ClockLoader from "../../../../components/UI/ClockLoader/ClockLoader";
-
-
+import { axiosOpen } from "../../../../axios-gsm";
+import withErrorHandler from "../../../../hoc/withErrorHandler/withErrorHandler";
+import { withRouter } from "react-router-dom";
+import protectedComponent from "../../../../hoc/ProtectedComponent/ProtectedComponent";
 
 const stateToProps = state => ({
   //themes:state.betting.themes,
   email: state.auth.email,
+  firstName: state.auth.firstName,
+  lastName: state.auth.lastName,
+  isAuth: state.auth.token !== null,
+  tosAccepted: state.auth.tosAccepted,
+  rdAccepted: state.auth.rdAccepted,
   //performance_account_id: state.betting.performance_account_id
 });
 
@@ -28,6 +36,9 @@ const dispatchToProps = dispatch => {
   return {
     showPerformance:(action_id) => {
       dispatch(actions.showPerformance(action_id))
+    },
+    authSuccess: (user, token) => {
+      dispatch(actions.authSuccess(user, token));
     },
     
   };
@@ -45,20 +56,23 @@ const loader = (
   </div>
 );
 
-
+//@withErrorHandler(axiosOpen)
+//@withRouter
+@protectedComponent
 @connect(stateToProps, dispatchToProps)
 export default class Accounts extends Component {
   static propTypes = {
-    performance: PropTypes.object,
-    email:PropTypes.string.isRequired,
+    email: PropTypes.string,
+    firstName: PropTypes.string,
+    lastName: PropTypes.string,
+    isAuth: PropTypes.bool.isRequired,
+    tosAccepted: PropTypes.bool.isRequired,
+    rdAccepted: PropTypes.bool.isRequired,
+    authSuccess: PropTypes.func.isRequired,
     rankingLoading: PropTypes.bool,
     rankingData: PropTypes.array,
     rankingError: PropTypes.object,
-    chip: PropTypes.object,
-    slot: PropTypes.object,
-    close: PropTypes.func,
-    toggle:PropTypes.func,
-    showPerformance:PropTypes.func.isRequired,
+    showPerformance:PropTypes.func,
     themes:PropTypes.object,
     isOrder:PropTypes.bool,
     moveChipToSlot:PropTypes.func,
@@ -82,8 +96,14 @@ export default class Accounts extends Component {
   }
 
   componentWillMount() {
+    //this.initializeAccounts();
+  }
+
+  
+  componentDidMount() {
     this.initializeAccounts();
   }
+
 
   
   initializeAccounts=(reinitialize=false) => {
@@ -113,6 +133,29 @@ export default class Accounts extends Component {
       console.log('received account list data')
       console.log(data);
       //var itemSelected = chip_id ?  chip_id : 'None';
+
+      var dataJson= JSON.parse(data.accounts);
+      data.accounts=dataJson;
+      Object.keys(data.accounts).map(key => {
+        data.accounts[key]['chip_id']=key;
+        data.accounts[key]['portfolio']=JSON.parse(data.accounts[key]['portfolio'])
+
+      })
+
+      dataJson=JSON.parse(data.margins);
+      data.margins=dataJson;
+      
+      Object.keys(data.sparklines).map(key => {
+        data.sparklines[key]=JSON.parse(data.sparklines[key])
+
+      })
+
+      var themes=data.themes;
+      themes['live']={}
+      themes.live['dialog']={}
+      themes.live.dialog.table_left_background=themes.table_background;
+      themes.live.dialog.table_right_background=themes.table_background;
+      data.themes=themes;
       this.setState({
         editData:data,
         //itemSelected:itemSelected,
@@ -124,7 +167,7 @@ export default class Accounts extends Component {
 
     })
     .catch(error => {
-      this.sendNotice('Account Data not received: ' + JSON.stringify(error));
+      //this.sendNotice('Account Data not received: ' + JSON.stringify(error));
       console.log('error initializing')
       console.log(error)
     // eslint-disable-next-line react/no-is-mounted
@@ -139,14 +182,11 @@ export default class Accounts extends Component {
   }
 
   componentWillReceiveProps(newProps) {
-    if (newProps.slot) {
-      if (this.state.isRankingChart && newProps.slot.position != this.props.slot.position) {
-        this.setState({isPerformance:true, isOpenPositions:false, isTradingCosts:false, isPreviousPnL:false,  isRankingChart:false});
-      }
-    }
+
   }
+
   render() {
-    if (this.state.loading || this.state.refreshing) {
+    if (this.state.loading || this.state.refreshing || !this.state.editData || !this.state.editData.themes) {
         return ( 
 
           <div>
@@ -164,12 +204,9 @@ export default class Accounts extends Component {
 
             const {
             
-            performance,
             rankingLoading,
             rankingData,
             rankingError,
-            chip,
-            slot,
 
             } = this.props;
             var themes=editData.themes;
@@ -181,6 +218,7 @@ export default class Accounts extends Component {
             var text_gain=themes.text_gain;
             var text_loess=themes.text_loss;
 
+            console.log(themes)
             var self=this;
             return (
             <div className={classes.Accounts} style={{background: page_background,
@@ -190,7 +228,7 @@ export default class Accounts extends Component {
                 <div className={classes.Row} style={{background: page_background,
                 color:text_color, borderColor:lines}}>
 
-                        Accounts Page
+                       <AccountsLive performance={this.state.editData} themes={themes} />
                 </div>
 
             

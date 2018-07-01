@@ -501,7 +501,7 @@ export default class NewBoard extends Component {
     'username':  this.props.email,
     'chip_id':chip_id,
     'last_date':last_date,
-    'board_config':board_config,
+    'portfolio':board_config,
     
     },{timeout: 600000})
     .then(({ data }) => {

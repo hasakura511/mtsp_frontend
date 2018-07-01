@@ -1,18 +1,11 @@
 .Accounts {
     width: 100%;
-    display: flex;
-    flex-flow: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-    padding: 10px;
-    box-sizing: border-box;
-    padding-top: 0px;
+    
   }
   
   .Row {
     width: 100%;
-    display: flex;
-    background-color: #bac4cc;
+   
   }
   
   .Tabs {
