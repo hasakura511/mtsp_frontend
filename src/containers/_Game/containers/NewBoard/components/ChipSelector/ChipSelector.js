@@ -85,7 +85,7 @@ export default class ChipSelector extends React.Component {
         this.props.accounts.map(account => {
           if (value == account.chip_id) {
               var last_date=account.date.replace(/-/g,'');
-              self.props.checkLock(false, account.chip_id, last_date, account.board_config_fe);
+              self.props.checkLock(false, account.chip_id, last_date, account.board_config_str);
           }
         })
       } else {

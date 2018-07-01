@@ -489,6 +489,7 @@ const reducer = (state = initialState, action) => {
         });
 
         Object.keys(accounts).map(function(key) {
+          accounts[key].board_config_str=accounts[key].board_config_fe;
           const board_config=JSON.parse(accounts[key].board_config_fe);
           accounts[key].board_config_fe=board_config;
           accounts[key].accountId=accounts[key].account_id;
