@@ -320,11 +320,16 @@ export default class NewBoard extends Component {
     
   }
 
+  optimizeDone = () => {
+    var self=this;
+    self.setState({optimize:false})
+    
+  }
   optimizeBoard= () => {
     var self=this;
     self.props.showDialog(
       " Are you sure you want to load the optimized board?",
-      <center>Your changes to the editable board below will be discarded.</center>,
+      "Your changes to the editable board below will be discarded.",
       () => {
           console.log("Optimize Board Start");
 
@@ -1007,6 +1012,7 @@ export default class NewBoard extends Component {
               moveToBalance={this.moveToBalance}
               initializeLive={this.initializeLive}
               optimize={this.state.optimize}
+              optimizeDone={this.optimizeDone}
               updateStrats={this.updateStrats}
             />
              

@@ -45,7 +45,8 @@ export default class ChipSelector extends React.Component {
         accounts:PropTypes.array.isRequired,
         isReadOnly:PropTypes.bool,
         checkLock:PropTypes.func.isRequired,
-        itemSelected:PropTypes.string.isRequired
+        itemSelected:PropTypes.string.isRequired,
+        editData:PropTypes.object.isRequired
         //heatmap_selection:PropTypes.string
       };
     
@@ -56,9 +57,13 @@ export default class ChipSelector extends React.Component {
         var itemSelected=this.props.itemSelected;
         console.log('item selected');
         console.log(this.props.itemSelected);
+        items.push({ value: 'None',
+          chip: undefined
+        });
         props.accounts.map(account => {
-          if (!itemSelected) 
+          if (!itemSelected) {
                 itemSelected='None';
+          }
           items.push({ value:account.chip_id, 
                     chip: account
                     
@@ -76,13 +81,17 @@ export default class ChipSelector extends React.Component {
     handleItemChange = (value) => {
       console.log(value);
       var self=this;
-      this.props.accounts.map(account => {
-        if (value == account.chip_id) {
-            var last_date=account.date.replace(/-/g,'');
-            self.props.checkLock(false, account.chip_id, last_date, account.board_config_fe);
-        }
-      })
-      this.setState({itemSelected: value});
+      if (value != 'None') {
+        this.props.accounts.map(account => {
+          if (value == account.chip_id) {
+              var last_date=account.date.replace(/-/g,'');
+              self.props.checkLock(false, account.chip_id, last_date, account.board_config_fe);
+          }
+        })
+      } else {
+        self.props.checkLock(false, "", "", "");
+      }
+        this.setState({itemSelected: value});
     };
   
   
@@ -107,7 +116,9 @@ export default class ChipSelector extends React.Component {
       return (
         <div style={containerStyle}>
             <span key={item.value}>
-                <Chip chip={item.chip} isReadOnly={true} />
+                {item.chip ? 
+                  <Chip chip={item.chip} isReadOnly={true} />
+                  : <div style={{fontSize:'16px',marginTop:'12px', color:'black'}}><b>{item.value}</b></div>}
             </span>
 
          
@@ -147,10 +158,7 @@ export default class ChipSelector extends React.Component {
             value={this.state.itemSelected}
         
           />
-          {this.state.itemSelected == 'None' ? 
-          <div style={{marginTop:"-35px"}}><b>None</b></div>
-          : null}
-
+          
           </span>
           <span>
            <img src={'/images/dropdown_rec.png'} style={imageStyle}/>

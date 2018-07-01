@@ -70,7 +70,7 @@ export default class Dialog extends Component {
             <Spinner />
           ) : (
             <_Aux>
-              <div className={classes.Content}>{message}</div>
+              <div className={classes.Content}><center>{message}</center></div>
               <div className={classes.Footer}>
                 <CancelButton onClick={this.cancelHandler}>
                   {cancelAction}

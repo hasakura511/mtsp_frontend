@@ -45,7 +45,9 @@ export default class StrategySelector extends React.Component {
         accounts:PropTypes.array.isRequired,
         isReadOnly:PropTypes.bool,
         items:PropTypes.array.isRequired,
-        strats:PropTypes.array.isRequired
+        strats:PropTypes.array.isRequired,
+        editData:PropTypes.object.isRequired
+
         //heatmap_selection:PropTypes.string
       };
     
@@ -84,6 +86,7 @@ export default class StrategySelector extends React.Component {
           width:"150px",
           overflowY: "visible",
           overflowX: "visible",
+          
         }
       }
       //console.log(res);
@@ -102,7 +105,7 @@ export default class StrategySelector extends React.Component {
     };
   
   
-    customItem (item) {
+    customItem = (item) => {
       const containerStyle = {
         display: 'flex',
         flexDirection: 'row',
@@ -128,6 +131,7 @@ export default class StrategySelector extends React.Component {
     }
 
     render () {
+      var self=this;
         const imageStyle = {
             display: 'flex',
             height: '50px',
@@ -165,9 +169,10 @@ export default class StrategySelector extends React.Component {
                   overflowY: "auto",
                   overflowX: "hidden",
                   zIndex:100,
-                  marginBottom: "-300px",
-            
+                  marginBottom: "-200px",
+                 
                 }});
+                   
               }
             }
             onBlur={

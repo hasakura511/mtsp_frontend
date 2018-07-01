@@ -14,7 +14,9 @@ const rightSection = props => {
         (system) => {
           var { id, color, display, description, column, heldChips,short, type } = system
           var mesg=" Name: " + id + "\n Full Name: " + short + "\n Type: " + type + "\n Description: " + description;
-
+          if (id == 'Optional' || id =='Required') {
+            mesg="Drag your desired strategy here."
+          }
           var sectionHeatmap=props.sectionHeatmap;
           var slotHeatmap={};
 

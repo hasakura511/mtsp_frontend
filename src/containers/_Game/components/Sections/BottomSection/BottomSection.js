@@ -32,7 +32,9 @@ export default class BottomSection extends PureComponent {
               (system) => {
                 var { id, color, display, description, position, column, heldChips, short, type } = system;
                 var mesg=" Name: " + id + "\n Full Name: " + short + "\n Type: " + type + "\n Description: " + description;
-                
+                if (id == 'Optional' || id =='Required') {
+                  mesg="Drag your desired strategy here."
+                }
                 var sectionHeatmap=this.props.sectionHeatmap;
                 var slotHeatmap={};
                 var bgColor=this.props.bgColor;

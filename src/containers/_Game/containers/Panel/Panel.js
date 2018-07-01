@@ -129,6 +129,7 @@ export default class Panel extends Component {
     email:PropTypes.string,
     editData:PropTypes.object,
     optimize:PropTypes.bool,
+    optimizeDone:PropTypes.func,
     updateStrats:PropTypes.func,
     dictionary_strategy:PropTypes.object
   };
@@ -411,17 +412,20 @@ export default class Panel extends Component {
     rightSystems= rightSystems && rightSystems.length ? rightSystems : [Object.assign({}, optSystem)]
  
 
-    if (topStrats.length > 0 && topStrats.length < 6) {
+    if (topStrats.length > 0 && topStrats.length <= 6) {
         topSystems=topStrats.slice(0);
         var rem=12%topSystems.length;
         var bottomNum=Math.ceil(12/topSystems.length);
+        var hasReq=false;
         if (bottomStrats.length +2 <= bottomNum) {
           if (rem) {
             isEditComplete=false;
             topSystems.push(Object.assign({}, reqSystem))
-          } else
-            topSystems.push(Object.assign({}, optSystem))
+            hasReq=true;
+          } 
         }
+        if (topStrats.length < 6 && !hasReq)
+          topSystems.push(Object.assign({}, optSystem))
         if (bottomStrats.length < bottomNum) {
           var systems=bottomStrats.slice(0);
           var sysToAdd=bottomNum-bottomStrats.length;
@@ -432,6 +436,11 @@ export default class Panel extends Component {
           bottomSystems=systems;
         }
     } 
+
+    if (topStrats.length == 0 && bottomStrats.length == 1 && bottomSystems.length == 1) {
+      bottomSystems.push(Object.assign({}, optSystem))
+
+    }
     var numToAdd=0;
     var k=0;
     var heightMax=3;
@@ -548,7 +557,7 @@ export default class Panel extends Component {
       }
       return item;
     })
-    this.setState({ slots, maxHeight, maxWidth, topSystems, bottomSystems, leftSystems, rightSystems, isEditComplete });
+    this.setState({ slots, maxHeight, maxWidth, topStrats, leftStrats, rightStrats, bottomStrats, topSystems, bottomSystems, leftSystems, rightSystems, isEditComplete });
     console.log("Making Edit Board Complete");
     console.log(topSystems);
     console.log(leftSystems);
@@ -691,6 +700,7 @@ export default class Panel extends Component {
       obj.bottomStrats=bottomStrats;
       obj.isEdit=true;
       self.makeEditBoard(obj);
+      this.props.optimizeDone();
     }
   }
   clearStrats = () => {
@@ -706,12 +716,14 @@ export default class Panel extends Component {
     rightStrats=[];
     bottomStrats=[]
     leftStrats=[];
+    /*
       this.setState({
         topStrats:topStrats,
         leftStrats:leftStrats,
         bottomStrats:bottomStrats,
         rightStrats:rightStrats
       });
+      */
 
       var obj={};
       obj.topSystems=topStrats;
@@ -767,18 +779,24 @@ export default class Panel extends Component {
       })
       bottomStrats=strats.slice(0);
       
+      /*
       this.setState({
         topStrats:topStrats,
         leftStrats:leftStrats,
         bottomStrats:bottomStrats,
         rightStrats:rightStrats
       });
+      */
 
       var obj={};
       obj.topSystems=topStrats;
       obj.leftSystems=leftStrats;
       obj.bottomSystems=bottomStrats;
       obj.rightSystems=rightStrats;
+      obj.topStrats=topStrats;
+      obj.leftStrats=leftStrats;
+      obj.bottomStrats=bottomStrats;
+      obj.rightStrats=rightStrats;
       obj.isEdit=true;
       this.makeEditBoard(obj);
   }
@@ -798,6 +816,34 @@ export default class Panel extends Component {
     strat.display=strat.strategy;
     strat.color=strat.color_border;
 
+
+    var strats=[];
+    topStrats=topStrats.map(s => {
+      if (s && s.strategy != strat.strategy)
+        strats.push(s);
+    })
+    topStrats=strats.slice(0);
+
+    strats=[];
+    leftStrats=leftStrats.map(s => {
+      if (s && s.strategy != strat.strategy)
+        strats.push(s)
+    })
+    leftStrats=strats.slice(0)
+
+    strats=[];
+    rightStrats=rightStrats.map(s => {
+      if (s && s.strategy != strat.strategy)
+        strats.push(s);
+    })
+    rightStrats=strats.slice(0)
+
+    strats=[];
+    bottomStrats=bottomStrats.map(s => {
+      if (s && s.strategy != strat.strategy)
+        strats.push(s)
+    })
+    bottomStrats=strats.slice(0);
 
     var found=false;
     if (position == 'top') {
@@ -854,18 +900,24 @@ export default class Panel extends Component {
     if (leftStrats.length > 3) {
        leftStrats=leftStrats.slice(0,3);
   }
+  /*
     this.setState({
         topStrats:topStrats,
         leftStrats:leftStrats,
         bottomStrats:bottomStrats,
         rightStrats:rightStrats
       });
-
+      */
       var obj={};
       obj.topSystems=topStrats;
       obj.leftSystems=leftStrats;
       obj.bottomSystems=bottomStrats;
       obj.rightSystems=rightStrats;
+      obj.topStrats=topStrats;
+      obj.leftStrats=leftStrats;
+      obj.bottomStrats=bottomStrats;
+      obj.rightStrats=rightStrats;
+
       obj.isEdit=true;
       this.makeEditBoard(obj);
       
@@ -1147,7 +1199,8 @@ export default class Panel extends Component {
       if (this.props.isEdit) {
         var topnum=this.state.topStrats.length == 0 ? 1 : this.state.topStrats.length;
         var topIdx=xIndex % topnum;
-
+        //console.log(this.state.topStrats)
+        //console.log(topSystems)
         slotsGrid.push(
           <div key={"slotColumn-" + xIndex} className={classes.Column}>
             <RiskStrip system={topSystems[topIdx]} />

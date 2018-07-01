@@ -85,6 +85,7 @@ export default class StrategyToolbox extends Component {
     if (this.props.themes.live.action_row != undefined) {
       actionBg=this.props.themes.live.action_row.background;
       heatmapTxt=this.props.themes.live.heatmap.text;
+      heatmapTxt=this.props.editData.themes.page.heatmap_text
       switchBg=this.props.themes.live.action_row.switch_fill;
       switchTxt=this.props.themes.live.action_row.switch_text;
 
@@ -92,7 +93,7 @@ export default class StrategyToolbox extends Component {
     var strat_dict=this.props.editData.strat_dict;
     var editThemes=this.props.editData.themes;
     var optimized_board=this.props.editData.optimized_board;
-    var editData=this.props.editData;
+    var editData=this.props.editData; 
       return (
         <div className={classes.StrategyToolbox}
            
@@ -101,11 +102,11 @@ export default class StrategyToolbox extends Component {
             <img src={'/images/chip_selector.png'} height={20} /> Chip Selector - Place one account chip here to heatmap the strategies and sort by performance for that specific chip.
            </span>
            <br/>
-           <div style={{ border: "1px solid black", padding:"10px", background:editThemes.page.background.chip_selector}}>
+           <div style={{ border: "1px solid black", padding:"10px", background:editThemes.page.chip_selector}}>
                 <div style={{width:"120px", float:"left"}}>
-                    <ChipSelector checkLock={this.props.checkLock} itemSelected={this.props.itemSelected} />
+                    <ChipSelector checkLock={this.props.checkLock} editData={editData} itemSelected={this.props.itemSelected} />
                 </div>
-                {editData.optimized_board.toString().length > 2 ? 
+                {this.props.itemSelected && this.props.itemSelected != 'None' && editData.optimized_board.toString().length > 2 ? 
                 <div  style={{
                   cursor:'pointer',
                   float:'left'
@@ -140,8 +141,8 @@ export default class StrategyToolbox extends Component {
            </span>
           
            <br/>
-           <div style={{ border: "1px solid black", padding:"10px", background:editThemes.page.background.strategy_selector}}>
-                    <div className="isLive" style={{ background:editThemes.page.background.strategy_selector}}>
+           <div style={{ border: "1px solid black", padding:"10px", background:editThemes.page.strategy_selector}}>
+                    <div className="isLive" style={{ background:editThemes.page.strategy_selector}}>
                                 <div style={{width:"25%", float:"right"}}>
                                         <center><b style={{color:heatmapTxt}} >{this.props.themes.live.heatmap.top_text}</b></center>
                                         <div style={{  "border": "1px solid",
@@ -178,7 +179,7 @@ export default class StrategyToolbox extends Component {
                                               idx+=1;
                                               return (
                                                     <div key={idx} style={{float:'left', zIndex: 10, }}>
-                                                      <StrategySelector items={itemList} strats={strats}/>
+                                                      <StrategySelector editData={editData} items={itemList} strats={strats}/>
                                                     </div>
                                                       );
                                                     }
