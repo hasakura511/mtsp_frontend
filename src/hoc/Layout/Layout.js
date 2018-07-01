@@ -14,7 +14,7 @@ const LINKS = [
   
   {
     id: "link5",
-    href: "/profile",
+    href: "/accounts",
     target: "_self",
     active: false,
     text: "ACCOUNTS",
