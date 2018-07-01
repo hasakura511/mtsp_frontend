@@ -232,7 +232,9 @@ export default class StrategySelector extends React.Component {
           <span id={id3} style={{marginTop:'28px', zIndex:10}}>
                 {this.state.item ? 
                 <StrategyButton id={'select_' + this.state.item.strategy } strategy={this.state.item} />
-                : null}
+                : 
+                <div style={{height:"60px"}}></div>
+                }
                 </span>
           <span id={id4} style={{
               marginLeft:'151px',

@@ -1484,30 +1484,38 @@ export default class Panel extends Component {
 
       if (this.props.isEdit) {
           const makeJiggle= () => {
-            var bounce = new Bounce();
-            bounce
-              .translate({
-                from: { x: -300, y: 0 },
-                to: { x: 0, y: 0 },
-                duration: 600,
-                stiffness: 4
-              })
-              .scale({
-                from: { x: 1, y: 1 },
-                to: { x: 0.1, y: 2.3 },
-                easing: "sway",
-                duration: 800,
-                delay: 65,
-                stiffness: 2
-              })
-              .scale({
-                from: { x: 1, y: 1},
-                to: { x: 5, y: 1 },
-                easing: "sway",
-                duration: 300,
-                delay: 30,
-              })
-              .applyTo(document.querySelectorAll(".required"));
+            try {
+              if (document.querySelectorAll(".required")) {
+                var bounce = new Bounce();
+                bounce
+                  .translate({
+                    from: { x: -300, y: 0 },
+                    to: { x: 0, y: 0 },
+                    duration: 600,
+                    stiffness: 4
+                  })
+                  .scale({
+                    from: { x: 1, y: 1 },
+                    to: { x: 0.1, y: 2.3 },
+                    easing: "sway",
+                    duration: 800,
+                    delay: 65,
+                    stiffness: 2
+                  })
+                  .scale({
+                    from: { x: 1, y: 1},
+                    to: { x: 5, y: 1 },
+                    easing: "sway",
+                    duration: 300,
+                    delay: 30,
+                  })
+                  .applyTo(document.querySelectorAll(".required"));
+                }
+                }
+                catch(err) {
+                    console.log(err);
+                }
+      
             }
             setInterval(makeJiggle, 5000);
       }
