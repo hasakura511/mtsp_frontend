@@ -1505,7 +1505,7 @@ export default class Panel extends Component {
             try {
               var items=$(".required");
               if (items && items != undefined && items.length) {
-                if (this.jiggleIdx == undefined) 
+                if (this.jiggleIdx == undefined || this.jiggleIdx >= items.length) 
                   this.jiggleIdx=0;
                 //console.log(items.length)
                 //console.log(this.jiggleIdx);
