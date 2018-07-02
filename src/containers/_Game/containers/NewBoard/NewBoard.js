@@ -979,7 +979,7 @@ export default class NewBoard extends Component {
           <div className={classes.ActionRow} style={{background:actionBg, backgroundRepeat: "no-repeat",
                 backgroundSize: "62px 62px",color:heatmapTxt}}>
              
-        </div>
+           </div>
         <div
             className={classes.Board}
             style={
@@ -997,11 +997,11 @@ export default class NewBoard extends Component {
             <div>
               <span style={{"marginTop":"-81px","float": "left", "width": "75%", "textAlign": "left", "display": "inline-block","verticalAlign": "top"}}>
               </span>
-              <span style={{"marginTop":"-21px", "float": "right", "width": "25%",  "textAlign": "right",  "display": "inline-block", "verticalAlign":"top"}}>
+              <span style={{"marginTop":"-10px", "float": "right", "width": "25%",  "textAlign": "right",  "display": "inline-block", "verticalAlign":"top"}}>
               
                 <img src="/images/infotext_button.png" width="22" style={{"margin":"10px"}} />
               </span>
-                   <div className="isLive" style={{ marginTop: "-50px",marginRight:"20px", background:editThemes.page.strategy_selector}}>
+                   <div className="isLive" style={{ marginTop: "-70px",marginRight:"20px", background:editThemes.page.strategy_selector}}>
                                 <div style={{width:"25%", float:"right"}}>
                                         <center><b style={{color:heatmapTxt}} >{this.props.themes.live.heatmap.top_text}</b></center>
                                         <div style={{  "border": "1px solid",
@@ -1020,7 +1020,6 @@ export default class NewBoard extends Component {
                                             {this.props.themes.live.heatmap.bottom_right}
                                             </span>
                                         </div>
-                                        <br/>
                                         <br/>
                                 </div>
 
