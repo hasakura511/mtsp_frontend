@@ -17,6 +17,7 @@ const stateToProps = state => {
     //dashboard_totals:state.betting.dashboard_totals,
     isLive:state.betting.isLive,
     accounts:state.betting.accounts,
+    dictionary_strategy:state.betting.dictionary_strategy,
     //heatmap_selection:state.betting.heatmap_selection,
     //liveDate:state.betting.liveDate,
   };
@@ -45,8 +46,8 @@ export default class StrategySelector extends React.Component {
         isReadOnly:PropTypes.bool,
         items:PropTypes.array.isRequired,
         strats:PropTypes.array.isRequired,
-        editData:PropTypes.object.isRequired
-
+        editData:PropTypes.object.isRequired,
+        dictionary_strategy:PropTypes.object.isRequired,
         //heatmap_selection:PropTypes.string
       };
     
@@ -70,7 +71,14 @@ export default class StrategySelector extends React.Component {
       }
       //console.log(stratDict)
       var item="";
+      
       this.props.items.map(button => {
+        if (button.id in this.props.dictionary_strategy) {
+          const desc=this.props.dictionary_strategy[button.id];
+          button.short=desc.board_name;
+          button.description=desc.description;
+          button.type=desc.type;
+        }
         if (!strats || !(button.strategy in stratDict)) {
           if (!itemSelected)  {
               itemSelected=button.strategy;
@@ -254,7 +262,7 @@ export default class StrategySelector extends React.Component {
               overflowY: "auto",
               overflowX: "hidden",
               zIndex:100,
-              marginBottom: "-200px",
+              marginBottom: "-300px",
               //osition:'absolute'
             }});
             

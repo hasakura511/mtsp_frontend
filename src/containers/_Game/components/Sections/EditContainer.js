@@ -118,7 +118,7 @@ export default class EditContainer extends PureComponent {
     */
      return dropTarget(
       <div
-        className={classes.EditContainer + (strategy.id == 'Required' ? " required" : "")}
+        className={classes.EditContainer}
         style={{
           backgroundColor: bgColor,
           color: textColor,
@@ -126,6 +126,7 @@ export default class EditContainer extends PureComponent {
           textAlign: "center",
         }}
       >
+
               <span style={{
                 "marginTop": "0px",
                 "paddingTop": "5px",
@@ -145,10 +146,38 @@ export default class EditContainer extends PureComponent {
                 <font style={{opacity: canDrop ? (isOver ? 0.2:1) : 1}} color={textColor}>{display}</font>
                 <br/>
                 <span style={{ "fontSize":"9px" }}>{rank}</span>
+          
             </span>
             {strategy.id != 'Required' && strategy.id != 'Optional' ?
                 <StrategyButton viewMode={'tab'} strategy={strategy} />
-                : null }
+                : 
+                <span 
+                className={strategy.id == 'Required' ? " required" : ""}
+                style={{
+                  "marginTop": "0px",
+                  "paddingTop": "5px",
+                  "paddingBottom": "5px",
+                  "marginLeft": "-50%",
+                  "whiteSpace": "nowrap",
+                  backgroundColor: bgColor,
+                  color: textColor,
+                  opacity: 1,
+                  position:"absolute",
+                  textAlign: "center",
+                  height:"100%",
+                  width:"100%",
+
+                  lineHeight:"10px"
+              }}>
+                  <br/>
+                  <font style={{opacity: canDrop ? (isOver ? 0.2:1) : 1}} color={textColor}>{display}</font>
+                  <br/>
+                  <span style={{ "fontSize":"9px" }}>{rank}</span>
+            
+              </span>
+              }
+
+                  
            
            
 

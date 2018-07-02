@@ -427,6 +427,8 @@ export default class NewBoard extends Component {
         loading:false,
         refreshing:false
       });
+      window.location='/board'
+
     });
 
   }
@@ -477,6 +479,8 @@ export default class NewBoard extends Component {
         loading:false,
         refreshing:false
       });
+      window.location='/board'
+
     });
 
   }
@@ -508,6 +512,7 @@ export default class NewBoard extends Component {
       console.log('received new board data')
       console.log(data);
       var itemSelected = chip_id ?  chip_id : 'None';
+      
       this.setState({
         editData:data,
         itemSelected:itemSelected,
@@ -529,6 +534,7 @@ export default class NewBoard extends Component {
         loading:false,
         refreshing:false
       });
+      window.location='/board'
     });
 
   }
@@ -989,11 +995,36 @@ export default class NewBoard extends Component {
             }
           >
             <div>
-              <span style={{"marginTop":"-81px","float": "left", "width": "50%", "textAlign": "left", "display": "inline-block","verticalAlign": "top"}}>
+              <span style={{"marginTop":"-81px","float": "left", "width": "75%", "textAlign": "left", "display": "inline-block","verticalAlign": "top"}}>
               </span>
-              <span style={{"marginTop":"-81px", "float": "right", "width": "50%",  "textAlign": "right",  "display": "inline-block", "verticalAlign":"top"}}>
+              <span style={{"marginTop":"-21px", "float": "right", "width": "25%",  "textAlign": "right",  "display": "inline-block", "verticalAlign":"top"}}>
+              
                 <img src="/images/infotext_button.png" width="22" style={{"margin":"10px"}} />
               </span>
+                   <div className="isLive" style={{ marginTop: "-50px",marginRight:"20px", background:editThemes.page.strategy_selector}}>
+                                <div style={{width:"25%", float:"right"}}>
+                                        <center><b style={{color:heatmapTxt}} >{this.props.themes.live.heatmap.top_text}</b></center>
+                                        <div style={{  "border": "1px solid",
+                                                        "background": themes_bg,
+                                                        "width":"100%",
+                                                        "height":"45px",  
+                                                        }}>
+                                                        &nbsp;
+                                                        <br/>
+                                        </div>
+                                        <div>
+                                            <span style={{"float": "left", "width": "50%", "textAlign": "left", color:heatmapTxt}}>
+                                            {this.props.themes.live.heatmap.bottom_left}
+                                            </span>
+                                            <span style={{"float": "left", "width": "50%", "textAlign": "right", color:heatmapTxt}}>
+                                            {this.props.themes.live.heatmap.bottom_right}
+                                            </span>
+                                        </div>
+                                        <br/>
+                                        <br/>
+                                </div>
+
+                        </div>
             </div>
             <Panel
               isLive={true}

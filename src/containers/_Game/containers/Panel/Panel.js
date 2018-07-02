@@ -413,20 +413,23 @@ export default class Panel extends Component {
     rightSystems= rightSystems && rightSystems.length ? rightSystems : [Object.assign({}, optSystem)]
  
 
+    var topStratsLen=topStrats.length;
     if (topStrats.length > 0 && topStrats.length <= 6) {
         topSystems=topStrats.slice(0);
-        var rem=12%topSystems.length;
-        var bottomNum=Math.ceil(12/topSystems.length);
+        var rem=12%topStrats.length;
+        var bottomNum=Math.ceil(12/topStrats.length);
         var hasReq=false;
-        if (bottomStrats.length +2 <= bottomNum) {
+        if (bottomStrats.length <= bottomNum) {
           if (rem) {
             isEditComplete=false;
             topSystems.push(Object.assign({}, reqSystem))
+            topStratsLen+=1;
             hasReq=true;
           } 
         }
         if (topStrats.length < 6 && !hasReq)
           topSystems.push(Object.assign({}, optSystem))
+        bottomNum=Math.ceil(12/topStratsLen);
         if (bottomStrats.length < bottomNum) {
           var systems=bottomStrats.slice(0);
           var sysToAdd=bottomNum-bottomStrats.length;
@@ -440,7 +443,21 @@ export default class Panel extends Component {
     } 
 
     if (topStrats.length == 0 && bottomStrats.length < 12 && bottomSystems.length < 12 && !hasBottomReq) {
-      bottomSystems.push(Object.assign({}, optSystem))
+      if (topStratsLen == 0)
+        topStratsLen+=1;
+
+      bottomNum=Math.ceil(12/topStratsLen);
+      if (bottomStrats.length < bottomNum) {
+        var systems2=bottomStrats.slice(0);
+        var sysToAdd2=bottomNum-bottomStrats.length;
+        for (var i2=0; i2 < sysToAdd2; i2++) {
+          isEditComplete=false;
+          systems2.push(Object.assign({}, reqSystem));
+          hasBottomReq=true;
+        }
+        bottomSystems=systems2;
+      }
+
 
     }
     var numToAdd=0;
@@ -489,9 +506,9 @@ export default class Panel extends Component {
       for (let yIndex = 0; yIndex < maxHeight; yIndex++) {
           //slot = slots[xIndex * maxHeight + yIndex];
           //var sideSystem=sideSystems[yIndex];
-          var topnum=topStrats.length == 0 ? 1 : topStrats.length;
+          var topnum=topStrats.length == 0 ? 1 : topStratsLen;
           var topIdx=xIndex % topnum;
-          var num=topStrats.length == 0 ? 1 : topStrats.length;
+          var num=topStrats.length == 0 ? 1 : topStratsLen;
           var bottomIdx=Math.min(bottomSystems.length-1, Math.floor(xIndex / num))
           var topSystem=topSystems[topIdx];
           var bottomSystem=bottomSystems[bottomIdx];
@@ -889,7 +906,7 @@ export default class Panel extends Component {
       if (topStrats.length > 6) {
         topStrats=topStrats.slice(0,6);
       }
-      var bottomNum=Math.ceil(12/topStrats.length);
+      var bottomNum=Math.floor(12/topStrats.length);
       if (bottomNum < bottomStrats.length) {
         bottomStrats=bottomStrats.slice(0,bottomNum);
       }
@@ -1348,7 +1365,7 @@ export default class Panel extends Component {
                       <img src={"/images/save_disabled.png"} height={30} width={161} />
                    }
                     </div>
-                    <div style={{ marginRight: '-151px', marginTop: '2px', fontSize: "18px", color:"#ffffff", float:"right"}}
+                    <div style={{ marginRight: '-151px', marginTop: '2px', fontSize: "18px", color:this.state.isEditComplete ? "#000000":"#ffffff", float:"right"}}
                     
                     >
                       Save Board
@@ -1483,41 +1500,41 @@ export default class Panel extends Component {
       }
 
       if (this.props.isEdit) {
+          
           const makeJiggle= () => {
             try {
-              if (document.querySelectorAll(".required")) {
+              var items=$(".required");
+              if (items && items != undefined && items.length) {
+                if (this.jiggleIdx == undefined) 
+                  this.jiggleIdx=0;
+                //console.log(items.length)
+                //console.log(this.jiggleIdx);
+                var item=items[this.jiggleIdx];
+
                 var bounce = new Bounce();
                 bounce
-                  .translate({
-                    from: { x: -300, y: 0 },
-                    to: { x: 0, y: 0 },
-                    duration: 600,
-                    stiffness: 4
-                  })
-                  .scale({
-                    from: { x: 1, y: 1 },
-                    to: { x: 0.1, y: 2.3 },
-                    easing: "sway",
-                    duration: 800,
-                    delay: 65,
-                    stiffness: 2
-                  })
                   .scale({
                     from: { x: 1, y: 1},
-                    to: { x: 5, y: 1 },
+                    to: { x: 1.5, y: 1.5 },
                     easing: "sway",
-                    duration: 300,
-                    delay: 30,
+                    duration: 2000,
+                    stiffness: 2,
+                    delay: 0,
                   })
-                  .applyTo(document.querySelectorAll(".required"));
+                  .applyTo(item);
+                  if (this.jiggleIdx == undefined || this.jiggleIdx >= items.length -1) {
+                    this.jiggleIdx=0;
+                  } else {
+                    this.jiggleIdx+=1;
+                  }
+  
                 }
-                }
-                catch(err) {
+              } catch(err) {
                     console.log(err);
-                }
+              }
       
             }
-            setInterval(makeJiggle, 5000);
+            setInterval(makeJiggle, 2000);
       }
   }
 

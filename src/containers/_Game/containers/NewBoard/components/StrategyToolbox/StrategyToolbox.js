@@ -98,14 +98,28 @@ export default class StrategyToolbox extends Component {
         <div className={classes.StrategyToolbox}
            
                    >
+          <div style={{
+            width:"40%",
+            float:'left'
+          }}>
            <span style={{fontSize: 14}}>
-            <img src={'/images/chip_selector.png'} height={20} /> Chip Selector - Place one account chip here to heatmap the strategies and sort by performance for that specific chip.
+            <img src={'/images/chip_selector.png'} height={20} /> Chip Selector
            </span>
            <br/>
-           <div style={{ border: "1px solid black", padding:"10px", background:editThemes.page.chip_selector}}>
+           <div style={{ border: "1px solid black", padding:"10px", margin:"10px", height:"400px", background:editThemes.page.chip_selector}}>
+                <div style={{textAlign:"left"}}>
+                {editThemes.page.chip_selector_desc}
+           
+                </div>
                 <div style={{width:"120px", float:"left"}}>
                     <ChipSelector checkLock={this.props.checkLock} editData={editData} itemSelected={this.props.itemSelected} />
                 </div>
+                <br/>
+                <div style={{"clear": "both"}}></div>
+                <div style={{textAlign:"left"}}>
+                Select one account here to optimize Board
+                </div>
+
                 {this.props.itemSelected && this.props.itemSelected != 'None' && editData.optimized_board.toString().length > 2 ? 
                 <div  style={{
                   cursor:'pointer',
@@ -136,50 +150,37 @@ export default class StrategyToolbox extends Component {
                 <div style={{"clear": "both"}}></div>
            </div>
            <br/>
+        </div>
+        <div style={{
+        width:"60%",
+        float:'left'
+      }}>
            <span style={{fontSize: 14}}>
-            <img src={'/images/strategy_selector.png'} height={20} />  Strategy Selector - Drag your desired strategy to the tabs on the board below.
+            <img src={'/images/strategy_selector.png'} height={20} />  Strategy Selector
            </span>
           
            <br/>
-           <div style={{ border: "1px solid black", padding:"10px", background:editThemes.page.strategy_selector}}>
-                    <div className="isLive" style={{ background:editThemes.page.strategy_selector}}>
-                                <div style={{width:"25%", float:"right"}}>
-                                        <center><b style={{color:heatmapTxt}} >{this.props.themes.live.heatmap.top_text}</b></center>
-                                        <div style={{  "border": "1px solid",
-                                                        "background": themes_bg,
-                                                        "width":"100%",
-                                                        "height":"45px",  
-                                                        }}>
-                                                        &nbsp;
-                                                        <br/>
-                                        </div>
-                                        <div>
-                                            <span style={{"float": "left", "width": "50%", "textAlign": "left", color:heatmapTxt}}>
-                                            {this.props.themes.live.heatmap.bottom_left}
-                                            </span>
-                                            <span style={{"float": "left", "width": "50%", "textAlign": "right", color:heatmapTxt}}>
-                                            {this.props.themes.live.heatmap.bottom_right}
-                                            </span>
-                                        </div>
-                                </div>
-
-                        </div>
-                                <br/>
+           <div style={{ border: "1px solid black", padding:"10px",  margin:"10px", height:"400px", background:editThemes.page.strategy_selector}}>
+           {editThemes.page.strategy_selector_desc}
+           <br/>
+           <br/>
                                 {Object.keys(strat_dict).map(key => {
                                     var items=strat_dict[key];
                                     //console.log(items);
                                     var idx=0;
                                     return (
-                                        <div key={key} style={{ zIndex: 0 }}>
-                                          {key}<br/>
+                                        <div key={key} style={{ float:'left', zIndex: 0 }}>
+                                          <center>{key}</center>
                                           {Object.keys(items).map(key2 => {
                                             var itemList=items[key2];
                                             if (itemList) {
                                               //console.log(itemList);
                                               idx+=1;
                                               return (
-                                                    <div key={idx} style={{float:'left', zIndex: 10, }}>
+                                                    <div key={idx} style={{ zIndex: 10, }}>
+                                                    <center>
                                                       <StrategySelector editData={editData} items={itemList} strats={strats}/>
+                                                    </center>
                                                     </div>
                                                       );
                                                     }
@@ -195,6 +196,9 @@ export default class StrategyToolbox extends Component {
                     
                     <div style={{"clear": "both"}}></div>
             </div>
+          </div>
+          <div style={{"clear": "both"}}></div>
+
         </div>
       );
   }  
