@@ -107,8 +107,8 @@ export default class StrategyToolbox extends Component {
             <img src={'/images/chip_selector.png'} height={20} /> Chip Selector
            </span>
            <br/>
-           <div style={{ border: "1px solid black", padding:"5px", margin:"5px",height:'300px',
-           marginBottom:'0px',paddingBottom:'0px',  
+           <div style={{ border: "1px solid black", padding:"5px", margin:"5px",
+           minHeight:'300px',
            background:editThemes.page.chip_selector}}>
                 <div style={{textAlign:"left"}}>
                 {editThemes.page.chip_selector_desc}
@@ -190,8 +190,8 @@ export default class StrategyToolbox extends Component {
           
            <br/>
            <div style={{ border: "1px solid black", padding:"5px",  margin:"5px", 
-           marginBottom:'0px',paddingBottom:'0px', 
-           height:'300px',background:editThemes.page.strategy_selector}}>
+          
+           minHeight:'300px',background:editThemes.page.strategy_selector}}>
            
            <div style={{textAlign:"left"}}>
            {editThemes.page.strategy_selector_desc}
