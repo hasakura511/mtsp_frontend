@@ -833,12 +833,17 @@ export default class Panel extends Component {
       leftStrats
     } = this.state;
 
-    console.log("Dropped Strat")
+    console.log("Moved Strat")
     console.log(strat);
     console.log(position);  
     strat.display=strat.strategy;
     strat.color=strat.color_border;
 
+    var origTop=topStrats;
+    var origRight=rightStrats;
+    var origLeft=leftStrats;
+    var origBottom=bottomStrats;
+    
 
     var strats=[];
     topStrats=topStrats.map(s => {
@@ -926,6 +931,28 @@ export default class Panel extends Component {
     if (bottomStrats.length > 12) {
        bottomStrats=bottomStrats.slice(0,12);
     }
+
+    // check if action completed
+    found=false;
+    topStrats.map(s => {
+      if (s.strategy == strat.strategy)
+        found=true;
+    })
+    rightStrats.map(s => {
+      if (s.strategy == strat.strategy)
+        found=true;
+    })
+    bottomStrats.map(s => {
+      if (s.strategy == strat.strategy)
+        found=true;
+    })
+    leftStrats.map(s => {
+      if (s.strategy == strat.strategy)
+        found=true;
+    })
+    // if not return;
+    if (!found)
+      return;
   /*
     this.setState({
         topStrats:topStrats,

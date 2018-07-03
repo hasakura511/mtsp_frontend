@@ -158,7 +158,7 @@ export default class StrategySelector extends React.Component {
       return (
           <div style={containerStyle}>
             <div style={{pointerEvents:"hover", cursor: "text"}}>
-              <StrategyButton id={'select_' + item.strategy } strategy={item.strategy} />
+              <StrategyButton id={'select_' + item.strategy } dontDrag={true}  strategy={item.strategy} />
              </div>
              
           </div>

@@ -52,6 +52,8 @@ const strategySource = {
   },
   canDrag(props) {
     const { strategy } = props;
+    if (props.dontDrag)
+      return false;
     
     return true;
   },
@@ -99,7 +101,8 @@ export default class StrategyButton extends PureComponent {
     isReadOnly:PropTypes.bool,
     strategy:PropTypes.object.isRequired,
     viewMode:PropTypes.string,
-    dictionary_strategy:PropTypes.object.isRequired
+    dictionary_strategy:PropTypes.object.isRequired,
+    dontDrag:PropTypes.bool,
     //heatmap_selection:PropTypes.string
   };
 
