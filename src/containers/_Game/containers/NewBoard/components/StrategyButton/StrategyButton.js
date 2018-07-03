@@ -134,6 +134,16 @@ export default class StrategyButton extends PureComponent {
   getChipStyle = () => {
     const { dragSource, isDragging, dragPreview, canDrag, showHeatmap, isLive, strategy, dictionary_strategy } = this.props;
     
+    if (strategy.strategy in dictionary_strategy) {
+      const desc=dictionary_strategy[strategy.strategy];
+      strategy.id=strategy.strategy;
+      strategy.display=strategy.strategy;
+      
+      strategy.short=desc.board_name;
+      strategy.description=desc.description;
+      strategy.type=desc.type;
+    }
+    
     var mesg=" Name: " + strategy.id + "\n Full Name: " + strategy.short + "\n Type: " + strategy.type + "\n Description: " + strategy.description + "\n Rank: " + strategy.rank;
 
     var title=mesg;

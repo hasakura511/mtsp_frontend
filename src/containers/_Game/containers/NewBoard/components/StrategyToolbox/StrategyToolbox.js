@@ -25,6 +25,9 @@ const dispatchToProps = dispatch => {
     showHeatmap(id) {
       dispatch(actions.showHeatmap(id));
     },
+    addTimedToaster(toaster) {
+      dispatch(actions.addTimedToaster(toaster, -1));
+    },
   };
 };
 
@@ -42,7 +45,8 @@ export default class StrategyToolbox extends Component {
     checkLock:PropTypes.func.isRequired,
     itemSelected:PropTypes.string.isRequired,
     optimizeBoard:PropTypes.func.isRequired,
-    strats:PropTypes.array.isRequired
+    strats:PropTypes.array.isRequired,
+    addTimedToaster: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -53,6 +57,16 @@ export default class StrategyToolbox extends Component {
     };
     this.myRef = React.createRef();
 
+  }
+
+  componentWillReceiveProps(newProps) {
+    var self=this;
+    if (newProps.editData) {
+      console.log("Strat Toolbox Received new data")
+      setTimeout(() => {
+        self.forceUpdate();
+      }, 2000);
+    }
   }
 
   handleEnter(e) {
@@ -119,9 +133,6 @@ export default class StrategyToolbox extends Component {
                 </div>
                 <br/>
                 <div style={{"clear": "both"}}></div>
-                <div style={{textAlign:"left"}}>
-                Select one account here to optimize Board
-                </div>
 
                 {this.props.itemSelected && this.props.itemSelected != 'None' && editData.optimized_board.toString().length > 2 ? 
                 <div  style={{
@@ -141,7 +152,15 @@ export default class StrategyToolbox extends Component {
                      <div style={{ marginLeft: '-115px', marginTop: '40px', fontSize: "18px", color:"#ffffff", float:"left"}}>Optimize Board</div>
                 </div>
                 :
-                <div style={{float:'left'}}>
+                <div style={{float:'left'}}
+                  onClick={() => {
+
+                    self.props.addTimedToaster({
+                      id: "save-error",
+                      text: this.props.editData.disabled_optimize_button_message
+                    });
+                  }}
+                >
                   <div style={{width:"200px", marginTop: "10px", float:"left"}}>
                     <img src={'/images/optimize_disabled.png'} height={60}
                   
@@ -164,14 +183,14 @@ export default class StrategyToolbox extends Component {
                   <div style={{width:"200px", marginTop: "10px", float:"left"}}>
                   <img src={"/images/current_board.png"} height={60}/>
                     </div>
-                     <div style={{ marginLeft: '-115px', marginTop: '40px', fontSize: "18px", color:"#ffffff", float:"left"}}>Current Board</div>
+                     <div style={{ marginLeft: '-115px', marginTop: '40px', fontSize: "18px", color:"#ffffff", float:"left"}}>Load Live Board</div>
                 </div>
                 :
                 <div style={{float:'left'}}>
                   <div style={{width:"200px", marginTop: "10px", float:"left"}}>
                   <img src={"/images/current_board.png"} height={60}/>
                   </div>
-                   <div style={{ marginLeft: '-115px', marginTop: '40px', fontSize: "18px", color:"#ffffff", float:"left"}}>Current Board</div>
+                   <div style={{ marginLeft: '-115px', marginTop: '40px', fontSize: "18px", color:"#ffffff", float:"left"}}>Load Live Board</div>
                   </div>
                 }
                 <div style={{"clear": "both"}}></div>
@@ -203,15 +222,16 @@ export default class StrategyToolbox extends Component {
                                     //console.log(items);
                                     var idx=0;
                                     return (
-                                        <div key={key} style={{ float:'left', zIndex: 0 }}>
-                                          <center>{key}</center>
+                                        <div key={key} style={{ float:'left', zIndex: 0, textAlign: 'center', width: "33%" }}>
+                                          <center><b>{key}</b></center>
+                                          <hr style={{width: "90%", border: "1px solid black"}} />
                                           {Object.keys(items).map(key2 => {
                                             var itemList=items[key2];
                                             if (itemList) {
                                               //console.log(itemList);
                                               idx+=1;
                                               return (
-                                                    <div key={idx} style={{ width:'100%',zIndex: 10, }}>
+                                                    <div key={idx} style={{ width:'100%', marginLeft: "20px", zIndex: 10, }}>
                                                     <center>
                                                       <StrategySelector editData={editData} items={itemList} strats={strats}/>
                                                     </center>

@@ -73,8 +73,9 @@ export default class StrategySelector extends React.Component {
       var item="";
       
       this.props.items.map(button => {
-        if (button.id in this.props.dictionary_strategy) {
-          const desc=this.props.dictionary_strategy[button.id];
+        if (button.strategy in this.props.dictionary_strategy) {
+          const desc=this.props.dictionary_strategy[button.strategy];
+          button.id=button.strategy;
           button.short=desc.board_name;
           button.description=desc.description;
           button.type=desc.type;
@@ -107,9 +108,17 @@ export default class StrategySelector extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
+      var self=this;
       if (newProps.strats) {
+        console.log('Strat Selector Received New Data')
         this.setState(this.getItemList(newProps.strats));
+        setTimeout(() => {
+          self.setState(self.getItemList(newProps.strats));
+          self.forceUpdate();
+        }, 1000);
       }
+
+
 
     }
     handleItemChange = (value) => {
@@ -127,7 +136,7 @@ export default class StrategySelector extends React.Component {
       const containerStyle = {
         display: 'flex',
         flexDirection: 'row',
-                
+        height: "40px",
       };
   
      
@@ -140,12 +149,18 @@ export default class StrategySelector extends React.Component {
       /*
       //console.log("strategy selector button:")
       //console.log(item);
+      <div style={{marginLeft:"-120px",cursor: "text", pointerEvents:"none", background:"transparent", width:"100%", zIndex:2}}>
+              &nbsp;
+             </div>
+
       */
 
       return (
           <div style={containerStyle}>
+            <div style={{pointerEvents:"hover", cursor: "text"}}>
               <StrategyButton id={'select_' + item.strategy } strategy={item.strategy} />
-              
+             </div>
+             
           </div>
         
       );
@@ -213,9 +228,7 @@ export default class StrategySelector extends React.Component {
                         overflowX: "hidden",
                         zIndex:100,
                         marginBottom: "-200px",
-                      
                       }});
-                        
                     }
                   }
                   onBlur={
@@ -263,8 +276,12 @@ export default class StrategySelector extends React.Component {
               overflowX: "hidden",
               zIndex:100,
               marginBottom: "-300px",
+              
               //osition:'absolute'
             }});
+            console.log($('#'+id2).height)
+            //$('#' + id).css('margin-top',"-200px");
+
             
           }} style={imageStyle}/>
            </span>

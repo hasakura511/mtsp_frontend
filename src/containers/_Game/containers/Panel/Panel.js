@@ -1352,7 +1352,7 @@ export default class Panel extends Component {
                   else
                     self.props.addTimedToaster({
                       id: "save-error",
-                      text: "Please Make Sure all the Requirements are Met"
+                      text: this.props.editData.disabled_save_button_message
                     });
           
                 }}
