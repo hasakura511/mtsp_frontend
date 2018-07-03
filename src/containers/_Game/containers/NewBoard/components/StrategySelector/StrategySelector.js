@@ -195,7 +195,7 @@ export default class StrategySelector extends React.Component {
           <span  id={id} style={this.state.contentStyle}
            onMouseLeave={
                 () => {
-                  
+                  //this.disabled=true;
                   this.setState({contentStyle : {
                     width:"150px",
                     overflowY: "visible",
@@ -214,6 +214,7 @@ export default class StrategySelector extends React.Component {
 
                 <Dropdown
                   id={id2}
+                  //disabled={this.disabled ? true: false}
                   className={'dropdown' }
                   auto={false}
                   source={this.state.items}
@@ -271,21 +272,25 @@ export default class StrategySelector extends React.Component {
              $('#' + id3).hide();
              $('#' + id).show();
              $('#' + id2).show();
-             $('#' + id2).trigger('blur');
-             $('#' + id2).trigger('click');
-               $('#' + id2).trigger('focus');
-             this.setState({contentStyle : {
-              width:"150px",
-              height:"300px",
-              overflowY: "auto",
-              overflowX: "hidden",
-              zIndex:100,
-              marginBottom: "-300px",
-              background:'transparent',
-              
-              //osition:'absolute'
-            }});
-            console.log($('#'+id2).height)
+             setTimeout(() => {
+              $('#' + id2).trigger('click');
+              $('#' + id2).trigger('focus');
+              this.setState({contentStyle : {
+                width:"150px",
+                height:"300px",
+                overflowY: "auto",
+                overflowX: "hidden",
+                zIndex:100,
+                marginBottom: "-300px",
+                background:'transparent',
+                
+                //osition:'absolute'
+              }});
+             }, 100  )
+             //$('#' + id2).trigger('click');
+             
+            
+            //console.log($('#'+id2).height)
             //$('#' + id).css('margin-top',"-200px");
 
             
