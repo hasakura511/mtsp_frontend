@@ -183,7 +183,7 @@ export default class StrategySelector extends React.Component {
             flexDirection: 'row',
             width:"200px",
             marginTop:"-22px",
-            
+            height:"80px",
           };
           
       var id=Math.round(Math.random() * 1000000);
@@ -195,6 +195,7 @@ export default class StrategySelector extends React.Component {
           <span  id={id} style={this.state.contentStyle}
            onMouseLeave={
                 () => {
+                  
                   this.setState({contentStyle : {
                     width:"150px",
                     overflowY: "visible",
@@ -205,7 +206,8 @@ export default class StrategySelector extends React.Component {
                   $('#' + id3).show();
                   $('#' + id).hide();
                   $('#' + id2).hide();
-              
+                  //$('#' + id2).trigger('click');
+             
              }
            }
           >
@@ -213,7 +215,7 @@ export default class StrategySelector extends React.Component {
                 <Dropdown
                   id={id2}
                   className={'dropdown' }
-                  auto={true}
+                  auto={false}
                   source={this.state.items}
                   onChange={this.handleItemChange}
                   template={this.customItem}
@@ -227,8 +229,9 @@ export default class StrategySelector extends React.Component {
                         overflowY: "auto",
                         overflowX: "hidden",
                         zIndex:100,
-                        marginBottom: "-200px",
+                        marginBottom: "-300px",
                       }});
+                      this.focusing=true;
                     }
                   }
                   onBlur={
@@ -243,6 +246,7 @@ export default class StrategySelector extends React.Component {
                       $('#' + id3).show();
                       $('#' + id).hide();
                       $('#' + id2).hide();
+                      this.focusing=false;
                     }
                   }
                 />
@@ -250,7 +254,7 @@ export default class StrategySelector extends React.Component {
 
                
           </span>
-          <span id={id3} style={{marginTop:'28px', zIndex:10}}>
+          <span id={id3} style={{marginTop:'28px', minHeight:"60px", zIndex:10}}>
                 {this.state.item ? 
                 <StrategyButton id={'select_' + this.state.item.strategy } strategy={this.state.item} />
                 : 
@@ -267,8 +271,9 @@ export default class StrategySelector extends React.Component {
              $('#' + id3).hide();
              $('#' + id).show();
              $('#' + id2).show();
+             $('#' + id2).trigger('blur');
              $('#' + id2).trigger('click');
-             $('#' + id2).trigger('focus');
+               $('#' + id2).trigger('focus');
              this.setState({contentStyle : {
               width:"150px",
               height:"300px",
@@ -276,6 +281,7 @@ export default class StrategySelector extends React.Component {
               overflowX: "hidden",
               zIndex:100,
               marginBottom: "-300px",
+              background:'transparent',
               
               //osition:'absolute'
             }});

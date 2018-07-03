@@ -418,9 +418,10 @@ export default class NewBoard extends Component {
     .then(({ data }) => {
       console.log('received lock check')
       console.log(data);
-      if (data.message != "OK")
+      if (data.message != "OK") {
+        window.location='/board'
         this.sendNotice(data.message);
-      else
+      } else
         self.initializeNewBoard(reinitialize, chip_id, last_date, board_config);
      
     })

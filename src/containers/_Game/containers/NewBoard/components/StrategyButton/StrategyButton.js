@@ -144,7 +144,7 @@ export default class StrategyButton extends PureComponent {
       strategy.type=desc.type;
     }
     
-    var mesg=" Name: " + strategy.id + "\n Full Name: " + strategy.short + "\n Type: " + strategy.type + "\n Description: " + strategy.description + "\n Rank: " + strategy.rank;
+    var mesg=" Name: " + strategy.id + "\n Full Name: " + strategy.short + "\n Type: " + strategy.type + "\n Description: " + strategy.description + "\n " + strategy.rank;
 
     var title=mesg;
     var chipStyle={borderColor:strategy.color_border, 
