@@ -131,7 +131,8 @@ export default class Panel extends Component {
     optimize:PropTypes.bool,
     optimizeDone:PropTypes.func,
     updateStrats:PropTypes.func,
-    dictionary_strategy:PropTypes.object
+    dictionary_strategy:PropTypes.object,
+    optimizeData:PropTypes.array,
   };
 
   /**
@@ -268,7 +269,7 @@ export default class Panel extends Component {
     ////console.log(newProps.balanceChips);
     ////console.log(newProps.bettingChips);
     if (this.props.isEdit) {
-      if (newProps.optimize && !this.props.optimize) {
+      if (newProps.optimizeData && (newProps.optimize || this.props.optimize)) {
         self.optimizeBoard();
       }
     }
@@ -307,7 +308,9 @@ export default class Panel extends Component {
 
       }
     }
-    this.makeBoard(newProps);
+    if (!this.props.isEdit) {
+      this.makeBoard(newProps);
+    }
   }
 
   /**
@@ -644,9 +647,10 @@ export default class Panel extends Component {
   optimizeBoard = () => {
     var self=this;
     if (this.props.isEdit) {
-      console.log('optimize board called')
+      console.log('Panel: Optimize board called')
       //this.clearStrats();
-      var board=  JSON.parse(this.props.editData.optimized_board);
+      var board=  this.props.optimizeData; //editData.optimized_board);
+      console.log(board);
       var topStrats=[];
       var rightStrats=[];
       var leftStrats=[];

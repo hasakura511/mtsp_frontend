@@ -210,9 +210,12 @@ export default class NewBoard extends Component {
       bottomSystems:[],
       itemSelected:'None',
       optimize:false,
+      optimizeData:[],
       strats:[],
     };
     this.strats=[];
+    this.optimizeData=[];
+
   
   }
 
@@ -323,17 +326,22 @@ export default class NewBoard extends Component {
   optimizeDone = () => {
     var self=this;
     self.setState({optimize:false})
-    
+    setTimeout(() => {
+
+      self.forceUpdate();
+      //alert('update');
+    },1000);
   }
-  optimizeBoard= () => {
+  optimizeBoard= (optimizeData) => {
     var self=this;
     self.props.showDialog(
       " Are you sure you want to load the optimized board?",
       "Your changes to the editable board below will be discarded.",
       () => {
           console.log("Optimize Board Start");
-
-          self.setState({optimize:true})
+          console.log(optimizeData);
+          self.optimizeData=optimizeData;
+          self.setState({optimize:true, optimizeData:optimizeData})
           self.props.silenceDialog();
 
         },
@@ -1042,6 +1050,7 @@ export default class NewBoard extends Component {
               initializeLive={this.initializeLive}
               optimize={this.state.optimize}
               optimizeDone={this.optimizeDone}
+              optimizeData={this.optimizeData}
               updateStrats={this.updateStrats}
             />
              

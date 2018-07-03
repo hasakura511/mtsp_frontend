@@ -16,6 +16,7 @@ const stateToProps = state => {
     isLive:state.betting.isLive,
     heatmap_selection:state.betting.heatmap_selection,
     themes: state.betting.themes,
+    accounts:state.betting.accounts,
     //liveDate:state.betting.liveDate,
   };
 };
@@ -47,6 +48,7 @@ export default class StrategyToolbox extends Component {
     optimizeBoard:PropTypes.func.isRequired,
     strats:PropTypes.array.isRequired,
     addTimedToaster: PropTypes.func.isRequired,
+    accounts:PropTypes.array.isRequired
   };
 
   constructor(props) {
@@ -141,7 +143,7 @@ export default class StrategyToolbox extends Component {
                 }}
                 onClick={()=>{
 
-                  self.props.optimizeBoard();
+                  self.props.optimizeBoard(JSON.parse(editData.optimized_board));
                 }}
                   >
                   <div style={{width:"200px", marginTop: "10px", float:"left"}}>
@@ -176,8 +178,17 @@ export default class StrategyToolbox extends Component {
                   float:'left'
                 }}
                 onClick={()=>{
-
-                  self.props.optimizeBoard();
+                  //console.log(this.props.itemSelected);
+                  var item="";
+                  self.props.accounts.map(account => {
+                    if (account.chip_id==this.props.itemSelected) 
+                      item=account;
+                  })
+                  if (item && item.board_config_fe) {
+                    //console.log(JSON.parse(editData.optimized_board));
+                    //console.log(item.board_config_fe);
+                    self.props.optimizeBoard(item.board_config_fe);
+                  }
                 }}
                   >
                   <div style={{width:"200px", marginTop: "10px", float:"left"}}>
@@ -186,7 +197,21 @@ export default class StrategyToolbox extends Component {
                      <div style={{ marginLeft: '-115px', marginTop: '40px', fontSize: "18px", color:"#ffffff", float:"left"}}>Load Live Board</div>
                 </div>
                 :
-                <div style={{float:'left'}}>
+                <div style={{float:'left'}}
+                onClick={()=>{
+                  //console.log(this.props.itemSelected);
+                  var item="";
+                  self.props.accounts.map(account => {
+                    if (!item)
+                      item=account;
+                  })
+                  if (item && item.board_config_fe) {
+                    //console.log(JSON.parse(editData.optimized_board));
+                    //console.log(item.board_config_fe);
+                    self.props.optimizeBoard(item.board_config_fe);
+                  }
+                }}
+                >
                   <div style={{width:"200px", marginTop: "10px", float:"left"}}>
                   <img src={"/images/current_board.png"} height={60}/>
                   </div>
