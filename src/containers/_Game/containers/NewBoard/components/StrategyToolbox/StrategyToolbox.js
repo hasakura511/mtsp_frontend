@@ -124,7 +124,7 @@ export default class StrategyToolbox extends Component {
            </span>
            <br/>
            <div style={{ border: "1px solid black", padding:"5px", margin:"5px",
-           minHeight:'300px',
+           minHeight:'320px',
            background:editThemes.page.chip_selector}}>
                 <div style={{textAlign:"left"}}>
                 {editThemes.page.chip_selector_desc}
@@ -235,7 +235,7 @@ export default class StrategyToolbox extends Component {
            <br/>
            <div style={{ border: "1px solid black", padding:"5px",  margin:"5px", 
           
-           minHeight:'300px',background:editThemes.page.strategy_selector}}>
+           minHeight:'320px',background:editThemes.page.strategy_selector}}>
            
            <div style={{textAlign:"left"}}>
            {editThemes.page.strategy_selector_desc}
