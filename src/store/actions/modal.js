@@ -31,3 +31,19 @@ export const loadingDialog = () => {
     type: actionTypes.LOADING_DIALOG
   };
 };
+
+export const showHtmlDialog = (
+  htmlContent
+) => {
+  console.log(arguments);
+  return {
+    type: actionTypes.SHOW_HTML_DIALOG,
+    htmlContent
+  };
+};
+
+export const silenceHtmlDialog = () => {
+  return {
+    type: actionTypes.SILENCE_HTML_DIALOG
+  };
+};

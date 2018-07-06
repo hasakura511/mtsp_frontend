@@ -14,7 +14,12 @@ export {
   reactivate
 } from "./auth";
 export { addToaster, removeToaster, addTimedToaster, clearAll } from "./toasters";
-export { silenceDialog, showDialog, loadingDialog } from "./modal";
+export {  silenceDialog, 
+          showDialog, 
+          loadingDialog,
+          showHtmlDialog,
+          silenceHtmlDialog 
+      } from "./modal";
 export { addBet, 
          nextDay, 
          toggleMode, 

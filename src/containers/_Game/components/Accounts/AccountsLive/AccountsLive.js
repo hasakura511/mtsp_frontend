@@ -14,7 +14,8 @@ import Panel from "../../../containers/Panel/Panel";
 import Popover  from 'react-simple-popover'
 import { toSystem, toAntiSystem, toSystemNum } from "../../../Config";
 import ClockLoader from "../../../../../components/UI/ClockLoader/ClockLoader";
-
+import OrderDialog from "../../../containers/OrderDialog/OrderDialog";
+import Order from "../../Order/Order";
 import {
   LineChart,
   Line,
@@ -65,12 +66,26 @@ const dispatchToProps = dispatch => {
     },
     addTimedToaster: toaster => {
       dispatch(actions.addTimedToaster(toaster, 5000))
-  },
+    },
+    showHtmlDialog: (htmlContent) => {
+      dispatch(actions.showHtmlDialog(htmlContent));
+      
+    },
+    silenceHtmlDialog: () => {
+      dispatch(actions.silenceHtmlDialog());
+      
+    },
     
   };
 };
 @connect(stateToProps, dispatchToProps)
 export default class AccountsLive extends Component {
+  static propTypes = {
+    showHtmlDialog:PropTypes.func.isRequired,
+    silenceHtmlDialog:PropTypes.func.isRequired,
+    dictionary_strategy:PropTypes.object.isRequired,
+    themes:PropTypes.object.isRequired
+  };
   constructor(props) {
     super(props);
 
@@ -540,8 +555,42 @@ export default class AccountsLive extends Component {
                       <a href={'JavaScript:console.log("account performance")'} style={{ cursor:'pointer'  }} title={"Show Account Performance."} onClick={() => {  
                           
                                 // self.props.toggle();
-                                self.props.showPerformance(props.original.account_id, chip);
-                        }}>
+
+                                /*
+                                 
+                                  <OrderDialog
+          
+                                slot={chip}
+                                chip={chip}
+                                toggle={this.props.silenceHtmlDialog}
+                                isPerformance={true}
+                                performance_account_id={props.original.account_id}
+                                moveChipToSlot={null}
+                                orderAnti={null}
+                              />
+                                  */
+                                self.props.showHtmlDialog(<Order
+                                  chip={chip}
+                                  dictionary_strategy={this.props.dictionary_strategy}
+                                  isLive={true}
+                                  isPerformance={true}
+                                  performance_account_id={props.original.account_id}
+                                  //performance={performance}
+                                  //setAnti={this.setAnti}
+                                  //setNotAnti={this.setNotAnti}
+                                  //rankingData={rankingData}
+                                  //rankingError={rankingError}
+                                   rankingLoading={false}
+                                  //submitBetHandler={this.submitBetHandler}
+                                  toggle={this.props.silenceHtmlDialog}
+                                  //toAntiSystem={this.toAntiSystem}
+                                  themes={this.props.themes}
+                                  close={this.props.silenceHtmlDialog}
+                                  //isAnti={isAnti}
+                                  //moveChipToSlot={this.props.moveChipToSlot}
+                                />);
+                              self.props.showPerformance(props.original.account_id, chip);
+                            }}>
                         {props.value}
                         </a>
                     
@@ -746,9 +795,9 @@ export default class AccountsLive extends Component {
                             }
                         }}>
                         {performance.enable_board_copy ?
-                          <img src="/images/copy_board_enabled.png"  height={30} />
+                          <img src="/images/account_edit_enabled.png"  height={30} />
                           :
-                          <img src="/images/copy_board_disabled.png"  height={30} />
+                          <img src="/images/account_edit_disabled.png"  height={30} />
                         }
 
                           </a>
@@ -814,9 +863,9 @@ export default class AccountsLive extends Component {
                             }
                         }}>
                         {performance.enable_board_chip_copy ?
-                          <img src="/images/copy_board_chip_enabled.png"  height={30} />
+                          <img src="/images/account_delete_enabled.png"  height={30} />
                           :
-                          <img src="/images/copy_board_chip_disabled.png"  height={30} />
+                          <img src="/images/account_delete_disabled.png"  height={30} />
                         }
 
                           </a>

@@ -28,6 +28,8 @@ const stateToProps = state => ({
   isAuth: state.auth.token !== null,
   tosAccepted: state.auth.tosAccepted,
   rdAccepted: state.auth.rdAccepted,
+  initializeData:state.betting.initializeData,
+    
   //performance_account_id: state.betting.performance_account_id
 });
 
@@ -39,6 +41,18 @@ const dispatchToProps = dispatch => {
     },
     authSuccess: (user, token) => {
       dispatch(actions.authSuccess(user, token));
+    },
+    initializeData: (data) => {
+      dispatch(actions.initializeData(data));
+      
+    },
+    showHtmlDialog: (htmlContent) => {
+      dispatch(actions.showHtmlDialog(htmlContent));
+      
+    },
+    silenceHtmlDialog: () => {
+      dispatch(actions.silenceHtmlDialog());
+      
     },
     
   };
@@ -77,6 +91,9 @@ export default class Accounts extends Component {
     isOrder:PropTypes.bool,
     moveChipToSlot:PropTypes.func,
     isAnti:PropTypes.bool,
+    initializeData:PropTypes.func.isRequired,
+    showHtmlDialog:PropTypes.func.isRequired,
+    silenceHtmlDialog:PropTypes.func.isRequired,
   };
   constructor(props) {
     super(props);
@@ -101,24 +118,60 @@ export default class Accounts extends Component {
 
   
   componentDidMount() {
-    this.initializeAccounts();
+    this.initializeLive();
   }
 
 
   
-  initializeAccounts=(reinitialize=false) => {
-
-    //if (this.state.refreshing)
-    //  return;
-    //else
-    //  this.setState({refreshing:true})
-    //this.forceUpdate();
-    
-    //console.log(this.props);
+  
+  initializeLive=(reinitialize=false) => {
+    console.log("NEW BOARD Initialize")
     var self=this;
+    if (this.state.refreshing)
+      return;
+    else
+      this.setState({refreshing:true})
+
     var reinit='false';
     if (reinitialize)
       reinit='true';
+
+    axios
+    .post("/utility/initialize_live/", {
+    // accounts: [{ portfolio, target, accountValue }],
+    'username':  this.props.email,
+    'reinitialize': reinit
+    },{timeout: 600000})
+    .then(({ data }) => {
+      console.log('received initialize_live data')
+      console.log(data);
+      this.props.initializeData(data);
+      self.initializeAccounts();
+
+     
+    })
+    .catch(error => {
+      this.sendNotice('Account Data not received: ' + JSON.stringify(error));
+      console.log('error initializing')
+      console.log(error)
+    // eslint-disable-next-line react/no-is-mounted
+      this.setState({
+        rankingLoading: false,
+        rankingError: error,
+        loading:false,
+        refreshing:false
+      });
+      window.location='/board'
+
+    });
+
+  }
+
+  initializeAccounts=(reinitialize=false) => {
+
+    var self=this;
+    var reinit='false';
+
     axios
     .post("/utility/accounts_list_live/", {
     // accounts: [{ portfolio, target, accountValue }],
@@ -159,8 +212,10 @@ export default class Accounts extends Component {
       this.setState({
         editData:data,
         //itemSelected:itemSelected,
+        refreshing:false,
         loading:false,
       });
+ 
      
       //if (!chip_id)
       //  self.initializeLive();

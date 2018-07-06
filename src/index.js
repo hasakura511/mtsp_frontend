@@ -11,6 +11,7 @@ import * as reducers from "./store/reducers";
 // import { actionTypes } from "./store/actions";
 import thunk from "redux-thunk";
 import ScrollTop from "./hoc/ScrollTop/ScrollTop";
+
 const rootReducer = combineReducers(reducers);
 
 const composeEnhancers =
@@ -31,6 +32,7 @@ ReactDOM.render(
     <BrowserRouter>
       <ScrollTop>
         <App />
+        
       </ScrollTop>
     </BrowserRouter>
   </Provider>,

@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 import * as actions from "./store/actions";
 import Home from "./containers/Home/Home";
 import Extras from "./components/Extras/Extras";
+import HtmlDialog from "./components/UI/Modal/HtmlDialog"
 // import GameBoard from "./containers/GameBoard/GameBoard";
 
 import Auth, {
@@ -118,6 +119,7 @@ class App extends Component<PropType, { showSideDrawer: boolean }> {
         showSideDrawer={this.state.showSideDrawer}
         toggleSideDrawer={this.toggleSideDrawer}
       >
+         <HtmlDialog />
         <Switch>
           <Route path="/logout" component={Logout} />
           <Route path="/contact" component={Contact} />
@@ -144,6 +146,7 @@ class App extends Component<PropType, { showSideDrawer: boolean }> {
           <Route exact path="/" component={Home} />
           <Redirect from="*" to="/" />
         </Switch>
+       
       </Layout>
     );
   }
