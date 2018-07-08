@@ -406,7 +406,7 @@ export default class NewBoard extends Component {
 
   }
 
-  checkLock=(reinitialize=true, chip_id="", last_date="", board_config="") => {
+  checkLock=(reinitialize=true, chip_id="", last_date="", board_config="", skip_initialize=false) => {
     console.log("Lock Check")
     var self=this;
     
@@ -425,8 +425,8 @@ export default class NewBoard extends Component {
         window.location='/board'
         self.initializeNewBoard(reinitialize, chip_id, last_date, board_config);
 
-      } else if (!reinitialize) {
-        self.initializeNewBoard(reinitialize, chip_id, last_date, board_config);
+      } else {
+          self.initializeNewBoard(reinitialize, chip_id, last_date, board_config, skip_initialize);
       }
      
     })
@@ -499,7 +499,7 @@ export default class NewBoard extends Component {
 
   }
 
-  initializeNewBoard=(reinitialize=false, chip_id="", last_date="", board_config="") => {
+  initializeNewBoard=(reinitialize=false, chip_id="", last_date="", board_config="", skip_initialize=false) => {
 
     //if (this.state.refreshing)
     //  return;
@@ -533,7 +533,7 @@ export default class NewBoard extends Component {
         optimize:false,
       });
      
-      if (!chip_id)
+      if (!chip_id && !skip_initialize)
         self.initializeLive();
 
     })

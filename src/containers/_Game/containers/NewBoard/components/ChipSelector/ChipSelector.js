@@ -91,7 +91,7 @@ export default class ChipSelector extends React.Component {
           }
         })
       } else {
-        self.props.checkLock(true, "", "", "");
+        self.props.checkLock(true, "", "", "", true);
       }
         this.setState({itemSelected: value});
     };
