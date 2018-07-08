@@ -556,7 +556,7 @@ export default class NewBoard extends Component {
       var self=this;
       console.log("NEW Board Initialize")
       //this.checkLock();
-      self.initializeNewBoard(false, "", "", "");
+      self.initializeNewBoard(true, "", "", "");
   }
 
   /**
