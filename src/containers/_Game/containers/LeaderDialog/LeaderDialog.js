@@ -230,16 +230,7 @@ export default class LeaderDialog extends Component {
             
           </div>            
         )}
-        {showModal && !this.props.mute  && 1 == 2 ? (
-        <Sound
-            url="/sounds/chipLay2.wav"
-            playStatus={Sound.status.PLAYING}
-            playFromPosition={0 /* in milliseconds */}
-            //onLoading={this.handleSongLoading}
-            //onPlaying={this.handleSongPlaying}
-            //onFinishedPlaying={this.handleSongFinishedPlaying}
-          />
-        ) : null}
+        
       </Modal>
     );
   }

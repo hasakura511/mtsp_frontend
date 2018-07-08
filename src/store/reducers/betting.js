@@ -101,6 +101,7 @@ const initialState = {
   dragChip:"",
   isLive:false,
   initializeData: {},
+  init_data:{},
   heatmap_account_id:'',
   show_lockdown_dialog:false,
   show_leader_dialog:false,
@@ -655,9 +656,12 @@ const reducer = (state = initialState, action) => {
         if (initializeData.refresh_market_heatmap) {
           refresh_markets=true;
         }
+
+        var init_data=initializeData;
         return {
             ...state,
             initializeData,
+            init_data,
             accounts, 
             heatmap,
             themes,

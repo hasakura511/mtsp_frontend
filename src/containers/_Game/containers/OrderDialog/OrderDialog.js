@@ -115,7 +115,8 @@ export default class OrderDialog extends Component {
        * Stores the last 3 days profits object
        * @type {Object}
        */
-      last3DaysProfit: null
+      last3DaysProfit: null,
+      playing:Sound.status.PLAYING
     };
     this._isMounted = false;
   }
@@ -462,11 +463,13 @@ export default class OrderDialog extends Component {
         {showModal && !this.props.mute && !this.props.isPerformance ? (
         <Sound
             url="/sounds/chipLay2.wav"
-            playStatus={Sound.status.PLAYING}
+            playStatus={this.state.playing}
             playFromPosition={0 /* in milliseconds */}
             //onLoading={this.handleSongLoading}
             //onPlaying={this.handleSongPlaying}
-            //onFinishedPlaying={this.handleSongFinishedPlaying}
+            onFinishedPlaying={() => {
+              self.setState({playing:Sound.status.STOPPED});
+            }}
           />
         ) : null}
       </Modal>

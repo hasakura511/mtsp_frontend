@@ -1454,7 +1454,7 @@ export default class Panel extends Component {
           </div>
         ) : null}
         
-        {!this.state.isReadOnly && !this.props.mute ? (
+        {!this.state.isReadOnly && !this.props.mute && 1 == 2 ? (
           <Sound
               url="/sounds/chipLay2.wav"
               playStatus={this.state.showClearDialog ? Sound.status.PLAYING: Sound.status.STOPPED}

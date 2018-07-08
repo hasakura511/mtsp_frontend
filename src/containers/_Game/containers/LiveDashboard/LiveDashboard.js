@@ -200,11 +200,8 @@ export default class LiveDashboard extends Component {
                               self.setState({refreshing:false});
     
                             }
-                            
-    
                           }
                          }                        
-
                       }
                      }
 

@@ -340,8 +340,8 @@ export default class Order extends React.Component {
           <thead  style={{border:"none"}}>
             <tr style={{border:"none"}}>
             <th  style={{border:"none"}}>
-              <center>
-                Player
+              <center> 
+                Player 
                 </center>
                 </th>
                 <th  style={{border:"none"}}>

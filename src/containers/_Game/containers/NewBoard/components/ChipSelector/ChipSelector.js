@@ -18,6 +18,7 @@ const stateToProps = state => {
     //dashboard_totals:state.betting.dashboard_totals,
     isLive:state.betting.isLive,
     accounts:state.betting.accounts,
+    init_data:state.betting.init_data,
     //heatmap_selection:state.betting.heatmap_selection,
     //liveDate:state.betting.liveDate,
   };
@@ -46,7 +47,8 @@ export default class ChipSelector extends React.Component {
         isReadOnly:PropTypes.bool,
         checkLock:PropTypes.func.isRequired,
         itemSelected:PropTypes.string.isRequired,
-        editData:PropTypes.object.isRequired
+        editData:PropTypes.object.isRequired,
+        init_data:PropTypes.object.isRequired
         //heatmap_selection:PropTypes.string
       };
     
@@ -85,7 +87,7 @@ export default class ChipSelector extends React.Component {
         this.props.accounts.map(account => {
           if (value == account.chip_id) {
               var last_date=account.date.replace(/-/g,'');
-              self.props.checkLock(false, account.chip_id, last_date, account.portfolio);
+              self.props.checkLock(false, account.chip_id, self.props.init_data.last_date, account.portfolio);
           }
         })
       } else {

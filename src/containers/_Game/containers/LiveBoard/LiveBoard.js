@@ -663,6 +663,46 @@ export default class LiveBoard extends Component {
 
   }
   
+  
+  checkLock=() => {
+    console.log("Lock Check")
+    var self=this;
+    
+    //console.log(this.props);
+    axios
+    .post("/utility/lock_check/", {
+    // accounts: [{ portfolio, target, accountValue }],
+    'username':  this.props.email,
+    'chip_id': 'ALL'
+    },{timeout: 600000})
+    .then(({ data }) => {
+      console.log('received lock check')
+      console.log(data);
+      if (data.message != "OK") {
+        this.sendNotice(data.message);
+        
+       
+      } else 
+        window.location='/new_board'
+    })
+    .catch(error => {
+      this.sendNotice('Account Data not received: ' + JSON.stringify(error));
+      console.log('error initializing')
+      console.log(error)
+    // eslint-disable-next-line react/no-is-mounted
+      this.setState({
+        rankingLoading: false,
+        rankingError: error,
+        loading:false,
+        refreshing:false
+      });
+      window.location='/board'
+
+    });
+
+  }
+
+
   render() {
     var self=this;
     const {
@@ -852,8 +892,13 @@ export default class LiveBoard extends Component {
             />
               <span style={{"marginTop":"30px","float": "left", "width": "50%", "textAlign": "left", "display": "inline-block","verticalAlign": "top"}}>
                 <a href='#accounts' title="Create or configure your accounts."><img src="/images/accounts_button.png" width="120"/></a><br/>
-                <Link to="/new_board" title="Edit your board."
-                ><img src="/images/edit_board_button.png" width="120"/></Link><br/>  
+                <a href={"#new_board"} 
+                   onClick={() => {
+
+                    self.checkLock();
+                   }
+                   } title="Edit your board."
+                ><img src="/images/edit_board_button.png" width="120"/></a><br/>  
               </span>
               {self.props.mute ? (
               <span style={{"marginTop":"60px", "paddingRight":"5px", "float": "right", "width": "50%", "textAlign": "right", "display": "inline-block","verticalAlign": "top"}}>

@@ -65,7 +65,8 @@ const stateToProps = state => {
     mute:state.betting.mute,
     liveDateText:state.betting.liveDateText,
     dictionary_strategy:state.betting.dictionary_strategy,
-    isLive:state.betting.isLive
+    isLive:state.betting.isLive,
+    init_data:state.betting.init_data,
     
   };
 };
@@ -175,6 +176,7 @@ export default class NewBoard extends Component {
     isLive:PropTypes.bool.isRequired,
     showDialog:PropTypes.func.isRequired,
     silenceDialog:PropTypes.func.isRequired,
+    init_data:PropTypes.object.isRequired,
   };
 
   constructor(props) {
@@ -421,8 +423,11 @@ export default class NewBoard extends Component {
       if (data.message != "OK") {
         this.sendNotice(data.message);
         window.location='/board'
-      } else
         self.initializeNewBoard(reinitialize, chip_id, last_date, board_config);
+
+      } else if (!reinitialize) {
+        self.initializeNewBoard(reinitialize, chip_id, last_date, board_config);
+      }
      
     })
     .catch(error => {
@@ -548,9 +553,10 @@ export default class NewBoard extends Component {
 
   }
   componentDidMount() {
+      var self=this;
       console.log("NEW Board Initialize")
-      this.checkLock();
-
+      //this.checkLock();
+      self.initializeNewBoard(false, "", "", "");
   }
 
   /**
