@@ -16,6 +16,9 @@ import { toSystem, toAntiSystem, toSystemNum } from "../../../Config";
 import ClockLoader from "../../../../../components/UI/ClockLoader/ClockLoader";
 import OrderDialog from "../../../containers/OrderDialog/OrderDialog";
 import Order from "../../Order/Order";
+import MiniAccountChart from "../MiniAccountChart/MiniAccountChart";
+
+
 import {
   LineChart,
   Line,
@@ -330,13 +333,14 @@ export default class AccountsLive extends Component {
     var bgText="black";
     var bdColor="green";
     var bhColor="pink";
-    /*if (this.props.themes.live.dashboard != undefined) {
-      bgColor=this.props.themes.live.dashboard.background;
-      bgText=this.props.themes.live.dashboard.text;
-      bdColor=this.props.themes.live.dashboard.lines;
-      bhColor=this.props.themes.live.dashboard.lines_horizontal_middle;
+    /*if (this.themes.live.dashboard != undefined) {
+      bgColor=this.themes.live.dashboard.background;
+      bgText=this.themes.live.dashboard.text;
+      bdColor=this.themes.live.dashboard.lines;
+      bhColor=this.themes.live.dashboard.lines_horizontal_middle;
     }
     */
+    var themes=performance.themes;
     var tableStyle={ fontSize:'12px',background: bgColor, color:bgText, borderLeft: "1px solid " + bdColor, borderRight: "1px solid " + bdColor, borderTop: "0.1px solid " + bhColor, borderBottom: "0.1px solid " + bhColor};
     var self=this;
 
@@ -358,7 +362,7 @@ export default class AccountsLive extends Component {
                       marginLeft: "-1000px",
                       marginTop: "-100px",
                       overflow: "hide",
-                      background:self.props.themes.table_background }}>
+                      background:themes.table_background }}>
           
           <center>
             <br/>
@@ -381,7 +385,7 @@ export default class AccountsLive extends Component {
                     <Spinner />
                 </div>
         ) : performanceError ? (
-          <div style={{height: innerHeight - 172,  background: self.props.themes.table_background} }>
+          <div style={{height: innerHeight - 172,  background: themes.table_background} }>
 
           <center >  
           <br/>
@@ -394,10 +398,10 @@ export default class AccountsLive extends Component {
           </div>
         ) : (
 
-        <div className={classes.AccountsLive} style={{margin:"0px", background:self.props.themes.table_background}} >
+        <div className={classes.AccountsLive} style={{margin:"0px", background:themes.table_background, height:"100%"}} >
 
 
-                    <div style={{margin:"0px", paddingTop:"8px", background:self.props.themes.table_background, "float":"right", "width": "10%", "textAlign": "right"}}>
+                    <div style={{margin:"0px", paddingTop:"8px", background:themes.table_background, "float":"right", "width": "10%", "textAlign": "right"}}>
                         <img src="/images/infotext_button.png" width="22" style={{"marginRight":"5px"}}/>
                     </div>
             <div style={{"clear": "both"}}></div>
@@ -427,11 +431,12 @@ export default class AccountsLive extends Component {
           columns={[
             {
               Header: "",
+
               columns: [
                 {
-                  Header: "Player",
+                  Header: "Account Value",
                   accessor: "account_value",
-                  width: 240,
+                  width: 350,
                   Cell: props => {
          
                     var chip=props.original;
@@ -446,9 +451,9 @@ export default class AccountsLive extends Component {
                     var items=[];
 
                     //<div  style={{marginTop:"12px", minWidth: '235px'}}>
-                    items.push(
-                    <div key={'item-1'} style={{'float':'left', minWidth:'25px', height:"12px", fontSize:'24px', marginTop:"12px"}}>
-                    </div>)
+                    //items.push(
+                    //<div key={'item-1'} style={{'float':'left', minWidth:'25px', height:"12px", fontSize:'24px', marginTop:"12px"}}>
+                    //</div>)
                     items.push(
                       <div key={'item-2'} style={{'float':'left', minWidth: '60px', height:'60px', padding:"1px", marginTop:"1px", marginBottom:"-10px"}}>
                       <Chip chip={chip} isReadOnly={true} account_chip_text={props.original.account_chip_text} />&nbsp;&nbsp;
@@ -456,13 +461,31 @@ export default class AccountsLive extends Component {
                       )
                     items.push(
 
-                    <div key={'item-3'} style={{'float':'left', minwidth:'150px', marginTop:"20px"}}>
-                      My Graphs
+                    <div key={'item-3'} style={{'float':'left', minwidth:'200px', marginTop:"-5px"}}>
+                      <MiniAccountChart chartData={performance.sparklines} chart_id={props.original.key} accountsData={performance} />
                     </div>
                     )
                     items.push(
+                      <div key={'item-4'} style={{'float':'left', marginLeft: "15px", minwidth:'60px', marginTop:"20px"}}>
+                        {parseFloat(props.value) ? (
+                        <span style={parseFloat(props.value) > 0 ? {color:themes.text_gain} : {color:themes.text_loss}} >
+                      <b>
+                      $ {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })}
+                      </b>
+                      </span>
+                      ) : (
+                        <span style={{color:themes.text_color}}>
+                      <b>
+                     $ {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} 
+                      </b>
+                      </span>
+                      )}
+                      </div>
 
-                    <div key={'item-4'} style={{"clear": "both"}}></div>
+                    )
+                    items.push(
+
+                    <div key={'item-5'} style={{"clear": "both"}}></div>
                     )
                     return items;
   
@@ -471,54 +494,26 @@ export default class AccountsLive extends Component {
 
 
                 },
+                
                 {
                   Header: props => (
-                    <span style={{background:self.props.themes.table_background}}>
-                     Account Value
-                     </span>),
-                  headerStyle: {
-                    background:self.props.themes.table_background
-                  },
-                  accessor: "pnl_cumpct",
-                  Cell: props => (
-                    <span className='number'><center>
-                    {parseFloat(props.value) ? (
-                      <span style={parseFloat(props.value) > 0 ? {color:self.props.themes.text_gain} : {color:self.props.themes.text_loss}} >
-                    <b>
-                    $ {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })}
-                    </b>
-                    </span>
-                    ) : (
-                      <span style={{color:self.props.themes.text_color}}>
-                    <b>
-                   $ {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} 
-                    </b>
-                    </span>
-                    )}
-                    </center>
-                    </span>
-                  ), // Custom cell components!,
-
-                },
-                {
-                  Header: props => (
-                    <span style={{background:self.props.themes.table_background}}>
+                    <span style={{background:themes.table_background}}>
                      Cumulative %
                      </span>),
                   headerStyle: {
-                    background:self.props.themes.table_background
+                    background:themes.table_background
                   },
                   accessor: "pnl_cumpct",
                   Cell: props => (
                     <span className='number'><center>
                     {parseFloat(props.value) ? (
-                      <span style={parseFloat(props.value) > 0 ? {color:self.props.themes.text_gain} : {color:self.props.themes.text_loss}} >
+                      <span style={parseFloat(props.value) > 0 ? {color:themes.text_gain} : {color:themes.text_loss}} >
                     <b>
                    {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} %
                     </b>
                     </span>
                     ) : (
-                      <span style={{color:self.props.themes.text_color}}>
+                      <span style={{color:themes.text_color}}>
                     <b>
                    {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} %
                     </b>
@@ -532,14 +527,15 @@ export default class AccountsLive extends Component {
               ]},
               {
               Header: "Portfolio Settings",
+             
               columns: [
                {
                   Header: props => (
-                    <span style={{background:self.props.themes.table_background}}>Age
+                    <span style={{background:themes.table_background}}>Age
                   </span>),
                   accessor: "age",
                   headerStyle: {
-                    background:self.props.themes.table_background
+                    background:themes.table_background
                   },
                   Cell: props => {
                     var chip=props.original;
@@ -569,6 +565,7 @@ export default class AccountsLive extends Component {
                                 orderAnti={null}
                               />
                                   */
+                                chip.isAccountView=true;
                                 self.props.showHtmlDialog(<Order
                                   chip={chip}
                                   dictionary_strategy={this.props.dictionary_strategy}
@@ -584,7 +581,7 @@ export default class AccountsLive extends Component {
                                   //submitBetHandler={this.submitBetHandler}
                                   toggle={this.props.silenceHtmlDialog}
                                   //toAntiSystem={this.toAntiSystem}
-                                  themes={this.props.themes}
+                                  themes={this.themes}
                                   close={this.props.silenceHtmlDialog}
                                   //isAnti={isAnti}
                                   //moveChipToSlot={this.props.moveChipToSlot}
@@ -601,12 +598,12 @@ export default class AccountsLive extends Component {
                 },
                 {
                   Header: props => (
-                    <span style={{background:self.props.themes.table_background}}>
+                    <span style={{background:themes.table_background}}>
                     Portfolio
                   </span>),
                   accessor: "num_markets",
                   headerStyle: {
-                    background:self.props.themes.table_background
+                    background:themes.table_background
                   },
 
                   Cell: props => (
@@ -688,23 +685,23 @@ export default class AccountsLive extends Component {
                 },
                 {
                   Header: props => (
-                    <span style={{background:self.props.themes.table_background}}>
+                    <span style={{background:themes.table_background}}>
                      Margin %
                      </span>),
                   headerStyle: {
-                    background:self.props.themes.table_background
+                    background:themes.table_background
                   },
                   accessor: "margin_percent",
                   Cell: props => (
                     <span className='number'><center>
                     {parseFloat(props.value) ? (
-                      <span style={parseFloat(props.value) > 0 ? {color:self.props.themes.text_gain} : {color:self.props.themes.text_loss}} >
+                      <span style={parseFloat(props.value) > 0 ? {color:themes.text_gain} : {color:themes.text_loss}} >
                     <b>
                    {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} %
                     </b>
                     </span>
                     ) : (
-                      <span style={{color:self.props.themes.text_color}}>
+                      <span style={{color:themes.text_color}}>
                     <b>
                    {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} %
                     </b>
@@ -717,11 +714,11 @@ export default class AccountsLive extends Component {
                 },
                 {
                   Header: props => (
-                    <span style={{background:self.props.themes.table_background}}>
+                    <span style={{background:themes.table_background}}>
                      Auto
                      </span>),
                   headerStyle: {
-                    background:self.props.themes.table_background
+                    background:themes.table_background
                   },
                   accessor: "recreate_if_margin_call",
                   Cell: props => (
@@ -731,11 +728,11 @@ export default class AccountsLive extends Component {
                 },
                 {
                   Header: props => (
-                    <span style={{background:self.props.themes.table_background}}>
+                    <span style={{background:themes.table_background}}>
                      Recreate
                      </span>),
                   headerStyle: {
-                    background:self.props.themes.table_background
+                    background:themes.table_background
                   },
                   accessor: "recreate",
                   Cell: props => (
@@ -745,12 +742,12 @@ export default class AccountsLive extends Component {
                 },
                 {
                     Header: props => (
-                      <span style={{background:self.props.themes.table_background}}>
+                      <span style={{background:themes.table_background}}>
                        Edit
                     </span>),
                     accessor: "account_id",
                     headerStyle: {
-                      background:self.props.themes.table_background,
+                      background:themes.table_background,
                     },
                     Cell: props =>{
                       var copyboard='copy_board_' + props.original.rank;
@@ -811,14 +808,24 @@ export default class AccountsLive extends Component {
                   },
                   {
                     Header: props => (
-                      <span style={{background:self.props.themes.table_background}}>
+                      <span style={{background:themes.table_background}}>
                        Delete
                     </span>),
                     accessor: "account_id",
                     headerStyle: {
-                      background:self.props.themes.table_background,
+                      background:themes.table_background,
                       whiteSpace: 'unset' 
                     },
+                    Footer: props => (
+                    <div style={{width:"100px"}}>
+                      <div style={{float:"left", width:"100px"}}>
+                          <img src={"/images/account_create_enabled.png"} width={120} height={30} />
+                      </div>
+                      <div style={{float:"left", marginLeft: "-70px", width:"70px", marginTop: "10px", color:themes.text_color}}>
+                        Create New..
+                      </div>
+                    </div>
+                     ), 
                     Cell: props =>{
                       var copyboard='copy_board_chip_' + props.original.rank;
 
@@ -878,9 +885,10 @@ export default class AccountsLive extends Component {
                    },
 
                    
-  
+                   
                    
                   },
+                  
               ],
               
             },

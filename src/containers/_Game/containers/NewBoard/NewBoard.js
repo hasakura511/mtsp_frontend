@@ -527,7 +527,11 @@ export default class NewBoard extends Component {
       console.log(data);
       var itemSelected = chip_id ?  chip_id : 'None';
       
-      this.setState({
+      if (data.heatmap_load_failed && data.heatmap_load_failed_message) {
+        self.sendNotice(data.heatmap_load_failed_message);
+      }
+
+      self.setState({
         editData:data,
         itemSelected:itemSelected,
         optimize:false,
