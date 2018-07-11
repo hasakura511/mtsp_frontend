@@ -51,6 +51,7 @@ export default class HtmlDialog extends Component {
       loading
     } = this.props;
     return (
+        
        <Dialog
         actions={[]}
         active={!this.props.hidden}
@@ -58,7 +59,12 @@ export default class HtmlDialog extends Component {
         onOverlayClick={this.cancelHandler}
         type={'large'}
       >
+      <div style={{
+          height:(innerHeight-10)+"px",
+          overflow:"auto",
+        }}>
       {htmlContent}
+      </div>
       </Dialog>
     );
   }

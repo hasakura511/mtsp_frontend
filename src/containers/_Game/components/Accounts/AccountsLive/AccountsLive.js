@@ -817,7 +817,10 @@ export default class AccountsLive extends Component {
                       whiteSpace: 'unset' 
                     },
                     Footer: props => (
-                    <div style={{width:"100px"}}>
+                    <div style={{width:"100px", cursor:'pointer'}} onClick={() => {
+                        self.props.showHtmlDialog(<AccountsNew  performance={self.props.performance} themes={self.props.themes}  />);
+                    
+                    }}>
                       <div style={{float:"left", width:"100px"}}>
                           <img src={"/images/account_create_enabled.png"} width={120} height={30} />
                       </div>

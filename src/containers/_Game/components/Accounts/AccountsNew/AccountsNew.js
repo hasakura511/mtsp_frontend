@@ -104,13 +104,21 @@ export default class AccountsNew extends Component {
       isPopoverOpen :{},
       filter:'Overall',
       refreshing: false,
+      startingValue:10000,
+      marginValue: 25,
       // endDate: 20180201
     };
   }
 
   componentWillReceiveProps(newProps) {
       if (newProps.performance) {
-          this.setState({performance:newProps.performance})
+          this.setState({performance:newProps.performance, 
+            marginValue:parseInt(newProps.performance.new_account_params.default_margin_percent),
+            startingValue:parseInt(newProps.performance.new_account_params.default_starting_value),
+            marginCallType: newProps.performance.default_margin_call_type,
+            customizePortfolio: parseInt(newProps.performance.default_customize_portfolio)
+          })
+          
       }
   }
 
@@ -345,10 +353,10 @@ export default class AccountsNew extends Component {
           </div>
         ) : (
 
-        <div className={classes.AccountsNew} style={{margin:"0px", background:themes.table_background, height:"100%"}} >
+        <div className={classes.AccountsNew} style={{margin:"0px", background:"white", height:"100%"}} >
 
 
-                    <div style={{margin:"0px", paddingTop:"8px", background:themes.table_background, "float":"right", "width": "10%", "textAlign": "right"}}>
+                    <div style={{margin:"0px", paddingTop:"8px", background:"white", "float":"right", "width": "10%", "textAlign": "right"}}>
                         <img src="/images/infotext_button.png" width="22" style={{"marginRight":"5px"}}/>
                     </div>
             <div style={{"clear": "both"}}></div>
@@ -370,10 +378,31 @@ export default class AccountsNew extends Component {
             <tbody ><tr style={{border: "none", margin: "0px", padding: "0px", borderColor: "transparent"}}>
             <td style={{ width:"20%", textAlign:"left",  border: "none", margin: "0px", padding: "5px"}}>
           Starting Value 
-            </td><td style={{width:"80%", textAlign:"left",  border: "none", marginRight: "0px", paddingRight: "100px"}}>
-                <Slider min={10000} max={500000} editable value={100000} onChange={() => {
-                    console.log("slider")
+            </td><td style={{width:"80%", textAlign:"left",  border: "none", marginRight: "0px"}}>
+
+             <table width={"100%"}><tbody>
+                  <tr>
+                  <td  style={{border: "none", margin: "0px", padding: "0px"}}>
+                  {parseInt(performance.new_account_params.MIN_STARTING_VALUE)}
+                  </td>
+                  <td  style={{textAlign:"right", border: "none", margin: "0px", padding: "0px"}}>
+                  {parseInt(performance.new_account_params.MAX_STARTING_VALUE)}
+                  </td>
+                  <td  style={{border: "none", margin: "0px", padding: "0px"}}>
+                  </td></tr>
+
+                  <tr><td colSpan={2} style={{border: "none", margin: "0px", padding: "5px"}}>
+                  <Slider min={parseInt(performance.new_account_params.MIN_STARTING_VALUE)}
+                     max={parseInt(performance.new_account_params.MAX_STARTING_VALUE)} 
+                      snaps={true} 
+                      step={parseInt(performance.new_account_params.INCREMENT_STARTING_VALUE)} 
+                      value={this.state.startingValue} onChange={(e) => {
+                    console.log(e)
+                    self.setState({startingValue:e})
                 }} />
+                </td><td  style={{border: "none", marginLeft: "0px", paddingLeft: "15px"}} >
+                <b style={{fontSize:"32px",fontWeight:1600}}>$ {this.state.startingValue}</b>
+                </td></tr></tbody></table>
             </td></tr>
             <tr style={{width:"50%", border: "none", margin: "0px", padding: "0px", borderColor: "transparent"}}>
             <td  style={{ textAlign:"left",  border: "none", margin: "0px", padding: "5px"}}> 
@@ -393,14 +422,20 @@ export default class AccountsNew extends Component {
                 Set your portfolio to automatically..
             </td>
             <td style={{textAlign:"right", border: "none",  padding: "5px"}}>
-            <RadioGroup value={"reduce"} onChange={() => {
-                    console.log("radio")
+            <RadioGroup value={this.state.marginCallType} onChange={(e) => {
+                    console.log(e);
+                    self.setState({marginCallType:e})
                 }}>
-                <table style={{marginTop:"10px"}}><tbody><tr><td style={{border: "none", margin: "0px", padding: "5px"}}>
-                <RadioButton label={'Reduce'} value={'Reduce'} />
-                </td><td  style={{border: "none", margin: "0px", padding: "5px"}}>
-                <RadioButton label={'Recreate'} value={'Recreate'} />
-                </td></tr></tbody></table>
+                <table style={{marginTop:"10px"}}><tbody><tr>
+                {performance.new_account_params.margin_call_types.map(item => {
+                  return (<td key={item} onClick={() => {
+                    self.setState({marginCallType:item})
+                  }} 
+                  style={{border: "none", margin: "0px", padding: "5px"}}>
+                  <RadioButton checked={item == self.state.marginCallType} label={item} value={item} />
+                  </td>)
+                })}
+                 </tr></tbody></table>
             </RadioGroup>
             </td>
             </tr>
@@ -408,10 +443,31 @@ export default class AccountsNew extends Component {
             <td style={{textAlign:"left", border: "none", margin: "0px", padding: "5px"}}>
                 when total margin reaches..
             </td>
-            <td style={{textAlign:"left", border: "none",  padding: "5px", paddingRight: "100px"}}>
-                  <Slider min={0} max={50} editable value={50} onChange={() => {
-                    console.log("slider")
-                }} /> 
+            <td style={{textAlign:"left", border: "none",  padding: "5px"}}>
+                <table width={"100%"}><tbody>
+                  <tr>
+                  <td  style={{border: "none", margin: "0px", padding: "0px"}}>
+                  {parseInt(performance.new_account_params.MIN_MARGIN_PERCENT)} %
+                  </td>
+                  <td  style={{textAlign:"right", border: "none", margin: "0px", padding: "0px"}}>
+                  {parseInt(performance.new_account_params.MAX_MARGIN_PERCENT)} %
+                  </td>
+                  <td  style={{border: "none", margin: "0px", padding: "0px"}}>
+                  </td></tr>
+
+                  <tr><td colSpan={2} style={{border: "none", margin: "0px", padding: "5px"}}>
+                  <Slider min={parseInt(performance.new_account_params.MIN_MARGIN_PERCENT)}
+                     max={parseInt(performance.new_account_params.MAX_MARGIN_PERCENT)} 
+                      snaps={true} 
+                      pinned={true}
+                      step={parseInt(performance.new_account_params.INCREMENT_MAX_MARGIN_PERCENT)} 
+                      value={parseInt(self.state.marginValue)} onChange={(e) => {
+                    console.log(e)
+                    self.setState({marginValue:e})
+                }} />
+                </td><td  style={{border: "none", marginLeft: "0px", paddingLeft: "15px"}} >
+                <b style={{fontSize:"32px",fontWeight:1600}}>{this.state.marginValue}%</b> of account value
+                </td></tr></tbody></table>
             </td>
             </tr>
 
@@ -419,7 +475,7 @@ export default class AccountsNew extends Component {
             <td style={{textAlign:"left", border: "none", margin: "0px", padding: "5px"}}>
                 Advanced Preferences
             </td>
-            <td style={{textAlign:"right", border: "none",  padding: "5px"}}>
+            <td style={{textAlign:"left", border: "none",  padding: "5px"}}>
             <Dropdown
                         auto
                         onChange={() => {
@@ -432,8 +488,9 @@ export default class AccountsNew extends Component {
             </tr>
             <tr>
             <td style={{textAlign:"left", border: "none", margin: "0px", padding: "5px"}}>
-            <RadioGroup value={"reduce"} onChange={() => {
-                    console.log("radio")
+            <RadioGroup value={self.state.customizePortfolioType} onChange={(e) => {
+                    console.log(e)
+                    self.setState({customizePortfolioType:e})
                 }}>
                 <RadioButton label={'Generate your portfolio algorithmically'} value={'generate'} />
                 <RadioButton label={'Customize your portfolio'} value={'customize'} />
