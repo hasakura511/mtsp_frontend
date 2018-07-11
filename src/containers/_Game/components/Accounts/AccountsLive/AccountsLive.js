@@ -17,6 +17,7 @@ import ClockLoader from "../../../../../components/UI/ClockLoader/ClockLoader";
 import OrderDialog from "../../../containers/OrderDialog/OrderDialog";
 import Order from "../../Order/Order";
 import MiniAccountChart from "../MiniAccountChart/MiniAccountChart";
+import AccountsNew from "../AccountsNew/AccountsNew";
 
 
 import {
@@ -243,23 +244,20 @@ export default class AccountsLive extends Component {
     });
   }
 
-  copyBoardChip = (leader_account_id, leader_chip_id, leader_board_config) => {
+  delAccount = (chip_id) => {
     var self=this;
+    
     axios
-    .post("/utility/copy_account_live/", {
+    .post("/utility/delete_account/", {
       /**
        * @example {"portfolio": ["TU", "BO"], "systems": ["prev1", "prev5"], "target": 500, "account": 5000}
        *
        */
       username: self.props.email,
-      board_config: leader_board_config,
-      leaderboard_account_id:leader_account_id,
-      leaderboard_chip_id:leader_chip_id,
+      chip_id:chip_id,
     })
     .then(response => {
-      /**
-       * @namespace {Performance}
-       */
+
       var res = response.data;
       var message=res.message;
       var reinitialize=res.reinitialize;
@@ -272,15 +270,15 @@ export default class AccountsLive extends Component {
           5000
           );
           self.setState({refreshing:false})
-      } else  {
+      } else {
 
         const loaded = () => {
           self.setState({refreshing:false})
-          self.props.silenceDialog();
-          self.props.toggle();
+          //self.props.silenceDialog();
+          //self.props.toggle();
           
         }
-        self.props.initializeLive(reinitialize, loaded);
+     
       }
       
       
@@ -300,6 +298,8 @@ export default class AccountsLive extends Component {
      
     });
   }
+
+  
   componentDidMount() {
       //this.getData();
 
@@ -869,8 +869,10 @@ export default class AccountsLive extends Component {
                               );
                             }
                         }}>
-                        {performance.enable_board_chip_copy ?
-                          <img src="/images/account_delete_enabled.png"  height={30} />
+                        {props.original.chip_id ?
+                          <img src="/images/account_delete_enabled.png"  onClick={() => {
+                            self.delAccount(props.original.chip_id);
+                           }} height={30} />
                           :
                           <img src="/images/account_delete_disabled.png"  height={30} />
                         }
@@ -1020,7 +1022,6 @@ export default class AccountsLive extends Component {
         </tbody>
       </table>
         */}
-      
         </div>
         </div>
         )}

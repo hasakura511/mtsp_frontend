@@ -891,7 +891,12 @@ export default class LiveBoard extends Component {
               initializeLive={this.initializeLive}
             />
               <span style={{"marginTop":"30px","float": "left", "width": "50%", "textAlign": "left", "display": "inline-block","verticalAlign": "top"}}>
-                <a href='#accounts' title="Create or configure your accounts."><img src="/images/accounts_button.png" width="120"/></a><br/>
+                <a href='#accounts' 
+                title="Create or configure your accounts."
+                onClick={() => {
+                  window.location='/accounts'
+                }}
+                ><img src="/images/accounts_button.png" width="120"/></a><br/>
                 <a href={"#new_board"} 
                    onClick={() => {
 

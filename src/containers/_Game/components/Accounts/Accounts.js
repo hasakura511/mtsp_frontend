@@ -19,6 +19,8 @@ import { axiosOpen } from "../../../../axios-gsm";
 import withErrorHandler from "../../../../hoc/withErrorHandler/withErrorHandler";
 import { withRouter } from "react-router-dom";
 import protectedComponent from "../../../../hoc/ProtectedComponent/ProtectedComponent";
+import AccountsNew from "./AccountsNew/AccountsNew";
+
 
 const stateToProps = state => ({
   //themes:state.betting.themes,
@@ -284,6 +286,10 @@ export default class Accounts extends Component {
                 color:text_color, borderColor:lines}}>
 
                        <AccountsLive performance={this.state.editData} themes={themes} />
+
+                       
+
+                        <AccountsNew  performance={this.state.editData} themes={themes}  />
                 </div>
 
             
