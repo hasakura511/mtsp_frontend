@@ -201,9 +201,10 @@ export default class Accounts extends Component {
       data.margins=dataJson;
       
       Object.keys(data.sparklines).map(key => {
-        data.sparklines[key]=JSON.parse(data.sparklines[key])
+        data.sparklines[key]['data']=JSON.parse(data.sparklines[key]['data'])
 
       })
+      
 
       var themes=data.themes;
       themes['live']={}

@@ -347,9 +347,9 @@ static propTypes = {
 
 
     console.log('chart data');
-    Object.keys(self.props.chartData[self.props.chart_id]).map(date => {
+    Object.keys(self.props.chartData[self.props.chart_id].data).map(date => {
 
-        var value=self.props.chartData[self.props.chart_id][date];
+        var value=self.props.chartData[self.props.chart_id].data[date];
         var item={};
         item['date']=date;
         item['value']=value;
@@ -381,7 +381,7 @@ static propTypes = {
 
         ) : (
 
-            <AreaChart width={200} height={60} 
+            <AreaChart width={100} height={60} 
               data={chartData}
               
               margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
@@ -390,7 +390,7 @@ static propTypes = {
             >
              <Area type='monotone' dataKey='value' 
               stroke={self.props.accountsData.themes.lines_horizontal_middle}
-              fill={self.props.accountsData.themes.lines_horizontal_middle} />
+              fill={self.props.chartData[self.props.chart_id].color} />
              
               
             

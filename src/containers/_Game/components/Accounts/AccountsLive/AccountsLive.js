@@ -436,7 +436,7 @@ export default class AccountsLive extends Component {
                 {
                   Header: "Account Value",
                   accessor: "account_value",
-                  width: 350,
+                  width: 250,
                   Cell: props => {
          
                     var chip=props.original;
@@ -461,8 +461,11 @@ export default class AccountsLive extends Component {
                       )
                     items.push(
 
-                    <div key={'item-3'} style={{'float':'left', minwidth:'200px', marginTop:"-5px"}}>
-                      <MiniAccountChart chartData={performance.sparklines} chart_id={props.original.key} accountsData={performance} />
+                    <div key={'item-3'} style={{'float':'left', width:'100px', marginTop:"-5px"}}>
+                      <MiniAccountChart 
+                        chartData={performance.sparklines} 
+                        chart_id={props.original.key} 
+                        accountsData={performance} />
                     </div>
                     )
                     items.push(
