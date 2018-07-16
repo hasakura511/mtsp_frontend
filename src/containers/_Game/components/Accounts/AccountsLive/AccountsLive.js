@@ -243,6 +243,7 @@ export default class AccountsLive extends Component {
      
     });
   }
+  
 
   delAccount = (chip_id) => {
     var self=this;
@@ -763,6 +764,7 @@ export default class AccountsLive extends Component {
                       
                       ref={ref => self[copyboard] = ref}
                       onClick={() => {  
+                        /*
                         if (performance.enable_board_copy_message) {
                           self.props.addTimedToaster(
                             {
@@ -772,29 +774,23 @@ export default class AccountsLive extends Component {
                             5000
                             );
                         }
-                              if (!performance.enable_board_copy) {
-                               
-                                return;
-                              }
-                              else {
-                                self.props.showDialog(
-                                " Are you sure you want to copy the board?",
-                                " Your board will be replaced with " + props.original.player + "'s board and all your chips will be placed in the Off location." ,
-                                () => {
-                                    console.log("Copy Board Start");
-                                    self.setState({refreshing:true})
-                                    self.copyBoard(props.original.board_config)
-
-                                    self.props.silenceDialog();
-
-                                  },
-                                  null,
-                                  "OK",
-                                  "Cancel"
-                              );
-                            }
-                        }}>
-                        {performance.enable_board_copy ?
+                        */
+                        self.props.showDialog(
+                        " Are you sure you want to customize your portfolio? ",
+                        " The is an advanced feature that should only be moidified by professionals. Creating na undeiversified portfolio can result in great risk and significant loss." ,
+                        () => {
+                            console.log("Copy Board Start");
+                              self.props.silenceDialog();
+                              self.props.showHtmlDialog(<AccountsNew  chip_id={props.original.chip_id} performance={self.props.performance} themes={self.props.themes}  />);
+                          
+                          },
+                          null,
+                          "OK",
+                          "Cancel"
+                      );
+                        }
+                        }>
+                        {props.original.chip_id ?
                           <img src="/images/account_edit_enabled.png"  height={30} />
                           :
                           <img src="/images/account_edit_disabled.png"  height={30} />
@@ -839,51 +835,30 @@ export default class AccountsLive extends Component {
 
                       <span className='number'><center>
                         
-                      <a href='JavaScript:console.log("popover called")' style={{ cursor:'pointer'  }} 
-                      
-                      ref={ref => self[copyboard] = ref}
-                      onClick={() => {  
-                        if (performance.enable_board_chip_copy_message) {
-                          self.props.addTimedToaster(
-                          {
-                            id: "board_notice_" + Math.random().toFixed(3),
-                            text: performance.enable_board_chip_copy_message
-                          },
-                          5000
-                          );
-                        }
-                        if (!performance.enable_board_chip_copy) {
-                               
-                                
-                                return;
-                        } else {
-                              
-                                self.props.showDialog(
-                                " Are you sure you want to copy the board & chip?",
-                                " Your board will be replaced with " + props.original.player + "'s board and all your chips other than the new chip will be placed in the Off location." ,
-                                  () => {
-                                    console.log("Copy Board & Chip Start");
-                                    self.setState({refreshing:true})
-
-                                    self.copyBoardChip(props.original.account_id, props.original.chip_id, props.original.board_config)
-                                    self.props.silenceDialog();
-                                    
-                                  },
-                                  null,
-                                  "OK",
-                                  "Cancel"
-                              );
-                            }
-                        }}>
                         {props.original.chip_id ?
-                          <img src="/images/account_delete_enabled.png"  onClick={() => {
-                            self.delAccount(props.original.chip_id);
-                           }} height={30} />
+                          <img src="/images/account_delete_enabled.png"  style={{ cursor:'pointer'  }} onClick={() => {
+
+                            self.props.showDialog(
+                              " Are you sure you want to Delete the Account?",
+                              " Deleted account will be removd from the board." ,
+                                () => {
+                                  self.setState({refreshing:true})
+
+                                  self.props.silenceDialog();
+                                  self.delAccount(props.original.chip_id);
+                                  
+                                },
+                                null,
+                                "OK",
+                                "Cancel"
+                            );
+                          }
+
+                          } height={30} />
                           :
                           <img src="/images/account_delete_disabled.png"  height={30} />
                         }
 
-                          </a>
                      
                       </center></span>
 

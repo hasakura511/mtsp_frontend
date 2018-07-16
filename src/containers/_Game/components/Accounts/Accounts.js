@@ -290,7 +290,6 @@ export default class Accounts extends Component {
 
                        
 
-                        <AccountsNew  performance={this.state.editData} themes={themes}  />
                 </div>
 
             

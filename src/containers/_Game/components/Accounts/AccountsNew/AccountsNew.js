@@ -91,7 +91,8 @@ export default class AccountsNew extends Component {
     showHtmlDialog:PropTypes.func.isRequired,
     silenceHtmlDialog:PropTypes.func.isRequired,
     dictionary_strategy:PropTypes.object.isRequired,
-    themes:PropTypes.object.isRequired
+    themes:PropTypes.object.isRequired,
+    chip_id:PropTypes.string
   };
   constructor(props) {
     super(props);
@@ -136,66 +137,7 @@ export default class AccountsNew extends Component {
     );
   }
 
-  getData = (tier='Paper-New', chip_tier=0) => {
-    var self=this;
-    axios
-    .post("/utility/leaderboard_live/", {
-      /**
-       * @example {"portfolio": ["TU", "BO"], "systems": ["prev1", "prev5"], "target": 500, "account": 5000}
-       *
-       */
-      username: self.props.email,
-      tier:tier,
-      chip_tier:chip_tier,
-    })
-    .then(response => {
-      /**
-       * @namespace {Performance}
-       */
-      var performance = response.data;
-      if (performance.data_not_available) {
-        self.props.addTimedToaster(
-          {
-            id: "board_notice_" + Math.random().toFixed(3),
-            text: performance.data_not_available_message
-          },
-          5000
-          );
-        /*
-        var performanceError=performance.data_not_available_message;
-        this.setState({
-          performanceLoading: false,
-          performanceError: performanceError
-        });
-        */
-      } 
-        console.log('leaderboard data')
-        console.log(performance);
-        var dataJson= JSON.parse(performance.accounts);
-        performance.accounts=dataJson;
-        Object.keys(performance.accounts).map(key => {
-          performance.accounts[key]['chip_id']=key;
-
-        })
-        
-        console.log(performance);
-
-        this.setState({
-            performanceError: '',
-            performanceLoading: false,
-            performance
-          });
-        }
-    )
-    .catch(performanceError => {
-      console.log(performanceError);
-      this.setState({
-        performanceLoading: false,
-        performanceError: performanceError
-      });
-    });
-  }
-
+  
   
  
   copyBoardChip = (leader_account_id, leader_chip_id, leader_board_config) => {
@@ -283,6 +225,7 @@ export default class AccountsNew extends Component {
 
 
   render() {
+    var self=this;
     var { performance, lookback, performanceLoading, performanceError, filter } = this.state;
     var bgColor="white";
     var bgText="black";
@@ -297,7 +240,6 @@ export default class AccountsNew extends Component {
     */
     var themes=performance.themes;
     var tableStyle={ fontSize:'12px',background: bgColor, color:bgText, borderLeft: "1px solid " + bdColor, borderRight: "1px solid " + bdColor, borderTop: "0.1px solid " + bhColor, borderBottom: "0.1px solid " + bhColor};
-    var self=this;
 
     var chartData={};
 
@@ -368,14 +310,23 @@ export default class AccountsNew extends Component {
 
                                     }}>
 
-          <h3>New Account Settings</h3>
-          <br/>
-          <b>Starting value, Account Type and Public settings cannot be modified after new account is created.</b>
+          {!self.props.chip_id ?
+          <div>
+            <h3>New Account Settings</h3>
+            <br/>
+            <b>Starting value, Account Type and Public settings cannot be modified after new account is created.</b>
+          
 
-          <br/><br/>
+            <br/><br/>
+          </div>:null}
+
           <table cellSpacing={0} cellPadding={0}
                  style={{width:"80%", border: "none", margin: "0px", padding: "0px", borderColor: "transparent"}}>
-            <tbody ><tr style={{border: "none", margin: "0px", padding: "0px", borderColor: "transparent"}}>
+            <tbody >
+        
+          {!self.props.chip_id ?
+                        
+              <tr style={{border: "none", margin: "0px", padding: "0px", borderColor: "transparent"}}>
             <td style={{ width:"20%", textAlign:"left",  border: "none", margin: "0px", padding: "5px"}}>
           Starting Value 
             </td><td style={{width:"80%", textAlign:"left",  border: "none", marginRight: "0px"}}>
@@ -404,6 +355,8 @@ export default class AccountsNew extends Component {
                 <b style={{fontSize:"32px",fontWeight:1600}}>$ {this.state.startingValue}</b>
                 </td></tr></tbody></table>
             </td></tr>
+            : null }
+             {!self.props.chip_id ?
             <tr style={{width:"50%", border: "none", margin: "0px", padding: "0px", borderColor: "transparent"}}>
             <td  style={{ textAlign:"left",  border: "none", margin: "0px", padding: "5px"}}> 
                 Additional Preferences
@@ -417,6 +370,7 @@ export default class AccountsNew extends Component {
                         value={"None"}
                     />
             </td></tr>
+            :null}
             <tr>
             <td style={{textAlign:"left", border: "none", margin: "0px", padding: "5px"}}>
                 Set your portfolio to automatically..
@@ -605,7 +559,11 @@ export default class AccountsNew extends Component {
             </td>
             <td style={{textAlign:"right", border: "none", margin: "0px", padding: "5px"}}>
             <Button label='Cancel' raised  />
-            <Button label='Create' raised />
+            {!self.props.chip_id ?
+              <Button label='Create' raised />
+              :
+              <Button label='Save' raised />
+            }
             </td>
             </tr>
 
