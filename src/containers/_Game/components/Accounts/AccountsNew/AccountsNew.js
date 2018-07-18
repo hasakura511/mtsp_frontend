@@ -22,6 +22,7 @@ import Slider from 'react-toolbox/lib/slider';
 import Dropdown from 'react-toolbox/lib/dropdown';
 import {Button, IconButton} from 'react-toolbox/lib/button';
 import { RadioGroup, RadioButton } from 'react-toolbox/lib/radio';
+import moment from 'moment-timezone';
 
 import {
   LineChart,
@@ -40,6 +41,8 @@ import { connect } from "react-redux";
 const stateToProps = state => ({
   performance_account_id: state.betting.performance_account_id,
   themes:state.betting.themes,
+  liveDate:state.betting.liveDate,
+  liveDateText:state.betting.liveDateText,
   email:state.auth.email,
   dictionary_strategy:state.betting.dictionary_strategy,
 });
@@ -107,6 +110,12 @@ export default class AccountsNew extends Component {
       refreshing: false,
       startingValue:10000,
       marginValue: 25,
+      maxMargin: 10000 * 25 / 100,
+      marginCallType:"Recreate",
+      customizePortfolioType: "generate",
+      portfolio:[],
+      advancedPref:"Hide"
+
       // endDate: 20180201
     };
   }
@@ -138,65 +147,131 @@ export default class AccountsNew extends Component {
   }
 
   
-  
- 
-  copyBoardChip = (leader_account_id, leader_chip_id, leader_board_config) => {
+  saveData=() => {
     var self=this;
-    axios
-    .post("/utility/copy_account_live/", {
-      /**
-       * @example {"portfolio": ["TU", "BO"], "systems": ["prev1", "prev5"], "target": 500, "account": 5000}
-       *
-       */
-      username: self.props.email,
-      board_config: leader_board_config,
-      leaderboard_account_id:leader_account_id,
-      leaderboard_chip_id:leader_chip_id,
-    })
-    .then(response => {
-      /**
-       * @namespace {Performance}
-       */
-      var res = response.data;
-      var message=res.message;
-      var reinitialize=res.reinitialize;
-      if (message != "OK") {
-        self.props.addTimedToaster(
-          {
-            id: "board_notice_" + Math.random().toFixed(3),
-            text: message
-          },
-          5000
-          );
-          self.setState({refreshing:false})
-      } else  {
+    var chip_id=self.props.chip_id;
+    if (!chip_id)
+      chip_id=-1;
+    if (this.state.refreshing) {
+      console.log("Save Data in Progress" );
 
-        const loaded = () => {
-          self.setState({refreshing:false})
-          self.props.silenceDialog();
-          self.props.toggle();
+      return;
+    }
+    else
+      this.setState({refreshing:true})
+    console.log("Starting Save Data ");
+    
+    axios
+      .post("/utility/save_account/", {
+          'username':  this.props.email,
+          'chip_id': parseInt(chip_id),
+          'starting_value':self.state.startingValue,
+          'margin_percent':self.state.marginValue,
+          'margin_call': self.state.marginCallType,
+          'customize_portfolio': self.state.customizePortfolioType == 'customize',
+          'portfolio': JSON.stringify(self.state.portfolio)
           
-        }
-        self.props.initializeNew(reinitialize, loaded);
-      }
-      
-      
-    })
-    .catch(performanceError => {
-      console.log(performanceError);
-      if (performanceError) {
-        self.props.addTimedToaster(
-          {
-            id: "board_notice_" + Math.random().toFixed(3),
-            text: performanceError.toString()
-          },
-          5000
-          );
-      }
-      
-     
-    });
+      })
+      .then(response => {
+        console.log(response);
+        this.props.addTimedToaster({
+          id: "saveData",
+          text: response.message,
+        });
+       this.setState({
+          //controls: controls,
+          
+          loading: false,
+          fetched: true,
+          refreshing:false,
+
+          
+        });
+
+        //if (sym) {
+        //  self.onGetChart(sym, liveDateText);
+        //}
+        //self.props.refreshMarketDone();
+      })
+      .catch((error) => {
+        console.log(error);
+        this.setState({ error: true, loading: false,refreshing:false });
+        this.props.addTimedToaster({
+          id: "contact-us-error",
+          text: "Server error, please wait till we fix."
+        });
+      });
   }
+
+  
+  customData=(account_id='', link='', date='', portfolio='') => {
+    var self=this;
+    
+    if (this.state.refreshing) {
+      console.log("Market refresh still in progress" );
+
+      return;
+    }
+    else
+      this.setState({refreshing:true})
+    console.log("Starting Market HEATMAP Refresh with Account: " + account_id);
+    
+    axios
+      .post("/utility/market_heatmap/", {
+          'username':  this.props.email,
+          'date': date,
+          'account_id':account_id,
+          'link':link,
+          'portfolio':portfolio
+
+      })
+      .then(response => {
+        console.log(response);
+        var data=response.data;
+        var liveDateText=response.data.date;
+        var date_str=response.data.date_str;
+        //alert(response.data.date_str)
+        //alert(response.data.date)
+        var groups= JSON.parse(response.data.groups)
+        var markets= JSON.parse(response.data.markets)
+        var themes = response.data.themes
+        data.groups=groups;
+        data.markets=markets;
+        data.themes=themes;
+        console.log(data);
+        console.log(groups)
+        console.log(markets)
+        console.log(themes)
+        
+       this.setState({
+          //controls: controls,
+          liveDateText:liveDateText,
+          date_str:date_str,
+          marketData:data,
+          marketThemes:themes,
+          loading: false,
+          fetched: true,
+          refreshing:false,
+
+          customizePortfolioType:'customize'
+
+        });
+
+        //if (sym) {
+        //  self.onGetChart(sym, liveDateText);
+        //}
+        //self.props.refreshMarketDone();
+      })
+      .catch((error) => {
+        console.log(error);
+        this.setState({ error: true, loading: false,refreshing:false });
+        this.props.addTimedToaster({
+          id: "contact-us-error",
+          text: "Server error, please wait till we fix."
+        });
+      });
+  }
+
   componentDidMount() {
       //this.getData();
 
@@ -231,13 +306,7 @@ export default class AccountsNew extends Component {
     var bgText="black";
     var bdColor="green";
     var bhColor="pink";
-    /*if (this.themes.live.dashboard != undefined) {
-      bgColor=this.themes.live.dashboard.background;
-      bgText=this.themes.live.dashboard.text;
-      bdColor=this.themes.live.dashboard.lines;
-      bhColor=this.themes.live.dashboard.lines_horizontal_middle;
-    }
-    */
+    
     var themes=performance.themes;
     var tableStyle={ fontSize:'12px',background: bgColor, color:bgText, borderLeft: "1px solid " + bdColor, borderRight: "1px solid " + bdColor, borderTop: "0.1px solid " + bhColor, borderBottom: "0.1px solid " + bhColor};
 
@@ -247,6 +316,210 @@ export default class AccountsNew extends Component {
         console.log(performance);
         //console.log(performance.chip_tiers);
     }
+
+    var customizeHtml=[];
+    var idx=0;
+    customizeHtml.push(
+      <tr key={"customize_" + idx}><td style={{ border: "none",  padding: "5px"}} >
+    <img src="/images/account_add.png" style={{width:"30px",height:"30px"}} /> Click to add to portfolio
+    </td><td style={{  border: "none",  padding: "5px"}} >
+    <img src="/images/account_added.png" style={{width:"30px",height:"30px"}} /> Check indicates included in portfolio
+    </td></tr>)
+    ;
+    idx+=1;
+    customizeHtml.push(
+      <tr key={"customize_" + idx}><td style={{ border: "none",  padding: "5px"}}>
+      <img src="/images/account_remove.png" style={{width:"30px",height:"30px"}} /> Click to remove from portfolio
+      </td><td style={{ border: "none",  padding: "5px"}}>
+      <img src="/images/account_locked.png" style={{width:"30px",height:"30px"}} /> Lock shows when total margin {">"} max margin.
+      </td></tr>
+    );
+    idx+=1;
+    var estMargin=0;
+    Object.keys(performance.margins).map(key => {
+      var item=performance.margins[key];
+      item.key=key;
+      estMargin+=parseFloat(item.initMargin);
+      return item;
+    });
+  
+
+    if (self.state.customizePortfolioType == 'customize') {
+      console.log(self.state.marketData.markets);
+      self.state.portfolio.map(key => {
+        var item=performance.margins[key];
+        estMargin+=parseFloat(item.initMargin);
+      });  
+      var itemData=Object.keys(performance.margins).map(key => {
+        var item=performance.margins[key];
+        item.key=key;
+        //estMargin+=parseFloat(item.initMargin);
+        return item;
+      });
+      customizeHtml.push(
+        <tr  key={"customize_" + idx}>
+        <td colSpan={2}>
+  
+         <ReactTable
+                    
+                    data={itemData}
+                    className="-striped -highlight"
+                    minRows={10}
+                    columns={[
+                        {
+                        Header: "",
+                        columns: [
+                            {
+                            Header: "Markets",
+                            accessor: "Display",
+                            Cell: props => (
+                                <span style={{textAlign:'left'}} >
+                                {self.state.portfolio.includes(props.original.key) ? 
+                                <img src="/images/account_added.png" style={{width:"30px",height:"30px"}} />
+                                
+                                : parseFloat(self.state.maxMargin) < parseFloat(estMargin) + parseFloat(props.original.initMargin) ? 
+                                  <img src={"/images/account_locked.png"} style={{width:'30px'}} />
+                                : null}
+                                &nbsp;
+                                &nbsp;
+                                &nbsp;
+                                {props.value}
+                                </span>
+                              ), // Custom cell components!,
+                            },
+                            {
+                            Header: "Group",
+                            accessor: "Group",
+                            Cell: props => (
+                                <span className='number'><center>
+                                {props.value}
+                                </center></span>
+                              ), // Custom cell components!,
+                            },
+                            {
+                            Header: "20 Day Avg True Range",
+                            accessor: "usdATR20",
+                            Cell: props => (
+                                <span className='number'><center>
+                                $ {props.value}
+                                </center></span>
+                                ), // Custom cell components!,
+                            },
+                            {
+                                Header: "20 Day Avg Volume",
+                                accessor: "AvgVolume20",
+                                Cell: props => (
+                                    <span className='number'><center>
+                                    {props.value}
+                                    </center></span>
+                                    ), // Custom cell components!,
+                            },
+                            {
+                                Header: "Initial Margin",
+                                accessor: "initMargin",
+                                Cell: props => (
+                                    <span className='number'><center>
+                                    ${props.value}
+                                    </center></span>
+                                    ), // Custom cell components!,
+                            },
+                            {
+                            Header: "Add / Remove",
+                            accessor: "Group",
+                            Cell: props => (
+                                <span className='number'><center>
+                                    <img src="/images/account_remove.png" 
+                                    onClick={() => {
+                                        //console.log(props.original);
+                                        var portfolio=self.state.portfolio.filter(item => {
+                                          return item != props.original.key;
+                                        });
+                                        self.setState({portfolio:portfolio});
+                                        console.log(portfolio);
+  
+                                    }}
+                                    style={{width:"30px", height:"30px", cursor:'pointer' }} />
+                                    <img src="/images/account_add.png"  
+                                    onClick={() => {
+                                        var portfolio=self.state.portfolio.filter(item => {
+                                          return item != props.original.key;
+                                        });
+                                        if (parseFloat(self.state.maxMargin) > parseFloat(estMargin) + parseFloat(props.original.initMargin))
+                                          portfolio.push(props.original.key);
+                                        console.log(portfolio);
+                                        self.setState({portfolio:portfolio});
+                                    }}
+                                    style={{width:"30px", height:"30px", cursor:'pointer' }} />
+                                </center></span>
+                                ), // Custom cell components!,
+                            },
+                        ]}]}
+                        defaultPageSize={Object.keys(performance.margins).length}
+                        style={{
+                            width: "100%", 
+                            height: "400px",
+                            maxHeight:"100%",
+                            overflow:"auto",
+                            fontSize:"12px",
+                            fontWeight: 800,
+                        }}
+                      
+                        showPagination={false}
+                        />
+  
+        </td>
+    </tr>);
+    }
+    var advancedPrefHtml=[];
+    idx+=1;
+    advancedPrefHtml.push(
+    <tr key={"adv_pref_" + idx}>
+            <td style={{textAlign:"left", border: "none", margin: "0px", padding: "5px"}}>
+            <RadioGroup value={self.state.customizePortfolioType} onChange={(e) => {
+                    console.log(e)
+                    if (e == 'customize') {
+                      self.props.showDialog(
+                      " Are you sure you want to customize your portfolio? ",
+                      " The is an advanced feature that should only be moidified by professionals. Creating undiversified portfolio can result in great risk and significant loss." ,
+                      () => {
+                            self.props.silenceDialog();
+                            self.customData();
+
+            
+                        },
+                        null,
+                        "OK",
+                        "Cancel"
+                        );
+                      } else {
+                        self.setState({customizePortfolioType:e})
+
+                      }
+                    
+
+                }}>
+                <RadioButton label={'Generate your portfolio algorithmically'} value={'generate'} />
+                <RadioButton label={'Customize your portfolio'} value={'customize'} />
+            </RadioGroup>
+            </td>
+            <td style={{textAlign:"right", border: "none",  padding: "5px"}}>
+         
+            </td>
+            </tr>
+    );
+    idx+=1;
+    advancedPrefHtml.push(
+            <tr key={"adv_pref_" + idx} ><td style={{textAlign:"left", border: "none",  padding: "5px"}}>
+                <h3>Estimated Total Margin <b>$ {estMargin}</b></h3>
+            </td>
+            <td style={{textAlign:"left", border: "none",  padding: "5px"}}>
+                <h3>Max Margin  <b>$ {self.state.maxMargin} </b></h3>
+            </td>
+            </tr>
+    );
+    idx+=1;
+    if (self.state.customizePortfolioType == 'customize' ) 
+      advancedPrefHtml.push(customizeHtml)
 
     
     if (this.state.refreshing) {
@@ -349,7 +622,8 @@ export default class AccountsNew extends Component {
                       step={parseInt(performance.new_account_params.INCREMENT_STARTING_VALUE)} 
                       value={this.state.startingValue} onChange={(e) => {
                     console.log(e)
-                    self.setState({startingValue:e})
+                    var maxMargin=Math.floor(parseFloat(e) * parseFloat(self.state.marginValue)/100);
+                    self.setState({startingValue:e, maxMargin:maxMargin})
                 }} />
                 </td><td  style={{border: "none", marginLeft: "0px", paddingLeft: "15px"}} >
                 <b style={{fontSize:"32px",fontWeight:1600}}>$ {this.state.startingValue}</b>
@@ -417,7 +691,9 @@ export default class AccountsNew extends Component {
                       step={parseInt(performance.new_account_params.INCREMENT_MAX_MARGIN_PERCENT)} 
                       value={parseInt(self.state.marginValue)} onChange={(e) => {
                     console.log(e)
-                    self.setState({marginValue:e})
+                    var maxMargin=Math.floor(parseFloat(e)/100 * parseFloat(self.state.startingValue));
+
+                    self.setState({marginValue:e, maxMargin:maxMargin})
                 }} />
                 </td><td  style={{border: "none", marginLeft: "0px", paddingLeft: "15px"}} >
                 <b style={{fontSize:"32px",fontWeight:1600}}>{this.state.marginValue}%</b> of account value
@@ -431,138 +707,33 @@ export default class AccountsNew extends Component {
             </td>
             <td style={{textAlign:"left", border: "none",  padding: "5px"}}>
             <Dropdown
-                        auto
-                        onChange={() => {
+                        onChange={(e) => {
                             console.log('handle change');
+                            self.setState({advancedPref:e});
                         }}
-                        source={[{value:'None',label:'None'}, {value:"Hide", label:"Hide"}]}
-                        value={"None"}
+                        source={[{value:'Show',label:'Show'}, {value:"Hide", label:"Hide"}]}
+                        value={self.state.advancedPref}
                     />
             </td>
             </tr>
-            <tr>
-            <td style={{textAlign:"left", border: "none", margin: "0px", padding: "5px"}}>
-            <RadioGroup value={self.state.customizePortfolioType} onChange={(e) => {
-                    console.log(e)
-                    self.setState({customizePortfolioType:e})
-                }}>
-                <RadioButton label={'Generate your portfolio algorithmically'} value={'generate'} />
-                <RadioButton label={'Customize your portfolio'} value={'customize'} />
-            </RadioGroup>
-            </td>
-            <td style={{textAlign:"right", border: "none",  padding: "5px"}}>
-         
-            </td>
-            </tr>
-            <tr><td style={{textAlign:"left", border: "none",  padding: "5px"}}>
-                <h3>Estimated Total Margin <b>$0</b></h3>
-            </td>
-            <td style={{textAlign:"left", border: "none",  padding: "5px"}}>
-                <h3>Max Margin  <b>$12,500</b></h3>
-            </td>
-            </tr>
-            <tr><td style={{ border: "none",  padding: "5px"}} >
-            <img src="/images/account_add.png" style={{width:"30px",height:"30px"}} /> Click to add to portfolio
-            </td><td style={{  border: "none",  padding: "5px"}} >
-            <img src="/images/account_added.png" style={{width:"30px",height:"30px"}} /> Check indicates included in portfolio
-            </td></tr>
-            <tr><td style={{ border: "none",  padding: "5px"}}>
-            <img src="/images/account_remove.png" style={{width:"30px",height:"30px"}} /> Click to remove from portfolio
-            </td><td style={{ border: "none",  padding: "5px"}}>
-            <img src="/images/account_locked.png" style={{width:"30px",height:"30px"}} /> Lock shows when total margin {">"} max margin.
-            </td></tr>
-            <tr>
-                <td colSpan={2}>
+            {self.state.advancedPref != 'Hide' ? advancedPrefHtml : null}
 
-                 <ReactTable
-                            
-                            data={Object.keys(performance.margins).map(key => {
-                                var item=performance.margins[key];
-                                item.key=key;
-                                return item;
-                            })}
-                            className="-striped -highlight"
-                            minRows={10}
-                            columns={[
-                                {
-                                Header: "",
-                                columns: [
-                                    {
-                                    Header: "Markets",
-                                    accessor: "Display",
-                                    },
-                                    {
-                                    Header: "Group",
-                                    accessor: "Group",
-                                    Cell: props => (
-                                        <span className='number'><center>
-                                        {props.value}
-                                        </center></span>
-                                      ), // Custom cell components!,
-                                    },
-                                    {
-                                    Header: "20 Day Avg True Range",
-                                    accessor: "usdATR20",
-                                    Cell: props => (
-                                        <span className='number'><center>
-                                        $ {props.value}
-                                        </center></span>
-                                        ), // Custom cell components!,
-                                    },
-                                    {
-                                        Header: "20 Day Avg Volume",
-                                        accessor: "AvgVolume20",
-                                        Cell: props => (
-                                            <span className='number'><center>
-                                            {props.value}
-                                            </center></span>
-                                            ), // Custom cell components!,
-                                    },
-                                    {
-                                        Header: "Initial Margin",
-                                        accessor: "initMargin",
-                                        Cell: props => (
-                                            <span className='number'><center>
-                                            ${props.value}
-                                            </center></span>
-                                            ), // Custom cell components!,
-                                    },
-                                    {
-                                    Header: "Add / Remove",
-                                    accessor: "Group",
-                                    Cell: props => (
-                                        <span className='number'><center>
-                                            <img src="/images/account_remove.png" style={{width:"30px", height:"30px"}} />
-                                            <img src="/images/account_add.png"  style={{width:"30px", height:"30px"}} />
-                                        </center></span>
-                                        ), // Custom cell components!,
-                                    },
-                                ]}]}
-                                defaultPageSize={Object.keys(performance.margins).length}
-                                style={{
-                                    width: "100%", 
-                                    height: "400px",
-                                    maxHeight:"100%",
-                                    overflow:"auto",
-                                    fontSize:"12px",
-                                    fontWeight: 800,
-                                }}
-                              
-                                showPagination={false}
-                                />
-
-                </td>
-            </tr>
-            <tr>
+                        <tr>
             <td style={{border: "none", margin: "0px", padding: "5px"}}>
                 <Button label='Reset' raised  />
             </td>
             <td style={{textAlign:"right", border: "none", margin: "0px", padding: "5px"}}>
             <Button label='Cancel' raised  />
             {!self.props.chip_id ?
-              <Button label='Create' raised />
+              <Button label='Create' onClick={() => {
+                self.saveData();
+
+              }} raised />
               :
-              <Button label='Save' raised />
+              <Button label='Save' onClick={() => {
+                self.saveData();
+              }}
+              raised />
             }
             </td>
             </tr>
@@ -589,10 +760,14 @@ export default class AccountsNew extends Component {
     initializeHeatmap:PropTypes.func,
     themes:PropTypes.object,
     //dictionary_strategy:PropTypes.object.isRequired,
-    //showDialog:PropTypes.func.isRequired,
-    //silenceDialog:PropTypes.func.isRequired,
+    showDialog:PropTypes.func.isRequired,
+    silenceDialog:PropTypes.func.isRequired,
     addTimedToaster: PropTypes.func.isRequired,
     //initializeNew:PropTypes.func.isRequired,
-    performance:PropTypes.object.isRequired
+    performance:PropTypes.object.isRequired,
+    liveDate:PropTypes.instanceOf(moment).isRequired,
+    liveDateText:PropTypes.string.isRequired,
+    email:PropTypes.string,
+    
   };
 }

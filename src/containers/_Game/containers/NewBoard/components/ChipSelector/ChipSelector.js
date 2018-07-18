@@ -59,12 +59,12 @@ export default class ChipSelector extends React.Component {
         var itemSelected=this.props.itemSelected;
         console.log('item selected');
         console.log(this.props.itemSelected);
-        items.push({ value: 'None',
+        items.push({ value: 'All',
           chip: undefined
         });
         props.accounts.map(account => {
           if (!itemSelected) {
-                itemSelected='None';
+                itemSelected='All';
           }
           items.push({ value:account.chip_id, 
                     chip: account
@@ -83,7 +83,7 @@ export default class ChipSelector extends React.Component {
     handleItemChange = (value) => {
       console.log(value);
       var self=this;
-      if (value != 'None') {
+      if (value != 'All') {
         this.props.accounts.map(account => {
           if (value == account.chip_id) {
               var last_date=account.date.replace(/-/g,'');

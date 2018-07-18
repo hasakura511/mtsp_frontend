@@ -210,7 +210,7 @@ export default class NewBoard extends Component {
       rightSystems:[],
       topSystems:[],
       bottomSystems:[],
-      itemSelected:'None',
+      itemSelected:'All',
       optimize:false,
       optimizeData:[],
       strats:[],
@@ -525,7 +525,7 @@ export default class NewBoard extends Component {
     .then(({ data }) => {
       console.log('received new board data')
       console.log(data);
-      var itemSelected = chip_id ?  chip_id : 'None';
+      var itemSelected = chip_id ?  chip_id : 'All';
       
       if (data.heatmap_load_failed && data.heatmap_load_failed_message) {
         self.sendNotice(data.heatmap_load_failed_message);

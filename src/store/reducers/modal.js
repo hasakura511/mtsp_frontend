@@ -52,7 +52,8 @@ const reducer = (state = initialState, action) => {
 
     case actionTypes.SILENCE_DIALOG:
       return {
-        ...initialState
+        ...state,
+        show: false
       };
       
     default:

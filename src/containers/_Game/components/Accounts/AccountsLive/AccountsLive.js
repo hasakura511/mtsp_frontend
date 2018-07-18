@@ -764,32 +764,9 @@ export default class AccountsLive extends Component {
                       
                       ref={ref => self[copyboard] = ref}
                       onClick={() => {  
-                        /*
-                        if (performance.enable_board_copy_message) {
-                          self.props.addTimedToaster(
-                            {
-                              id: "board_notice_" + Math.random().toFixed(3),
-                              text: performance.enable_board_copy_message
-                            },
-                            5000
-                            );
-                        }
-                        */
-                        self.props.showDialog(
-                        " Are you sure you want to customize your portfolio? ",
-                        " The is an advanced feature that should only be moidified by professionals. Creating na undeiversified portfolio can result in great risk and significant loss." ,
-                        () => {
-                            console.log("Copy Board Start");
-                              self.props.silenceDialog();
                               self.props.showHtmlDialog(<AccountsNew  chip_id={props.original.chip_id} performance={self.props.performance} themes={self.props.themes}  />);
-                          
-                          },
-                          null,
-                          "OK",
-                          "Cancel"
-                      );
-                        }
-                        }>
+
+                        }} >
                         {props.original.chip_id ?
                           <img src="/images/account_edit_enabled.png"  height={30} />
                           :
@@ -817,6 +794,7 @@ export default class AccountsLive extends Component {
                     },
                     Footer: props => (
                     <div style={{width:"100px", cursor:'pointer'}} onClick={() => {
+
                         self.props.showHtmlDialog(<AccountsNew  performance={self.props.performance} themes={self.props.themes}  />);
                     
                     }}>

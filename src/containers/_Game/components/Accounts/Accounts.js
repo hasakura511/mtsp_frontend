@@ -288,8 +288,6 @@ export default class Accounts extends Component {
 
                        <AccountsLive performance={this.state.editData} themes={themes} />
 
-                       
-
                 </div>
 
             

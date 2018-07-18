@@ -135,8 +135,7 @@ export default class StrategyToolbox extends Component {
                 </div>
                 <br/>
                 <div style={{"clear": "both"}}></div>
-
-                {this.props.itemSelected && this.props.itemSelected != 'None' && editData.optimized_board.toString().length > 2 ? 
+                {editData.optimized_board.toString().length > 2 ? 
                 <div  style={{
                   cursor:'pointer',
                   float:'left'
@@ -172,7 +171,7 @@ export default class StrategyToolbox extends Component {
                   </div>
                 }
                 <div style={{"clear": "both"}}></div>
-                {this.props.itemSelected && this.props.itemSelected != 'None' && editData.optimized_board.toString().length > 2 ? 
+                {this.props.itemSelected && this.props.itemSelected != 'All' && editData.optimized_board.toString().length > 2 ? 
                 <div  style={{
                   cursor:'pointer',
                   float:'left'
