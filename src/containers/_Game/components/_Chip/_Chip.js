@@ -228,6 +228,7 @@ export default class Chip extends PureComponent {
     
       if (chip.isReadOnly) {
         chipStyle['border'] = "3px solid transparent";
+        chipStyle["borderRadius"]= "32px";
       }
       
       return {chipStyle, title};
@@ -252,7 +253,7 @@ export default class Chip extends PureComponent {
       return dragSource(
             <div className={classes.Chip} style={chipStyle} title={title}>
           
-            <p>{chip.display}</p>
+            <p style={{fontWeight:800, fontSize:"12px", marginTop: chip.isAccountChip ? "-10px":"0px" }}><b>{chip.display}</b></p>
             
             </div>
       );

@@ -107,8 +107,8 @@ export default class AccountsNew extends Component {
     var performance = props.performance;
     var marginValue = parseInt(props.performance.new_account_params.default_margin_percent);
     var startingValue = parseInt(props.performance.new_account_params.default_starting_value);
-    var marginCallType =  props.performance.default_margin_call_type;
-    var customizePortfolio =  parseInt(props.performance.default_customize_portfolio);
+    var marginCallType =  props.performance.new_account_params.default_margin_call_type;
+    var customizePortfolio =  parseInt(props.performance.new_account_params.default_customize_portfolio);
     if (props.chip_id) {
 
       account=performance.accounts[props.chip_id]
@@ -163,8 +163,8 @@ export default class AccountsNew extends Component {
           this.setState({performance:newProps.performance, 
             marginValue:parseInt(newProps.performance.new_account_params.default_margin_percent),
             startingValue:parseInt(newProps.performance.new_account_params.default_starting_value),
-            marginCallType: newProps.performance.default_margin_call_type,
-            customizePortfolio: parseInt(newProps.performance.default_customize_portfolio)
+            marginCallType: newProps.performance.new_account_params.default_margin_call_type,
+            customizePortfolio: parseInt(newProps.performance.new_account_params.default_customize_portfolio)
           })
         }
           
@@ -525,7 +525,7 @@ export default class AccountsNew extends Component {
                         defaultPageSize={Object.keys(performance.margins).length}
                         style={{
                             width: "100%", 
-                            height: "400px",
+                            height: "2000px",
                             maxHeight:"100%",
                             overflow:"auto",
                             fontSize:"12px",
@@ -569,7 +569,14 @@ export default class AccountsNew extends Component {
     if (self.state.customizePortfolioType == 'customize' ) {
       advancedPrefHtml.push(
         <tr key={"adv_pref_" + idx} ><td style={{textAlign:"left", width:"50%", border: "none",  padding: "5px"}}>
-            <h3>Estimated Total Margin <b>$ {numberWithCommas(estMargin)}</b></h3>
+            <h3>Estimated Total Margin <b>$ {numberWithCommas(estMargin)}</b>
+            
+            &nbsp;&nbsp;&nbsp;<Button label='Clear Portfolio' onClick={() => {
+                self.setState({portfolio:[]})
+              }}
+              raised />
+
+            </h3>
         </td>
         <td style={{textAlign:"left", border: "none",  padding: "5px"}}>
             <h3>Max Margin  <b>$ {numberWithCommas(self.state.maxMargin)} </b></h3>
@@ -614,8 +621,9 @@ export default class AccountsNew extends Component {
     if (self.props.chip_id) {    
         var chip=self.props.performance.accounts[self.props.chip_id];
         chip.display=chip.account_chip_text;
-        chip.status = 'unlocked';
+        //chip.status = 'unlocked';
         chip.isReadOnly=true;
+        chip.isAccountChip=true;
         items.push(
           <div key={'item-2'} style={{'float':'left', width: '60px', height:'60px', padding:"1px", marginTop:"1px", marginBottom:"-10px"}}>
           <Chip chip={chip} isReadOnly={true} account_chip_text={chip.account_chip_text} />&nbsp;&nbsp;
@@ -645,8 +653,8 @@ export default class AccountsNew extends Component {
           accounthtml.push(<table 
             key={'accountHtml'} 
             style={{
-              border:"none", 
-              borderCollapse: "collapse",
+              //border:"none", 
+              //borderCollapse: "collapse",
               width:"100%",
               //background:self.props.themes.live.dialog.background_inner,
               color:self.props.themes.live.dialog.text }}>
@@ -677,6 +685,7 @@ export default class AccountsNew extends Component {
                 <tbody>
                   <tr style={{border:"1px", "padding":"1px"}}>
                   <td style={{ width: "350px", paddingTop: "20px", borderLeft:"1px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
+                      <div key={'c'} style={{"clear": "both"}}></div>
                     {items}
                   </td>            
                   <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
@@ -797,7 +806,7 @@ export default class AccountsNew extends Component {
                       value={this.state.startingValue} onChange={(e) => {
                     console.log(e)
                     var maxMargin=Math.floor(parseFloat(e) * parseFloat(self.state.marginValue)/100);
-                    self.setState({startingValue:e, maxMargin:maxMargin})
+                    self.setState({startingValue:e, maxMargin:maxMargin, portfolio:[]})
                 }} />
                 </td><td  style={{border: "none", marginLeft: "0px", paddingLeft: "15px"}} >
                 <b style={{fontSize:"32px",fontWeight:1600}}>$ {numberWithCommas(this.state.startingValue)}</b>

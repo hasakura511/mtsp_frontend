@@ -347,16 +347,23 @@ static propTypes = {
 
 
     console.log('chart data');
+    var minY=0;
+    var maxY=0;
     Object.keys(self.props.chartData[self.props.chart_id].data).map(date => {
 
         var value=self.props.chartData[self.props.chart_id].data[date];
         var item={};
         item['date']=date;
         item['value']=value;
+        if (!minY || value < minY)
+          minY=value;
+        if (!maxY || value > maxY)
+          maxY=value;
         chartData.push(item);        
 
     });
-        
+    minY = minY - minY * 0.02
+    maxY = maxY + maxY * 0.02
     console.log(chartData);
     return (
         <div className={classes.MiniAccountChart}>
@@ -388,6 +395,10 @@ static propTypes = {
               //onMouseMove={self.onChartMouseMove}
               //onMouseLeave={self.onChartMouseLeave}
             >
+            <YAxis
+                width={0}
+                domain={[minY, maxY]}
+              />
              <Area type='monotone' dataKey='value' 
               stroke={self.props.accountsData.themes.lines_horizontal_middle}
               fill={self.props.chartData[self.props.chart_id].color} />
