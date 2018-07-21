@@ -8,6 +8,7 @@ import * as actions from "./store/actions";
 import Home from "./containers/Home/Home";
 import Extras from "./components/Extras/Extras";
 import HtmlDialog from "./components/UI/Modal/HtmlDialog"
+import HtmlDialog2 from "./components/UI/Modal/HtmlDialog2"
 // import GameBoard from "./containers/GameBoard/GameBoard";
 
 import Auth, {
@@ -119,7 +120,12 @@ class App extends Component<PropType, { showSideDrawer: boolean }> {
         showSideDrawer={this.state.showSideDrawer}
         toggleSideDrawer={this.toggleSideDrawer}
       >
+      <div style={{zIndex:1}}>
          <HtmlDialog />
+      </div>
+      <div style={{zIndex:2}}>
+         <HtmlDialog2 />
+      </div>
         <Switch>
           <Route path="/logout" component={Logout} />
           <Route path="/contact" component={Contact} />

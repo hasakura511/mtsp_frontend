@@ -47,3 +47,19 @@ export const silenceHtmlDialog = () => {
     type: actionTypes.SILENCE_HTML_DIALOG
   };
 };
+
+export const showHtmlDialog2 = (
+  htmlContent
+) => {
+  console.log(arguments);
+  return {
+    type: actionTypes.SHOW_HTML_DIALOG2,
+    htmlContent
+  };
+};
+
+export const silenceHtmlDialog2 = () => {
+  return {
+    type: actionTypes.SILENCE_HTML_DIALOG2
+  };
+};

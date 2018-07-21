@@ -85,6 +85,7 @@ const dispatchToProps = dispatch => {
     refreshMarketDone:() => {
       dispatch(actions.refreshMarketDone())
     },
+    silenceHtmlDialog2: () => dispatch(actions.silenceHtmlDialog2())
   };
 };
 
@@ -131,6 +132,10 @@ export default class Markets extends Component {
     liveDateText:PropTypes.string.isRequired,
     email:PropTypes.string,
     refreshing:PropTypes.bool,
+    load_account_id:PropTypes.string,
+    load_symbol:PropTypes.string,
+    load_link:PropTypes.string,
+    load_portfolio:PropTypes.string,
     heatmap_account_id:PropTypes.string,
     heatmap_lookup_symbol:PropTypes.string,
     heatmap_lookup_link:PropTypes.string,
@@ -138,6 +143,7 @@ export default class Markets extends Component {
     refreshMarketDone:PropTypes.func.isRequired,
     link:PropTypes.string,
     initializeHeatmap:PropTypes.func.isRequired,
+    silenceHtmlDialog2:PropTypes.func.isRequired,
   };
 
   getSubmitTitle(controls) {
@@ -178,7 +184,7 @@ export default class Markets extends Component {
     
   }
 
-  refreshData=(account_id='', link='', sym='') => {
+  refreshData=(account_id='', link='', sym='', portfolio='') => {
     var self=this;
     if (self.state.last_heatmap_params.account_id != account_id ||
         self.state.last_heatmap_params.link != link ||
@@ -204,6 +210,7 @@ export default class Markets extends Component {
           'date':this.state.liveDateText,
           'account_id':account_id,
           'link':link,
+          'portfolio':portfolio
 
       })
       .then(response => {
@@ -319,7 +326,13 @@ export default class Markets extends Component {
     var link='';
     if (!this.props.link)
       link='header';
-    this.refreshData('',link);
+    
+    if (this.props.load_symbol) {
+      this.refreshData(this.props.load_account_id, this.props.load_link, this.props.load_symbol, this.props.load_portfolio);
+    } else {
+  
+      this.refreshData('',link);
+    }
   }
 
   inputChangeHandler = (event, identifier) => {
@@ -1297,7 +1310,14 @@ export default class Markets extends Component {
               }
               
               <div id="chartArea"  style={{display:"none", width:"100%", textAlign:"left", padding:"10px"}}>
-              <span style={{'float':'right'}}><button onClick={()=>{ $('#chartArea').hide(); }}>Close</button></span>
+              <span style={{'float':'right'}}><button onClick={()=>{ 
+                
+                if (self.props.load_symbol)
+                  self.props.silenceHtmlDialog2();
+                else
+                  $('#chartArea').hide();
+                
+                }}>Close</button></span>
                   {this.state.specifications.chart_title ? (
                   <center><h3>{this.state.specifications.chart_title} </h3></center>
                   ) : null }

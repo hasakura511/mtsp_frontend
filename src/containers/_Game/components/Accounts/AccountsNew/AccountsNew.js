@@ -24,6 +24,7 @@ import {Button, IconButton} from 'react-toolbox/lib/button';
 import { RadioGroup, RadioButton } from 'react-toolbox/lib/radio';
 import moment from 'moment-timezone';
 import {numberWithCommas, toTitleCase} from "../../../../../util"
+import Markets from "../../../../Markets/Markets"
 
 import {
   LineChart,
@@ -86,6 +87,14 @@ const dispatchToProps = dispatch => {
       dispatch(actions.silenceHtmlDialog());
       
     },
+    showHtmlDialog2: (htmlContent) => {
+      dispatch(actions.showHtmlDialog2(htmlContent));
+      
+    },
+    silenceHtmlDialog2: () => {
+      dispatch(actions.silenceHtmlDialog2());
+      
+    },
     
   };
 };
@@ -94,6 +103,8 @@ export default class AccountsNew extends Component {
   static propTypes = {
     showHtmlDialog:PropTypes.func.isRequired,
     silenceHtmlDialog:PropTypes.func.isRequired,
+    showHtmlDialog2:PropTypes.func.isRequired,
+    silenceHtmlDialog2:PropTypes.func.isRequired,
     dictionary_strategy:PropTypes.object.isRequired,
     themes:PropTypes.object.isRequired,
     chip_id:PropTypes.string
@@ -352,10 +363,20 @@ export default class AccountsNew extends Component {
 
     var chartData={};
 
+    var account_id='';
+    var account={};
+
+    if (self.props.chip_id) {    
+      account_id=self.props.performance.accounts[self.props.chip_id].account_id;
+      account=self.props.performance.accounts[self.props.chip_id];
+    }
+
+    /*
     if (performance && performance.accounts) {
-        console.log(performance);
+        //console.log(performance);
         //console.log(performance.chip_tiers);
     }
+    */
 
     var customizeHtml=[];
     var idx=0;
@@ -480,7 +501,15 @@ export default class AccountsNew extends Component {
                             accessor: "Display",
                             Cell: props => (
                                 <span style={{textAlign:'left'}} >
+                                <a href='#markets' 
+                                onClick={() => {
+                                  self.props.showHtmlDialog2(<Markets load_account_id={''} 
+                                    load_symbol={props.original.key} 
+                                    load_link={'accounts'}
+                                    load_portfolio={JSON.stringify(self.state.orig_portfolio)} />)
+                                }}>
                                 {props.value}
+                                </a>
                                 </span>
                               ), // Custom cell components!,
                             },
@@ -546,7 +575,8 @@ export default class AccountsNew extends Component {
             <RadioGroup value={self.state.customizePortfolioType} onChange={(e) => {
                     console.log(e)
                     if (e == 'customize') {
-                            self.customData();
+                            //self.customData();
+                        self.setState({customizePortfolioType:e})
 
                       } else {
                         self.setState({customizePortfolioType:e})

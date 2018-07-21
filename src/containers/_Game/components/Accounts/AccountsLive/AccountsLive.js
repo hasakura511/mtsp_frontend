@@ -550,12 +550,13 @@ export default class AccountsLive extends Component {
                     background:themes.table_background
                   },
                   Cell: props => {
-                    var chip=props.original;
+                    var chip = Object.assign({}, props.original); 
                     chip.display=props.original.account_chip_text;
-                    chip.tier = props.original.tier;
-                    chip.status = 'unlocked';
-                    chip.chip_tier_text=chip.filter;
+                    //chip.tier = props.original.tier;
+                    //chip.status = 'unlocked';
+                    //chip.chip_tier_text=chip.filter;
                     chip.isReadOnly=true;
+                    chip.isAccountChip=true;
                     return (
                       <span className='number'><center>
                         
