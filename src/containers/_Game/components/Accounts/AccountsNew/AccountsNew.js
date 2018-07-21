@@ -23,6 +23,7 @@ import Dropdown from 'react-toolbox/lib/dropdown';
 import {Button, IconButton} from 'react-toolbox/lib/button';
 import { RadioGroup, RadioButton } from 'react-toolbox/lib/radio';
 import moment from 'moment-timezone';
+import {numberWithCommas, toTitleCase} from "../../../../../util"
 
 import {
   LineChart,
@@ -497,7 +498,7 @@ export default class AccountsNew extends Component {
                             accessor: "usdATR20",
                             Cell: props => (
                                 <span className='number'><center>
-                                $ {props.value}
+                                $ {numberWithCommas(props.value)}
                                 </center></span>
                                 ), // Custom cell components!,
                             },
@@ -506,7 +507,7 @@ export default class AccountsNew extends Component {
                                 accessor: "AvgVolume20",
                                 Cell: props => (
                                     <span className='number'><center>
-                                    {props.value}
+                                    {numberWithCommas(props.value)}
                                     </center></span>
                                     ), // Custom cell components!,
                             },
@@ -515,7 +516,7 @@ export default class AccountsNew extends Component {
                                 accessor: "initMargin",
                                 Cell: props => (
                                     <span className='number'><center>
-                                    ${props.value}
+                                    ${numberWithCommas(props.value)}
                                     </center></span>
                                     ), // Custom cell components!,
                             },
@@ -567,11 +568,11 @@ export default class AccountsNew extends Component {
     
     if (self.state.customizePortfolioType == 'customize' ) {
       advancedPrefHtml.push(
-        <tr key={"adv_pref_" + idx} ><td style={{textAlign:"left", border: "none",  padding: "5px"}}>
-            <h3>Estimated Total Margin <b>$ {estMargin}</b></h3>
+        <tr key={"adv_pref_" + idx} ><td style={{textAlign:"left", width:"50%", border: "none",  padding: "5px"}}>
+            <h3>Estimated Total Margin <b>$ {numberWithCommas(estMargin)}</b></h3>
         </td>
         <td style={{textAlign:"left", border: "none",  padding: "5px"}}>
-            <h3>Max Margin  <b>$ {self.state.maxMargin} </b></h3>
+            <h3>Max Margin  <b>$ {numberWithCommas(self.state.maxMargin)} </b></h3>
         </td>
         </tr>
       );
@@ -606,6 +607,113 @@ export default class AccountsNew extends Component {
 
 
     }
+
+  
+    var items=[];
+    var accounthtml=[];
+    if (self.props.chip_id) {    
+        var chip=self.props.performance.accounts[self.props.chip_id];
+        chip.display=chip.account_chip_text;
+        chip.status = 'unlocked';
+        chip.isReadOnly=true;
+        items.push(
+          <div key={'item-2'} style={{'float':'left', width: '60px', height:'60px', padding:"1px", marginTop:"1px", marginBottom:"-10px"}}>
+          <Chip chip={chip} isReadOnly={true} account_chip_text={chip.account_chip_text} />&nbsp;&nbsp;
+          </div>
+          )
+          items.push(
+
+            <div key={'item-4'}  style={{'float':'left', width: '100px', height:'60px', padding:"1px", marginTop:"15px", marginBottom:"-10px"}}>
+              {toTitleCase(chip.tier)}
+            </div>
+            )
+        items.push(
+
+          <div key={'item-3'} style={{'float':'left', width:'100px', height:'40px', marginTop:"-5px"}}>
+            <MiniAccountChart 
+              chartData={performance.sparklines} 
+              chart_id={self.props.chip_id} 
+              accountsData={performance} />
+          </div>
+          )
+          
+          items.push(
+
+          <div key={'item-5'} style={{"clear": "both"}}></div>
+          )
+
+          accounthtml.push(<table 
+            key={'accountHtml'} 
+            style={{
+              border:"none", 
+              borderCollapse: "collapse",
+              width:"100%",
+              //background:self.props.themes.live.dialog.background_inner,
+              color:self.props.themes.live.dialog.text }}>
+            <thead  style={{border:"none"}}>
+              <tr style={{border:"none"}}>
+              <th  style={{border:"none"}}>
+                <center>
+                  Account
+                  </center>
+                  </th>
+                  <th  style={{border:"none"}}>
+                  <center>
+                  Account Value
+                  </center>
+                  </th>
+                  <th  style={{border:"none"}}>
+                  <center>
+                  Cumulative %Chg
+                  </center>
+                  </th>
+                  <th  style={{border:"none"}}>
+                  <center>
+                    Age
+                  </center>
+                  </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style={{border:"1px", "padding":"1px"}}>
+                  <td style={{ width: "350px", paddingTop: "20px", borderLeft:"1px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
+                    {items}
+                  </td>            
+                  <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
+                  <center>
+      
+                  $ {numberWithCommas(chip.account_value.toString())}
+                  </center>
+                  </td>            
+                  <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
+                  <center>
+                            
+                          {parseFloat(chip.pnl_cumpct) ? (
+                            <span style={parseFloat(chip.pnl_cumpct) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
+                          <b>
+                          {parseFloat(chip.pnl_cumpct).toLocaleString("en")} %
+                          </b>
+                          </span>
+                          ) : (
+                            <span style={{color:self.props.themes.live.dialog.text_color}}>
+                          <b>
+                          {parseFloat(chip.pnl_cumpct).toLocaleString("en")} % 
+                          </b>
+                          </span>
+                          )}
+                        
+                        </center>
+      
+                  </td>            
+                  <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black", borderRight:"1px solid black"}}>
+                  <center>
+                    {chip.age} Days
+                  </center>
+                  </td></tr>
+                  </tbody>
+                  </table>);
+      
+    }
     return (
         <div className={classes.AccountsNew}>
         
@@ -634,7 +742,11 @@ export default class AccountsNew extends Component {
                     </div>
                     {self.props.chip_id ? 
                     <div style={{margin:"0px", paddingTop:"8px", background:"white", "float":"right", "width": "80%", "textAlign": "right"}}>
-                    <center><h3>Chip ID: {self.props.chip_id}</h3></center>
+                   
+                      {
+                       accounthtml
+                      }
+
                     </div> : null}
             <div style={{"clear": "both"}}></div>
            
@@ -688,7 +800,7 @@ export default class AccountsNew extends Component {
                     self.setState({startingValue:e, maxMargin:maxMargin})
                 }} />
                 </td><td  style={{border: "none", marginLeft: "0px", paddingLeft: "15px"}} >
-                <b style={{fontSize:"32px",fontWeight:1600}}>$ {this.state.startingValue}</b>
+                <b style={{fontSize:"32px",fontWeight:1600}}>$ {numberWithCommas(this.state.startingValue)}</b>
                 </td></tr></tbody></table>
             </td></tr>
             : null }
@@ -740,7 +852,7 @@ export default class AccountsNew extends Component {
                     console.log(e)
                     var maxMargin=Math.floor(parseFloat(e)/100 * parseFloat(self.state.startingValue));
 
-                    self.setState({marginValue:e, maxMargin:maxMargin})
+                    self.setState({marginValue:e, maxMargin:maxMargin, portfolio:[]})
                 }} />
                 </td><td  style={{border: "none", marginLeft: "0px", paddingLeft: "15px"}} >
                 <b style={{fontSize:"32px",fontWeight:1600}}>{this.state.marginValue}%</b> of account value
