@@ -130,7 +130,7 @@ export default class AccountsNew extends Component {
       marginValue: marginValue,
       maxMargin: startingValue * marginValue / 100,
       marginCallType:marginCallType,
-      customizePortfolioType: "generate",
+      customizePortfolioType: "customize",
       
       portfolio:portfolio,
       orig_portfolio:portfolio,
@@ -384,7 +384,7 @@ export default class AccountsNew extends Component {
   
 
     if (self.state.customizePortfolioType == 'customize') {
-      console.log(self.state.marketData.markets);
+      //console.log(self.state.marketData.markets);
       self.state.portfolio.map(key => {
         var item=performance.margins[key];
         estMargin+=parseFloat(item.initMargin);
@@ -453,9 +453,7 @@ export default class AccountsNew extends Component {
                                                   height:"30px"
                                                 }}
                                   />
-                                  : parseFloat(self.state.maxMargin) < parseFloat(estMargin) + parseFloat(props.original.initMargin) ? 
-                                    <img src={"/images/account_locked.png"} style={{width:'30px'}} />
-                                  : 
+                                  :
                                     null
                                   }
 
@@ -547,19 +545,8 @@ export default class AccountsNew extends Component {
             <RadioGroup value={self.state.customizePortfolioType} onChange={(e) => {
                     console.log(e)
                     if (e == 'customize') {
-                      self.props.showDialog(
-                      " Are you sure you want to customize your portfolio? ",
-                      " The is an advanced feature that should only be moidified by professionals. Creating undiversified portfolio can result in great risk and significant loss." ,
-                      () => {
-                            self.props.silenceDialog();
                             self.customData();
 
-            
-                        },
-                        null,
-                        "OK",
-                        "Cancel"
-                        );
                       } else {
                         self.setState({customizePortfolioType:e})
 
@@ -641,11 +628,14 @@ export default class AccountsNew extends Component {
         ) : (
 
         <div className={classes.AccountsNew} style={{margin:"0px", background:"white", height:"100%"}} >
-
-
+                    
                     <div style={{margin:"0px", paddingTop:"8px", background:"white", "float":"right", "width": "10%", "textAlign": "right"}}>
                         <img src="/images/infotext_button.png" width="22" style={{"marginRight":"5px"}}/>
                     </div>
+                    {self.props.chip_id ? 
+                    <div style={{margin:"0px", paddingTop:"8px", background:"white", "float":"right", "width": "80%", "textAlign": "right"}}>
+                    <center><h3>Chip ID: {self.props.chip_id}</h3></center>
+                    </div> : null}
             <div style={{"clear": "both"}}></div>
            
            
@@ -666,7 +656,7 @@ export default class AccountsNew extends Component {
           </div>:null}
 
           <table cellSpacing={0} cellPadding={0}
-                 style={{width:"80%", border: "none", margin: "0px", padding: "0px", borderColor: "transparent"}}>
+                 style={{width:"98%", border: "none", margin: "0px", padding: "0px", borderColor: "transparent"}}>
             <tbody >
         
           {!self.props.chip_id ?

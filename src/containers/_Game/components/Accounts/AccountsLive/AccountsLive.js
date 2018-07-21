@@ -750,8 +750,21 @@ export default class AccountsLive extends Component {
                       ref={ref => self[copyboard] = ref}
                       onClick={() => {  
                               console.log(self.state.performance.accounts[props.original.chip_id])
-                              self.props.showHtmlDialog(<AccountsNew  chip_id={props.original.chip_id} performance={self.state.performance} themes={self.props.themes}  />);
+                              self.props.showDialog(
+                                " Are you sure you want to customize your portfolio? ",
+                                " The is an advanced feature that should only be moidified by professionals. Creating undiversified portfolio can result in great risk and significant loss." ,
+                                () => {
+                                      self.props.silenceDialog();
+                              
+                                      self.props.showHtmlDialog(<AccountsNew  chip_id={props.original.chip_id} performance={self.state.performance} themes={self.props.themes}  />);
 
+                      
+                                  },
+                                  null,
+                                  "I Accept the Risk",
+                                  "Cancel"
+                                  );
+                  
                         }} >
                         {props.original.chip_id ?
                           <img src="/images/account_edit_enabled.png"  height={30} />
