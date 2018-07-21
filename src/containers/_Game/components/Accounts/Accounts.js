@@ -176,17 +176,19 @@ export default class Accounts extends Component {
 
     axios
     .post("/utility/accounts_list_live/", {
-    // accounts: [{ portfolio, target, accountValue }],
-    //'initialize': reinit,
-    'username':  self.props.email,
-    //'chip_id':chip_id,
-    //'last_date':last_date,
-    //'board_config':board_config,
-    
-    },{timeout: 600000})
+        // accounts: [{ portfolio, target, accountValue }],
+        //'initialize': reinit,
+        'username':  self.props.email,
+        //'chip_id':chip_id,
+        //'last_date':last_date,
+        //'board_config':board_config,
+    },
+    {timeout: 600000}
+    )
     .then(({ data }) => {
       console.log('received account list data')
-      console.log(data);
+      //console.log(data.accounts); 
+      //console.log(data);
       //var itemSelected = chip_id ?  chip_id : 'None';
 
       var dataJson= JSON.parse(data.accounts);
@@ -194,7 +196,8 @@ export default class Accounts extends Component {
       Object.keys(data.accounts).map(key => {
         data.accounts[key]['chip_id']=key;
         data.accounts[key]['portfolio']=JSON.parse(data.accounts[key]['portfolio'])
-
+        data.accounts[key]['starting_value']=parseInt(data.accounts[key]['starting_value']);
+        data.accounts[key]['account_value']=parseInt(data.accounts[key]['account_value']);
       })
 
       dataJson=JSON.parse(data.margins);
@@ -212,6 +215,7 @@ export default class Accounts extends Component {
       themes.live.dialog.table_left_background=themes.table_background;
       themes.live.dialog.table_right_background=themes.table_background;
       data.themes=themes;
+      console.log(data);
       this.setState({
         editData:data,
         //itemSelected:itemSelected,
@@ -286,7 +290,7 @@ export default class Accounts extends Component {
                 <div className={classes.Row} style={{background: page_background,
                 color:text_color, borderColor:lines}}>
 
-                       <AccountsLive performance={this.state.editData} themes={themes} />
+                       <AccountsLive performance={self.state.editData} themes={themes} />
 
                 </div>
 

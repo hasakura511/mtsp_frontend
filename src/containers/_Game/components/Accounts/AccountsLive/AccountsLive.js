@@ -93,9 +93,17 @@ export default class AccountsLive extends Component {
   constructor(props) {
     super(props);
 
+    var data=props.performance;
+    Object.keys(data.accounts).map(key => {
+      data.accounts[key]['chip_id']=key;
+      data.accounts[key]['starting_value']=parseInt(data.accounts[key]['starting_value']);
+      data.accounts[key]['account_value']=parseInt(data.accounts[key]['account_value']);
+      //console.log(data.accounts[key]);
+    })
+
     this.state = {
       lookback: '',
-      performance:props.performance,
+      performance:data,
       performanceLoading:false,
       performanceError:'',
       isPopoverOpen :{},
@@ -445,9 +453,9 @@ export default class AccountsLive extends Component {
                     chip.tier = props.original.tier;
                     chip.status = 'unlocked';
                     chip.isReadOnly=true;
-                    chip.starting_value=props.original.account_chip_text;
-                    chip.account_value=props.original.account_chip_text;
-                    chip.total_margin="";
+                    //chip.starting_value=props.original.account_chip_text;
+                    //chip.account_value=props.original.account_chip_text;
+                    //chip.total_margin="";
 
                     var items=[];
 
@@ -554,21 +562,6 @@ export default class AccountsLive extends Component {
 
                       <a href={'JavaScript:console.log("account performance")'} style={{ cursor:'pointer'  }} title={"Show Account Performance."} onClick={() => {  
                           
-                                // self.props.toggle();
-
-                                /*
-                                 
-                                  <OrderDialog
-          
-                                slot={chip}
-                                chip={chip}
-                                toggle={this.props.silenceHtmlDialog}
-                                isPerformance={true}
-                                performance_account_id={props.original.account_id}
-                                moveChipToSlot={null}
-                                orderAnti={null}
-                              />
-                                  */
                                 chip.isAccountView=true;
                                 self.props.showHtmlDialog(<Order
                                   chip={chip}
@@ -576,21 +569,13 @@ export default class AccountsLive extends Component {
                                   isLive={true}
                                   isPerformance={true}
                                   performance_account_id={props.original.account_id}
-                                  //performance={performance}
-                                  //setAnti={this.setAnti}
-                                  //setNotAnti={this.setNotAnti}
-                                  //rankingData={rankingData}
-                                  //rankingError={rankingError}
-                                   rankingLoading={false}
-                                  //submitBetHandler={this.submitBetHandler}
+                                  rankingLoading={false}
                                   toggle={this.props.silenceHtmlDialog}
-                                  //toAntiSystem={this.toAntiSystem}
                                   themes={this.themes}
                                   close={this.props.silenceHtmlDialog}
-                                  //isAnti={isAnti}
-                                  //moveChipToSlot={this.props.moveChipToSlot}
-                                />);
-                              self.props.showPerformance(props.original.account_id, chip);
+                                  />);
+                                  self.props.showPerformance(props.original.account_id, chip);
+                                  
                             }}>
                         {props.value}
                         </a>
@@ -764,7 +749,8 @@ export default class AccountsLive extends Component {
                       
                       ref={ref => self[copyboard] = ref}
                       onClick={() => {  
-                              self.props.showHtmlDialog(<AccountsNew  chip_id={props.original.chip_id} performance={self.props.performance} themes={self.props.themes}  />);
+                              console.log(self.state.performance.accounts[props.original.chip_id])
+                              self.props.showHtmlDialog(<AccountsNew  chip_id={props.original.chip_id} performance={self.state.performance} themes={self.props.themes}  />);
 
                         }} >
                         {props.original.chip_id ?
@@ -856,8 +842,8 @@ export default class AccountsLive extends Component {
             
           ]}
 
-          defaultPageSize={Object.keys(performance.accounts).length < 10 ? 10 : Object.keys(performance.accounts).length}
-          minRows={10}
+          defaultPageSize={Object.keys(performance.accounts).length < 6 ? 6 : Object.keys(performance.accounts).length}
+          minRows={6}
           style={{
             width:"100%",
             height:innerHeight - 170,

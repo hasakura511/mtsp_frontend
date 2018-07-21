@@ -100,6 +100,24 @@ export default class AccountsNew extends Component {
   constructor(props) {
     super(props);
 
+    var account={};
+    var portfolio=[];
+
+    var performance = props.performance;
+    var marginValue = parseInt(props.performance.new_account_params.default_margin_percent);
+    var startingValue = parseInt(props.performance.new_account_params.default_starting_value);
+    var marginCallType =  props.performance.default_margin_call_type;
+    var customizePortfolio =  parseInt(props.performance.default_customize_portfolio);
+    if (props.chip_id) {
+
+      account=performance.accounts[props.chip_id]
+      console.log("Editing Existing Chip " + props.chip_id);
+      portfolio=account.portfolio;
+      marginValue=parseInt(account.margin_percent);
+      startingValue=parseInt(account.starting_value);
+      marginCallType=account.recreate_if_margin_call;
+
+    }
     this.state = {
       lookback: '',
       performance:props.performance,
@@ -108,26 +126,46 @@ export default class AccountsNew extends Component {
       isPopoverOpen :{},
       filter:'Overall',
       refreshing: false,
-      startingValue:10000,
-      marginValue: 25,
-      maxMargin: 10000 * 25 / 100,
-      marginCallType:"Recreate",
+      startingValue:startingValue,
+      marginValue: marginValue,
+      maxMargin: startingValue * marginValue / 100,
+      marginCallType:marginCallType,
       customizePortfolioType: "generate",
-      portfolio:[],
-      advancedPref:"Hide"
-
+      
+      portfolio:portfolio,
+      orig_portfolio:portfolio,
+      advancedPref:"Hide",
+      account: account
       // endDate: 20180201
     };
   }
 
   componentWillReceiveProps(newProps) {
       if (newProps.performance) {
+
+        if (this.props.chip_id || newProps.chip_id) {
+          var chip_id=this.props.chip_id ? this.props.chip_id : newProps.chip_id;
+
+          var account=performance.accounts[chip_id]
+          var portfolio=account.portfolio;
+          var marginValue=parseInt(account.margin_percent);
+          var startingValue=parseInt(account.starting_value)  * 1000;
+          var marginCallType=account.recreate_if_margin_call;
+          var maxMargin= startingValue * marginValue / 100;
+          this.setState({performance:newProps.performance, 
+            orig_portfolio:portfolio,
+            marginValue,
+            startingValue,
+            marginCallType, 
+            maxMargin});
+        } else {
           this.setState({performance:newProps.performance, 
             marginValue:parseInt(newProps.performance.new_account_params.default_margin_percent),
             startingValue:parseInt(newProps.performance.new_account_params.default_starting_value),
             marginCallType: newProps.performance.default_margin_call_type,
             customizePortfolio: parseInt(newProps.performance.default_customize_portfolio)
           })
+        }
           
       }
   }
@@ -307,6 +345,7 @@ export default class AccountsNew extends Component {
     var bdColor="green";
     var bhColor="pink";
     
+    
     var themes=performance.themes;
     var tableStyle={ fontSize:'12px',background: bgColor, color:bgText, borderLeft: "1px solid " + bdColor, borderRight: "1px solid " + bdColor, borderTop: "0.1px solid " + bhColor, borderBottom: "0.1px solid " + bhColor};
 
@@ -339,7 +378,7 @@ export default class AccountsNew extends Component {
     Object.keys(performance.margins).map(key => {
       var item=performance.margins[key];
       item.key=key;
-      estMargin+=parseFloat(item.initMargin);
+      //estMargin+=parseFloat(item.initMargin);
       return item;
     });
   
@@ -369,20 +408,79 @@ export default class AccountsNew extends Component {
                         {
                         Header: "",
                         columns: [
+                          {
+                            Header: "Add / Remove",
+                            accessor: "Group",
+                            Cell: props => (
+                                <span className='number'><center>
+                                    <img src="/images/account_remove.png" 
+                                    onClick={() => {
+                                        //console.log(props.original);
+                                        var portfolio=self.state.portfolio.filter(item => {
+                                          return item != props.original.key;
+                                        });
+                                        self.setState({portfolio:portfolio});
+                                        console.log(portfolio);
+  
+                                    }}
+                                    style={{width:"30px", height:"30px", cursor:'pointer' }} />
+                                    <img src="/images/account_add.png"  
+                                    onClick={() => {
+                                        var portfolio=self.state.portfolio.filter(item => {
+                                          return item != props.original.key;
+                                        });
+                                        if (parseFloat(self.state.maxMargin) > parseFloat(estMargin) + parseFloat(props.original.initMargin))
+                                          portfolio.push(props.original.key);
+                                        console.log(portfolio);
+                                        self.setState({portfolio:portfolio});
+                                    }}
+                                    style={{width:"30px", height:"30px", cursor:'pointer' }} />
+                                </center></span>
+                                ), // Custom cell components!,
+                            },
+                            {
+                              Header: "Existing Portfolio",
+                              accessor: "Display",
+                              Cell: props => (
+                                  <span style={{textAlign:'left'}} >
+
+                                  {
+                                    self.state.orig_portfolio.includes(props.original.key) ? 
+                                  <img 
+                                                src="/images/account_added.png" 
+                                                style={{
+                                                  width:"30px",
+                                                  height:"30px"
+                                                }}
+                                  />
+                                  : parseFloat(self.state.maxMargin) < parseFloat(estMargin) + parseFloat(props.original.initMargin) ? 
+                                    <img src={"/images/account_locked.png"} style={{width:'30px'}} />
+                                  : 
+                                    null
+                                  }
+
+                                  </span>
+                                ), // Custom cell components!,
+                              },
+                              {
+                                Header: "New Portfolio",
+                                accessor: "Display",
+                                Cell: props => (
+                                    <span style={{textAlign:'left'}} >
+                                    {self.state.portfolio.includes(props.original.key) ? 
+                                    <img src="/images/account_added.png" style={{width:"30px",height:"30px"}} />
+                                    
+                                    : parseFloat(self.state.maxMargin) < parseFloat(estMargin) + parseFloat(props.original.initMargin) ? 
+                                      <img src={"/images/account_locked.png"} style={{width:'30px'}} />
+                                    : null}
+                                    </span>
+                                  ), // Custom cell components!,
+                                },
                             {
                             Header: "Markets",
                             accessor: "Display",
                             Cell: props => (
                                 <span style={{textAlign:'left'}} >
-                                {self.state.portfolio.includes(props.original.key) ? 
-                                <img src="/images/account_added.png" style={{width:"30px",height:"30px"}} />
-                                
-                                : parseFloat(self.state.maxMargin) < parseFloat(estMargin) + parseFloat(props.original.initMargin) ? 
-                                  <img src={"/images/account_locked.png"} style={{width:'30px'}} />
-                                : null}
-                                &nbsp;
-                                &nbsp;
-                                &nbsp;
                                 {props.value}
                                 </span>
                               ), // Custom cell components!,
@@ -423,36 +521,7 @@ export default class AccountsNew extends Component {
                                     </center></span>
                                     ), // Custom cell components!,
                             },
-                            {
-                            Header: "Add / Remove",
-                            accessor: "Group",
-                            Cell: props => (
-                                <span className='number'><center>
-                                    <img src="/images/account_remove.png" 
-                                    onClick={() => {
-                                        //console.log(props.original);
-                                        var portfolio=self.state.portfolio.filter(item => {
-                                          return item != props.original.key;
-                                        });
-                                        self.setState({portfolio:portfolio});
-                                        console.log(portfolio);
-  
-                                    }}
-                                    style={{width:"30px", height:"30px", cursor:'pointer' }} />
-                                    <img src="/images/account_add.png"  
-                                    onClick={() => {
-                                        var portfolio=self.state.portfolio.filter(item => {
-                                          return item != props.original.key;
-                                        });
-                                        if (parseFloat(self.state.maxMargin) > parseFloat(estMargin) + parseFloat(props.original.initMargin))
-                                          portfolio.push(props.original.key);
-                                        console.log(portfolio);
-                                        self.setState({portfolio:portfolio});
-                                    }}
-                                    style={{width:"30px", height:"30px", cursor:'pointer' }} />
-                                </center></span>
-                                ), // Custom cell components!,
-                            },
+                            
                         ]}]}
                         defaultPageSize={Object.keys(performance.margins).length}
                         style={{
@@ -508,18 +577,21 @@ export default class AccountsNew extends Component {
             </tr>
     );
     idx+=1;
-    advancedPrefHtml.push(
-            <tr key={"adv_pref_" + idx} ><td style={{textAlign:"left", border: "none",  padding: "5px"}}>
-                <h3>Estimated Total Margin <b>$ {estMargin}</b></h3>
-            </td>
-            <td style={{textAlign:"left", border: "none",  padding: "5px"}}>
-                <h3>Max Margin  <b>$ {self.state.maxMargin} </b></h3>
-            </td>
-            </tr>
-    );
-    idx+=1;
-    if (self.state.customizePortfolioType == 'customize' ) 
+    
+    if (self.state.customizePortfolioType == 'customize' ) {
+      advancedPrefHtml.push(
+        <tr key={"adv_pref_" + idx} ><td style={{textAlign:"left", border: "none",  padding: "5px"}}>
+            <h3>Estimated Total Margin <b>$ {estMargin}</b></h3>
+        </td>
+        <td style={{textAlign:"left", border: "none",  padding: "5px"}}>
+            <h3>Max Margin  <b>$ {self.state.maxMargin} </b></h3>
+        </td>
+        </tr>
+      );
+      idx+=1;
       advancedPrefHtml.push(customizeHtml)
+      idx+=1;
+    }
 
     
     if (this.state.refreshing) {
@@ -630,21 +702,6 @@ export default class AccountsNew extends Component {
                 </td></tr></tbody></table>
             </td></tr>
             : null }
-             {!self.props.chip_id ?
-            <tr style={{width:"50%", border: "none", margin: "0px", padding: "0px", borderColor: "transparent"}}>
-            <td  style={{ textAlign:"left",  border: "none", margin: "0px", padding: "5px"}}> 
-                Additional Preferences
-            </td><td style={{ border: "none", marginRight: "0px", padding: "5px" }}>
-            <Dropdown
-                        auto
-                        onChange={() => {
-                            console.log('handle change');
-                        }}
-                        source={[{value:'None',label:'None'}, {value:"Hide", label:"Hide"}]}
-                        value={"None"}
-                    />
-            </td></tr>
-            :null}
             <tr>
             <td style={{textAlign:"left", border: "none", margin: "0px", padding: "5px"}}>
                 Set your portfolio to automatically..
