@@ -115,20 +115,22 @@ export default class Chip extends PureComponent {
     super(props);
     var chip=this.props.chip;
     if (props.isReadOnly) {
-      chip.isReadOnly=true;      
-      var date = new moment().tz("US/Eastern");
-      const liveDate = date;
+      chip.isReadOnly=true;
+      if (chip.locktime && chip.unlocktime) {      
+        var date = new moment().tz("US/Eastern");
+        const liveDate = date;
 
-      var locktime=new moment.tz(chip.locktime.replace(' EST',''),"US/Eastern");
-      var unlocktime=new moment.tz(chip.unlocktime.replace(' EST',''),"US/Eastern");
-      chip['lockdown']=locktime;
-      chip['lockdown_text']=locktime.format('MM/DD HH:mm:ss A') + " EST";
-      chip['unlock']=unlocktime;
-      chip['unlocktime_text']=unlocktime.format('MM/DD HH:mm:ss A') + " EST";
-      if ( liveDate < locktime  || liveDate > unlocktime) {
-        chip['status']='unlocked';
-      } else {
-        chip['status']='locked';
+        var locktime=new moment.tz(chip.locktime.replace(' EST',''),"US/Eastern");
+        var unlocktime=new moment.tz(chip.unlocktime.replace(' EST',''),"US/Eastern");
+        chip['lockdown']=locktime;
+        chip['lockdown_text']=locktime.format('MM/DD HH:mm:ss A') + " EST";
+        chip['unlock']=unlocktime;
+        chip['unlocktime_text']=unlocktime.format('MM/DD HH:mm:ss A') + " EST";
+        if ( liveDate < locktime  || liveDate > unlocktime) {
+          chip['status']='unlocked';
+        } else {
+          chip['status']='locked';
+        }
       }
     }
 
@@ -144,21 +146,23 @@ export default class Chip extends PureComponent {
     var self=this;
       if (newProps.chip && newProps.chip != this.state.chip) {
         var chip=newProps.chip;
-        if (props.isReadOnly) {
-          chip.isReadOnly=true;      
-          var date = new moment().tz("US/Eastern");
-          const liveDate = date;
-    
-          var locktime=new moment.tz(chip.locktime.replace(' EST',''),"US/Eastern");
-          var unlocktime=new moment.tz(chip.unlocktime.replace(' EST',''),"US/Eastern");
-          chip['lockdown']=locktime;
-          chip['lockdown_text']=locktime.format('MM/DD HH:mm:ss A') + " EST";
-          chip['unlock']=unlocktime;
-          chip['unlocktime_text']=unlocktime.format('MM/DD HH:mm:ss A') + " EST";
-          if ( liveDate < locktime  || liveDate > unlocktime) {
-            chip['status']='unlocked';
-          } else {
-            chip['status']='locked';
+        if (newProps.isReadOnly) {
+          chip.isReadOnly=true;
+          if (chip.locktime && chip.unlocktime) {      
+            var date = new moment().tz("US/Eastern");
+            const liveDate = date;
+      
+            var locktime=new moment.tz(chip.locktime.replace(' EST',''),"US/Eastern");
+            var unlocktime=new moment.tz(chip.unlocktime.replace(' EST',''),"US/Eastern");
+            chip['lockdown']=locktime;
+            chip['lockdown_text']=locktime.format('MM/DD HH:mm:ss A') + " EST";
+            chip['unlock']=unlocktime;
+            chip['unlocktime_text']=unlocktime.format('MM/DD HH:mm:ss A') + " EST";
+            if ( liveDate < locktime  || liveDate > unlocktime) {
+              chip['status']='unlocked';
+            } else {
+              chip['status']='locked';
+            }
           }
         }
 
