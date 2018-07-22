@@ -757,7 +757,7 @@ export default class AccountsLive extends Component {
                                 () => {
                                       self.props.silenceDialog();
                               
-                                      self.props.showHtmlDialog(<AccountsNew  chip_id={props.original.chip_id} performance={self.state.performance} themes={self.props.themes}  />);
+                                      self.props.showHtmlDialog(<AccountsNew  chip_id={props.original.chip_id} performance={self.state.performance} themes={self.props.themes} initializeLive={self.props.initializeLive} />);
 
                       
                                   },
@@ -795,7 +795,7 @@ export default class AccountsLive extends Component {
                     Footer: props => (
                     <div style={{width:"100px", cursor:'pointer'}} onClick={() => {
 
-                        self.props.showHtmlDialog(<AccountsNew  performance={self.props.performance} themes={self.props.themes}  />);
+                        self.props.showHtmlDialog(<AccountsNew  performance={self.props.performance} themes={self.props.themes}  initializeLive={self.props.initializeLive}  />);
                     
                     }}>
                       <div style={{float:"left", width:"100px"}}>
@@ -1002,7 +1002,7 @@ export default class AccountsLive extends Component {
     //showDialog:PropTypes.func.isRequired,
     //silenceDialog:PropTypes.func.isRequired,
     addTimedToaster: PropTypes.func.isRequired,
-    //initializeLive:PropTypes.func.isRequired,
+    initializeLive:PropTypes.func.isRequired,
     performance:PropTypes.object.isRequired
   };
 }

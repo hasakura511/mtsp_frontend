@@ -290,7 +290,7 @@ export default class Accounts extends Component {
                 <div className={classes.Row} style={{background: page_background,
                 color:text_color, borderColor:lines}}>
 
-                       <AccountsLive performance={self.state.editData} themes={themes} />
+                       <AccountsLive performance={self.state.editData} initializeLive={this.initializeLive} themes={themes} />
 
                 </div>
 

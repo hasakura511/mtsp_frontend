@@ -120,6 +120,8 @@ export default class AccountsNew extends Component {
     var startingValue = parseInt(props.performance.new_account_params.default_starting_value);
     var marginCallType =  props.performance.new_account_params.default_margin_call_type;
     var customizePortfolio =  parseInt(props.performance.new_account_params.default_customize_portfolio);
+    var advancedPref="Hide";
+
     if (props.chip_id) {
 
       account=performance.accounts[props.chip_id]
@@ -128,7 +130,7 @@ export default class AccountsNew extends Component {
       marginValue=parseInt(account.margin_percent);
       startingValue=parseInt(account.starting_value);
       marginCallType=account.recreate_if_margin_call;
-
+      advancedPref="Show";
     }
     this.state = {
       lookback: '',
@@ -146,7 +148,7 @@ export default class AccountsNew extends Component {
       
       portfolio:portfolio,
       orig_portfolio:portfolio,
-      advancedPref:"Hide",
+      advancedPref:advancedPref,
       account: account
       // endDate: 20180201
     };
@@ -218,16 +220,20 @@ export default class AccountsNew extends Component {
           'starting_value':self.state.startingValue,
           'margin_percent':self.state.marginValue,
           'margin_call': self.state.marginCallType,
-          'customize_portfolio': self.state.customizePortfolioType == 'customize',
+          'customize_portfolio': JSON.stringify(self.state.customizePortfolioType == 'customize'),
           'portfolio': JSON.stringify(self.state.portfolio)
           
       })
       .then(response => {
         console.log(response);
+        var data=response.data;
         this.props.addTimedToaster({
           id: "saveData",
-          text: response.message,
+          text: data.message,
         });
+        if (data.message == "OK") {
+          self.props.initializeLive(true);
+        }
        this.setState({
           //controls: controls,
           
@@ -918,10 +924,24 @@ export default class AccountsNew extends Component {
 
                         <tr>
             <td style={{border: "none", margin: "0px", padding: "5px"}}>
-                <Button label='Reset' raised  />
+                <Button label='Reset' raised 
+                 onClick={() => {
+                  self.setState({performance:self.props.performance, 
+                    marginValue:parseInt(self.props.performance.new_account_params.default_margin_percent),
+                    startingValue:parseInt(self.props.performance.new_account_params.default_starting_value),
+                    marginCallType: self.props.performance.new_account_params.default_margin_call_type,
+                    customizePortfolio: parseInt(self.props.performance.new_account_params.default_customize_portfolio),
+                    portfolio:[]
+                  })
+                }}
+                 />
             </td>
             <td style={{textAlign:"right", border: "none", margin: "0px", padding: "5px"}}>
-            <Button label='Cancel' raised  />
+            <Button label='Cancel' raised 
+             onClick={() => {
+              self.props.silenceHtmlDialog();
+            }}
+             />
             {!self.props.chip_id ?
               <Button label='Create' onClick={() => {
                 self.saveData();
@@ -966,6 +986,7 @@ export default class AccountsNew extends Component {
     liveDate:PropTypes.instanceOf(moment).isRequired,
     liveDateText:PropTypes.string.isRequired,
     email:PropTypes.string,
+    initializeLive:PropTypes.func.isRequired
     
   };
 }
