@@ -584,7 +584,23 @@ export default class AccountsNew extends Component {
                     console.log(e)
                     if (e == 'customize') {
                             //self.customData();
-                        self.setState({customizePortfolioType:e})
+                            if (!self.props.chip_id) {
+                              self.props.showDialog(
+                                " Are you sure you want to customize your portfolio? ",
+                                " The is an advanced feature that should only be moidified by professionals. Creating undiversified portfolio can result in great risk and significant loss." ,
+                                () => {
+                                  self.props.silenceDialog();
+                                  self.setState({customizePortfolioType:e})
+
+                      
+                                  },
+                                  null,
+                                  "I Accept the Risk",
+                                  "Cancel"
+                                  );
+                            } else {
+                              self.setState({customizePortfolioType:e});
+                            }
 
                       } else {
                         self.setState({customizePortfolioType:e})
