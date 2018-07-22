@@ -438,9 +438,10 @@ export default class AccountsNew extends Component {
                         {
                         Header: "",
                         columns: [
+                          
                           {
-                            Header: "Add / Remove",
-                            accessor: "Group",
+                            Header: "Initial Margin",
+                            accessor: "initMargin",
                             Cell: props => (
                                 <span className='number'><center>
                                     <img src="/images/account_remove.png" 
@@ -465,45 +466,12 @@ export default class AccountsNew extends Component {
                                         self.setState({portfolio:portfolio});
                                     }}
                                     style={{width:"30px", height:"30px", cursor:'pointer' }} />
+                                    &nbsp;&nbsp;
+                                    $ {numberWithCommas(props.value)}
                                 </center></span>
                                 ), // Custom cell components!,
                             },
-                            {
-                              Header: "Existing Portfolio",
-                              accessor: "Display",
-                              Cell: props => (
-                                  <span style={{textAlign:'left'}} >
-
-                                  {
-                                    self.state.orig_portfolio.includes(props.original.key) ? 
-                                  <img 
-                                                src="/images/account_added.png" 
-                                                style={{
-                                                  width:"30px",
-                                                  height:"30px"
-                                                }}
-                                  />
-                                  :
-                                    null
-                                  }
-
-                                  </span>
-                                ), // Custom cell components!,
-                              },
-                              {
-                                Header: "New Portfolio",
-                                accessor: "Display",
-                                Cell: props => (
-                                    <span style={{textAlign:'left'}} >
-                                    {self.state.portfolio.includes(props.original.key) ? 
-                                    <img src="/images/account_added.png" style={{width:"30px",height:"30px"}} />
-                                    
-                                    : parseFloat(self.state.maxMargin) < parseFloat(estMargin) + parseFloat(props.original.initMargin) ? 
-                                      <img src={"/images/account_locked.png"} style={{width:'30px'}} />
-                                    : null}
-                                    </span>
-                                  ), // Custom cell components!,
-                                },
+                            
                             {
                             Header: "Markets",
                             accessor: "Display",
@@ -548,16 +516,45 @@ export default class AccountsNew extends Component {
                                     </center></span>
                                     ), // Custom cell components!,
                             },
-                            {
-                                Header: "Initial Margin",
-                                accessor: "initMargin",
-                                Cell: props => (
-                                    <span className='number'><center>
-                                    ${numberWithCommas(props.value)}
-                                    </center></span>
-                                    ), // Custom cell components!,
-                            },
                             
+                            {
+                              Header: "Existing Portfolio",
+                              accessor: "Display",
+                              Cell: props => (
+                                  <span style={{textAlign:'center'}} >
+                                    <center>
+                                  {
+                                    self.state.orig_portfolio.includes(props.original.key) ? 
+                                  <img 
+                                                src="/images/account_added.png" 
+                                                style={{
+                                                  width:"30px",
+                                                  height:"30px"
+                                                }}
+                                  />
+                                  :
+                                    null
+                                  }
+                                    </center>
+                                  </span>
+                                ), // Custom cell components!,
+                              },
+                              {
+                                Header: "New Portfolio",
+                                accessor: "Display",
+                                Cell: props => (
+                                    <span style={{textAlign:'center'}} >
+                                    <center>
+                                    {self.state.portfolio.includes(props.original.key) ? 
+                                    <img src="/images/account_added.png" style={{width:"30px",height:"30px"}} />
+                                    
+                                    : parseFloat(self.state.maxMargin) < parseFloat(estMargin) + parseFloat(props.original.initMargin) ? 
+                                      <img src={"/images/account_locked.png"} style={{width:'30px'}} />
+                                    : null}
+                                    </center>
+                                    </span>
+                                  ), // Custom cell components!,
+                                },
                         ]}]}
                         defaultPageSize={Object.keys(performance.margins).length}
                         style={{
