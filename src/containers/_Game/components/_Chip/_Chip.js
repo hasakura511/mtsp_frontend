@@ -14,6 +14,7 @@ import Popover from 'react-tiny-popover'
 import Sound from 'react-sound';
 import { toTitleCase, numberWithCommas } from "../../../../util";
 import ChipPreview from './ChipPreview'
+var moment = require('moment-timezone');
 
 const stateToProps = state => {
   return {
@@ -115,6 +116,20 @@ export default class Chip extends PureComponent {
     var chip=this.props.chip;
     if (props.isReadOnly) {
       chip.isReadOnly=true;      
+      var date = new moment().tz("US/Eastern");
+      const liveDate = date;
+
+      var locktime=new moment.tz(chip.locktime.replace(' EST',''),"US/Eastern");
+      var unlocktime=new moment.tz(chip.unlocktime.replace(' EST',''),"US/Eastern");
+      chip['lockdown']=locktime;
+      chip['lockdown_text']=locktime.format('MM/DD HH:mm:ss A') + " EST";
+      chip['unlock']=unlocktime;
+      chip['unlocktime_text']=unlocktime.format('MM/DD HH:mm:ss A') + " EST";
+      if ( liveDate < locktime  || liveDate > unlocktime) {
+        chip['status']='unlocked';
+      } else {
+        chip['status']='locked';
+      }
     }
 
     this.state={
@@ -128,7 +143,26 @@ export default class Chip extends PureComponent {
     //console.log(newProps);
     var self=this;
       if (newProps.chip && newProps.chip != this.state.chip) {
-        self.setState({chip:newProps.chip});
+        var chip=newProps.chip;
+        if (props.isReadOnly) {
+          chip.isReadOnly=true;      
+          var date = new moment().tz("US/Eastern");
+          const liveDate = date;
+    
+          var locktime=new moment.tz(chip.locktime.replace(' EST',''),"US/Eastern");
+          var unlocktime=new moment.tz(chip.unlocktime.replace(' EST',''),"US/Eastern");
+          chip['lockdown']=locktime;
+          chip['lockdown_text']=locktime.format('MM/DD HH:mm:ss A') + " EST";
+          chip['unlock']=unlocktime;
+          chip['unlocktime_text']=unlocktime.format('MM/DD HH:mm:ss A') + " EST";
+          if ( liveDate < locktime  || liveDate > unlocktime) {
+            chip['status']='unlocked';
+          } else {
+            chip['status']='locked';
+          }
+        }
+
+        self.setState({chip:chip});
         
       }
     if (!this.state.chip.isReadOnly) {
