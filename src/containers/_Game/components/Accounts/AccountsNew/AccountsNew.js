@@ -119,7 +119,7 @@ export default class AccountsNew extends Component {
     var marginValue = parseInt(props.performance.new_account_params.default_margin_percent);
     var startingValue = parseInt(props.performance.new_account_params.default_starting_value);
     var marginCallType =  props.performance.new_account_params.default_margin_call_type;
-    var customizePortfolio =  parseInt(props.performance.new_account_params.default_customize_portfolio);
+    var customizePortfolioType = props.performance.new_account_params.default_customize_portfolio ? 'customize' : 'generate'
     var advancedPref="Hide";
 
     if (props.chip_id) {
@@ -131,6 +131,7 @@ export default class AccountsNew extends Component {
       startingValue=parseInt(account.starting_value);
       marginCallType=account.recreate_if_margin_call;
       advancedPref="Show";
+      customizePortfolioType="customize"
     }
     this.state = {
       lookback: '',
@@ -144,7 +145,7 @@ export default class AccountsNew extends Component {
       marginValue: marginValue,
       maxMargin: startingValue * marginValue / 100,
       marginCallType:marginCallType,
-      customizePortfolioType: "customize",
+      customizePortfolioType: customizePortfolioType,
       
       portfolio:portfolio,
       orig_portfolio:portfolio,
@@ -177,7 +178,7 @@ export default class AccountsNew extends Component {
             marginValue:parseInt(newProps.performance.new_account_params.default_margin_percent),
             startingValue:parseInt(newProps.performance.new_account_params.default_starting_value),
             marginCallType: newProps.performance.new_account_params.default_margin_call_type,
-            customizePortfolio: parseInt(newProps.performance.new_account_params.default_customize_portfolio)
+            customizePortfolioType: newProps.performance.new_account_params.default_customize_portfolio ? 'customize' : 'generate'
           })
         }
           
@@ -233,6 +234,7 @@ export default class AccountsNew extends Component {
         });
         if (data.message == "OK") {
           self.props.initializeLive(true);
+          self.props.silenceHtmlDialog();
         }
        this.setState({
           //controls: controls,
