@@ -129,6 +129,7 @@ export default class AccountsNew extends Component {
       portfolio=account.portfolio;
       marginValue=parseInt(account.margin_percent);
       startingValue=parseInt(account.starting_value);
+      startingValue=parseInt(account.account_value);
       marginCallType=account.recreate_if_margin_call;
       advancedPref="Show";
       customizePortfolioType="customize"
@@ -164,7 +165,7 @@ export default class AccountsNew extends Component {
           var account=performance.accounts[chip_id]
           var portfolio=account.portfolio;
           var marginValue=parseInt(account.margin_percent);
-          var startingValue=parseInt(account.starting_value)  * 1000;
+          var startingValue=parseInt(account.starting_value);
           var marginCallType=account.recreate_if_margin_call;
           var maxMargin= startingValue * marginValue / 100;
           this.setState({performance:newProps.performance, 
@@ -946,7 +947,7 @@ export default class AccountsNew extends Component {
                     startingValue:parseInt(self.props.performance.new_account_params.default_starting_value),
                     marginCallType: self.props.performance.new_account_params.default_margin_call_type,
                     customizePortfolioType : self.props.performance.new_account_params.default_customize_portfolio ? 'customize' : 'generate',
-                    portfolio:[]
+                    portfolio:self.state.orig_portfolio
                   })
                 }}
                  />
