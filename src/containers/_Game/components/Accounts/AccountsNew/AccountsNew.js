@@ -390,17 +390,17 @@ export default class AccountsNew extends Component {
     var idx=0;
     customizeHtml.push(
       <tr key={"customize_" + idx}><td style={{ border: "none",  padding: "5px"}} >
-    <img src="/images/account_add.png" style={{width:"30px",height:"30px"}} /> Click to add to portfolio
+    <img src="/images/account_add.png" style={{width:"22px",height:"22px"}} /> Click to add to portfolio
     </td><td style={{  border: "none",  padding: "5px"}} >
-    <img src="/images/account_added.png" style={{width:"30px",height:"30px"}} /> Check indicates included in portfolio
+    <img src="/images/account_added.png" style={{width:"22px",height:"22px"}} /> Check indicates included in portfolio
     </td></tr>)
     ;
     idx+=1;
     customizeHtml.push(
       <tr key={"customize_" + idx}><td style={{ border: "none",  padding: "5px"}}>
-      <img src="/images/account_remove.png" style={{width:"30px",height:"30px"}} /> Click to remove from portfolio
+      <img src="/images/account_remove.png" style={{width:"22px",height:"22px"}} /> Click to remove from portfolio
       </td><td style={{ border: "none",  padding: "5px"}}>
-      <img src="/images/account_locked.png" style={{width:"30px",height:"30px"}} /> Lock shows when total margin {">"} max margin.
+      <img src="/images/account_locked.png" style={{width:"22px",height:"22px"}} /> Lock shows when total margin {">"} max margin.
       </td></tr>
     );
     idx+=1;
@@ -454,7 +454,7 @@ export default class AccountsNew extends Component {
                                         console.log(portfolio);
   
                                     }}
-                                    style={{width:"30px", height:"30px", cursor:'pointer' }} />
+                                    style={{width:"22px", height:"22px", cursor:'pointer' }} />
                                     <img src="/images/account_add.png"  
                                     onClick={() => {
                                         var portfolio=self.state.portfolio.filter(item => {
@@ -465,7 +465,7 @@ export default class AccountsNew extends Component {
                                         console.log(portfolio);
                                         self.setState({portfolio:portfolio});
                                     }}
-                                    style={{width:"30px", height:"30px", cursor:'pointer' }} />
+                                    style={{width:"22px", height:"22px", cursor:'pointer' }} />
                                     &nbsp;&nbsp;
                                     $ {numberWithCommas(props.value)}
                                 </center></span>
@@ -528,8 +528,8 @@ export default class AccountsNew extends Component {
                                   <img 
                                                 src="/images/account_added.png" 
                                                 style={{
-                                                  width:"30px",
-                                                  height:"30px"
+                                                  width:"22px",
+                                                  height:"22px"
                                                 }}
                                   />
                                   :
@@ -546,10 +546,10 @@ export default class AccountsNew extends Component {
                                     <span style={{textAlign:'center'}} >
                                     <center>
                                     {self.state.portfolio.includes(props.original.key) ? 
-                                    <img src="/images/account_added.png" style={{width:"30px",height:"30px"}} />
+                                    <img src="/images/account_added.png" style={{width:"22px",height:"22px"}} />
                                     
                                     : parseFloat(self.state.maxMargin) < parseFloat(estMargin) + parseFloat(props.original.initMargin) ? 
-                                      <img src={"/images/account_locked.png"} style={{width:'30px'}} />
+                                      <img src={"/images/account_locked.png"} style={{width:'22px'}} />
                                     : null}
                                     </center>
                                     </span>
@@ -625,7 +625,7 @@ export default class AccountsNew extends Component {
             &nbsp;&nbsp;&nbsp;<Button label='Clear Portfolio' onClick={() => {
                 self.setState({portfolio:[]})
               }}
-              raised />
+              raised ripple={false} />
 
             </h3>
         </td>
@@ -939,20 +939,20 @@ export default class AccountsNew extends Component {
 
                         <tr>
             <td style={{border: "none", margin: "0px", padding: "5px"}}>
-                <Button label='Reset' raised 
+                <Button label='Reset' raised ripple={false}
                  onClick={() => {
                   self.setState({performance:self.props.performance, 
                     marginValue:parseInt(self.props.performance.new_account_params.default_margin_percent),
                     startingValue:parseInt(self.props.performance.new_account_params.default_starting_value),
                     marginCallType: self.props.performance.new_account_params.default_margin_call_type,
-                    customizePortfolio: parseInt(self.props.performance.new_account_params.default_customize_portfolio),
+                    customizePortfolioType : self.props.performance.new_account_params.default_customize_portfolio ? 'customize' : 'generate',
                     portfolio:[]
                   })
                 }}
                  />
             </td>
             <td style={{textAlign:"right", border: "none", margin: "0px", padding: "5px"}}>
-            <Button label='Cancel' raised 
+            <Button label='Cancel' raised ripple={false} 
              onClick={() => {
               self.props.silenceHtmlDialog();
             }}
@@ -961,12 +961,12 @@ export default class AccountsNew extends Component {
               <Button label='Create' onClick={() => {
                 self.saveData();
 
-              }} raised />
+              }} raised ripple={false} />
               :
               <Button label='Save' onClick={() => {
                 self.saveData();
               }}
-              raised />
+              raised ripple={false} />
             }
             </td>
             </tr>
