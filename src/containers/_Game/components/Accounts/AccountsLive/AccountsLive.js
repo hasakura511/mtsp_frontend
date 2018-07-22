@@ -281,13 +281,8 @@ export default class AccountsLive extends Component {
           self.setState({refreshing:false})
       } else {
 
-        const loaded = () => {
-          self.setState({refreshing:false})
-          //self.props.silenceDialog();
-          //self.props.toggle();
-          
-        }
-     
+          //self.setState({refreshing:false})
+          self.initializeLive(true);
       }
       
       
