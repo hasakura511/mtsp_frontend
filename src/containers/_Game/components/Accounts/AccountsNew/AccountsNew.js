@@ -645,7 +645,7 @@ export default class AccountsNew extends Component {
             <br/>
            <ClockLoader show={true} />
            <br/>
-           <b>Please wait while we load your board. This could take a couple of minutes.</b>
+           <b>Processing... This could take a couple of minutes.</b>
           </center>
         </div>
       );

@@ -867,8 +867,8 @@ export default class AccountsLive extends Component {
             fontWeight: 800,
           }}
           defaultSorted={[{
-            id   : 'rank',
-            desc : false,
+            id   : 'account_value',
+            desc : true,
           }]}
           className="-striped -highlight"
           showPagination={false}
