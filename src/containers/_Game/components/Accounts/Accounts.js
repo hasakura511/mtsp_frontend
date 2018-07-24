@@ -285,7 +285,7 @@ export default class Accounts extends Component {
             return (
             <div className={classes.Accounts} style={{background: page_background,
                 color:text_color, borderColor:lines}}>
-                        
+
 
                 <div className={classes.Row} style={{background: page_background,
                 color:text_color, borderColor:lines}}>

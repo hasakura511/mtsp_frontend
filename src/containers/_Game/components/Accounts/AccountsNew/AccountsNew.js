@@ -393,7 +393,7 @@ export default class AccountsNew extends Component {
       <tr key={"customize_" + idx}><td style={{ border: "none",  padding: "5px"}} >
     <img src="/images/account_add.png" style={{width:"22px",height:"22px"}} /> Click to add to portfolio
     </td><td style={{  border: "none",  padding: "5px"}} >
-    <img src="/images/account_added.png" style={{width:"22px",height:"22px"}} /> Check indicates included in portfolio
+    <img src="/images/account_added.png" style={{width:"18px",height:"18px"}} /> Check indicates included in portfolio
     </td></tr>)
     ;
     idx+=1;
@@ -401,7 +401,7 @@ export default class AccountsNew extends Component {
       <tr key={"customize_" + idx}><td style={{ border: "none",  padding: "5px"}}>
       <img src="/images/account_remove.png" style={{width:"22px",height:"22px"}} /> Click to remove from portfolio
       </td><td style={{ border: "none",  padding: "5px"}}>
-      <img src="/images/account_locked.png" style={{width:"22px",height:"22px"}} /> Lock shows when total margin {">"} max margin.
+      <img src="/images/account_locked.png" style={{width:"18px",height:"18px"}} /> Lock shows when total margin {">"} max margin.
       </td></tr>
     );
     idx+=1;
@@ -463,6 +463,11 @@ export default class AccountsNew extends Component {
                                         });
                                         if (parseFloat(self.state.maxMargin) > parseFloat(estMargin) + parseFloat(props.original.initMargin))
                                           portfolio.push(props.original.key);
+                                        else 
+                                          self.props.addTimedToaster({
+                                            id: "addData" + Math.random(),
+                                            text: "Not enough margin to add " + props.original.key + " to portfolio."
+                                          });
                                         console.log(portfolio);
                                         self.setState({portfolio:portfolio});
                                     }}
@@ -529,8 +534,8 @@ export default class AccountsNew extends Component {
                                   <img 
                                                 src="/images/account_added.png" 
                                                 style={{
-                                                  width:"22px",
-                                                  height:"22px"
+                                                  width:"18px",
+                                                  height:"18px"
                                                 }}
                                   />
                                   :
@@ -547,10 +552,10 @@ export default class AccountsNew extends Component {
                                     <span style={{textAlign:'center'}} >
                                     <center>
                                     {self.state.portfolio.includes(props.original.key) ? 
-                                    <img src="/images/account_added.png" style={{width:"22px",height:"22px"}} />
+                                    <img src="/images/account_added.png" style={{width:"18px",height:"18px"}} />
                                     
                                     : parseFloat(self.state.maxMargin) < parseFloat(estMargin) + parseFloat(props.original.initMargin) ? 
-                                      <img src={"/images/account_locked.png"} style={{width:'22px'}} />
+                                      <img src={"/images/account_locked.png"} style={{width:'18px'}} />
                                     : null}
                                     </center>
                                     </span>
@@ -621,7 +626,7 @@ export default class AccountsNew extends Component {
     if (self.state.customizePortfolioType == 'customize' ) {
       advancedPrefHtml.push(
         <tr key={"adv_pref_" + idx} ><td style={{textAlign:"left", width:"50%", border: "none",  padding: "5px"}}>
-            <h3>Estimated Total Margin <b>$ {numberWithCommas(estMargin)}</b>
+            <h3>Estimated Total Margin <b style={{background:self.props.themes.live.dialog.table_left_background, padding:"10px"}}>$ {numberWithCommas(estMargin)}</b>
             
             &nbsp;&nbsp;&nbsp;<Button label='Clear Portfolio' onClick={() => {
                 self.setState({portfolio:[]})
@@ -631,7 +636,7 @@ export default class AccountsNew extends Component {
             </h3>
         </td>
         <td style={{textAlign:"left", border: "none",  padding: "5px"}}>
-            <h3>Max Margin  <b>$ {numberWithCommas(self.state.maxMargin)} </b></h3>
+            <h3>Max Margin   <b style={{background:self.props.themes.live.dialog.table_left_background, padding:"10px"}}>$ {numberWithCommas(parseInt(self.state.maxMargin))} </b></h3>
         </td>
         </tr>
       );
@@ -797,7 +802,7 @@ export default class AccountsNew extends Component {
         ) : (
 
         <div className={classes.AccountsNew} style={{margin:"0px", background:"white", height:"100%"}} >
-                    
+
                     <div style={{margin:"0px", paddingTop:"8px", background:"white", "float":"right", "width": "10%", "textAlign": "right"}}>
                         <img src="/images/infotext_button.png" width="22" style={{"marginRight":"5px"}}/>
                     </div>
@@ -822,7 +827,7 @@ export default class AccountsNew extends Component {
           <div>
             <h3>New Account Settings</h3>
             <br/>
-            <b>Starting value, Account Type and Public settings cannot be modified after new account is created.</b>
+            <b>Starting value cannot be modified after new account is created.</b>
           
 
             <br/><br/>
@@ -942,11 +947,14 @@ export default class AccountsNew extends Component {
             <td style={{border: "none", margin: "0px", padding: "5px"}}>
                 <Button label='Reset' raised ripple={false}
                  onClick={() => {
+                  var marginValue=self.props.performance.new_account_params.default_margin_percent;
+                  if (account.margin_percent)
+                    marginValue=account.margin_percent 
                   self.setState({performance:self.props.performance, 
                     marginValue:parseInt(self.props.performance.new_account_params.default_margin_percent),
                     startingValue:parseInt(self.props.performance.new_account_params.default_starting_value),
                     marginCallType: self.props.performance.new_account_params.default_margin_call_type,
-                    customizePortfolioType : self.props.performance.new_account_params.default_customize_portfolio ? 'customize' : 'generate',
+                    customizePortfolioType : self.props.chip_id || self.props.performance.new_account_params.default_customize_portfolio ? 'customize' : 'generate',
                     portfolio:self.state.orig_portfolio
                   })
                 }}
@@ -959,12 +967,12 @@ export default class AccountsNew extends Component {
             }}
              />
             {!self.props.chip_id ?
-              <Button label='Create' onClick={() => {
+              <Button  style={{background:"#4FB093", color:"#FFFFFF"}}  label='Create' onClick={() => {
                 self.saveData();
 
               }} raised ripple={false} />
               :
-              <Button label='Save' onClick={() => {
+              <Button style={{background:"#4FB093", color:"#FFFFFF"}} label='Save' onClick={() => {
                 self.saveData();
               }}
               raised ripple={false} />

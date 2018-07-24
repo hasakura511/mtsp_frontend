@@ -273,6 +273,7 @@ export default class LiveBoard extends Component {
   }
 
   initializeLive=(reinitialize=false, callback=undefined) => {
+    var self=this;
     if (this.state.refreshing)
       return;
     else
@@ -292,7 +293,7 @@ export default class LiveBoard extends Component {
     .then(({ data }) => {
       console.log('received initialize_live data')
       console.log(data);
-      this.props.initializeData(data);
+      self.props.initializeData(data);
 
       if (!this.state.loading)
         this.sendNotice("Board Refreshed with New Data");

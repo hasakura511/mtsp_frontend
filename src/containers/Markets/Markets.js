@@ -166,9 +166,17 @@ export default class Markets extends Component {
 
   
   componentWillReceiveProps(newProps) {
+    if (newProps.liveDateText) {
+      this.setState({liveDateText:newProps.liveDateText});
+    }
     if (newProps.refresh_markets) {
       console.log("Received Refresh Market Status Check");
-      this.refreshData();
+      if (newProps.liveDateText) {
+        this.refreshData(date=newProps.liveDateText);
+      } else {
+        this.refreshData();
+
+      }
     } else if (newProps.heatmap_account_id && (newProps.heatmap_account_id != this.props.heatmap_account_id || newProps.heatmap_lookup_symbol != this.props.heatmap_lookup_symbol || newProps.heatmap_lookup_link != this.props.heatmap_lookup_link)) {
       console.log("Received Refresh Market Status Check");
       var sym=''
@@ -184,7 +192,7 @@ export default class Markets extends Component {
     
   }
 
-  refreshData=(account_id='', link='', sym='', portfolio='') => {
+  refreshData=(account_id='', link='', sym='', portfolio='',date=this.state.liveDateText) => {
     var self=this;
     if (self.state.last_heatmap_params.account_id != account_id ||
         self.state.last_heatmap_params.link != link ||
@@ -207,7 +215,7 @@ export default class Markets extends Component {
     axiosOpen
       .post("/utility/market_heatmap/", {
           'username':  this.props.email,
-          'date':this.state.liveDateText,
+          'date':date,
           'account_id':account_id,
           'link':link,
           'portfolio':portfolio

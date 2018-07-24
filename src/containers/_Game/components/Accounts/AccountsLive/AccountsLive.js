@@ -282,7 +282,7 @@ export default class AccountsLive extends Component {
       } else {
 
           //self.setState({refreshing:false})
-          self.initializeLive(true);
+          self.props.initializeLive(true);
       }
       
       
@@ -408,6 +408,10 @@ export default class AccountsLive extends Component {
                     <div style={{margin:"0px", paddingTop:"8px", background:themes.table_background, "float":"right", "width": "10%", "textAlign": "right"}}>
                         <img src="/images/infotext_button.png" width="22" style={{"marginRight":"5px"}}/>
                     </div>
+                    <div style={{margin:"0px", paddingTop:"8px", background:themes.table_background, "float":"right", "width": "80%", "textAlign": "right"}}>
+                    <center><h3>List of Accounts</h3></center>
+                    </div>
+
             <div style={{"clear": "both"}}></div>
            
            
@@ -475,7 +479,7 @@ export default class AccountsLive extends Component {
                     items.push(
                       <div key={'item-4'} style={{'float':'left', marginLeft: "15px", minwidth:'60px', marginTop:"20px"}}>
                         {parseFloat(props.value) ? (
-                        <span style={parseFloat(props.value) > 0 ? {color:themes.text_gain} : {color:themes.text_loss}} >
+                        <span style={props.value ? {color:'black'} : parseFloat(props.value) > 0 ? {color:themes.text_gain} : {color:themes.text_loss}} >
                       <b>
                       $ {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })}
                       </b>
@@ -531,10 +535,42 @@ export default class AccountsLive extends Component {
                   ), // Custom cell components!,
 
                 },
-              ]},
               {
+                Header: props => (
+                  <span style={{background:themes.table_background}}>
+                   Prev %
+                   </span>),
+                headerStyle: {
+                  background:themes.table_background
+                },
+                accessor: "pnl_pct",
+                Cell: props => (
+                  <span className='number'><center>
+                  {parseFloat(props.value) ? (
+                    <span style={parseFloat(props.value) > 0 ? {color:themes.text_gain} : {color:themes.text_loss}} >
+                  <b>
+                 {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} %
+                  </b>
+                  </span>
+                  ) : (
+                    <span style={{color:themes.text_color}}>
+                  <b>
+                 {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} %
+                  </b>
+                  </span>
+                  )}
+                  </center>
+                  </span>
+                ), // Custom cell components!,
+
+              },
+            ]},
+            {
               Header: "Portfolio Settings",
-             
+              headerStyle: {
+                background:self.props.themes.live.dialog.table_left_background
+              },
+         
               columns: [
                {
                   Header: props => (
@@ -550,7 +586,7 @@ export default class AccountsLive extends Component {
                     //chip.tier = props.original.tier;
                     //chip.status = 'unlocked';
                     //chip.chip_tier_text=chip.filter;
-                    chip.isReadOnly=true;
+                    chip.isReadOnly=false; //true;
                     chip.isAccountChip=true;
                     return (
                       <span className='number'><center>
@@ -680,7 +716,7 @@ export default class AccountsLive extends Component {
                   Cell: props => (
                     <span className='number'><center>
                     {parseFloat(props.value) ? (
-                      <span style={parseFloat(props.value) > 0 ? {color:themes.text_gain} : {color:themes.text_loss}} >
+                      <span style={props.value ? {color:'black'} : parseFloat(props.value) > 0 ? {color:themes.text_gain} : {color:themes.text_loss}} >
                     <b>
                    {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} %
                     </b>
@@ -712,20 +748,6 @@ export default class AccountsLive extends Component {
 
                 },
                 {
-                  Header: props => (
-                    <span style={{background:themes.table_background}}>
-                     Recreate
-                     </span>),
-                  headerStyle: {
-                    background:themes.table_background
-                  },
-                  accessor: "recreate",
-                  Cell: props => (
-                    <span className='number'><center>{props.value}</center></span>
-                  ), // 
-
-                },
-                {
                     Header: props => (
                       <span style={{background:themes.table_background}}>
                        Edit
@@ -734,6 +756,20 @@ export default class AccountsLive extends Component {
                     headerStyle: {
                       background:themes.table_background,
                     },
+                    Footer: props => (
+                      <div style={{width:"100px", cursor:'pointer'}} onClick={() => {
+  
+                         window.location='/board'
+
+                      }}>
+                        <div style={{float:"left", width:"100px"}}>
+                            <img src={"/images/cancel.png"} width={120} height={30} />
+                        </div>
+                        <div style={{float:"left", marginLeft: "-60px", width:"60px", marginTop: "6px", color:themes.text_color}}>
+                          Cancel
+                        </div>
+                      </div>
+                       ), 
                     Cell: props =>{
                       var copyboard='copy_board_' + props.original.rank;
 
@@ -745,6 +781,7 @@ export default class AccountsLive extends Component {
                       
                       ref={ref => self[copyboard] = ref}
                       onClick={() => {  
+                            if (props.original.chip_id && self.props.performance.enable_edit_delete) {
                               console.log(self.state.performance.accounts[props.original.chip_id])
                               self.props.showDialog(
                                 " Are you sure you want to customize your portfolio? ",
@@ -760,9 +797,20 @@ export default class AccountsLive extends Component {
                                   "I Accept the Risk",
                                   "Cancel"
                                   );
+
+                                } else {
+
+                                  self.props.addTimedToaster(
+                                    {
+                                      id: "board_notice_" + Math.random().toFixed(3),
+                                      text:  self.props.performance.enable_edit_delete_message
+                                    },
+                                    5000
+                                    );
+                                  }
                   
                         }} >
-                        {props.original.chip_id ?
+                        {props.original.chip_id && self.props.performance.enable_edit_delete ?
                           <img src="/images/account_edit_enabled.png"  height={30} />
                           :
                           <img src="/images/account_edit_disabled.png"  height={30} />
@@ -788,11 +836,13 @@ export default class AccountsLive extends Component {
                       whiteSpace: 'unset' 
                     },
                     Footer: props => (
-                    <div style={{width:"100px", cursor:'pointer'}} onClick={() => {
+                    <div>
+                      {self.props.performance.enable_create_new ? <div style={{width:"100px", cursor:'pointer'}} onClick={() => {
 
                         self.props.showHtmlDialog(<AccountsNew  performance={self.props.performance} themes={self.props.themes}  initializeLive={self.props.initializeLive}  />);
                     
                     }}>
+                    
                       <div style={{float:"left", width:"100px"}}>
                           <img src={"/images/account_create_enabled.png"} width={120} height={30} />
                       </div>
@@ -800,6 +850,25 @@ export default class AccountsLive extends Component {
                         Create New..
                       </div>
                     </div>
+                    : <div style={{width:"100px", cursor:'pointer'}} onClick={() => {
+                      self.props.addTimedToaster(
+                        {
+                          id: "board_notice_" + Math.random().toFixed(3),
+                          text: self.props.performance.enable_create_new_message
+                        },
+                        5000
+                        );
+
+                  }}>
+                  
+                    <div style={{float:"left", width:"100px"}}>
+                        <img src={"/images/account_create_disabled.png"} width={120} height={30} />
+                    </div>
+                    <div style={{float:"left", marginLeft: "-70px", width:"70px", marginTop: "10px", color:"white"}}>
+                      Create New..
+                    </div>
+                  </div>}
+                  </div>
                      ), 
                     Cell: props =>{
                       var copyboard='copy_board_chip_' + props.original.rank;
@@ -808,12 +877,19 @@ export default class AccountsLive extends Component {
 
                       <span className='number'><center>
                         
-                        {props.original.chip_id ?
+                        {props.original.chip_id && self.props.performance.enable_edit_delete ?
                           <img src="/images/account_delete_enabled.png"  style={{ cursor:'pointer'  }} onClick={() => {
+                            var chip = Object.assign({}, props.original); 
+                            chip.display=props.original.account_chip_text;
+                            //chip.tier = props.original.tier;
+                            //chip.status = 'unlocked';
+                            //chip.chip_tier_text=chip.filter;
+                            chip.isReadOnly=true;
 
                             self.props.showDialog(
-                              " Are you sure you want to Delete the Account?",
-                              " Deleted account will be removd from the board." ,
+                              <center><Chip chip={chip} isReadOnly={true} account_chip_text={props.original.account_chip_text} />
+                                Are you sure you want to Delete the Account?</center>,
+                              " Your deleted account will be permanently removed from the board. " ,
                                 () => {
                                   self.setState({refreshing:true})
 
@@ -829,7 +905,16 @@ export default class AccountsLive extends Component {
 
                           } height={30} />
                           :
-                          <img src="/images/account_delete_disabled.png"  height={30} />
+                          <img src="/images/account_delete_disabled.png"  onClick={() => {
+
+                            self.props.addTimedToaster(
+                              {
+                                id: "board_notice_" + Math.random().toFixed(3),
+                                text:  self.props.performance.enable_edit_delete_message
+                              },
+                              5000
+                              );
+                          }} height={30} />
                         }
 
                      
