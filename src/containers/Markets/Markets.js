@@ -172,7 +172,7 @@ export default class Markets extends Component {
     if (newProps.refresh_markets) {
       console.log("Received Refresh Market Status Check");
       if (newProps.liveDateText) {
-        this.refreshData(date=newProps.liveDateText);
+        this.refreshData('','','','',newProps.liveDateText);
       } else {
         this.refreshData();
 
