@@ -144,6 +144,7 @@ export default class Markets extends Component {
     link:PropTypes.string,
     initializeHeatmap:PropTypes.func.isRequired,
     silenceHtmlDialog2:PropTypes.func.isRequired,
+    is_dialog:PropTypes.bool
   };
 
   getSubmitTitle(controls) {
@@ -1235,7 +1236,7 @@ export default class Markets extends Component {
         if (items[key]!= undefined) {
             items[key].map( item => {
               group2.push (
-                <a  href='JavaScript:$(window).scrollTop($("#chartTop").offset().top-111);' className={classes.flex_item2}
+                <a  href='#chartTop' className={classes.flex_item2}
                     style={{
                       "background":item.color_fill,
                       "color":item.color_text,
@@ -1246,6 +1247,10 @@ export default class Markets extends Component {
                     key={item.key + idx.toString()}
                     onClick={ () => {
                       self.onGetChart(item.key, this.state.liveDateText);
+                      $(window).scrollTop($("#chartTop").offset().top-111);
+                      if (self.props.is_dialog) {
+                        $(window).scrollTop();
+                      }
                     }}
                 >
                 {item.display} <br/><br/>

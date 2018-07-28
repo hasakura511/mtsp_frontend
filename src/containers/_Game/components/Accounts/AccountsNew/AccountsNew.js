@@ -390,17 +390,17 @@ export default class AccountsNew extends Component {
     var customizeHtml=[];
     var idx=0;
     customizeHtml.push(
-      <tr key={"customize_" + idx}><td style={{ border: "none",  padding: "5px"}} >
+      <tr key={"customize_" + idx}><td style={{ border: "none",  padding: "5px", color:"black"}} >
     <img src="/images/account_add.png" style={{width:"22px",height:"22px"}} /> Click to add to portfolio
-    </td><td style={{  border: "none",  padding: "5px"}} >
+    </td><td style={{  border: "none",  padding: "5px", color:"black"}} >
     <img src="/images/account_added.png" style={{width:"18px",height:"18px"}} /> Check indicates included in portfolio
     </td></tr>)
     ;
     idx+=1;
     customizeHtml.push(
-      <tr key={"customize_" + idx}><td style={{ border: "none",  padding: "5px"}}>
+      <tr key={"customize_" + idx}><td style={{ border: "none",  padding: "5px", color:"black"}}>
       <img src="/images/account_remove.png" style={{width:"22px",height:"22px"}} /> Click to remove from portfolio
-      </td><td style={{ border: "none",  padding: "5px"}}>
+      </td><td style={{ border: "none",  padding: "5px", color:"black"}}>
       <img src="/images/account_locked.png" style={{width:"18px",height:"18px"}} /> Lock shows when total margin {">"} max margin.
       </td></tr>
     );
@@ -488,7 +488,9 @@ export default class AccountsNew extends Component {
                                   self.props.showHtmlDialog2(<Markets load_account_id={''} 
                                     load_symbol={props.original.key} 
                                     load_link={'accounts'}
-                                    load_portfolio={JSON.stringify(self.state.orig_portfolio)} />)
+                                    load_portfolio={JSON.stringify(self.state.orig_portfolio)} 
+                                    is_dialog={true}
+                                    />)
                                 }}>
                                 {props.value}
                                 </a>
