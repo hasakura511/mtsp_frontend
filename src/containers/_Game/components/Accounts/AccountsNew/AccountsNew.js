@@ -428,7 +428,7 @@ export default class AccountsNew extends Component {
       });
       customizeHtml.push(
         <tr  key={"customize_" + idx}>
-        <td colSpan={2}>
+        <td colSpan={2} style={{margin:"0px",padding:"0px", border:"0px"}}>
   
          <ReactTable
                     
@@ -570,6 +570,13 @@ export default class AccountsNew extends Component {
                             overflow:"auto",
                             fontSize:"12px",
                             fontWeight: 800,
+                            display:"table",
+                            //paddingTop: "auto",
+                            //paddingBottom: "-20px",
+                            //marginTop: "auto",
+                            //marginBottom: "-20px",
+                            marginLeft:"auto",
+                            marginRight: "auto"
                         }}
                       
                         showPagination={false}
@@ -947,13 +954,20 @@ export default class AccountsNew extends Component {
             <td style={{border: "none", margin: "0px", padding: "5px"}}>
                 <Button label='Reset' raised ripple={false}
                  onClick={() => {
-                  var marginValue=self.props.performance.new_account_params.default_margin_percent;
+                  var marginValue=parseInt(self.props.performance.new_account_params.default_margin_percent);
                   if (account.margin_percent)
-                    marginValue=account.margin_percent 
-                  self.setState({performance:self.props.performance, 
-                    marginValue:parseInt(self.props.performance.new_account_params.default_margin_percent),
-                    startingValue:parseInt(self.props.performance.new_account_params.default_starting_value),
-                    marginCallType: self.props.performance.new_account_params.default_margin_call_type,
+                    marginValue=parseInt(account.margin_percent); 
+                  var startingValue = parseInt(self.props.performance.new_account_params.default_starting_value);
+                  var maxMargin= startingValue * marginValue / 100;
+                  var marginCallType =self.props.performance.new_account_params.default_margin_call_type;
+                  if (account.recreate_if_margin_call)
+                    marginCallType=account.recreate_if_margin_call
+                  self.setState({
+                    performance:self.props.performance, 
+                    marginValue:parseInt(marginValue),
+                    startingValue:parseInt(startingValue),
+                    maxMargin:maxMargin,
+                    marginCallType: marginCallType,
                     customizePortfolioType : self.props.chip_id || self.props.performance.new_account_params.default_customize_portfolio ? 'customize' : 'generate',
                     portfolio:self.state.orig_portfolio
                   })

@@ -564,6 +564,55 @@ export default class AccountsLive extends Component {
                 ), // Custom cell components!,
 
               },
+              {
+                Header: props => (
+                  <span style={{background:themes.table_background}}>Age
+                </span>),
+                accessor: "age",
+                headerStyle: {
+                  background:themes.table_background
+                },
+                Cell: props => {
+                  var chip = Object.assign({}, props.original); 
+                  chip.display=props.original.account_chip_text;
+                  //chip.tier = props.original.tier;
+                  //chip.status = 'unlocked';
+                  //chip.chip_tier_text=chip.filter;
+                  chip.isReadOnly=false; //true;
+                  chip.isAccountChip=true;
+                  return (
+                    <span className='number'><center>
+                      
+
+                    <a 
+                    href={'JavaScript:console.log("account performance")'} 
+                    style={{ cursor:  'pointer'  }} 
+                    title={"Show Account Performance."} 
+                    onClick={() => {  
+                        
+                              chip.isAccountView=true;
+                              self.props.showHtmlDialog(<Order
+                                chip={chip}
+                                dictionary_strategy={this.props.dictionary_strategy}
+                                isLive={true}
+                                isPerformance={true}
+                                performance_account_id={props.original.account_id}
+                                rankingLoading={false}
+                                toggle={this.props.silenceHtmlDialog}
+                                themes={this.themes}
+                                close={this.props.silenceHtmlDialog}
+                                />);
+                                self.props.showPerformance(props.original.account_id, chip);
+                                
+                          }}>
+                      {props.value}
+                      </a>
+                  
+                    </center></span>
+                  )
+                }, // Custom cell components!,
+
+              },
             ]},
             {
               Header: "Portfolio Settings",
@@ -572,60 +621,17 @@ export default class AccountsLive extends Component {
               },
          
               columns: [
-               {
-                  Header: props => (
-                    <span style={{background:themes.table_background}}>Age
-                  </span>),
-                  accessor: "age",
-                  headerStyle: {
-                    background:themes.table_background
-                  },
-                  Cell: props => {
-                    var chip = Object.assign({}, props.original); 
-                    chip.display=props.original.account_chip_text;
-                    //chip.tier = props.original.tier;
-                    //chip.status = 'unlocked';
-                    //chip.chip_tier_text=chip.filter;
-                    chip.isReadOnly=false; //true;
-                    chip.isAccountChip=true;
-                    return (
-                      <span className='number'><center>
-                        
-
-                      <a href={'JavaScript:console.log("account performance")'} style={{ cursor:'pointer'  }} title={"Show Account Performance."} onClick={() => {  
-                          
-                                chip.isAccountView=true;
-                                self.props.showHtmlDialog(<Order
-                                  chip={chip}
-                                  dictionary_strategy={this.props.dictionary_strategy}
-                                  isLive={true}
-                                  isPerformance={true}
-                                  performance_account_id={props.original.account_id}
-                                  rankingLoading={false}
-                                  toggle={this.props.silenceHtmlDialog}
-                                  themes={this.themes}
-                                  close={this.props.silenceHtmlDialog}
-                                  />);
-                                  self.props.showPerformance(props.original.account_id, chip);
-                                  
-                            }}>
-                        {props.value}
-                        </a>
-                    
-                      </center></span>
-                    )
-                  }, // Custom cell components!,
-
-                },
+               
                 {
                   Header: props => (
-                    <span style={{background:themes.table_background}}>
+                    <span style={{background:self.props.themes.live.dialog.table_left_background}}>
                     Portfolio
                   </span>),
-                  accessor: "num_markets",
                   headerStyle: {
-                    background:themes.table_background
+                    background:self.props.themes.live.dialog.table_left_background
                   },
+
+                  accessor: "num_markets",
 
                   Cell: props => (
                     <span className='number'><center>
@@ -706,12 +712,13 @@ export default class AccountsLive extends Component {
                 },
                 {
                   Header: props => (
-                    <span style={{background:themes.table_background}}>
+                    <span style={{background:self.props.themes.live.dialog.table_left_background}}>
                      Margin %
-                     </span>),
+                  </span>),
                   headerStyle: {
-                    background:themes.table_background
+                    background:self.props.themes.live.dialog.table_left_background
                   },
+             
                   accessor: "margin_percent",
                   Cell: props => (
                     <span className='number'><center>
@@ -735,11 +742,11 @@ export default class AccountsLive extends Component {
                 },
                 {
                   Header: props => (
-                    <span style={{background:themes.table_background}}>
+                    <span style={{background:self.props.themes.live.dialog.table_left_background}}>
                      Auto
                      </span>),
-                  headerStyle: {
-                    background:themes.table_background
+                   headerStyle: {
+                    background:self.props.themes.live.dialog.table_left_background
                   },
                   accessor: "recreate_if_margin_call",
                   Cell: props => (
@@ -749,12 +756,12 @@ export default class AccountsLive extends Component {
                 },
                 {
                     Header: props => (
-                      <span style={{background:themes.table_background}}>
+                      <span style={{background:self.props.themes.live.dialog.table_left_background}}>
                        Edit
                     </span>),
                     accessor: "account_id",
                     headerStyle: {
-                      background:themes.table_background,
+                      background:self.props.themes.live.dialog.table_left_background
                     },
                     Footer: props => (
                       <div style={{width:"100px", cursor:'pointer'}} onClick={() => {
@@ -827,12 +834,12 @@ export default class AccountsLive extends Component {
                   },
                   {
                     Header: props => (
-                      <span style={{background:themes.table_background}}>
+                      <span style={{background:self.props.themes.live.dialog.table_left_background}}>
                        Delete
                     </span>),
                     accessor: "account_id",
                     headerStyle: {
-                      background:themes.table_background,
+                      background:self.props.themes.live.dialog.table_left_background,
                       whiteSpace: 'unset' 
                     },
                     Footer: props => (
@@ -887,8 +894,21 @@ export default class AccountsLive extends Component {
                             chip.isReadOnly=true;
 
                             self.props.showDialog(
-                              <center><Chip chip={chip} isReadOnly={true} account_chip_text={props.original.account_chip_text} />
-                                Are you sure you want to Delete the Account?</center>,
+                              <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
+      }}
+    >
+    <Chip 
+                              chip={chip} 
+                              //isReadOnly={true} 
+                              account_chip_text={props.original.account_chip_text} />
+      &nbsp;&nbsp;<h2 style={{ marginRight: "4px" }}>
+      Are you sure you want to Delete the Account?
+      </h2>
+    </div>,
                               " Your deleted account will be permanently removed from the board. " ,
                                 () => {
                                   self.setState({refreshing:true})
@@ -948,7 +968,7 @@ export default class AccountsLive extends Component {
           }}
           defaultSorted={[{
             id   : 'account_value',
-            desc : true,
+            desc : false,
           }]}
           className="-striped -highlight"
           showPagination={false}
