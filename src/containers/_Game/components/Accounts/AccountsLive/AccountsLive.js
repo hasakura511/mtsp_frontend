@@ -450,7 +450,7 @@ export default class AccountsLive extends Component {
                     var chip=props.original;
                     chip.display=props.original.account_chip_text;
                     chip.tier = props.original.tier;
-                    chip.status = 'unlocked';
+                    //chip.status = 'locked';
                     chip.isReadOnly=true;
                     //chip.starting_value=props.original.account_chip_text;
                     //chip.account_value=props.original.account_chip_text;

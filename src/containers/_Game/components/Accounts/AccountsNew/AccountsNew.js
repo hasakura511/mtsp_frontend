@@ -428,7 +428,7 @@ export default class AccountsNew extends Component {
       });
       customizeHtml.push(
         <tr  key={"customize_" + idx}>
-        <td colSpan={2} style={{margin:"0px",padding:"0px", border:"0px"}}>
+        <td colSpan={2} style={{margin:"0px",color:"black", padding:"0px", border:"0px"}}>
   
          <ReactTable
                     
@@ -444,7 +444,7 @@ export default class AccountsNew extends Component {
                             Header: "Initial Margin",
                             accessor: "initMargin",
                             Cell: props => (
-                                <span className='number'><center>
+                                <span className='number'>
                                     <img src="/images/account_remove.png" 
                                     onClick={() => {
                                         //console.log(props.original);
@@ -474,7 +474,7 @@ export default class AccountsNew extends Component {
                                     style={{width:"22px", height:"22px", cursor:'pointer' }} />
                                     &nbsp;&nbsp;
                                     $ {numberWithCommas(props.value)}
-                                </center></span>
+                              </span>
                                 ), // Custom cell components!,
                             },
                             
@@ -483,7 +483,7 @@ export default class AccountsNew extends Component {
                             accessor: "Display",
                             Cell: props => (
                                 <span style={{textAlign:'left'}} >
-                                <a href='#markets' 
+                                <a href='#chartTop' 
                                 onClick={() => {
                                   self.props.showHtmlDialog2(<Markets load_account_id={''} 
                                     load_symbol={props.original.key} 
@@ -632,7 +632,7 @@ export default class AccountsNew extends Component {
     
     if (self.state.customizePortfolioType == 'customize' ) {
       advancedPrefHtml.push(
-        <tr key={"adv_pref_" + idx} ><td style={{textAlign:"left", width:"50%", border: "none",  padding: "5px"}}>
+        <tr key={"adv_pref_" + idx} ><td style={{textAlign:"left", width:"50%", border: "none",  color:'black', padding: "5px"}}>
             <h3>Estimated Total Margin <b style={{background:self.props.themes.live.dialog.table_left_background, padding:"10px"}}>$ {numberWithCommas(estMargin)}</b>
             
             &nbsp;&nbsp;&nbsp;<Button label='Clear Portfolio' onClick={() => {
@@ -642,7 +642,7 @@ export default class AccountsNew extends Component {
 
             </h3>
         </td>
-        <td style={{textAlign:"left", border: "none",  padding: "5px"}}>
+        <td style={{textAlign:"left", border: "none", color:'black',  padding: "5px"}}>
             <h3>Max Margin   <b style={{background:self.props.themes.live.dialog.table_left_background, padding:"10px"}}>$ {numberWithCommas(parseInt(self.state.maxMargin))} </b></h3>
         </td>
         </tr>
@@ -720,9 +720,10 @@ export default class AccountsNew extends Component {
               //border:"none", 
               //borderCollapse: "collapse",
               width:"100%",
+
               //background:self.props.themes.live.dialog.background_inner,
-              color:self.props.themes.live.dialog.text }}>
-            <thead  style={{border:"none"}}>
+              color:'black' }}>
+            <thead  style={{border:"none", color:'black' }}>
               <tr style={{border:"none"}}>
               <th  style={{border:"none"}}>
                 <center>
@@ -747,18 +748,19 @@ export default class AccountsNew extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr style={{border:"1px", "padding":"1px"}}>
-                  <td style={{ width: "350px", paddingTop: "20px", borderLeft:"1px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
-                      <div key={'c'} style={{"clear": "both"}}></div>
+                  <tr style={{border:"1px solid black", minHeight: "100px",  "padding":"0px"}}>
+                  <td style={{ width: "350px", paddingTop: "15px", borderLeft:"1px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
+                     
                     {items}
+                    <div key={'c'} style={{"clear": "both"}}></div>
                   </td>            
-                  <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
+                  <td style={{borderLeft:"0px solid black",  borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
                   <center>
       
                   $ {numberWithCommas(chip.account_value.toString())}
                   </center>
                   </td>            
-                  <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
+                  <td style={{borderLeft:"0px solid black",  borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
                   <center>
                             
                           {parseFloat(chip.pnl_cumpct) ? (
@@ -778,7 +780,7 @@ export default class AccountsNew extends Component {
                         </center>
       
                   </td>            
-                  <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black", borderRight:"1px solid black"}}>
+                  <td style={{borderLeft:"0px solid black",  borderTop:"1px solid black",borderBottom:"1px solid black", borderRight:"1px solid black"}}>
                   <center>
                     {chip.age} Days
                   </center>
@@ -877,7 +879,7 @@ export default class AccountsNew extends Component {
                 </td></tr></tbody></table>
             </td></tr>
             : null }
-            <tr>
+            <tr style={{color:'black' }}> 
             <td style={{textAlign:"left", border: "none", margin: "0px", padding: "5px"}}>
                 Set your portfolio to automatically..
             </td>
@@ -899,7 +901,7 @@ export default class AccountsNew extends Component {
             </RadioGroup>
             </td>
             </tr>
-            <tr>
+            <tr style={{color:'black' }}> 
             <td style={{textAlign:"left", border: "none", margin: "0px", padding: "5px"}}>
                 when total margin reaches..
             </td>
@@ -933,7 +935,7 @@ export default class AccountsNew extends Component {
             </td>
             </tr>
 
-             <tr>
+            <tr style={{color:'black' }}> 
             <td style={{textAlign:"left", border: "none", margin: "0px", padding: "5px"}}>
                 Advanced Preferences
             </td>
