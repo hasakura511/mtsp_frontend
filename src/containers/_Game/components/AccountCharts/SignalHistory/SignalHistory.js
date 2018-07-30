@@ -10,6 +10,9 @@ import gainIcon from "../../../../../assets/images/gain-icon.png";
 import ReactTable from "react-table";
 import 'react-table/react-table.css'
 import * as actions from "../../../../../store/actions";
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
+
 
 import {
   LineChart,
@@ -157,7 +160,23 @@ const dispatchToProps = dispatch => {
   return {
     initializeHeatmap:(account_id, link, sym) => {
       dispatch(actions.initializeHeatmap(account_id, link, sym))
-    }
+    },
+    showHtmlDialog: (htmlContent) => {
+      dispatch(actions.showHtmlDialog(htmlContent));
+      
+    },
+    silenceHtmlDialog: () => {
+      dispatch(actions.silenceHtmlDialog());
+      
+    },
+    showHtmlDialog2: (htmlContent) => {
+      dispatch(actions.showHtmlDialog2(htmlContent));
+      
+    },
+    silenceHtmlDialog2: () => {
+      dispatch(actions.silenceHtmlDialog2());
+      
+    },
     
   };
 };
@@ -190,7 +209,7 @@ export default class SignalHistory extends Component {
     );
   }
 
-  signalHistory = (chip_id, strategy, parents) => {
+  signalHistory = (chip_id, strategy, parents, date=this.props.liveDateText, date_picked=false) => {
 
     var self=this;
 
@@ -198,16 +217,13 @@ export default class SignalHistory extends Component {
     .post("/utility/signal_history_live/", {
      
       username: self.props.email,
-      last_date:self.props.liveDateText,
+      last_date:date,
       chip_id: chip_id,
       strategy: strategy,
       parents: parents,
       
     })
     .then(response => {
-      /**
-       * @namespace {Performance}
-       */
       var performance = response.data;
       console.log('signal history live')
       console.log(performance);
@@ -222,14 +238,21 @@ export default class SignalHistory extends Component {
         var dataJson= JSON.parse(performance.signal_history);
         performance.signal_history=dataJson;
         
-        console.log(performance);
         self.setState({
           performanceLoading: false,
           performance,
           performanceError:''
         });
+        if (date_picked) {
+          self.setState({
+            date_picked:date
+          })
+        }
 
-         
+        console.log(performance);
+
+      
+
         }
     })
     .catch(performanceError => {
@@ -243,13 +266,13 @@ export default class SignalHistory extends Component {
   }
   
   componentDidMount() {
-      var self=this;
-      var parents=[];
-      Object.keys(self.props.slot).map(key => {
-        if (self.props.slot[key].id)
-          parents.push(self.props.slot[key].id);
-      });
-      self.signalHistory(self.props.chip.chip_id, self.props.slot.position, parents);
+        var self=this;
+        var parents=[];
+        Object.keys(self.props.slot).map(key => {
+          if (self.props.slot[key].id)
+            parents.push(self.props.slot[key].id);
+        });
+        self.signalHistory(self.props.chip.chip_id, self.props.slot.position, parents);
   }
 
   render() {
@@ -275,7 +298,7 @@ export default class SignalHistory extends Component {
         
         {performanceLoading ? (
                 <div>
-                    <Spinner />
+                  <Spinner />
                 </div>
         ) : performanceError ? (
           <div style={{height: innerHeight - 172,  background: self.props.themes.live.dialog.tab_color_active} }>
@@ -290,7 +313,32 @@ export default class SignalHistory extends Component {
           
           </div>
 
-        ) : (
+        ) : !self.state.date_picked ? (
+          <div style={{height: innerHeight - 172,  background: self.props.themes.live.dialog.tab_color_active} }>
+          <center>
+              <DatePicker
+               inline
+               withPortal
+               highlightDates={Object.keys(performance.available_dates).map(key => {
+                 return new moment(performance.available_dates[key]);
+               })}
+               onChange={(e) => {
+                   var date=e.format('YYYYMMDD')
+                   console.log(date);
+              
+                   var parents=[];
+                    Object.keys(self.props.slot).map(key => {
+                      if (self.props.slot[key].id)
+                        parents.push(self.props.slot[key].id);
+                    });
+                    self.signalHistory(self.props.chip.chip_id, self.props.slot.position, parents, date, true);
+               }}  
+                />
+            </center>
+          </div>
+        ) 
+        :
+        (
 
         <div className={classes.SignalHistory} style={{margin:"0px", background:self.props.themes.live.dialog.tab_color_active}}>
                 <span style={{margin:"0px", background:self.props.themes.live.dialog.tab_color_active, "float": "right", "width": "100%", "textAlign": "right"}}>
@@ -697,5 +745,10 @@ export default class SignalHistory extends Component {
     //liveDate:PropTypes.instanceOf(moment).isRequired,
     liveDateText:PropTypes.string.isRequired,
     email:PropTypes.string,
+    showHtmlDialog:PropTypes.func.isRequired,
+    silenceHtmlDialog:PropTypes.func.isRequired,
+    showHtmlDialog2:PropTypes.func.isRequired,
+    silenceHtmlDialog2:PropTypes.func.isRequired,
+
   };
 }
