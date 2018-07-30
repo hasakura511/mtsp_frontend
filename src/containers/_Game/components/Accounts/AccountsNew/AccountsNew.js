@@ -850,10 +850,10 @@ export default class AccountsNew extends Component {
         
           {!self.props.chip_id ?
                         
-              <tr style={{border: "none", margin: "0px", padding: "0px", borderColor: "transparent"}}>
-            <td style={{ width:"20%", textAlign:"left",  border: "none", margin: "0px", padding: "5px"}}>
+              <tr style={{border: "none", margin: "0px", padding: "0px", color: "black", borderColor: "transparent"}}>
+            <td style={{ width:"20%", textAlign:"left",  border: "none", color: "black", margin: "0px", padding: "5px"}}>
           Starting Value 
-            </td><td style={{width:"80%", textAlign:"left",  border: "none", marginRight: "0px"}}>
+            </td><td style={{width:"80%", textAlign:"left", color: "black",  border: "none", marginRight: "0px"}}>
 
              <table width={"100%"}><tbody>
                   <tr>

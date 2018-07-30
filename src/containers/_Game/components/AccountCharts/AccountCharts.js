@@ -8,6 +8,7 @@ import PerformanceOrderChart from "./PerformanceOrderChart/PerformanceOrderChart
 import OpenPositions from "./OpenPositions/OpenPositions";
 import PreviousPnL from "./PreviousPnL/PreviousPnL";
 import TradingCosts from "./TradingCosts/TradingCosts";
+import SignalHistory from "./SignalHistory/SignalHistory";
 import Spinner from "../../../../components/UI/Spinner/Spinner";
 //import RankingChart from "./RankingChart/RankingChart";
 import * as actions from "../../../../store/actions";
@@ -68,6 +69,7 @@ export default class AccountCharts extends Component {
       isPreviousPnL:false,
       isLockdownTimetable:false,
       isRankingChart:false,
+      isSignalHistory: false
     };
   }
   componentWillUnmount() {
@@ -82,7 +84,7 @@ export default class AccountCharts extends Component {
     }
   }
   render() {
-    const { isPerformance, isOpenPositions, isTradingCosts, isPreviousPnL, isLockdownTimetable, isRankingChart } = this.state;
+    const { isPerformance, isOpenPositions, isTradingCosts, isPreviousPnL, isLockdownTimetable, isRankingChart, isSignalHistory } = this.state;
     const {
       performance,
       rankingLoading,
@@ -115,7 +117,7 @@ export default class AccountCharts extends Component {
                         classes.Tab
                       }
         
-                      onClick={() => this.setState({isPerformance:true, isOpenPositions:false, isTradingCosts:false, isPreviousPnL:false,  isRankingChart:false}) }
+                      onClick={() => this.setState({isPerformance:true, isOpenPositions:false, isTradingCosts:false, isPreviousPnL:false,  isRankingChart:false, isSignalHistory:false }) }
                     >
                       Performance
                     </div>
@@ -125,10 +127,21 @@ export default class AccountCharts extends Component {
                       className={
                         classes.Tab
                       }
-                      onClick={() => this.setState({isPerformance:false, isOpenPositions:false, isTradingCosts:false, isPreviousPnL:false, isRankingChart:true})
+                      onClick={() => this.setState({isPerformance:false, isOpenPositions:false, isTradingCosts:false, isPreviousPnL:false, isRankingChart:true, isSignalHistory:false })
                     }
                     >
                       Ranking Chart
+                    </div>
+                    <div
+                      style={ isSignalHistory ? {borderColor:self.props.themes.live.dialog.lines, borderTop:"1px solid " + self.props.themes.live.dialog.lines,  borderLeft:"1px solid " + self.props.themes.live.dialog.lines, background:self.props.themes.live.dialog.tab_color_active, minWidth:'180px'} 
+                      : {borderTop:"1px solid " + self.props.themes.live.dialog.lines,  borderLeft:"1px solid " + self.props.themes.live.dialog.lines, borderColor:self.props.themes.live.dialog.lines, background:self.props.themes.live.dialog.tab_color_inactive, minWidth:'180px'} }
+                      className={
+                        classes.Tab
+                      }
+                      onClick={() => this.setState({ isPerformance:false, isOpenPositions:false, isTradingCosts:false, isPreviousPnL:false, isRankingChart:false, isSignalHistory:true })
+                    }
+                    >
+                      Signal History
                     </div>
                     <div style={{width:"1px", margin:"0px", paddingLeft:"1px", paddingRight:"0px", paddingTop:"20px", paddingBottom:"20px",color: self.props.themes.live.dialog.lines, background:self.props.themes.live.dialog.lines}}>            
                     </div>
@@ -242,7 +255,15 @@ export default class AccountCharts extends Component {
               
               {isRankingChart ? (
                 <div className={classes.Content}>
-                  <RankingChart  moveChipToSlot={this.props.moveChipToSlot} chip={this.props.chip} slot={this.props.slot} toggle={this.props.toggle}/>
+                  <RankingChart  moveChipToSlot={this.props.moveChipToSlot} chip={this.props.chip} slot={this.props.slot} toggle={this.props.toggle} />
+                </div>
+              ) : (
+              null
+              )}
+
+              {isSignalHistory ? (
+                <div className={classes.Content}>
+                  <SignalHistory moveChipToSlot={this.props.moveChipToSlot} chip={this.props.chip} slot={this.props.slot} toggle={this.props.toggle} />
                 </div>
               ) : (
               null
