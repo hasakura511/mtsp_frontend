@@ -175,7 +175,7 @@ export default class BettingChips extends Component {
                      "marginLeft": "-50%",
                       */   
 
-                     zIndex: 100,          
+                     zIndex: 1,          
                      background: this.state.isDragging ? "transparent" : bgColor,
                      border: this.state.isDragging ? "0px" : "1px solid black",
                       color:textColor,
@@ -192,7 +192,7 @@ export default class BettingChips extends Component {
           className={classes.MSquare}
           //ref={this.myRef.target}
           style={{
-            "zIndex":1000,                   
+            "zIndex":2,                   
             background: bgColor,
             color:textColor,
           }}

@@ -233,7 +233,7 @@ export default class Order extends React.Component {
             >
               <Slot
                 {...slot}
-                dictionary_strategy={ dictionary_strategy}
+                dictionary_strategy={ dictionary_strategy }
                 heldChips={[]}
                 width={!isNumbered ? "160px" : "60px"}
                 fontSize={!isNumbered ? "1.5em" : "2.2em"}
@@ -255,7 +255,9 @@ export default class Order extends React.Component {
               className={classes.ElementContainer}
               style={{ paddingTop: "15px" }}
             >
+              
               <Chip chip={chip} />
+
             </div>
           </div>
           <div className={classes.Right}>
