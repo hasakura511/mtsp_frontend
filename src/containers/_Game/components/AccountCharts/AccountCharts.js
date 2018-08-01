@@ -74,6 +74,7 @@ export default class AccountCharts extends Component {
       isBetHistory:false
     };
   }
+  
   componentWillUnmount() {
     this.props.showPerformance('');
   }

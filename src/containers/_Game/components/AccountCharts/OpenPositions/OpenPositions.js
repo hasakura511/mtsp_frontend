@@ -317,61 +317,7 @@ export default class OpenPositions extends Component {
 
               ]
             },
-            {
-              Header:  props => (
-              <span style={{background:self.props.themes.live.dialog.table_left_background}}>
-              <center style={{background:self.props.themes.live.dialog.table_left_background}}>
-              <h4 style={{background:self.props.themes.live.dialog.table_left_background}}>Last Update</h4></center></span>
-              ), // Custom cell components!,
-              headerStyle: {
-                background:self.props.themes.live.dialog.table_left_background
-              },
-
-              columns: [
-                {
-                  Header: props => (
-                    <span style={{background:self.props.themes.live.dialog.table_left_background}}>
-                    Updated When
-                  </span>),
-                  headerStyle: {
-                    background:self.props.themes.live.dialog.table_left_background
-                  },
-                  accessor: "Updated When",
-                  Cell: props => <span className='number'><center>{props.value}</center></span>, // Custom cell components!,
-
-                },
-                {
-                  Header: props => (
-                    <span style={{background:self.props.themes.live.dialog.table_left_background}}>
-                    % Change
-                  </span>),
-                  headerStyle: {
-                    background:self.props.themes.live.dialog.table_left_background
-                  },
-                  
-                  accessor: "% Change",
-                  Cell: props => (
-                    <span className='number'><center>
-                    {parseFloat(props.value) ? (
-                      <span style={parseFloat(props.value) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
-                    <b>
-                    {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} %
-                    </b>
-                    </span>
-                    ) : (
-                      <span style={{color:self.props.themes.live.dialog.text}}>
-                    <b>
-                    {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} %
-                    </b>
-                    </span>
-                    )}
-                    </center></span>
-                  ), // Custom cell components!,
-                },
-               
-                
-              ]
-            },
+            
             {
               
               Header:  props => (
@@ -444,15 +390,69 @@ export default class OpenPositions extends Component {
                      <b>Total: </b>
                       </span>
                   )
+                }
+              ],
+              
+            },
+            {
+              Header:  props => (
+              <span style={{background:self.props.themes.live.dialog.table_left_background}}>
+              <center style={{background:self.props.themes.live.dialog.table_left_background}}>
+              <h4 style={{background:self.props.themes.live.dialog.table_left_background}}>Last Update</h4></center></span>
+              ), // Custom cell components!,
+              headerStyle: {
+                background:self.props.themes.live.dialog.table_left_background
+              },
+
+              columns: [
+                {
+                  Header: props => (
+                    <span style={{background:self.props.themes.live.dialog.table_left_background}}>
+                    Updated When
+                  </span>),
+                  headerStyle: {
+                    background:self.props.themes.live.dialog.table_left_background
+                  },
+                  accessor: "Updated When",
+                  Cell: props => <span className='number'><center>{props.value}</center></span>, // Custom cell components!,
+
                 },
                 {
                   Header: props => (
-                    <span style={{background:self.props.themes.live.dialog.table_right_background}}>
+                    <span style={{background:self.props.themes.live.dialog.table_left_background}}>
+                    % Change
+                  </span>),
+                  headerStyle: {
+                    background:self.props.themes.live.dialog.table_left_background
+                  },
+                  
+                  accessor: "% Change",
+                  Cell: props => (
+                    <span className='number'><center>
+                    {parseFloat(props.value) ? (
+                      <span style={parseFloat(props.value) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
+                    <b>
+                    {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} %
+                    </b>
+                    </span>
+                    ) : (
+                      <span style={{color:self.props.themes.live.dialog.text}}>
+                    <b>
+                    {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} %
+                    </b>
+                    </span>
+                    )}
+                    </center></span>
+                  ), // Custom cell components!,
+                },
+                {
+                  Header: props => (
+                    <span style={{background:self.props.themes.live.dialog.table_left_background}}>
                      Current PnL
                   </span>),
                   accessor: "PnL",
                   headerStyle: {
-                    background:self.props.themes.live.dialog.table_right_background
+                    background:self.props.themes.live.dialog.table_left_background
                   },
                   Cell: props => (
                     <span className='number'><center>
@@ -464,7 +464,7 @@ export default class OpenPositions extends Component {
                     </b>
                     </center></span>
                   ), // Custom cell components!,
-
+  
                   Footer: (
                     <span>
                      {performance.pnl_total !== null ? (
@@ -483,10 +483,10 @@ export default class OpenPositions extends Component {
                        ):null}
                       </span>
                   )
-                },
-              ],
-              
-            },
+                }
+                    
+              ]
+            }
             
           ]}
 

@@ -324,39 +324,6 @@ export default class PreviousPnL extends Component {
               ]
             },
             {
-              Header:  props => <span><center><h4>{performance.last_date}</h4></center></span>, // Custom cell components!,
-              headerStyle: {
-                background:self.props.themes.live.dialog.table_left_background
-              },
-
-              columns: [
-                {
-                  Header: "1 Day %Change",
-                  accessor: "last_pctchg",
-                  headerStyle: {
-                    background:self.props.themes.live.dialog.table_left_background
-                  },
-                  Cell: props => (
-                    <span className='number'><center>
-                    {parseFloat(props.value) ? (
-                      <span style={parseFloat(props.value) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
-                    <b>
-                    {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} %
-                    </b>
-                    </span>
-                    ) : (
-                      <span style={{color:self.props.themes.live.dialog.text}}>
-                    <b>
-                    {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} %
-                    </b>
-                    </span>
-                    )}
-                    </center></span>
-                  ), // Custom cell components!,
-                },
-              ]
-            },
-            {
               Header:  props => <span><center><h4>{performance.prev_date}</h4></center></span>, // Custom cell components!,
               headerStyle: {
                 background:self.props.themes.live.dialog.table_right_background
@@ -413,12 +380,48 @@ export default class PreviousPnL extends Component {
                   Footer: (
                     <span style={{'float':'right'}}><b>Total:</b></span>
                   )
+                }
+                
+                
+              ],
+              
+            },
+            {
+              Header:  props => <span><center><h4>{performance.last_date}</h4></center></span>, // Custom cell components!,
+              headerStyle: {
+                background:self.props.themes.live.dialog.table_left_background
+              },
+
+              columns: [
+                {
+                  Header: "1 Day %Change",
+                  accessor: "last_pctchg",
+                  headerStyle: {
+                    background:self.props.themes.live.dialog.table_left_background
+                  },
+                  Cell: props => (
+                    <span className='number'><center>
+                    {parseFloat(props.value) ? (
+                      <span style={parseFloat(props.value) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
+                    <b>
+                    {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} %
+                    </b>
+                    </span>
+                    ) : (
+                      <span style={{color:self.props.themes.live.dialog.text}}>
+                    <b>
+                    {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} %
+                    </b>
+                    </span>
+                    )}
+                    </center></span>
+                  ), // Custom cell components!,
                 },
                 {
                   Header: "Previous PnL",
                   accessor: "pnl",
                   headerStyle: {
-                    background:self.props.themes.live.dialog.table_right_background
+                    background:self.props.themes.live.dialog.table_left_background
                   },
                       Cell: props => (
                     <span className='number'><center>
@@ -451,10 +454,9 @@ export default class PreviousPnL extends Component {
                       </span>
                   )
                 },
-                
-              ],
-              
+              ]
             },
+            
             
           ]}
           defaultPageSize={Object.keys(performance.prev_pnl).length < 13 ? 13 :Object.keys(performance.prev_pnl).length}
