@@ -875,10 +875,10 @@ export default class PracticeBoard extends Component {
                     <center>
                         <br />
                     Select Custom Start Date <br/>
-                        <DatePicker
+                    <DatePicker
                     withPortal
                     highlightDates={Object.keys(simDates).map(key => {
-                    return new moment(simDates[key]);
+                        return new moment(simDates[key]);
                     })}
                     onChange={(e) => {
                         var date=e.format('YYYYMMDD')
@@ -886,7 +886,7 @@ export default class PracticeBoard extends Component {
                         self.setState({date_picked:date})
                         self.initializeLive(false, undefined, date)
                         //self.signalHistory(self.props.chip.chip_id, self.props.slot.position, parents, date, true);
-                    }}  
+                    }}
                     value={self.state.date_picked}
                     />
                             </center>                
@@ -904,9 +904,11 @@ export default class PracticeBoard extends Component {
             <br/>
             <br/>
             <h3>Select 5-Day Simulation</h3>
-            <table style={{ border:0 }}><tbody>
+            <table style={{ border:0 }}>
+            
+            <tbody>
                 {simHtml}
-                </tbody>
+            </tbody>
 
             </table>
           </center>
