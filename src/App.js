@@ -19,6 +19,7 @@ import Auth, {
   Logout,
   UpdatePassword
 } from "./containers/Auth/Auth";
+import PracticeBoard from "./containers/_Game/containers/PracticeBoard/PracticeBoard";
 import LiveBoard from "./containers/_Game/containers/LiveBoard/LiveBoard";
 import Board from "./containers/_Game/containers/Board/Board";
 import Profile from "./containers/Home/Profile/Profile";
@@ -148,7 +149,8 @@ class App extends Component<PropType, { showSideDrawer: boolean }> {
           <Route exact path="/auth/forgot" component={ForgotPassword} />
           {/* <Route exact path="/" component={this.props.isAuth ? Board : Home} /> */}
           <Route exact path="/board" component={LiveBoard} />
-          <Route exact path="/practice_board" component={Board} />
+          <Route exact path="/demo_board" component={Board} />
+          <Route exact path="/practice_board" component={PracticeBoard} />
           <Route exact path="/" component={Home} />
           <Redirect from="*" to="/" />
         </Switch>
