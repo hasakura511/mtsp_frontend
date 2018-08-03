@@ -297,6 +297,7 @@ export default class PracticeBoard extends Component {
     .then(({ data }) => {
       console.log('received initialize_practice data')
       console.log(data);
+      data.isPractice=true;
       self.props.initializeData(data);
 
       if (!this.state.loading)
@@ -847,10 +848,13 @@ export default class PracticeBoard extends Component {
                             self.initializeLive(false, undefined, item.start_date)
                         }}
                     >
-                    <center>{item.description}
+                    <center>
+                    <br />
+                    <br />
+                    {item.description}
                     
                     <br/>
-                    <img src={"/images/" + item.png }  />
+                    <img src={"/images/" + item.png }  width={300} />
                     </center>
 
                     </td>
@@ -864,10 +868,14 @@ export default class PracticeBoard extends Component {
                             
                         }}
                     >
-                    <center>{item2.description}
+                    <center>
+                    <br />
+                    <br />
+
+                    {item2.description}
                     
                     <br/>
-                    <img src={"/images/" + item2.png }  />
+                    <img src={"/images/" + item2.png } width={300} />
                     </center>
 
                     </td>
@@ -938,7 +946,7 @@ export default class PracticeBoard extends Component {
                   
                   background:switchBg, 
                   color:switchTxt, 
-                  marginTop:"3px",
+                  marginTop:"-30px",
                   height:"60px", 
                   lineHeight:"10px", 
                   verticalAlign:"middle",
@@ -951,7 +959,7 @@ export default class PracticeBoard extends Component {
                 >
               <span style={{marginTop:"0px",  color:switchTxt, zIndex:3,}}>
               <h2 style={{marginLeft:"70px", paddingTop:"12px"}} > 
-              Live
+              Practice
               </h2>
 
               </span>
@@ -959,7 +967,7 @@ export default class PracticeBoard extends Component {
                 </a>
                 <a href='#practice_board' style={{textDecoration: "none"}}
                                 onClick={this.toggleMode}
-                                title="Switch to Practice Mode"
+                                title="Switch to Live Mode"
 
 > 
                 <span className={classes.dot}></span>
@@ -968,8 +976,7 @@ export default class PracticeBoard extends Component {
                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
               </span>
               <span  style={{"float": "left", "width": "40%",  "minWidth":"600px", "height":"75px","whiteSpace": "nowrap","textAlign": "left", "verticalAlign":"top"}}>
-                
-                <Clock  loading={this.state.refreshing} sendNotice={this.sendNotice} initializeLive={this.initializeLive} />
+                  Practice Mode
               </span>
               <span style={{"float": "left", "width": "30%", "height":"90px", "textAlign": "right", "verticalAlign":"middle"}}>
                   <span style={{"float": "left", "width": "80%", "height":"90px", "textAlign": "left", "verticalAlign":"middle"}}> 

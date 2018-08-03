@@ -4,7 +4,7 @@ import { clone, toSlashDate, uniq, toIntegerDate, clean, getOffsetDate, getOffse
 var moment = require('moment-timezone');
 
 const checkChip = (chip, liveDate) => {
-  if (!chip.isReadOnly) {
+  if (!chip.isReadOnly && chip.locktime && chip.unlocktime) {
     var locktime=new moment.tz(chip.locktime.replace(' EST',''),"US/Eastern");
     var unlocktime=new moment.tz(chip.unlocktime.replace(' EST',''),"US/Eastern");
     chip['lockdown']=locktime;
@@ -459,22 +459,30 @@ const reducer = (state = initialState, action) => {
         var initializeData =  action.data;
         var accounts= JSON.parse(action.data.accounts)
         var heatmap = JSON.parse(action.data.heatmap)
-        var timetable_dialog= JSON.parse(action.data.timetable_dialog)
         const dictionary_strategy = JSON.parse(action.data.dictionary_strategy)
         const themes = action.data.themes
         var dashboard_totals=action.data.dashboard_totals;
-        dashboard_totals.lockdown_text=action.data.lockdown_text;
-        var lockdown_time=new moment.tz(dashboard_totals.lockdown_text.next_lockdown,"US/Eastern");
-        dashboard_totals.lockdown_text.next_lockdown_time=lockdown_time;
-        dashboard_totals.lockdown_text.next_lockdown_text=lockdown_time.format("MM/DD HH:mm:ss A");
 
-        var unlock_time=new moment.tz(dashboard_totals.lockdown_text.next_unlock,"US/Eastern");
-        dashboard_totals.lockdown_text.next_unlock_time=unlock_time;
-        dashboard_totals.lockdown_text.next_unlock_text=unlock_time.format("MM/DD HH:mm:ss A");
+        var timetable_dialog="";
+        var lockdown_time="";
+        var unlock_time="";
+        var refresh_time="";
+        if (!action.data.isPractice) {
+          timetable_dialog= JSON.parse(action.data.timetable_dialog)
+          dashboard_totals.lockdown_text=action.data.lockdown_text;
+          lockdown_time=new moment.tz(dashboard_totals.lockdown_text.next_lockdown,"US/Eastern");
+          dashboard_totals.lockdown_text.next_lockdown_time=lockdown_time;
+          dashboard_totals.lockdown_text.next_lockdown_text=lockdown_time.format("MM/DD HH:mm:ss A");
+  
+          unlock_time=new moment.tz(dashboard_totals.lockdown_text.next_unlock,"US/Eastern");
+          dashboard_totals.lockdown_text.next_unlock_time=unlock_time;
+          dashboard_totals.lockdown_text.next_unlock_text=unlock_time.format("MM/DD HH:mm:ss A");
+  
+          refresh_time=new moment.tz(dashboard_totals.lockdown_text.next_refresh,"US/Eastern");
+          dashboard_totals.lockdown_text.next_refresh_time=refresh_time;
+          dashboard_totals.lockdown_text.next_refresh_text=refresh_time.format("MM/DD HH:mm:ss A");
+        }
 
-        var refresh_time=new moment.tz(dashboard_totals.lockdown_text.next_refresh,"US/Eastern");
-        dashboard_totals.lockdown_text.next_refresh_time=refresh_time;
-        dashboard_totals.lockdown_text.next_refresh_text=refresh_time.format("MM/DD HH:mm:ss A");
 
         const loading=false;
         var hasSystem=false;
@@ -495,6 +503,10 @@ const reducer = (state = initialState, action) => {
           accounts[key].board_config_fe=board_config;
           accounts[key].accountId=accounts[key].account_id;
           accounts[key].accountValue=accounts[key].accountValue;
+          if (action.data.isPractice)
+            accounts[key].accountValue=accounts[key].account_value;
+
+
 
           var chip=accounts[key];
           chip['chip_id']=key;
@@ -515,6 +527,8 @@ const reducer = (state = initialState, action) => {
               
               if (board_config[key].position == 'left') {
                 name=board_config[key].id;
+                //console.log(dictionary_strategy)
+                //console.log(name)
                 strat=dictionary_strategy[name];
                 strat.heldChips=[];       
                 strat.column=name;
@@ -657,6 +671,9 @@ const reducer = (state = initialState, action) => {
           refresh_markets=true;
         }
 
+        if (action.data.isPractice)
+          themes.live=themes.practice;
+        
         var init_data=initializeData;
         return {
             ...state,

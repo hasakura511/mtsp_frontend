@@ -796,7 +796,7 @@ export default class LiveBoard extends Component {
                   
                   background:switchBg, 
                   color:switchTxt, 
-                  marginTop:"3px",
+                  marginTop:"-20px",
                   height:"60px", 
                   lineHeight:"10px", 
                   verticalAlign:"middle",
