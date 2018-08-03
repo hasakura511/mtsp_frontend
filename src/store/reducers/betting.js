@@ -503,8 +503,11 @@ const reducer = (state = initialState, action) => {
           accounts[key].board_config_fe=board_config;
           accounts[key].accountId=accounts[key].account_id;
           accounts[key].accountValue=accounts[key].accountValue;
-          if (action.data.isPractice)
+          if (action.data.isPractice) {
             accounts[key].accountValue=accounts[key].account_value;
+            accounts[key].accountId=key;
+            accounts[key].account_id=key;
+          }
 
 
 

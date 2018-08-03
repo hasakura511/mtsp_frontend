@@ -839,7 +839,7 @@ export default class PracticeBoard extends Component {
             idx+=1;
             simHtml.push(
                 
-                <tr>
+                <tr key={"item" + idx}>
                     {item ? 
                     <td  style={{ border:0, cursor:'pointer' }}
                         onClick={() => {
@@ -862,9 +862,11 @@ export default class PracticeBoard extends Component {
                     {item2 ? 
                     <td  style={{ border:0, cursor:'pointer' }}
                         onClick={() => {
-
-                            self.setState({date_picked:item2.start_date})
-                            self.initializeLive(false, undefined, item2.start_date)
+                          
+                            if (item2) {
+                              self.setState({date_picked:item2.start_date})
+                              self.initializeLive(false, undefined, item2.start_date)
+                            }
                             
                         }}
                     >
@@ -958,7 +960,7 @@ export default class PracticeBoard extends Component {
 
                 >
               <span style={{marginTop:"0px",  color:switchTxt, zIndex:3,}}>
-              <h2 style={{marginLeft:"70px", paddingTop:"12px"}} > 
+              <h2 style={{marginLeft:"10px", paddingTop:"12px"}} > 
               Practice
               </h2>
 
@@ -973,10 +975,24 @@ export default class PracticeBoard extends Component {
                 <span className={classes.dot}></span>
                 </a>
 
-                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <span>&nbsp;&nbsp;</span>
               </span>
-              <span  style={{"float": "left", "width": "40%",  "minWidth":"600px", "height":"75px","whiteSpace": "nowrap","textAlign": "left", "verticalAlign":"top"}}>
-                  Practice Mode
+              <span  style={{"float": "left", "width": "40%",   "minWidth":"500px", "height":"75px","whiteSpace": "nowrap","textAlign": "left", "verticalAlign":"top"}}>
+                  <table><tbody><tr><td style={{border:0, textAlign:'center'}}>
+                    <img src="/images/practice_reset.png" width={30} /><br/>
+                    Reset Simulation
+                    </td>
+                    <td  style={{border:0, textAlign:'center'}}></td>
+                    <td  style={{border:0, textAlign:'center'}}>
+                    <img src="/images/practice_simulate.png" width={30} /><br/>
+                    Simulate Next Day
+
+                    </td>
+                    <td  style={{border:0, textAlign:'center'}}>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      
+                    </td>
+                    </tr></tbody></table>
               </span>
               <span style={{"float": "left", "width": "30%", "height":"90px", "textAlign": "right", "verticalAlign":"middle"}}>
                   <span style={{"float": "left", "width": "80%", "height":"90px", "textAlign": "left", "verticalAlign":"middle"}}> 
