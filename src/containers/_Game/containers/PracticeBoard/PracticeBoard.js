@@ -15,6 +15,7 @@ import PropTypes from "prop-types";
 import { Redirect } from "react-router-dom";
 import { toWordedDate, uniq, toStringDate } from "../../../../util";
 import Clock from "../Clock/Clock";
+import PracticeClock from "../Clock/PracticeClock";
 import Toggle from 'react-bootstrap-toggle'
 import axios from "../../../../axios-gsm";
 import ClockLoader from "../../../../components/UI/ClockLoader/ClockLoader";
@@ -297,6 +298,7 @@ export default class PracticeBoard extends Component {
     .then(({ data }) => {
       console.log('received initialize_practice data')
       console.log(data);
+      var accounts=data.accounts;
       data.isPractice=true;
       self.props.initializeData(data);
 
@@ -307,8 +309,8 @@ export default class PracticeBoard extends Component {
       this.setState({
         loading:false,
         rankingLoading: false,
-        //rankingData: data.rankingData,
-        refreshing:false
+        refreshing:false,
+        accounts:accounts
       });
 
       if (callback)
@@ -330,6 +332,64 @@ export default class PracticeBoard extends Component {
 
   }
 
+  nextSimulationDay=(reinitialize=false, callback=undefined, start_date="") => {
+    var self=this;
+    if (this.state.refreshing)
+      return;
+    else
+      this.setState({refreshing:true})
+    this.forceUpdate();
+    
+    //console.log(this.props);
+    var reinit='false';
+    if (reinitialize)
+      reinit='true';
+    var username='demo';
+    if (this.props.email)
+        username=this.props.email;
+    axios
+    .post("/utility/update_practice/", {
+    // accounts: [{ portfolio, target, accountValue }],
+    'username':  this.props.email,
+    'start_date': this.state.date_picked,
+    'account_params':this.state.accounts
+    },{timeout: 600000})
+    .then(({ data }) => {
+      console.log('received initialize_practice data')
+      console.log(data);
+      var accounts=data.accounts;
+      data.isPractice=true;
+      self.props.initializeData(data);
+
+      if (!this.state.loading)
+        this.sendNotice("Board Refreshed with New Data");
+
+
+      this.setState({
+        loading:false,
+        rankingLoading: false,
+        refreshing:false,
+        accounts:accounts
+      });
+
+      if (callback)
+        callback();
+     
+    })
+    .catch(error => {
+      this.sendNotice('Account Data not received: ' + JSON.stringify(error));
+      console.log('error initializing')
+      console.log(error)
+    // eslint-disable-next-line react/no-is-mounted
+      this.setState({
+        rankingLoading: false,
+        rankingError: error,
+        loading:false,
+        refreshing:false
+      });
+    });
+
+  }
   
   initializeDateSelector=() => {
     var self=this;
@@ -797,7 +857,7 @@ export default class PracticeBoard extends Component {
       toggleActive,
     } = this.state;
 
-    if (this.state.loading) {
+    if (this.state.loading || this.state.refreshing) {
         return ( 
 
           <Aux>
@@ -937,55 +997,37 @@ export default class PracticeBoard extends Component {
 
           <div className={classes.ActionRow} style={{background:actionBg, backgroundRepeat: "no-repeat",
                 backgroundSize: "62px 62px",color:heatmapTxt}}>
-              <span style={{color:switchTxt, "float": "left", "width": "30%", "height":"75px", "textAlign": "left", "verticalAlign":"middle", zIndex:1}}>
+              <span style={{color:switchTxt, "float": "left", "width": "70%", "height":"75px", "textAlign": "left", "verticalAlign":"middle", zIndex:1}}>
 
-               <a href='#practice_board' style={{textDecoration: "none"}}
-                               onClick={this.toggleMode}
-                               title="Switch to Practice Mode"
+               <table><tbody><tr>
+               <td style={{border:0, textAlign:'left'}}>
+                  <Link  style={{textDecoration: "none", color:'black',textAlign:'left',fontSize: "12px"}} to="/board">
+ 
+                   <b>Live Mode</b><br/>
+                  </Link>
+                   <b  style={{textDecoration: "none", color:'black',textAlign:'left',fontSize: "12px"}} >Practice Mode</b>
 
-               > 
-              <div style={{
-                  
-                  background:switchBg, 
-                  color:switchTxt, 
-                  marginTop:"-30px",
-                  height:"60px", 
-                  lineHeight:"10px", 
-                  verticalAlign:"middle",
-                  borderRadius: "200px",
-                  width:"200px",
-                  zIndex:2,
-                 
-                }}
 
-                >
-              <span style={{marginTop:"0px",  color:switchTxt, zIndex:3,}}>
-              <h2 style={{marginLeft:"10px", paddingTop:"12px"}} > 
-              Practice
-              </h2>
-
-              </span>
-                </div>
-                </a>
-                <a href='#practice_board' style={{textDecoration: "none"}}
-                                onClick={this.toggleMode}
-                                title="Switch to Live Mode"
-
-> 
-                <span className={classes.dot}></span>
-                </a>
-
-                <span>&nbsp;&nbsp;</span>
-              </span>
-              <span  style={{"float": "left", "width": "40%",   "minWidth":"500px", "height":"75px","whiteSpace": "nowrap","textAlign": "left", "verticalAlign":"top"}}>
-                  <table><tbody><tr><td style={{border:0, textAlign:'center'}}>
+                 </td>
+                 <td style={{border:0, textAlign:'center'}}>
+                   <span style={{cursor:'pointer', fontSize:"12px"}} onClick={() => {
+                                          self.initializeLive(undefined, undefined, this.state.date_picked);
+                                        }}>
                     <img src="/images/practice_reset.png" width={30} /><br/>
-                    Reset Simulation
+                    Reset
+                    </span>
                     </td>
-                    <td  style={{border:0, textAlign:'center'}}></td>
                     <td  style={{border:0, textAlign:'center'}}>
+                    <PracticeClock  loading={this.state.refreshing} sendNotice={this.sendNotice} initializeLive={this.initializeLive} />
+
+                    </td>
+                    <td  style={{border:0, textAlign:'center'}}>
+                    <span style={{cursor:'pointer', fontSize:"12px"}} onClick={() => {
+                                          self.nextSimulationDay();
+                                        }}>
                     <img src="/images/practice_simulate.png" width={30} /><br/>
-                    Simulate Next Day
+                    
+                    Next Day </span>
 
                     </td>
                     <td  style={{border:0, textAlign:'center'}}>
@@ -993,6 +1035,7 @@ export default class PracticeBoard extends Component {
                       
                     </td>
                     </tr></tbody></table>
+
               </span>
               <span style={{"float": "left", "width": "30%", "height":"90px", "textAlign": "right", "verticalAlign":"middle"}}>
                   <span style={{"float": "left", "width": "80%", "height":"90px", "textAlign": "left", "verticalAlign":"middle"}}> 

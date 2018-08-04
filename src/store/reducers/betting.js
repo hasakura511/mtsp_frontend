@@ -507,6 +507,7 @@ const reducer = (state = initialState, action) => {
             accounts[key].accountValue=accounts[key].account_value;
             accounts[key].accountId=key;
             accounts[key].account_id=key;
+            accounts[key]['status']='unlocked';
           }
 
 
