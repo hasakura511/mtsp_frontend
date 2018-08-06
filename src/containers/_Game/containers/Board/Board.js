@@ -471,7 +471,7 @@ export default class Board extends Component {
         <div className={classes.ActionRow}>
           <span style={{"float": "left", "width": "20%", "height":"75px", "textAlign": "left", "verticalAlign":"middle"}}>
           <table><tbody><tr>
-                          <td  style={{border:0, textAlign:'right', minWidth:"20px"}}>
+                          <td  style={{border:0, textAlign:'right', minWidth:"30px"}}>
                               <Link  style={{textDecoration: "none", color:'black',textAlign:'left',fontSize: "12px"}} to="/board">
                             <span>
                               <img src="/images/vertical_toggle.png" style={{maxWidth:"22px"}} width={22} />

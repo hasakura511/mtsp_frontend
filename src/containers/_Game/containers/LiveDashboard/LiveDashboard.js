@@ -262,22 +262,26 @@ export default class LiveDashboard extends Component {
         <tbody  style={tableStyle}>
           {accounts.map(function(account) { 
             //console.log(account);
-            if (account.locktime) { 
+              var locktime="";
+              var betDate="";
+              var lpBetDate="";
+              if (account.locktime) { 
+                locktime=account.locktime;
+                betDate=locktime.substring(5,10).replace('-','/');
+                locktime=locktime.substring(5).replace('-','/');
+                lpBetDate=account.date.substring(5).replace('-','/')
+              }
 
               const accountId=account.account_id;
               const accountValue=account.account_value;
-              var locktime=account.locktime;
               var lcBet = account.last_selection;
               if (lcBet.toLowerCase() == 'off') {
                 lcBet="Off";
               }
-              const betDate=locktime.substring(5,10).replace('-','/')
               const lpBet = account.prev_selection;
-              const lpBetDate=account.date.substring(5).replace('-','/')
-              
+
               const cummPercentChange =account.pnl_cumpct;
               const display=account.account_chip_text;
-              locktime=locktime.substring(5).replace('-','/');
               //eslint-disable-next-line
               // if (lpBet) console.log(account.accountValue - lpBet.change);
 
@@ -399,7 +403,7 @@ export default class LiveDashboard extends Component {
                   </td>
                 </tr>
               );
-            }
+            
           })}
           <tr style={tableStyle} className={classes.LastRow}>
             <th style={tableStyle}>

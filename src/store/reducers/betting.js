@@ -508,6 +508,10 @@ const reducer = (state = initialState, action) => {
             accounts[key].accountId=key;
             accounts[key].account_id=key;
             accounts[key]['status']='unlocked';
+            if (!accounts[key]['chip_location']) {
+              accounts[key]['chip_location']=accounts[key]['last_selection'];
+            }
+
           }
 
 
@@ -613,6 +617,7 @@ const reducer = (state = initialState, action) => {
                     chip=checkChip(chip, liveDate);
                     var position=account.chip_location;
                     var strat=account.last_selection;
+                   
           
                     if (position.match(/^Anti-\d+$/)) {
                         position=parseInt(position.replace('Anti-',''))

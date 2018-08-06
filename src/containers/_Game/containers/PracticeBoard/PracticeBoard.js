@@ -1002,7 +1002,7 @@ export default class PracticeBoard extends Component {
                <table><tbody><tr>
                <td style={{border:0, textAlign:'left'}}>
                           <table style={{textAlign:'left'}}><tbody><tr>
-                          <td style={{border:0, textAlign:'right', maxWidth:"20px"}}>
+                          <td style={{border:0, textAlign:'right', minWidth:"30px"}}>
                               <Link  style={{textDecoration: "none", color:'black',textAlign:'left',fontSize: "12px"}} to="/board">
                             <span>
                               <img src="/images/vertical_toggle.png" style={{maxWidth:"22px"}} width={22} />
