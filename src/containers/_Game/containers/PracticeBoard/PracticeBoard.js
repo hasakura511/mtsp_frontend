@@ -1001,51 +1001,43 @@ export default class PracticeBoard extends Component {
 
                <table><tbody><tr>
                <td style={{border:0, textAlign:'left'}}>
-                          <table style={{textAlign:'left'}}><tbody><tr>
-                          <td style={{border:0, textAlign:'right', minWidth:"30px"}}>
                               <Link  style={{textDecoration: "none", color:'black',textAlign:'left',fontSize: "12px"}} to="/board">
                             <span>
-                              <img src="/images/vertical_toggle.png" style={{maxWidth:"22px"}} width={22} />
+                               <div style={{
+                  
+                                  background:this.props.themes.live.action_row.switch_fill, 
+                                  color:this.props.themes.live.action_row.switch_text, 
+                                  marginTop:"-20px",
+                                  height:"60px", 
+                                  lineHeight:"10px", 
+                                  verticalAlign:"middle",
+                                  borderRadius: "200px",
+                                  width:"200px",
+                                  zIndex:2,
+                                
+                                }}
+
+                                >
+                              <span style={{marginTop:"0px",  color:switchTxt, zIndex:3,}}>
+                              <h4 style={{marginLeft:"70px", paddingTop:"21px"}} > 
+                              Practice
+                              </h4>
+
+                              </span>
+                                </div>
                             </span>
-                            <span style={{marginLeft:"-20px"}}>
-                            <img src="/images/switch_toggle.png" style={{marginTop:"24px", maxWidth:"20px"}} width={18} />
+                            <span style={{marginLeft:"0px"}}>
+                            <img src="/images/switch_toggle.png" style={{marginTop:"-84px", maxWidth:"60px"}} width={60} />
                             </span>                            
                               </Link>
-                          </td>
 
-                          <td style={{border:0, textAlign:'left', minWidth:"80px"}}>
-                              <span>
-                              <Link  style={{textDecoration: "none", color:'black',textAlign:'left',fontSize: "12px"}} to="/board">
-            
-                              <b>Live</b><br/>
-                              </Link>
-                              <b  style={{textDecoration: "none", color:'black',textAlign:'left',fontSize: "12px"}} >Practice</b>
-                              </span>
-
-
-                            </td></tr></tbody></table>
+                            
 
                </td>
-                 <td style={{border:0, textAlign:'center'}}>
-                   <span style={{cursor:'pointer', fontSize:"12px"}} onClick={() => {
-                                          self.initializeLive(undefined, undefined, this.state.date_picked);
-                                        }}>
-                    <img src="/images/practice_reset.png" width={30} /><br/>
-                    Reset
-                    </span>
-                    </td>
                     <td  style={{border:0, textAlign:'center'}}>
-                    <PracticeClock  loading={this.state.refreshing} sendNotice={this.sendNotice} initializeLive={this.initializeLive} />
-
-                    </td>
-                    <td  style={{border:0, textAlign:'center'}}>
-                    <span style={{cursor:'pointer', fontSize:"12px"}} onClick={() => {
-                                          self.nextSimulationDay();
-                                        }}>
-                    <img src="/images/practice_simulate.png" width={30} /><br/>
-                    
-                    Next Day </span>
-
+                    <div style={{ marginTop:"-22px"}}>
+                    <PracticeClock  loading={this.state.refreshing} sendNotice={this.sendNotice} date_picked={this.state.date_picked} initializeLive={this.initializeLive}  nextSimulationDay={this.nextSimulationDay} />
+                    </div>
                     </td>
                     <td  style={{border:0, textAlign:'center'}}>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

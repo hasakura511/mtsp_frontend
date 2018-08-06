@@ -79,10 +79,12 @@ export default class Clock extends PureComponent {
     dashboard_totals:PropTypes.object.isRequired,
     updateDate:PropTypes.func.isRequired,
     initializeLive:PropTypes.func,
+    nextSimulationDay:PropTypes.func,
     sendNotice:PropTypes.func,
     themes:PropTypes.object,
     loading:PropTypes.bool,
-    initializeData:PropTypes.object.isRequired
+    initializeData:PropTypes.object.isRequired,
+    date_picked:PropTypes.string
   };
 
   constructor(props) {
@@ -126,19 +128,30 @@ export default class Clock extends PureComponent {
     }
     var bgStyle={ "background" : "linear-gradient(" + clockTop + "," + clockMid + "," + clockBot + ")",
                   "color" : clockText,
-                  "cursor": 'pointer'};
+                  "cursor": 'pointer', width:"541px"};
     const { updateDate,initializeData } = this.props;
     return (
      
           <div className={classes.Widget} style={bgStyle}  onClick={()=>{ if (self.props.isLive)
                                                                               self.props.showLockdownDialog(true); }} >
           <div className={classes.Left}>
+             <table><tbody><tr><td style={{border:"0px", maxWidth:"30px"}}>
+                    <span style={{cursor:'pointer', fontSize:"12px"}} onClick={() => {
+                      self.props.initializeLive(undefined, undefined, this.props.date_picked);
+                    }}>
+                    <img src="/images/practice_reset.png" width={30} /><br/>
+                    Reset
+                    </span>
+
+            </td>
+            <td style={{border:"0px"}}>
             {this.props.isLive ? (
             <span className="isLive" >
-            <p  style={{ width: "180px", 
+            <p  style={{ width: "120px", 
                         "marginLeft":"15px",
                         "lineHeight":"1",
-                        "fontSize" : "12px" }}>
+                        "fontSize" : "12px",
+                        "textAlign":"right" }}>
               <br/>
             
 
@@ -166,27 +179,29 @@ export default class Clock extends PureComponent {
             </p>
             </span>
           )}
+          </td></tr></tbody></table>
         </div>
         <div className={classes.Saperation} />
         <div className={classes.Right}>
-          <span  style={{"marginLeft":"12px", "marginTop":"27px"}}>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
-            <h3>
-            <LiveClock format={'hh:mm:ss A '} ticking={true} timezone={'US/Eastern'} />
-            &nbsp;
-            </h3> EST
-            <br/>
-          </span>
-          <span  style={{"marginLeft":"28px", "marginTop":"8px"}}>
-            <p>
-            <LiveClock format={'dddd, DD MMM YYYY'} ticking={true} timezone={'US/Eastern'} /> 
-            <Moment format={'YYYY-MM-DD HH:mm:ss'} onChange={(val) => { console.log(val); updateDate(val); }} interval={5000} tz="US/Eastern" style={{"display":"none"}} className="datetime" aria-hidden={true}/>
-            </p>
-          </span>
+          <table><tbody><tr><td style={{border:"0px", minWidth:"222px"}}>
+            <div style={{"marginLeft":"3px", "marginTop":"-10px"}}>
+              <h3>
+              <LiveClock format={'hh:mm:ss A '} ticking={true} timezone={'US/Eastern'} />
+              &nbsp;
+              EST </h3> 
+              <p style={{ "marginTop":"-10px"}}>
+              <LiveClock format={'dddd, DD MMM YYYY'} ticking={true} timezone={'US/Eastern'} /> 
+              <Moment format={'YYYY-MM-DD HH:mm:ss'} onChange={(val) => { console.log(val); updateDate(val); }} interval={5000} tz="US/Eastern" style={{"display":"none"}} className="datetime" aria-hidden={true}/>
+              </p>
+            </div>
+          </td><td style={{border:"0px", marginLeft:"-30px", minWidth:"90px", textAlign:"center"}}>
+                <span style={{cursor:'pointer', fontSize:"12px"}} onClick={() => {
+                                      self.props.nextSimulationDay();
+                                    }}>
+                <img src="/images/practice_simulate.png" width={30} /><br/>
+                
+                Next Day </span>
+            </td></tr></tbody></table>
         </div>
       </div>
       );
