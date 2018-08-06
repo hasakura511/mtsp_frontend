@@ -183,7 +183,7 @@ export default class Clock extends PureComponent {
         </div>
         <div className={classes.Saperation} />
         <div className={classes.Right}>
-          <table><tbody><tr><td style={{border:"0px", minWidth:"222px"}}>
+          <table><tbody><tr><td style={{border:"0px", minWidth:"231px"}}>
             <div style={{"marginLeft":"3px", "marginTop":"-10px"}}>
               <h3>
               <LiveClock format={'hh:mm:ss A '} ticking={true} timezone={'US/Eastern'} />
