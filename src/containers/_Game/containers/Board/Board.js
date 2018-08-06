@@ -18,6 +18,7 @@ import { toWordedDate, uniq, toStringDate } from "../../../../util";
 import Clock from "../Clock/Clock";
 import Toggle from 'react-bootstrap-toggle'
 import axios from "../../../../axios-gsm";
+import { Link } from "react-router-dom";
 
 const systems = [];
 for (let key in Config) {
@@ -469,15 +470,30 @@ export default class Board extends Component {
            />
         <div className={classes.ActionRow}>
           <span style={{"float": "left", "width": "20%", "height":"75px", "textAlign": "left", "verticalAlign":"middle"}}>
-            <Toggle
-            onClick={this.toggleMode}
-            on={<h2>Live</h2>}
-            off={<h2>Practice</h2>}
-            size="xs"
-            style={{borderRadius: "200px", width:"200px"}}
-            active={this.state.toggleActive}
+          <table><tbody><tr>
+                          <td  style={{border:0, textAlign:'right', minWidth:"20px"}}>
+                              <Link  style={{textDecoration: "none", color:'black',textAlign:'left',fontSize: "12px"}} to="/board">
+                            <span>
+                              <img src="/images/vertical_toggle.png" style={{maxWidth:"22px"}} width={22} />
+                            </span>
+                            <span style={{marginLeft:"-20px"}}>
+                            <img src="/images/switch_toggle.png" style={{marginTop:"24px", maxWidth:"20px"}} width={18} />
+                            </span>                            
+                              </Link>
+                          </td>
+
+                          <td style={{border:0, textAlign:'left', minWidth:"80px"}}>
+                              <span>
+                              <Link  style={{textDecoration: "none", color:'black',textAlign:'left',fontSize: "12px"}} to="/board">
             
-            />
+                              <b>Live</b><br/>
+                              </Link>
+                              <b  style={{textDecoration: "none", color:'black',textAlign:'left',fontSize: "12px"}} >Demo</b>
+                              </span>
+
+
+                            </td></tr></tbody></table>
+
             <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
           </span>
           <span  style={{"float": "left", "width": "80%",  "minWidth":"600px", "height":"75px","whiteSpace": "nowrap","textAlign": "left", "verticalAlign":"top"}}>

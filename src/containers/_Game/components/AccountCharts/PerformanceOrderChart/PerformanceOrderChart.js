@@ -363,8 +363,12 @@ export default class PerformanceOrderChart extends Component {
 
   componentDidMount() {
       var self=this;
+    var url="/utility/performance_chart_live/";
+    if (this.props.isPractice) {
+      url="/utility/performance_chart_practice/";
+    }
     axios
-    .post("/utility/performance_chart_live/", {
+    .post(url, {
       chip_id:self.props.chip.chip_id,
       strategy: self.props.slot.position.toString(),
       username: self.props.email,
@@ -586,6 +590,7 @@ export default class PerformanceOrderChart extends Component {
     liveDateText:PropTypes.string.isRequired,
     slot:PropTypes.object,
     dictionary_strategy:PropTypes.object.isRequired,
-    isAnti:PropTypes.bool
+    isAnti:PropTypes.bool,
+    isPractice:PropTypes.bool
   };
 }

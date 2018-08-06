@@ -61,6 +61,7 @@ export default class Order extends React.Component {
       slot: PropTypes.object,
       chip: PropTypes.object.isRequired,
       isLive: PropTypes.bool.isRequired,
+      isPractice: PropTypes.bool,
       performance: PropTypes.object,
       setAnti: PropTypes.func,
       setNotAnti: PropTypes.func,

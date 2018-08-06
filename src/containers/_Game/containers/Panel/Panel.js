@@ -113,6 +113,7 @@ export default class Panel extends Component {
     silenceDialog: PropTypes.func.isRequired,
     addTimedToaster: PropTypes.func.isRequired,
     isLive:PropTypes.bool.isRequired,
+    isPractice:PropTypes.bool,
     heatmap:PropTypes.object.isRequired,
     showHeatmap:PropTypes.func.isRequired,
     heatmap_selection:PropTypes.string,
@@ -1439,6 +1440,7 @@ export default class Panel extends Component {
             rankingData={rankingData}
             rankingError={rankingError}
             isPerformance={this.state.isPerformance}
+            isPractice={this.props.isPractice}
             performance_account_id={this.state.performance_account_id}
             moveChipToSlot={this.moveChipToSlot}
             orderAnti={this.state.orderAnti}

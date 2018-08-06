@@ -1001,14 +1001,31 @@ export default class PracticeBoard extends Component {
 
                <table><tbody><tr>
                <td style={{border:0, textAlign:'left'}}>
-                  <Link  style={{textDecoration: "none", color:'black',textAlign:'left',fontSize: "12px"}} to="/board">
- 
-                   <b>Live Mode</b><br/>
-                  </Link>
-                   <b  style={{textDecoration: "none", color:'black',textAlign:'left',fontSize: "12px"}} >Practice Mode</b>
+                          <table style={{textAlign:'left'}}><tbody><tr>
+                          <td style={{border:0, textAlign:'right', maxWidth:"20px"}}>
+                              <Link  style={{textDecoration: "none", color:'black',textAlign:'left',fontSize: "12px"}} to="/board">
+                            <span>
+                              <img src="/images/vertical_toggle.png" style={{maxWidth:"22px"}} width={22} />
+                            </span>
+                            <span style={{marginLeft:"-20px"}}>
+                            <img src="/images/switch_toggle.png" style={{marginTop:"24px", maxWidth:"20px"}} width={18} />
+                            </span>                            
+                              </Link>
+                          </td>
+
+                          <td style={{border:0, textAlign:'left', minWidth:"80px"}}>
+                              <span>
+                              <Link  style={{textDecoration: "none", color:'black',textAlign:'left',fontSize: "12px"}} to="/board">
+            
+                              <b>Live</b><br/>
+                              </Link>
+                              <b  style={{textDecoration: "none", color:'black',textAlign:'left',fontSize: "12px"}} >Practice</b>
+                              </span>
 
 
-                 </td>
+                            </td></tr></tbody></table>
+
+               </td>
                  <td style={{border:0, textAlign:'center'}}>
                    <span style={{cursor:'pointer', fontSize:"12px"}} onClick={() => {
                                           self.initializeLive(undefined, undefined, this.state.date_picked);
@@ -1088,6 +1105,7 @@ export default class PracticeBoard extends Component {
             </div>
             <Panel
               isLive={true}
+              isPractice={true}
               accounts={this.props.accounts || {}}
               leftSystems={leftSystems || []}
               rightSystems={rightSystems || []}

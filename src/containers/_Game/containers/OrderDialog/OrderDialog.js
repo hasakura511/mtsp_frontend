@@ -68,6 +68,7 @@ export default class OrderDialog extends Component {
     addBet: PropTypes.func.isRequired,
     isAuth: PropTypes.bool.isRequired,
     isLive: PropTypes.bool.isRequired,
+    isPractice: PropTypes.bool,
     dictionary_strategy:PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
     addTimedToaster: PropTypes.func.isRequired,
@@ -441,6 +442,7 @@ export default class OrderDialog extends Component {
             chip={this.props.chip}
             dictionary_strategy={this.props.dictionary_strategy}
             isLive={this.props.isLive}
+            isPractice={this.props.isPractice}
             isPerformance={this.props.isPerformance}
             performance_account_id={this.state.performance_account_id}
             performance={performance}

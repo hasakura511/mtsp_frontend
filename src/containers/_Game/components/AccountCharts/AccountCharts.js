@@ -45,6 +45,7 @@ const loader = (
 @connect(stateToProps, dispatchToProps)
 export default class AccountCharts extends Component {
   static propTypes = {
+    isPractice:PropTypes.bool,
     performance: PropTypes.object,
   
     rankingLoading: PropTypes.bool.isRequired,
@@ -97,7 +98,6 @@ export default class AccountCharts extends Component {
       slot
     } = this.props;
     var self=this;
-    
 
     return (
       <div className={classes.AccountCharts} style={{background:self.props.themes.live.dialog.background,
@@ -263,7 +263,7 @@ export default class AccountCharts extends Component {
               color:self.props.themes.live.dialog.text, borderColor:self.props.themes.live.dialog.lines}}>
               {isPerformance ? (
                 <div className={classes.Content}>
-                  <PerformanceOrderChart  chip={this.props.chip} slot={this.props.slot} isAnti={this.props.isAnti} toggle={this.props.toggle} />
+                  <PerformanceOrderChart  isPractice={this.props.isPractice} chip={this.props.chip} slot={this.props.slot} isAnti={this.props.isAnti} toggle={this.props.toggle} />
               </div>
               ) : (
               null
@@ -271,7 +271,7 @@ export default class AccountCharts extends Component {
               
               {isRankingChart ? (
                 <div className={classes.Content}>
-                  <RankingChart  moveChipToSlot={this.props.moveChipToSlot} chip={this.props.chip} slot={this.props.slot} toggle={this.props.toggle} />
+                  <RankingChart  isPractice={this.props.isPractice} moveChipToSlot={this.props.moveChipToSlot} chip={this.props.chip} slot={this.props.slot} toggle={this.props.toggle} />
                 </div>
               ) : (
               null
