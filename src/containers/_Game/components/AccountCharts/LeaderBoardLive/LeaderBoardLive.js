@@ -256,7 +256,11 @@ export default class LeaderBoardLive extends Component {
           self.props.toggle();
           
         }
-        self.props.initializeLive(reinitialize, loaded);
+        var update_bets="";
+        if (res.update_bets)
+          update_bets=res.update_bets;
+
+        self.props.initializeLive(reinitialize, loaded, update_bets);
       }
       
       

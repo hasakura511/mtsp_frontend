@@ -224,7 +224,6 @@ export default class AccountsNew extends Component {
           'margin_call': self.state.marginCallType,
           'customize_portfolio': JSON.stringify(self.state.customizePortfolioType == 'customize'),
           'portfolio': JSON.stringify(self.state.portfolio)
-          
       })
       .then(response => {
         console.log(response);
@@ -234,7 +233,12 @@ export default class AccountsNew extends Component {
           text: data.message,
         });
         if (data.message == "OK") {
-          self.props.initializeLive(true);
+
+          var update_bets="";
+          if (res.update_bets)
+            update_bets=res.update_bets;
+          self.props.initializeLive(true, update_bets);
+
           self.props.silenceHtmlDialog();
         }
        this.setState({

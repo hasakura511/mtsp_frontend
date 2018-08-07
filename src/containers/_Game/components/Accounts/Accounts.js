@@ -126,7 +126,7 @@ export default class Accounts extends Component {
 
   
   
-  initializeLive=(reinitialize=false) => {
+  initializeLive=(reinitialize=false, update_bets="" ) => {
     console.log("NEW BOARD Initialize")
     var self=this;
     if (this.state.refreshing)
@@ -142,15 +142,35 @@ export default class Accounts extends Component {
     .post("/utility/initialize_live/", {
     // accounts: [{ portfolio, target, accountValue }],
     'username':  this.props.email,
-    'reinitialize': reinit
+    'reinitialize': reinit,
+    'update_bets':update_bets
     },{timeout: 600000})
     .then(({ data }) => {
+
+
       console.log('received initialize_live data')
       console.log(data);
       this.props.initializeData(data);
       self.initializeAccounts();
+      if (data.update_bets) {
+        Object.keys(data.update_bets).map(key => {
+          var item=data.update_bets[key];
+          var chip_id=key;
 
-     
+          axios
+          .post("/utility/update_bet_live/", {
+          // accounts: [{ portfolio, target, accountValue }],
+          'account_id':  item[1],
+          'strategy':    item[0],
+          'chip_id':     chip_id
+          },{timeout: 600000})
+          .then(({ data }) => {
+            console.log(data);
+          });
+
+        });
+      } 
+      
     })
     .catch(error => {
       this.sendNotice('Account Data not received: ' + JSON.stringify(error));

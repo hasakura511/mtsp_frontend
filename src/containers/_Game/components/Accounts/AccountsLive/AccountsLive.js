@@ -224,13 +224,10 @@ export default class AccountsLive extends Component {
           self.setState({refreshing:false})
       } else {
 
-        const loaded = () => {
-          self.setState({refreshing:false})
-          self.props.silenceDialog();
-          self.props.toggle();
-          
-        }
-        self.props.initializeLive(reinitialize, loaded);
+        var update_bets="";
+        if (res.update_bets)
+          update_bets=res.update_bets;
+        self.props.initializeLive(reinitialize, update_bets);
         
       }
       

@@ -511,7 +511,13 @@ const reducer = (state = initialState, action) => {
             if (!accounts[key]['chip_location']) {
               accounts[key]['chip_location']=accounts[key]['last_selection'];
             }
-
+            if (!accounts[key].tier) 
+              accounts[key]['tier']="";
+            if (!accounts[key].chip_tier) 
+              accounts[key]['chip_tier']="";
+            if (!accounts[key].total_margin) 
+              accounts[key]['total_margin']="";
+                            
           }
 
 
