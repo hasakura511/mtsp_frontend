@@ -290,7 +290,7 @@ export default class LockdownTimetable extends Component {
                   Header: "Quantity",
                   accessor: "qty",
                   id:"qty",
-                  Cell: props => <span style={{color:props.original.Color}} onClick={()=>{ console.log(props); }}><center>{props.value}</center></span>, // Custom cell components!,
+                  Cell: props => <span style={{color:'black'}} onClick={()=>{ console.log(props); }}><center>{props.value}</center></span>, // Custom cell components!,
                 },
                 {
                   Header: "Next Trigger",
