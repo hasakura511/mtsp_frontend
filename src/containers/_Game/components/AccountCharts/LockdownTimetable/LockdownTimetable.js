@@ -138,7 +138,9 @@ export default class LockdownTimetable extends Component {
           var group=performance.group;
           var text_color=performance.text_color;
           var trigger_text=performance.trigger_text;
+          var qty=performance.qty;
           var data=[];
+          self.hasQty=true;
         
           Object.keys(group).map(key => {
               var item={};
@@ -150,6 +152,7 @@ export default class LockdownTimetable extends Component {
               item.Next_Trigger=trigger_text[key] //{'value':trigger_text[key],'color':color};
               item.Next_Close=close_text[key] //{'value':close_text[key],'color':color};
               item.Color=color;
+              item.qty=qty[key];
               data.push(item);
 
           })
@@ -172,11 +175,13 @@ export default class LockdownTimetable extends Component {
     } else {
       
       var performance=self.props.timetable_dialog;
+      console.log(performance);
       var close_text=performance.close_text   ;
       var group=performance.group;
       var text_color=performance.text_color;
       var trigger_text=performance.trigger_text;
       var data=[];
+      self.hasQty=false;
      
       Object.keys(group).map(key => {
           var item={};
@@ -265,7 +270,8 @@ export default class LockdownTimetable extends Component {
           columns={[
             {
               Header: "",
-              columns: [
+              columns: self.hasQty ?
+              [
                 {
                   Header: "Markets",
                   accessor: "Markets",
@@ -281,12 +287,11 @@ export default class LockdownTimetable extends Component {
 
                 },
                 {
-                  Header: "Group",
-                  accessor: "Group",
-                  id:"Group",
+                  Header: "Quantity",
+                  accessor: "qty",
+                  id:"qty",
                   Cell: props => <span style={{color:props.original.Color}} onClick={()=>{ console.log(props); }}><center>{props.value}</center></span>, // Custom cell components!,
                 },
-
                 {
                   Header: "Next Trigger",
                   accessor: "Next_Trigger",
@@ -297,7 +302,34 @@ export default class LockdownTimetable extends Component {
                     accessor: "Next_Close",
                     Cell: props => <span style={{color:props.original.Color}} onClick={()=>{ console.log(props); }}><center>{props.value}</center></span>, // Custom cell components!,
                   },
-                ],
+                ] :
+                [
+                  {
+                    Header: "Markets",
+                    accessor: "Markets",
+                    Cell: props => <span><a href='#market' onClick={()=> {
+                      console.log(props);
+                      var sym= props.value;
+                      sym=sym.substr(0, sym.indexOf(' ')); 
+                      self.props.initializeHeatmap('','',sym);
+                      if (self.props.toggle)
+                        self.props.toggle();
+                      $(window).scrollTop($("#marketTop").offset().top-111);
+                    }} >{props.value}</a></span>, // Custom cell components!,
+  
+                  },
+                  {
+                    Header: "Next Trigger",
+                    accessor: "Next_Trigger",
+                    Cell: props => <span style={{color:props.original.Color}} onClick={()=>{ console.log(props); }}><center>{props.value}</center></span>, // Custom cell components!,
+                  },
+                  {
+                      Header: "Next Close",
+                      accessor: "Next_Close",
+                      Cell: props => <span style={{color:props.original.Color}} onClick={()=>{ console.log(props); }}><center>{props.value}</center></span>, // Custom cell components!,
+                    },
+                  ]
+                ,
             
             },
             
