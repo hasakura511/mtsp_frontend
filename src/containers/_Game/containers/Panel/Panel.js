@@ -1626,7 +1626,7 @@ export default class Panel extends Component {
         if (data.update_bets)
           update_bets=JSON.stringify(data.update_bets);
 
-        window.location='/board?update_bets=' + update_bets;
+        window.location='/board?reinitialize=1&update_bets=' + update_bets;
       }
     })
     .catch(error => {

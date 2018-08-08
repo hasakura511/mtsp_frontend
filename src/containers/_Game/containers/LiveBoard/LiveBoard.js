@@ -295,8 +295,13 @@ export default class LiveBoard extends Component {
     if (reinitialize)
       reinit='true';
     var update_param=getParameterByName('update_bets'); 
-    if (update_param && !update_bets)
+    var reinit_param=getParameterByName('reinitialize');
+    if (update_param && !update_bets) {
       update_bets=update_param;
+      if (reinit_param) {
+        reinit='true';
+      }
+    }
     axios
     .post("/utility/initialize_live/", {
     // accounts: [{ portfolio, target, accountValue }],

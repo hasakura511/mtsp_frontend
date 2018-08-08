@@ -193,7 +193,7 @@ export default class StrategyToolbox extends Component {
                   <div style={{width:"200px", marginTop: "10px", float:"left"}}>
                   <img src={"/images/current_board.png"} height={60}/>
                     </div>
-                     <div style={{ marginLeft: '-115px', marginTop: '40px', fontSize: "18px", color:"#ffffff", float:"left"}}>Load Live Board</div>
+                     <div style={{ marginLeft: '-115px', marginTop: '40px', fontSize: "18px", color:"#ffffff", float:"left", cursor:'pointer'}}>Load Live Board</div>
                 </div>
                 :
                 <div style={{float:'left'}}
@@ -214,7 +214,7 @@ export default class StrategyToolbox extends Component {
                   <div style={{width:"200px", marginTop: "10px", float:"left"}}>
                   <img src={"/images/current_board.png"} height={60}/>
                   </div>
-                   <div style={{ marginLeft: '-115px', marginTop: '40px', fontSize: "18px", color:"#ffffff", float:"left"}}>Load Live Board</div>
+                   <div style={{ marginLeft: '-115px', marginTop: '40px', fontSize: "18px", color:"#ffffff", float:"left", cursor:'pointer'}}>Load Live Board</div>
                   </div>
                 }
                 <div style={{"clear": "both"}}></div>
