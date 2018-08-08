@@ -297,7 +297,7 @@ export default class LiveBoard extends Component {
     var update_param=getParameterByName('update_bets'); 
     var reinit_param=getParameterByName('reinitialize');
     if (update_param && !update_bets) {
-      update_bets=update_param;
+      update_bets=JSON.parse(update_param);
       if (reinit_param) {
         reinit='true';
       }
