@@ -42,6 +42,16 @@ const insertChip = (systems, column, chip) => {
   });
 };
 
+const getParameterByName = (name, url) => {
+  if (!url) url = window.location.href;
+  name = name.replace(/[\[\]]/g, '\\$&');
+  var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+      results = regex.exec(url);
+  if (!results) return null;
+  if (!results[2]) return '';
+  return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+
 const stateToProps = state => {
   return {
     email: state.auth.email,
@@ -284,6 +294,9 @@ export default class LiveBoard extends Component {
     var reinit='false';
     if (reinitialize)
       reinit='true';
+    var update_param=getParameterByName('update_bets'); 
+    if (update_param && !update_bets)
+      update_bets=update_param;
     axios
     .post("/utility/initialize_live/", {
     // accounts: [{ portfolio, target, accountValue }],

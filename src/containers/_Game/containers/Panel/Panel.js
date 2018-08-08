@@ -1622,7 +1622,11 @@ export default class Panel extends Component {
           text: data.message
         });
       } else {
-        window.location='/board';
+        var update_bets="";
+        if (res.update_bets)
+          update_bets=res.update_bets;
+
+        window.location='/board?update_bets=' + update_bets;
       }
     })
     .catch(error => {

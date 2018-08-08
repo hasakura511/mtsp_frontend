@@ -235,8 +235,8 @@ export default class AccountsNew extends Component {
         if (data.message == "OK") {
 
           var update_bets="";
-          if (res.update_bets)
-            update_bets=res.update_bets;
+          if (data.update_bets)
+            update_bets=data.update_bets;
           self.props.initializeLive(true, update_bets);
 
           self.props.silenceHtmlDialog();
