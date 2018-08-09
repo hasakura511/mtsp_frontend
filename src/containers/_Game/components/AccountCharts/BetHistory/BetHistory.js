@@ -375,7 +375,9 @@ export default class BetHistory extends Component {
                 {
                   Header: "Bet Placed",
                   accessor: "key",
+                  width: 300,
                   Cell: props => <span>{props.value}</span>, // Custom cell components!,
+
 
                 },
                 {
@@ -386,7 +388,7 @@ export default class BetHistory extends Component {
                 {
                   Header: "Executed",
                   accessor: "executed",
-                  Cell: props => <span><center>{props.value}</center></span>, // Custom cell components!,
+                  Cell: props => <span style={{color: props.value == 'Yes' ? 'green':'black'}}><center>{props.value}</center></span>, // Custom cell components!,
                 },
                 {
                     Header: "Board",
@@ -417,7 +419,8 @@ export default class BetHistory extends Component {
                       
                       onClick={() => {  
                                   var board_config=props.original.board_config_fe
-                                  console.log(board_config)
+                                  var row=props.original;
+                                  console.log(row)
                                   var leftSystems=[];
                                   var rightSystems=[];
                                   var topSystems=[];
@@ -499,7 +502,7 @@ export default class BetHistory extends Component {
   
                                     self.leader_board_config=config;
                                     console.log(self.leader_board_config)
-                                    self.handleClick(props.original.chip_id + 'board');
+                                    self.handleClick(row.key + 'board');
                         }}>
                         <img src="/images/preview_board.png" width={30} height={30} />
                         </a>
@@ -507,7 +510,7 @@ export default class BetHistory extends Component {
                           placement='bottom'
                           container={self}
                           target={this}
-                          show={self.state.isPopoverOpen[props.original.chip_id + 'board'] ? true : false }
+                          show={self.state.isPopoverOpen[props.original.key + 'board'] ? true : false }
                           onHide={self.handleClose.bind(this)} 
                           hideWithOutsideClick={true}
                           containerStyle={{ 
@@ -565,6 +568,81 @@ export default class BetHistory extends Component {
                             
                           <center><h3 style={{ color:self.props.themes.live.dialog.text}} ></h3></center>
                           
+                          <table style={{border:"none", borderCollapse: "collapse",
+          background:self.props.themes.live.dialog.background_inner,
+          color:self.props.themes.live.dialog.text,
+          width:"100%",
+          fontSize:"20px" }}>
+            <thead  style={{border:"none"}}>
+              <tr style={{border:"none"}}>
+                  <th  style={{border:"none"}}>
+                  <center>
+                  Bet Placed
+                  </center>
+                  </th>
+                  <th  style={{border:"none"}}>
+                  <center>
+                  Bet
+                  </center>
+                  </th>
+                  <th  style={{border:"none"}}>
+                  <center>
+                  Executed
+                  </center>
+                  </th>
+                  <th  style={{border:"none"}}>
+                  <center>
+                  Margin %
+                  </center>
+                  </th>
+                  <th  style={{border:"none"}}>
+                  <center>
+                   Auto
+                  </center>
+                  </th>
+                  <th  style={{border:"none"}}>
+                  <center>
+                   Portfolio
+                  </center>
+                  </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style={{border:"1px", "padding":"1px"}}>
+                  <td style={{borderLeft:"1px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
+                  <div>
+                    {props.original.key}
+                  </div>
+                  </td>            
+                  <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
+                  <center>
+                  {props.original.bet}
+                  </center>
+                  </td>            
+                  <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none", color: props.original.executed == 'Yes' ? 'green':'black'}}>
+                  <center>
+                    {props.original.executed}
+                          </center>
+  
+                  </td>            
+                  <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
+                  <center>
+                  {props.original.margin_percent}
+                  </center>
+                  </td>            
+                  <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
+                  <center>
+                  {props.original.auto}
+                  </center>
+                  </td>            
+                  <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black", borderRight:"1px solid black"}}>
+                  <center>
+                  {props.original.num_markets}
+                  </center>
+                  </td>
+                  </tr>
+                  </tbody>
+                  </table>
   
                         {self.leader_board_config ? (
                           <div
@@ -625,7 +703,7 @@ export default class BetHistory extends Component {
                     <span className='number'><center>
                     
                     <b>
-                    {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} 
+                    {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} %
                     </b>
                     </center></span>
                   ), // Custom cell components!,
@@ -653,12 +731,78 @@ export default class BetHistory extends Component {
                     background:self.props.themes.live.dialog.table_left_background
                   },                  
                   Cell: props => (
-                    <span className='number'><center style={{color:self.props.themes.live.dialog.text}}>
-                    <b>
-                    {props.value}
-                    </b>
-                    </center>
-                    </span>
+                    <span className='number'><center>
+                        
+                    <a href='JavaScript:console.log("popover called")' style={{ cursor:'pointer'  }} 
+                    title={"Show Account Portfolio."}
+                    ref={ref => self[props.original.key] = ref}
+                    onClick={() => {  
+                                var portfolio=props.original.portfolio
+                                self.items=portfolio.map(item => {
+                                    return self.state.performance.market_dict[item]
+                                });
+                                console.log(self.items)
+                                self.handleClick(props.original.key);
+                      }}>{props.value}</a>
+                    <Popover
+                        placement='left'
+                        container={self}
+                        target={self[props.original.key]}
+                        show={self.state.isPopoverOpen[props.original.key] ? true : false }
+                        onHide={self.handleClose.bind(this)} 
+                        hideWithOutsideClick={true}
+                        containerStyle={{ 
+                            marginTop: self.props.gap + "px",
+                            padding:"0px"
+                        }}
+                        style={{
+
+                            width: "400px",
+                            padding:"0px"
+                        }}
+                        >
+                        <div>
+                            {self.items && self.items.length > 0 ? (
+                            <ReactTable
+                            
+                            data={self.items}
+                            className="-striped -highlight"
+                            minRows={10}
+                            columns={[
+                                {
+                                Header: "",
+                                columns: [
+                                    {
+                                    Header: "Markets",
+                                    accessor: "Display",
+                                    },
+                                    {
+                                    Header: "Group",
+                                    accessor: "Group",
+                                    Cell: props => (
+                                        <span className='number'><center>
+                                        {props.value}
+                                        </center></span>
+                                      ), // Custom cell components!,
+                                    }
+                                ]}]}
+                                defaultPageSize={self.items.length}
+                                style={{
+                                    width: "100%", 
+                                    height: "400px",
+                                    maxHeight:"100%",
+                                    overflow:"auto",
+                                    fontSize:"12px",
+                                    fontWeight: 800,
+                                }}
+                              
+                                showPagination={false}
+                                />
+                            ) : null }
+
+                            </div>
+                        </Popover>
+                    </center></span>
                   ), // Custom cell components!,
 
                  

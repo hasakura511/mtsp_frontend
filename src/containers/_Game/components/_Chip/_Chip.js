@@ -216,7 +216,7 @@ export default class Chip extends PureComponent {
 
     var title = "";
     //chip.status="locked";
-    if (chip.tier != undefined) {
+    if (chip.display != undefined) {
       if (chip.tier)
         title="Tier: " + toTitleCase(chip.tier.toString()) + "\n"; 
       if (chip.lockdown_text)
