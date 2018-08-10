@@ -352,7 +352,9 @@ export default class PracticeBoard extends Component {
     // accounts: [{ portfolio, target, accountValue }],
     'username':  this.props.email,
     'start_date': this.state.date_picked,
-    'account_params':this.state.accounts
+    //'account_params':this.state.accounts
+    'account_params': this.state.account_params ? JSON.stringify(this.state.account_params) : "",
+    'bets': this.state.bets ? JSON.stringify(this.state.bets) : ""
     },{timeout: 600000})
     .then(({ data }) => {
       console.log('received initialize_practice data')
@@ -564,10 +566,28 @@ export default class PracticeBoard extends Component {
     );
     console.log(inGameChips);
 
+    var bets={};
+    var account_params=accounts.map(account => {
+      if (account.chip_id == chip.chip_id) {
+        account.chip_id=chip.chip_id;
+        account.chip_location=chip.chip_location;
+        account.prev_selection=account.last_selection;
+        account.position=chip.last_selection;
+        account.last_selection=chip.last_selection;
+      }
+      bets[account.chip_id]=account.chip_location;
+      return account;
+    });
+
+    this.setState({bets, account_params})
+   
+
+
 
   }
 
   addBettingChip = (chip, position, isAnti, strat) => {
+        var self=this;
         var {
           topSystems,
           bottomSystems,
@@ -581,126 +601,49 @@ export default class PracticeBoard extends Component {
         var origChip=chip;
         var origStrat=chip.orig_last_selection;
 
-        
+        console.log(accounts);
         this.moveOnBoard(chip,position,strat);
 
-        axios
-          .post("/utility/update_bet_live/", {
-          // accounts: [{ portfolio, target, accountValue }],
-          'account_id': chip.accountId,
-          'chip_id':chip.chip_id,
-          'strategy':strat,
-          },{timeout: 600000})
-          .then(({ data }) => {
-            this.sendNotice(strat + ' Bet Placed' + JSON.stringify(data));
-            if (data.message && data.message.match(/ERROR/)) {
-              origChip.position=origPosition;
-              origChip.last_selection=origStrat;
-              console.log("error");
-              console.log(origPosition);
-              console.log(origStrat);
-              this.moveOnBoard(origChip, origPosition, origStrat);  
-            }
-          })
-          .catch(error => {
-            this.sendNotice('Error Placing Bet' + JSON.stringify(error));
-            origChip.position=origPosition;
-            origChip.last_selection=origStrat;
-            this.moveOnBoard(origChip, origPosition, origStrat);
-            //chip.position=origPosition;
-            //this.moveToBalance(chip);
-            console.log('error initializing')
-            console.log(error)
-          // eslint-disable-next-line react/no-is-mounted
-            this.setState({
-              rankingLoading: false,
-              rankingError: error
-            });
-          });
-      
-  
-  };
-
-  /**
-   * Removes the chip from its older betting position to off location
-   * That basically moves your chip to balance chips.
-   * @function moveToBalance
-   * @param {any} chip
-   */
-  moveToBalance = chip => {
-    
-      var {
-        topSystems,
-        bottomSystems,
-        leftSystems,
-        rightSystems,
-        inGameChips, 
-        accounts
-      } = this.props;
-        /**
-         * When chip is moved to off location from some betting position.
-         */
-
-         
-        var origPosition=chip.orig_position;
-        var origChip=chip;
-        var origStrat=chip.orig_last_selection;
-
-        this.moveOnBoard(chip, chip.position, chip.last_selection);
-        
         /*
-
-        const balanceChips = inGameChips.balanceChips.map(c => {
-          return c.accountId === chip.accountId
-            ? { ...c, count: c.count + 1 }
-            : c;
+        var bets={};
+        var account_params=accounts.map(account => {
+          if (account.chip_id == chip.chip_id) {
+            account.chip_id=chip.chip_id;
+            account.chip_location=chip.chip_location;
+            account.prev_selection=account.last_selection;
+            account.position=chip.last_selection;
+            account.last_selection=chip.last_selection;
+          }
+          bets[account.chip_id]=account.chip_location;
         });
-        const bettingChips = inGameChips.bettingChips.filter(
-          c => c.accountId !== chip.accountId
-        );
-        
-        var strat=chip.position;
-        var rev_accounts2 = accounts.map(account => {
-          return account.accountId === chip.accountId
-            ? {
-                ...account,
-                last_selection: strat,
-              }
-            : account;
-        });
-        accounts=rev_accounts2;
+       
 
-        this.props.updateBet(
-          insertChip(topSystems, "off", chip),
-          insertChip(bottomSystems, "off", chip),
-          insertChip(leftSystems, "off", chip),
-          insertChip(rightSystems, "off", chip),
-          { bettingChips, balanceChips },
-          accounts
-        );
-
-        if (strat == 'off') 
-          strat="Off";
-
-          */
         axios
-          .post("/utility/update_bet_live/", {
+          .post("/utility/update_practice/", {
           // .get("https://api.myjson.com/bins/11pqxf", {
           //only 5k chip for tier 0
           // accounts: [{ portfolio, target, accountValue }],
-          'account_id': chip.accountId,
-          'chip_id':chip.chip_id,
-          'strategy':chip.last_selection == 'off' ? 'Off' :chip.last_selection,
+          'username': this.props.email,
+          'account_params': JSON.stringify(account_params),
+          'bets':JSON.stringify(bets)
           },{timeout: 600000})
           .then(({ data }) => {
-            this.sendNotice(chip.last_selection + ' Bet Placed' + JSON.stringify(data));
+            console.log('received initialize_practice data')
+            var accounts=data.accounts;
+            data.isPractice=true;
+            self.props.initializeData(data);
 
-            if (data.message && data.message.match(/ERROR/)) {
-              origChip.position=origPosition;
-              origChip.last_selection=origStrat;
-              this.moveOnBoard(origChip, origPosition, origStrat);
-  
-            }
+            if (!this.state.loading)
+              this.sendNotice("Board Refreshed with New Data");
+
+
+            this.setState({
+              loading:false,
+              rankingLoading: false,
+              refreshing:false,
+              accounts:accounts
+            });
+
 
           })
           .catch(error => {
@@ -718,6 +661,94 @@ export default class PracticeBoard extends Component {
               rankingError: error
             });
           });
+          */
+          
+  };
+
+  /**
+   * Removes the chip from its older betting position to off location
+   * That basically moves your chip to balance chips.
+   * @function moveToBalance
+   * @param {any} chip
+   */
+  moveToBalance = chip => {
+      var self=this;
+      var {
+        topSystems,
+        bottomSystems,
+        leftSystems,
+        rightSystems,
+        inGameChips, 
+        accounts
+      } = this.props;
+        /**
+         * When chip is moved to off location from some betting position.
+         */
+
+         
+        var origPosition=chip.orig_position;
+        var origChip=chip;
+        var origStrat=chip.orig_last_selection;
+        this.moveOnBoard(chip, chip.position, chip.last_selection);
+
+        /*
+        var bets={};
+        var account_params=accounts.map(account => {
+          if (account.chip_id == chip.chip_id) {
+            account.chip_id=chip.chip_id;
+            account.chip_location=chip.chip_location;
+            account.prev_selection=account.last_selection;
+            account.position=chip.last_selection;
+            account.last_selection=chip.last_selection;
+          }
+          bets[account.chip_id]=account.chip_location;
+        });
+       
+
+        axios
+          .post("/utility/update_practice/", {
+          // .get("https://api.myjson.com/bins/11pqxf", {
+          //only 5k chip for tier 0
+          // accounts: [{ portfolio, target, accountValue }],
+          'username': this.props.email,
+          'account_params': JSON.stringify(account_params),
+          'bets':JSON.stringify(bets)
+          },{timeout: 600000})
+          .then(({ data }) => {
+            console.log('received initialize_practice data')
+            var accounts=data.accounts;
+            data.isPractice=true;
+            self.props.initializeData(data);
+
+            if (!this.state.loading)
+              this.sendNotice("Board Refreshed with New Data");
+
+
+            this.setState({
+              loading:false,
+              rankingLoading: false,
+              refreshing:false,
+              accounts:accounts
+            });
+
+
+          })
+          .catch(error => {
+            this.sendNotice('Error Placing Bet' + JSON.stringify(error));
+            console.log('error initializing')
+            console.log(error)
+            // eslint-disable-next-line react/no-is-mounted
+            origChip.position=origPosition;
+            origChip.last_selection=origStrat;
+
+            this.moveOnBoard(origChip, origPosition, origStrat);
+
+            this.setState({
+              rankingLoading: false,
+              rankingError: error
+            });
+          });
+          */
   };
 
   reset = () => {
