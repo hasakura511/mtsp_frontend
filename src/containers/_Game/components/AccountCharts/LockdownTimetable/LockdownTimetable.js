@@ -183,20 +183,22 @@ export default class LockdownTimetable extends Component {
       var data=[];
       self.hasQty=false;
      
-      Object.keys(group).map(key => {
-          var item={};
-          var color=text_color[key];
-          if (!color)
-              color='black';
-          item.Markets=key;
-          item.Group=group[key] //{'Value':group[key],'Color':color};
-          item.Next_Trigger=trigger_text[key] //{'value':trigger_text[key],'color':color};
-          item.Next_Close=close_text[key] //{'value':close_text[key],'color':color};
-          item.Color=color;
-          data.push(item);
-  
-      })
-  
+      if (group) {
+        Object.keys(group).map(key => {
+            var item={};
+            var color=text_color[key];
+            if (!color)
+                color='black';
+            item.Markets=key;
+            item.Group=group[key] //{'Value':group[key],'Color':color};
+            item.Next_Trigger=trigger_text[key] //{'value':trigger_text[key],'color':color};
+            item.Next_Close=close_text[key] //{'value':close_text[key],'color':color};
+            item.Color=color;
+            data.push(item);
+    
+        })
+      }
+      
       console.log('data');
       console.log(data);
       this.setState({
