@@ -304,6 +304,15 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case actionTypes.SET_STRAT:
+    {
+      const strat=action.strat;
+      
+      return {
+        ...state,
+        strat
+      };
+    }
     case actionTypes.SHOW_HEATMAP:
     {
       const heatmap_selection=action.id;

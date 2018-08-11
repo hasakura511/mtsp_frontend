@@ -55,7 +55,12 @@ export const refreshMarketDone = () => {
   }
 }
 
-
+export const setStrat = (strat) => {
+  return {
+    type: actionTypes.SET_STRAT,
+    strat,
+  };
+};
 
 export const initializeHeatmap = (account_id, link, sym='', date='') => {
   return {

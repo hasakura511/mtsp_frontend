@@ -195,8 +195,7 @@ export default class Markets extends Component {
       
       if (newProps.heatmap_lookup_link)
         link=newProps.heatmap_lookup_link
-
-      this.refreshData(newProps.heatmap_account_id, link, sym);
+      this.refreshData(newProps.heatmap_account_id, link, sym, '', newProps.heatmap_lookup_date ? newProps.heatmap_lookup_date : this.state.liveDateText);
 
     } else if (newProps.heatmap_account_id != undefined && newProps.heatmap_account_id == '' && newProps.heatmap_lookup_symbol && (newProps.heatmap_lookup_symbol != this.props.heatmap_lookup_symbol)) {
       this.refreshData('','',newProps.heatmap_lookup_symbol);

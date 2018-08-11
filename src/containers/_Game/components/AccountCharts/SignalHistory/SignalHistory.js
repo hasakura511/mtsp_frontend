@@ -34,6 +34,7 @@ const stateToProps = state => ({
   //liveDate:state.betting.liveDate,
   liveDateText:state.betting.liveDateText,
   email:state.auth.email,
+  strat:state.betting.strat
 
 });
 
@@ -215,6 +216,7 @@ export default class SignalHistory extends Component {
   signalHistory = (chip_id, strategy, parents, date=this.props.liveDateText, date_picked=false) => {
 
     var self=this;
+    this.setState({refreshing:true})
 
     axios
     .post("/utility/signal_history_live/", {
@@ -262,6 +264,7 @@ export default class SignalHistory extends Component {
 
         console.log(performance);
 
+        this.setState({refreshing:false})
       
 
         }
@@ -270,12 +273,28 @@ export default class SignalHistory extends Component {
       console.log(performanceError);
       this.setState({
         performanceLoading: false,
-        performanceError: performanceError
+        performanceError: performanceError,
+        refreshing:false
       });
     });
 
   }
   
+  componentWillReceiveProps(newProps) {
+    var self=this;
+    if (newProps.strat) {
+      var parents=[];
+      Object.keys(self.props.slot).map(key => {
+        if (self.props.slot[key].id)
+          parents.push(self.props.slot[key].id);
+      });
+      var date=self.props.liveDateText;
+      if (this.state.date_picked)
+        date=this.state.date_picked;
+      self.signalHistory(self.props.chip.chip_id, newProps.strat, parents, date);
+    }
+
+  }
   componentDidMount() {
         var self=this;
         var parents=[];
@@ -308,7 +327,7 @@ export default class SignalHistory extends Component {
     return (
         <div className={classes.SignalHistory}>
         
-        {performanceLoading ? (
+        {performanceLoading || this.state.refreshing ? (
                 <div>
                   <Spinner />
                 </div>
@@ -369,17 +388,16 @@ export default class SignalHistory extends Component {
                 </span>
 
           <center><h3>{performance.title}</h3>
-          
-
-          <b onClick={() => {
+          </center>
+          <p align={'right'}>
+          <button onClick={() => {
             this.setState({date_picked:""})
           }} 
-          style={{'cursor':'pointer'}}>
-          Select Date</b>
+          style={{marginRight: '10px', textAlign:'right','cursor':'pointer'}}>
+          Select Date
+          </button>
           <br/>
-          <br/>
-
-          </center>
+          </p>
           
                 <div className={classes.ChartContainer}>
           <ReactTable
@@ -405,6 +423,7 @@ export default class SignalHistory extends Component {
                   Cell: props => <span><a href='#market' onClick={()=> {
                     var sym= props.value;
                     sym=sym.substr(0, sym.indexOf(' ')); 
+                    alert(self.state.date_picked)
                     self.props.initializeHeatmap(self.props.chip.account_id,'current',sym, self.state.date_picked);
                     if (self.props.toggle)
                       self.props.toggle();
@@ -552,7 +571,7 @@ export default class SignalHistory extends Component {
                 
                 {
                 
-                  Header: "1Day %Chg",
+                  Header: "1 Day %Chg",
                   accessor: "1Day_pctchg",
                   headerStyle: {
                     background:self.props.themes.live.dialog.table_right_background
@@ -560,19 +579,17 @@ export default class SignalHistory extends Component {
                   Cell: props => (
                     <span className='number'><center>
                     {parseFloat(props.value) ? (
+                      <span style={parseFloat(props.value) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
                     <b>
-                    <img
-                              src={
-                                props.value > 0
-                                  ? gainIcon
-                                  : props.value < 0 ? lossIcon : ""
-                              }
-                            />
-                    &nbsp;
                     {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} %
                     </b>
+                    </span>
                     ) : (
-                      <b>0 %</b>
+                      <span style={{color:self.props.themes.live.dialog.text}}>
+                    <b>
+                    {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} %
+                    </b>
+                    </span>
                     )}
                     </center></span>
                   ), // Custom cell components!,
@@ -799,6 +816,6 @@ export default class SignalHistory extends Component {
     silenceHtmlDialog:PropTypes.func.isRequired,
     showHtmlDialog2:PropTypes.func.isRequired,
     silenceHtmlDialog2:PropTypes.func.isRequired,
-
+    strat:PropTypes.string
   };
 }

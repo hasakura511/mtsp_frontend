@@ -40,4 +40,5 @@ export { addBet,
          showLockdownDialog,
          showLeaderDialog,
          refreshMarketDone,
+         setStrat
       } from "./betting";

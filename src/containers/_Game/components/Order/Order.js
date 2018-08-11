@@ -42,6 +42,9 @@ const dispatchToProps = dispatch => {
     },
     addTimedToaster(toaster) {
       dispatch(actions.addTimedToaster(toaster));
+    },
+    setStrat(strat) {
+      dispatch(actions.setStrat(strat));
     }
   };
 };
@@ -174,7 +177,12 @@ export default class Order extends React.Component {
                     type="radio"
                     id="system-radio"
                     checked={!isAnti}
-                    onChange={setNotAnti}
+                    onChange={(e) => {
+
+                      setNotAnti(e);
+                      if (isLive)
+                        self.props.setStrat(toSystem(slot.position));
+                    }}
                     title={"Orders will be placed for the strategy selected here."}
                   />
                   {isLive ? (
@@ -194,7 +202,11 @@ export default class Order extends React.Component {
                     type="radio"
                     id="anti-system-radio"
                     checked={isAnti}
-                    onChange={setAnti}
+                    onChange={(e) => {
+                      setAnti(e)
+                      if (isLive)
+                        self.props.setStrat(toAntiSystem(slot.position));
+                    }}
                     title={"Orders will be placed for the strategy selected here."}
                   />
                   {isLive ? (
