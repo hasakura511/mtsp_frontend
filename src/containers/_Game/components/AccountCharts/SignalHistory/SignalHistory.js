@@ -217,6 +217,8 @@ export default class SignalHistory extends Component {
 
     var self=this;
     this.setState({refreshing:true})
+    if (this.props.strat)
+      strategy=this.props.strat;
 
     axios
     .post("/utility/signal_history_live/", {
@@ -423,7 +425,7 @@ export default class SignalHistory extends Component {
                   Cell: props => <span><a href='#market' onClick={()=> {
                     var sym= props.value;
                     sym=sym.substr(0, sym.indexOf(' ')); 
-                    alert(self.state.date_picked)
+                    //alert(self.state.date_picked)
                     self.props.initializeHeatmap(self.props.chip.account_id,'current',sym, self.state.date_picked);
                     if (self.props.toggle)
                       self.props.toggle();
