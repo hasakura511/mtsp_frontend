@@ -57,12 +57,23 @@ export const refreshMarketDone = () => {
 
 
 
-export const initializeHeatmap = (account_id, link, sym='') => {
+export const initializeHeatmap = (account_id, link, sym='', date='') => {
   return {
     type: actionTypes.INITIALIZE_HEATMAP,
     account_id, 
     link, 
-    sym
+    sym,
+    date
+  };
+};
+
+export const initializeHeatmapGroup = (account_id, link, group='', date='') => {
+  return {
+    type: actionTypes.INITIALIZE_HEATMAP_GROUP,
+    account_id, 
+    link, 
+    group,
+    date
   };
 };
 

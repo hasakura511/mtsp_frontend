@@ -158,8 +158,11 @@ class CustomTooltip extends Component {
 
 const dispatchToProps = dispatch => {
   return {
-    initializeHeatmap:(account_id, link, sym) => {
-      dispatch(actions.initializeHeatmap(account_id, link, sym))
+    initializeHeatmap:(account_id, link, sym, date) => {
+      dispatch(actions.initializeHeatmap(account_id, link, sym, date))
+    },
+    initializeHeatmapGroup:(account_id, link, group, date) => {
+      dispatch(actions.initializeHeatmapGroup(account_id, link, group, date))
     },
     showHtmlDialog: (htmlContent) => {
       dispatch(actions.showHtmlDialog(htmlContent));
@@ -247,6 +250,14 @@ export default class SignalHistory extends Component {
           self.setState({
             date_picked:date
           })
+        } else {
+          //console.log(performance.last_date)
+          var last_date=new moment(performance.last_date).format('YYYYMMDD');
+          //console.log(last_date);
+          self.setState({
+            date_picked:last_date
+          })
+          
         }
 
         console.log(performance);
@@ -293,6 +304,7 @@ export default class SignalHistory extends Component {
 
     var chartData={};
 
+    
     return (
         <div className={classes.SignalHistory}>
         
@@ -319,6 +331,9 @@ export default class SignalHistory extends Component {
               <DatePicker
                inline
                withPortal
+               //openToDate={Object.keys(performance.available_dates).map(key => {
+               // return new moment(performance.available_dates[key]);
+               //})[0]}
                highlightDates={Object.keys(performance.available_dates).map(key => {
                  return new moment(performance.available_dates[key]);
                })}
@@ -326,12 +341,19 @@ export default class SignalHistory extends Component {
                    var date=e.format('YYYYMMDD')
                    console.log(date);
               
+                   var hasDate=false;
+                   Object.keys(performance.available_dates).map(key => {
+                    if (date == new moment(performance.available_dates[key]).format('YYYYMMDD'))
+                        hasDate=true;
+                  })
+                  if (hasDate) {
                    var parents=[];
                     Object.keys(self.props.slot).map(key => {
                       if (self.props.slot[key].id)
                         parents.push(self.props.slot[key].id);
                     });
                     self.signalHistory(self.props.chip.chip_id, self.props.slot.position, parents, date, true);
+                  }
                }}  
                 />
             </center>
@@ -341,11 +363,24 @@ export default class SignalHistory extends Component {
         (
 
         <div className={classes.SignalHistory} style={{margin:"0px", background:self.props.themes.live.dialog.tab_color_active}}>
+          
                 <span style={{margin:"0px", background:self.props.themes.live.dialog.tab_color_active, "float": "right", "width": "100%", "textAlign": "right"}}>
                   <img src="/images/infotext_button.png" width="22" style={{"marginRight":"5px"}}/>
                 </span>
 
-          <center><h3>{performance.title}</h3></center>
+          <center><h3>{performance.title}</h3>
+          
+
+          <b onClick={() => {
+            this.setState({date_picked:""})
+          }} 
+          style={{'cursor':'pointer'}}>
+          Select Date</b>
+          <br/>
+          <br/>
+
+          </center>
+          
                 <div className={classes.ChartContainer}>
           <ReactTable
           
@@ -368,10 +403,9 @@ export default class SignalHistory extends Component {
                   Header: "Markets",
                   accessor: "Markets",
                   Cell: props => <span><a href='#market' onClick={()=> {
-                    console.log(props);
                     var sym= props.value;
                     sym=sym.substr(0, sym.indexOf(' ')); 
-                    self.props.initializeHeatmap(self.props.performance_account_id,'current',sym);
+                    self.props.initializeHeatmap(self.props.chip.account_id,'current',sym, self.state.date_picked);
                     if (self.props.toggle)
                       self.props.toggle();
                     $(window).scrollTop($("#marketTop").offset().top-111);
@@ -381,7 +415,19 @@ export default class SignalHistory extends Component {
                 {
                   Header: "Group",
                   accessor: "Group",
-                  Cell: props => <span><center>{props.value}</center></span>, // Custom cell components!,
+                  Cell: props => <span><a href='#market' onClick={()=> {
+                    console.log(self.props.chip.account_id);
+                    var group= props.value;
+                    //sym=sym.substr(0, sym.indexOf(' ')); 
+                    self.props.initializeHeatmapGroup(self.props.chip.account_id,'current',group, self.state.date_picked);
+                    if (self.props.toggle)
+                      self.props.toggle();
+                    $(window).scrollTop($("#marketTop").offset().top-111);
+                  }} >
+                  <center>
+                  {props.value}
+                  </center>
+                  </a></span>, // Custom cell components!,
                 }
 
               ]
@@ -514,17 +560,19 @@ export default class SignalHistory extends Component {
                   Cell: props => (
                     <span className='number'><center>
                     {parseFloat(props.value) ? (
-                      <span style={parseFloat(props.value) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
                     <b>
-                    {Math.round(parseFloat(props.value),4).toLocaleString('en-US', { maximumFractionDigits: 12 })} %
+                    <img
+                              src={
+                                props.value > 0
+                                  ? gainIcon
+                                  : props.value < 0 ? lossIcon : ""
+                              }
+                            />
+                    &nbsp;
+                    {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} %
                     </b>
-                    </span>
                     ) : (
-                      <span style={{color:self.props.themes.live.dialog.text}}>
-                    <b>
-                    {Math.round(parseFloat(props.value),4).toLocaleString('en-US', { maximumFractionDigits: 12 })} %
-                    </b>
-                    </span>
+                      <b>0 %</b>
                     )}
                     </center></span>
                   ), // Custom cell components!,
@@ -542,18 +590,19 @@ export default class SignalHistory extends Component {
                   Cell: props => (
                     <span className='number'><center>
                     {parseFloat(props.value) ? (
-                      <span style={parseFloat(props.value) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
+                      
+                     <img
+                              src={
+                                props.value > 0
+                                  ? gainIcon
+                                  : props.value < 0 ? lossIcon : ""
+                              }
+                            />
+                          ) : null}
+                    &nbsp;
                     <b>
-                    $ {Math.round(parseFloat(props.value),4).toLocaleString('en-US', { maximumFractionDigits: 12 })} 
+                    $ {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} 
                     </b>
-                    </span>
-                    ) : (
-                      <span style={{color:self.props.themes.live.dialog.text}}>
-                    <b>
-                    $ {Math.round(parseFloat(props.value),4).toLocaleString('en-US', { maximumFractionDigits: 12 })} 
-                    </b>
-                    </span>
-                    )}
                     </center></span>
                   ), // Custom cell components!,
                   Footer: (
@@ -741,6 +790,7 @@ export default class SignalHistory extends Component {
     performance_account_id: PropTypes.string.isRequired,
     toggle:PropTypes.func,
     initializeHeatmap:PropTypes.func,
+    initializeHeatmapGroup:PropTypes.func,
     themes:PropTypes.object.isRequired,
     //liveDate:PropTypes.instanceOf(moment).isRequired,
     liveDateText:PropTypes.string.isRequired,

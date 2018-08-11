@@ -49,6 +49,8 @@ const stateToProps = state => {
     heatmap_account_id:state.betting.heatmap_account_id,
     heatmap_lookup_symbol:state.betting.heatmap_lookup_symbol,
     heatmap_lookup_link:state.betting.heatmap_lookup_link,
+    heatmap_lookup_group:state.betting.heatmap_lookup_group,
+    heatmap_lookup_date:state.betting.heatmap_lookup_date,
     refresh_markets:state.betting.refresh_markets,
   };
 };
@@ -144,7 +146,9 @@ export default class Markets extends Component {
     link:PropTypes.string,
     initializeHeatmap:PropTypes.func.isRequired,
     silenceHtmlDialog2:PropTypes.func.isRequired,
-    is_dialog:PropTypes.bool
+    is_dialog:PropTypes.bool,
+    heatmap_lookup_date:PropTypes.string,
+    heatmap_lookup_group:PropTypes.string
   };
 
   getSubmitTitle(controls) {
@@ -170,6 +174,9 @@ export default class Markets extends Component {
     if (newProps.liveDateText) {
       this.setState({liveDateText:newProps.liveDateText});
     }
+    
+    //console.log(newProps.heatmap_lookup_group);
+
     if (newProps.refresh_markets) {
       console.log("Received Refresh Market Status Check");
       if (newProps.liveDateText) {
@@ -178,15 +185,19 @@ export default class Markets extends Component {
         this.refreshData();
 
       }
-    } else if (newProps.heatmap_account_id && (newProps.heatmap_account_id != this.props.heatmap_account_id || newProps.heatmap_lookup_symbol != this.props.heatmap_lookup_symbol || newProps.heatmap_lookup_link != this.props.heatmap_lookup_link)) {
+    } else if (newProps.heatmap_account_id && (newProps.heatmap_account_id != this.props.heatmap_account_id || newProps.heatmap_lookup_symbol != this.props.heatmap_lookup_symbol || newProps.heatmap_lookup_link != this.props.heatmap_lookup_link || newProps.heatmap_lookup_date != this.props.heatmap_lookup_date || newProps.heatmap_lookup_group != this.props.heatmap_lookup_group)) {
       console.log("Received Refresh Market Status Check");
       var sym=''
       var link='current'
+      
       if (newProps.heatmap_lookup_symbol)
         sym=newProps.heatmap_lookup_symbol
+      
       if (newProps.heatmap_lookup_link)
         link=newProps.heatmap_lookup_link
+
       this.refreshData(newProps.heatmap_account_id, link, sym);
+
     } else if (newProps.heatmap_account_id != undefined && newProps.heatmap_account_id == '' && newProps.heatmap_lookup_symbol && (newProps.heatmap_lookup_symbol != this.props.heatmap_lookup_symbol)) {
       this.refreshData('','',newProps.heatmap_lookup_symbol);
     }
@@ -213,6 +224,9 @@ export default class Markets extends Component {
       this.setState({refreshing:true})
     console.log("Starting Market HEATMAP Refresh with Account: " + account_id + ' Link:' + link + ' Sym:' + sym )
   
+    if (self.props.heatmap_lookup_date) {
+      date=self.props.heatmap_lookup_date;
+    }
     axiosOpen
       .post("/utility/market_heatmap/", {
           'username':  this.props.email,
@@ -268,6 +282,8 @@ export default class Markets extends Component {
         });
         if (sym) {
           self.onGetChart(sym, liveDateText);
+        } else if (self.props.heatmap_lookup_group) {
+          self.onGetGroupChart(self.props.heatmap_lookup_group, liveDateText);
         }
         self.props.refreshMarketDone();
       })
