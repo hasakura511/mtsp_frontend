@@ -201,6 +201,8 @@ export default class Markets extends Component {
       this.refreshData(newProps.heatmap_account_id, link, sym, '', newProps.heatmap_lookup_date ? newProps.heatmap_lookup_date : this.state.liveDateText);
 
     } else if (newProps.heatmap_account_id != undefined && newProps.heatmap_account_id == '' && newProps.heatmap_lookup_symbol && (newProps.heatmap_lookup_symbol != this.props.heatmap_lookup_symbol)) {
+     
+      //alert(newProps.heatmap_lookup_symbol);
       this.refreshData('','',newProps.heatmap_lookup_symbol);
     }
     
@@ -228,7 +230,11 @@ export default class Markets extends Component {
   
     if (self.props.heatmap_lookup_date) {
       date=self.props.heatmap_lookup_date;
+      portfolio='';  
+      //alert(date)
+      //alert(sym)
     }
+    
     axiosOpen
       .post("/utility/market_heatmap/", {
           'username':  this.props.email,
@@ -283,7 +289,7 @@ export default class Markets extends Component {
 
         });
         if (sym) {
-          self.onGetChart(sym, liveDateText);
+          self.onGetChart(sym, self.props.heatmap_lookup_date ? self.props.heatmap_lookup_date : liveDateText);
         } else if (self.props.heatmap_lookup_group) {
           self.onGetGroupChart(self.props.heatmap_lookup_group, liveDateText);
         }
@@ -457,10 +463,13 @@ export default class Markets extends Component {
                   chartLoading:true});
     //$(window).scrollTop(0);
 
+    if (!date) {
+      date=this.state.liveDateText;
+    }
     axiosOpen
     .post("/utility/market_chart/", {
 
-        'date':this.state.liveDateText,
+        'date':date,
         'symbol':symbol
 
     })
@@ -884,10 +893,13 @@ export default class Markets extends Component {
 
 
     //$(window).scrollTop(0);
+    if (!date) {
+      date=this.state.liveDateText
+    }
     axiosOpen
     .post("/utility/market_group/", {
 
-        'date':this.state.liveDateText,
+        'date': date,
         'group':symbol
 
     })

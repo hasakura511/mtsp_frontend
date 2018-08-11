@@ -426,7 +426,7 @@ export default class SignalHistory extends Component {
                     var sym= props.value;
                     sym=sym.substr(0, sym.indexOf(' ')); 
                     //alert(self.state.date_picked)
-                    self.props.initializeHeatmap(self.props.chip.account_id,'current',sym, self.state.date_picked);
+                    self.props.initializeHeatmap('','',sym, self.state.date_picked);
                     if (self.props.toggle)
                       self.props.toggle();
                     $(window).scrollTop($("#marketTop").offset().top-111);
