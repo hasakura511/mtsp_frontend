@@ -171,6 +171,7 @@ export default class Markets extends Component {
 
   
   componentWillReceiveProps(newProps) {
+    var self=this;
     if (newProps.liveDateText) {
       this.setState({liveDateText:newProps.liveDateText});
     }
@@ -185,7 +186,9 @@ export default class Markets extends Component {
         this.refreshData();
 
       }
-    } else if (newProps.heatmap_account_id && (newProps.heatmap_account_id != this.props.heatmap_account_id || newProps.heatmap_lookup_symbol != this.props.heatmap_lookup_symbol || newProps.heatmap_lookup_link != this.props.heatmap_lookup_link || newProps.heatmap_lookup_date != this.props.heatmap_lookup_date || newProps.heatmap_lookup_group != this.props.heatmap_lookup_group)) {
+    } else if (newProps.heatmap_lookup_group != this.props.heatmap_lookup_group) {
+      self.onGetGroupChart(newProps.heatmap_lookup_group,  newProps.heatmap_lookup_date ? newProps.heatmap_lookup_date : this.state.liveDateText);
+    } else if (newProps.heatmap_account_id && (newProps.heatmap_account_id != this.props.heatmap_account_id || newProps.heatmap_lookup_symbol != this.props.heatmap_lookup_symbol || newProps.heatmap_lookup_link != this.props.heatmap_lookup_link || newProps.heatmap_lookup_date != this.props.heatmap_lookup_date)) {
       console.log("Received Refresh Market Status Check");
       var sym=''
       var link='current'
