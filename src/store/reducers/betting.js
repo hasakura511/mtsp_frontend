@@ -456,6 +456,7 @@ const reducer = (state = initialState, action) => {
           show_lockdown_dialog:false,
           heatmap_account_id:action.account_id,
           heatmap_lookup_symbol:sym,
+          heatmap_lookup_group:'',
           heatmap_lookup_link:link,
           heatmap_lookup_date:action.date
 
@@ -474,6 +475,7 @@ const reducer = (state = initialState, action) => {
           performance_account_id:'',
           show_lockdown_dialog:false,
           heatmap_account_id:action.account_id,
+          heatmap_lookup_symbol:'',
           heatmap_lookup_group:group,
           heatmap_lookup_link:action.link,
           heatmap_lookup_date:action.date

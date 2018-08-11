@@ -186,7 +186,7 @@ export default class Markets extends Component {
         this.refreshData();
 
       }
-    } else if (newProps.heatmap_lookup_group != this.props.heatmap_lookup_group) {
+    } else if (newProps.heatmap_lookup_group && newProps.heatmap_lookup_group != this.props.heatmap_lookup_group) {
       //self.onGetGroupChart(newProps.heatmap_lookup_group,  newProps.heatmap_lookup_date ? newProps.heatmap_lookup_date : this.state.liveDateText);
       this.refreshData('','','', '', newProps.heatmap_lookup_date ? newProps.heatmap_lookup_date : this.state.liveDateText);
 
