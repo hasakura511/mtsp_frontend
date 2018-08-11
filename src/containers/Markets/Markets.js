@@ -203,7 +203,7 @@ export default class Markets extends Component {
     } else if (newProps.heatmap_account_id != undefined && newProps.heatmap_account_id == '' && newProps.heatmap_lookup_symbol && (newProps.heatmap_lookup_symbol != this.props.heatmap_lookup_symbol)) {
      
       //alert(newProps.heatmap_lookup_symbol);
-      this.refreshData('','',newProps.heatmap_lookup_symbol);
+      this.refreshData('','',newProps.heatmap_lookup_symbol, '',  newProps.heatmap_lookup_date ? newProps.heatmap_lookup_date : this.state.liveDateText );
     }
     
   }
@@ -229,7 +229,7 @@ export default class Markets extends Component {
     console.log("Starting Market HEATMAP Refresh with Account: " + account_id + ' Link:' + link + ' Sym:' + sym )
   
     if (self.props.heatmap_lookup_date) {
-      date=self.props.heatmap_lookup_date;
+      //date=self.props.heatmap_lookup_date;
       portfolio='';  
       //alert(date)
       //alert(sym)
