@@ -187,7 +187,9 @@ export default class Markets extends Component {
 
       }
     } else if (newProps.heatmap_lookup_group != this.props.heatmap_lookup_group) {
-      self.onGetGroupChart(newProps.heatmap_lookup_group,  newProps.heatmap_lookup_date ? newProps.heatmap_lookup_date : this.state.liveDateText);
+      //self.onGetGroupChart(newProps.heatmap_lookup_group,  newProps.heatmap_lookup_date ? newProps.heatmap_lookup_date : this.state.liveDateText);
+      this.refreshData('','','', '', newProps.heatmap_lookup_date ? newProps.heatmap_lookup_date : this.state.liveDateText);
+
     } else if (newProps.heatmap_account_id && (newProps.heatmap_account_id != this.props.heatmap_account_id || newProps.heatmap_lookup_symbol != this.props.heatmap_lookup_symbol || newProps.heatmap_lookup_link != this.props.heatmap_lookup_link || newProps.heatmap_lookup_date != this.props.heatmap_lookup_date)) {
       console.log("Received Refresh Market Status Check");
       var sym=''
@@ -291,7 +293,7 @@ export default class Markets extends Component {
         if (sym) {
           self.onGetChart(sym, self.props.heatmap_lookup_date ? self.props.heatmap_lookup_date : liveDateText);
         } else if (self.props.heatmap_lookup_group) {
-          self.onGetGroupChart(self.props.heatmap_lookup_group, liveDateText);
+          self.onGetGroupChart(self.props.heatmap_lookup_group, self.props.heatmap_lookup_date ? self.props.heatmap_lookup_date : liveDateText);
         }
         self.props.refreshMarketDone();
       })
