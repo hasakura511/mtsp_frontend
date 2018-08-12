@@ -137,7 +137,7 @@ export default class Clock extends PureComponent {
           <div className={classes.Left}>
              <table><tbody><tr><td style={{border:"0px", maxWidth:"30px"}}>
                     <span style={{cursor:'pointer', fontSize:"12px"}} onClick={() => {
-                      self.props.initializeLive(undefined, undefined, this.props.date_picked);
+                      self.props.initializeLive(undefined, undefined, "");
                     }}>
                     <img src="/images/practice_reset.png" width={30} /><br/>
                     Reset
@@ -196,7 +196,7 @@ export default class Clock extends PureComponent {
             </div>
           </td><td style={{border:"0px", marginLeft:"-30px", minWidth:"90px", textAlign:"center"}}>
                 <span style={{cursor:'pointer', fontSize:"12px"}} onClick={() => {
-                                      self.props.nextSimulationDay();
+                                      self.props.nextSimulationDay(false, undefined, this.props.date_picked);
                                     }}>
                 <img src="/images/practice_simulate.png" width={30} /><br/>
                 

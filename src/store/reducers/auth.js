@@ -8,7 +8,7 @@ const initialState = {
   userId: null,
   firstName: null,
   lastName: null,
-  email: null,
+  email: "demo",
   tosAccepted: false,
   rdAccepted: false,
   gdprAccepted: false,

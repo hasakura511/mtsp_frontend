@@ -8,6 +8,7 @@ import protectedComponent from "../../../../hoc/ProtectedComponent/ProtectedComp
 import Aux from "../../../../hoc/_Aux/_Aux";
 // import Dashboard from "../../components/Dashboard/Dashboard";
 import LiveDashboard from "../LiveDashboard/LiveDashboard";
+import PracticeBoard from "../PracticeBoard/PracticeBoard";
 import Bettings from "../../BettingConfig";
 import { connect } from "react-redux";
 import * as actions from "../../../../store/actions";
@@ -116,6 +117,15 @@ const dispatchToProps = dispatch => {
     showLeaderDialog: (show) => {
       dispatch(actions.showLeaderDialog(show));
     },
+    showHtmlDialog: (htmlContent) => {
+      dispatch(actions.showHtmlDialog(htmlContent));
+      
+    },
+    silenceHtmlDialog: () => {
+      dispatch(actions.silenceHtmlDialog());
+      
+    },
+
     updateBet: (topSystems,
       bottomSystems,
       leftSystems,
@@ -173,6 +183,8 @@ export default class LiveBoard extends Component {
     mute:PropTypes.bool.isRequired,
     setMute:PropTypes.func.isRequired,
     liveDateText:PropTypes.string,
+    showHtmlDialog:PropTypes.func.isRequired,
+    silenceHtmlDialog:PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -825,13 +837,8 @@ export default class LiveBoard extends Component {
                 backgroundSize: "62px 62px",color:heatmapTxt}}>
               <span style={{color:switchTxt, "float": "left", "width": "30%", "height":"75px", "textAlign": "left", "verticalAlign":"middle", zIndex:1}}>
 
-               <a href='#practice_board' style={{textDecoration: "none"}}
-                               onClick={this.toggleMode}
-                               title="Switch to Practice Mode"
-
-               > 
               <div style={{
-                  
+                  cursor:'pointer',
                   background:switchBg, 
                   color:switchTxt, 
                   marginTop:"-20px",
@@ -843,23 +850,23 @@ export default class LiveBoard extends Component {
                   zIndex:2,
                  
                 }}
+                title="Switch to Practice Mode"
+                onClick={() => {
+                  self.props.showHtmlDialog(<PracticeBoard />);
+                    
+              
+                }}
 
                 >
               <span style={{marginTop:"0px",  color:switchTxt, zIndex:3,}}>
               <h2 style={{marginLeft:"70px", paddingTop:"12px"}} > 
               Live
-              </h2>
+
+                <span style={{marginLeft:"70px",marginTop:"-47px"}} className={classes.dot}></span>
+                </h2>
 
               </span>
                 </div>
-                </a>
-                <a href='#practice_board' style={{textDecoration: "none"}}
-                                onClick={this.toggleMode}
-                                title="Switch to Practice Mode"
-
-> 
-                <span className={classes.dot}></span>
-                </a>
 
                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
               </span>

@@ -5,6 +5,10 @@ import bgBoard from "../../../../assets/images/boardBg.png";
 import Config from "../../Config";
 import ChipsConfig from "../../ChipsConfig";
 import protectedComponent from "../../../../hoc/ProtectedComponent/ProtectedComponent";
+import demoComponent from "../../../../hoc/ProtectedComponent/DemoComponent";
+import { withRouter } from "react-router-dom";
+import {Button, IconButton} from 'react-toolbox/lib/button';
+
 import Aux from "../../../../hoc/_Aux/_Aux";
 // import Dashboard from "../../components/Dashboard/Dashboard";
 import LiveDashboard from "../LiveDashboard/LiveDashboard";
@@ -43,6 +47,15 @@ const insertChip = (systems, column, chip) => {
         };
   });
 };
+const getParameterByName = (name, url) => {
+  if (!url) url = window.location.href;
+  name = name.replace(/[\[\]]/g, '\\$&');
+  var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+      results = regex.exec(url);
+  if (!results) return null;
+  if (!results[2]) return '';
+  return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
 
 const stateToProps = state => {
   return {
@@ -108,6 +121,14 @@ const dispatchToProps = dispatch => {
     showLeaderDialog: (show) => {
       dispatch(actions.showLeaderDialog(show));
     },
+    showHtmlDialog: (htmlContent) => {
+      dispatch(actions.showHtmlDialog(htmlContent));
+      
+    },
+    silenceHtmlDialog: () => {
+      dispatch(actions.silenceHtmlDialog());
+      
+    },
     updateBet: (topSystems,
       bottomSystems,
       leftSystems,
@@ -125,7 +146,9 @@ const dispatchToProps = dispatch => {
   };
 };
 
-@protectedComponent
+//@withErrorHandler(axiosOpen)
+//@withRouter
+@demoComponent
 @connect(stateToProps, dispatchToProps)
 
 /**
@@ -165,6 +188,8 @@ export default class PracticeBoard extends Component {
     mute:PropTypes.bool.isRequired,
     setMute:PropTypes.func.isRequired,
     liveDateText:PropTypes.string,
+    showHtmlDialog:PropTypes.func.isRequired,
+    silenceHtmlDialog:PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -282,6 +307,7 @@ export default class PracticeBoard extends Component {
       this.setState({refreshing:true})
     this.forceUpdate();
     
+    var user=localStorage.getItem("user")
     //console.log(this.props);
     var reinit='false';
     if (reinitialize)
@@ -289,10 +315,16 @@ export default class PracticeBoard extends Component {
     var username='demo';
     if (this.props.email)
         username=this.props.email;
+    if (user) {
+      user=JSON.parse(localStorage.getItem("user"))
+      //alert(user.email)
+      if (user.email)
+        username=user.email;
+    }
     axios
     .post("/utility/initialize_practice/", {
     // accounts: [{ portfolio, target, accountValue }],
-    'username':  this.props.email,
+    'username':  username,
     'start_date': start_date
     },{timeout: 600000})
     .then(({ data }) => {
@@ -307,10 +339,12 @@ export default class PracticeBoard extends Component {
 
 
       this.setState({
+        date_picked:data.simulate_dates[0],
         loading:false,
         rankingLoading: false,
         refreshing:false,
-        accounts:accounts
+        accounts:accounts,
+        simulate_dates:data.simulate_dates
       });
 
       if (callback)
@@ -350,8 +384,8 @@ export default class PracticeBoard extends Component {
     axios
     .post("/utility/update_practice/", {
     // accounts: [{ portfolio, target, accountValue }],
-    'username':  this.props.email,
-    'start_date': this.state.date_picked,
+    'username':  username,
+    'start_date': start_date,
     //'account_params':this.state.accounts
     'account_params': this.state.account_params ? JSON.stringify(this.state.account_params) : "",
     'bets': this.state.bets ? JSON.stringify(this.state.bets) : ""
@@ -368,10 +402,13 @@ export default class PracticeBoard extends Component {
 
 
       this.setState({
+        date_picked:data.simulate_dates[0],
         loading:false,
         rankingLoading: false,
         refreshing:false,
-        accounts:accounts
+        accounts:accounts,
+        simulate_dates:data.simulate_dates
+
       });
 
       if (callback)
@@ -439,8 +476,20 @@ export default class PracticeBoard extends Component {
 
   }
   componentDidMount() {
-      this.initializeDateSelector();
-      //this.initializeLive();
+      var self=this;
+      var date=getParameterByName('date_picked'); 
+      if (date) {
+            self.setState({date_picked:date})
+            self.initializeLive(false, undefined, date)
+
+      } else {
+        if (this.props.email && this.props.email != 'demo')
+          this.initializeDateSelector();
+        else {
+          this.initializeLive();
+          
+        }
+      }
 
   }
 
@@ -934,9 +983,9 @@ export default class PracticeBoard extends Component {
                     {item ? 
                     <td  style={{ border:0, cursor:'pointer' }}
                         onClick={() => {
-
-                            self.setState({date_picked:item.start_date})
-                            self.initializeLive(false, undefined, item.start_date)
+                            window.location='/practice_board?date_picked=' + item.start_date
+                            //self.setState({date_picked:item.start_date})
+                            //self.initializeLive(false, undefined, item.start_date)
                         }}
                     >
                     <center>
@@ -955,8 +1004,10 @@ export default class PracticeBoard extends Component {
                         onClick={() => {
                           
                             if (item2) {
-                              self.setState({date_picked:item2.start_date})
-                              self.initializeLive(false, undefined, item2.start_date)
+                              window.location='/practice_board?date_picked=' + item2.start_date
+
+                              //self.setState({date_picked:item2.start_date})
+                             // self.initializeLive(false, undefined, item2.start_date)
                             }
                             
                         }}
@@ -984,9 +1035,16 @@ export default class PracticeBoard extends Component {
                     onChange={(e) => {
                         var date=e.format('YYYYMMDD')
                         console.log(date);
-                        self.setState({date_picked:date})
-                        self.initializeLive(false, undefined, date)
-                        //self.signalHistory(self.props.chip.chip_id, self.props.slot.position, parents, date, true);
+                        var hasDate=false;
+                        Object.keys(simDates).map(key => {
+                          if (date == new moment(simDates[key]).format('YYYYMMDD'))
+                            hasDate=true;
+                        })
+                        if (hasDate) {
+
+                          window.location='/practice_board?date_picked=' + date
+
+                        }
                     }}
                     value={self.state.date_picked}
                     />
@@ -1001,9 +1059,6 @@ export default class PracticeBoard extends Component {
           return (
         <div style={{ background: 'white'} }>
         <center>
-            <br/>
-            <br/>
-            <br/>
             <h3>Select 5-Day Simulation</h3>
             <table style={{ border:0 }}>
             
@@ -1012,6 +1067,10 @@ export default class PracticeBoard extends Component {
             </tbody>
 
             </table>
+            <br/>
+            <Button flat raised onClick={() => {
+                self.props.silenceHtmlDialog();
+            }}>Cancel</Button>
           </center>
         </div>
       ) 
@@ -1067,7 +1126,7 @@ export default class PracticeBoard extends Component {
                </td>
                     <td  style={{border:0, textAlign:'center'}}>
                     <div style={{ marginTop:"-22px"}}>
-                    <PracticeClock  loading={this.state.refreshing} sendNotice={this.sendNotice} date_picked={this.state.date_picked} initializeLive={this.initializeLive}  nextSimulationDay={this.nextSimulationDay} />
+                    <PracticeClock  loading={this.state.refreshing} sendNotice={this.sendNotice} date_picked={this.state.simulate_dates[1]} initializeLive={this.initializeLive}  nextSimulationDay={this.nextSimulationDay} />
                     </div>
                     </td>
                     <td  style={{border:0, textAlign:'center'}}>
