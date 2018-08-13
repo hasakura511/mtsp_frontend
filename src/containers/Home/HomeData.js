@@ -201,6 +201,9 @@ export const SectionTwo = scrollWrap(props => {
 });
 
 export const SectionThree = scrollWrap(props => {
+  var user=localStorage.getItem("user")
+  if (user)
+    user=JSON.parse(user);
   let displayClass = props.display ? classes.Shown : "";
   return (
     <div
@@ -226,7 +229,7 @@ export const SectionThree = scrollWrap(props => {
         ))}
       </div>
       <div className={classes.Container}>
-        <a href="/practice_board">
+        <a href={user && user.email ? "/board" : "/practice_board"}>
           <img src={HomeData.sectionThree.background} alt="" useMap="mapname" />
           <map name="mapname">
             <area

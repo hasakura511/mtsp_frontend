@@ -233,7 +233,9 @@ export default class OrderDialog extends Component {
     const { chip, history, isAuth, addTimedToaster, isPerformance, performance_account_id } = this.props;
     if (performance_account_id)
       this.setState({performance_account_id:performance_account_id})
-    if (chip.display !== "25K" && chip.display !== "50K" && !isAuth) {
+    
+    /*
+      if (chip.display !== "25K" && chip.display !== "50K" && !isAuth) {
       history.push("/auth");
       addTimedToaster({
         id: "board-auth-error",
@@ -242,6 +244,7 @@ export default class OrderDialog extends Component {
         } chip. If you don't have an account please sign up first.`
       });
     }
+    */
     
     this._isMounted = true;
   }

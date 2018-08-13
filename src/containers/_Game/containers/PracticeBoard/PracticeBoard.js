@@ -972,66 +972,100 @@ export default class PracticeBoard extends Component {
           var simHtml=[];
 
           var idx=0;
+          
           while (idx < simData.simulations.length) {
-            var item=simData.simulations[idx];
-            idx+=1;
-            var item2=simData.simulations[idx];
-            idx+=1;
-            simHtml.push(
-                
-                <tr key={"item" + idx}>
-                    {item ? 
-                    <td  style={{ border:0, cursor:'pointer' }}
-                        onClick={() => {
-                            window.location='/practice_board?date_picked=' + item.start_date
-                            //self.setState({date_picked:item.start_date})
-                            //self.initializeLive(false, undefined, item.start_date)
-                        }}
+            var item=Object.assign({}, simData.simulations[idx]);
+            var items=[];
+            var isLast=false;
+            if (item && item.png) {
+              items.push(<td key={'item' + idx} style={{ border:0, cursor:'pointer' }}
+               
+              >
+              {item.start_date ? 
+              <Link to={'/practice_board?date_picked=' + item.start_date}
+                onClick={() => {
+                  self.props.silenceHtmlDialog();
+
+                }}
+              >
+              <center>
+              <br />
+              <br />
+              {item.description}
+              
+              <br/>
+              <img src={"/images/" + item.png }  width={300} />
+              </center>
+              </Link>
+              : <center>
+              <br />
+              <br />
+              {item.description}
+              
+              <br/>
+              <img src={"/images/" + item.png }  width={300} />
+              </center>
+              }
+              </td>);
+              console.log(item);
+              idx+=1;
+              
+              var item2=Object.assign({}, simData.simulations[idx]);
+              if (item2 && item2.png) {
+                items.push(<td  key={'item' + idx}  style={{ border:0, cursor:'pointer' }}
+                  >
+                   {item2.start_date ? <Link to={'/practice_board?date_picked=' + item2.start_date}
+                      onClick={() => {
+                        self.props.silenceHtmlDialog();
+
+                      }}
                     >
-                    <center>
-                    <br />
-                    <br />
-                    {item.description}
-                    
-                    <br/>
-                    <img src={"/images/" + item.png }  width={300} />
-                    </center>
+                  <center>
+                  <br />
+                  <br />
 
-                    </td>
-                    : null }
-                    {item2 ? 
-                    <td  style={{ border:0, cursor:'pointer' }}
-                        onClick={() => {
-                          
-                            if (item2) {
-                              window.location='/practice_board?date_picked=' + item2.start_date
+                  {item2.description}
+                  
+                  <br/>
+                  <img src={"/images/" + item2.png } width={300} />
+                  </center>
+                  </Link> : 
+                  <center>
+                  <br />
+                  <br />
 
-                              //self.setState({date_picked:item2.start_date})
-                             // self.initializeLive(false, undefined, item2.start_date)
-                            }
-                            
-                        }}
-                    >
-                    <center>
-                    <br />
-                    <br />
-
-                    {item2.description}
-                    
-                    <br/>
-                    <img src={"/images/" + item2.png } width={300} />
-                    </center>
-
-                    </td>
-                    : <td  style={{ border:0 }}>
+                  {item2.description}
+                  
+                  <br/>
+                  <img src={"/images/" + item2.png } width={300} />
+                   </center>}
+                  </td>);
+              } else {
+                isLast=true;
+              }
+              idx+=1;
+            } else {
+              isLast=true;
+            }
+            if (isLast) {
+              var lastDate="";
+              Object.keys(simDates).map(key => {
+                lastDate=simDates[key];
+              })
+              items.push(<td key={'lastitem'} style={{ border:0 }}>
                     <center>
                         <br />
                     Select Custom Start Date <br/>
                     <DatePicker
                     withPortal
-                    highlightDates={Object.keys(simDates).map(key => {
-                        return new moment(simDates[key]);
-                    })}
+                    highlightDates={
+                      [
+                        { "react-datepicker__day--selected": Object.keys(simDates).map(key => {
+                            return new moment(simDates[key]);
+                          })
+                        }
+                      ]
+                    }
                     onChange={(e) => {
                         var date=e.format('YYYYMMDD')
                         console.log(date);
@@ -1046,11 +1080,17 @@ export default class PracticeBoard extends Component {
 
                         }
                     }}
-                    value={self.state.date_picked}
+                    shouldCloseOnSelect={false}
+                    selected={new moment(lastDate)}
+                    //value={self.state.date_picked}
                     />
                             </center>                
-                            </td>
-                        }
+                            </td>)
+            }
+            simHtml.push(
+                
+                <tr key={"row" + idx}>
+                    {items}
                 </tr>
             );
 
