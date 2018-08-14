@@ -972,11 +972,68 @@ export default class PracticeBoard extends Component {
           var simHtml=[];
           var iconWidth=200;
           var idx=0;
-          
+          var isLast=false;
+          var lastDate="";
+          Object.keys(simDates).map(key => {
+            lastDate=simDates[key];
+          })
+          var lastitem=<td key={'lastitem'} style={{ border:0, cursor:'pointer' }}>
+                <center>
+                    <br />
+                    <br />
+                Select Custom Start Date <br/>
+                <img src="/images/practice_5days.png" width={iconWidth} onClick={() => {
+                    $('#custom_datepick').show();
+                }} />
+                <div style={{display:"none"}} id={'custom_datepick'}                 
+                
+                onClick={(e) => {
+                  if (e.target.toString() == "[object HTMLDivElement]") {
+                    //alert(e.target.toString())
+                    if (e.target.classList.contains("react-datepicker__portal")) {
+                      $('#custom_datepick').hide();
+                    }
+                  }
+                  console.log(e.target)
+                  
+                }}
+>
+                <DatePicker
+                inline
+                withPortal
+                highlightDates={
+                  [
+                    { "react-datepicker__day--highlighted": Object.keys(simDates).map(key => {
+                        return new moment(simDates[key]);
+                      })
+                    }
+                  ]
+                }
+                onChange={(e) => {
+                   
+                    var date=e.format('YYYYMMDD')
+                    console.log(date);
+                    var hasDate=false;
+                    Object.keys(simDates).map(key => {
+                      if (date == new moment(simDates[key]).format('YYYYMMDD'))
+                        hasDate=true;
+                    })
+                    if (hasDate) {
+
+                      window.location='/practice_board?date_picked=' + date
+
+                    }
+                }}
+                shouldCloseOnSelect={false}
+                //selected={new moment(lastDate)}
+                //value={self.state.date_picked}
+                />
+                </div>
+                        </center>                
+                        </td>
           while (idx < simData.simulations.length) {
             var item=Object.assign({}, simData.simulations[idx]);
             var items=[];
-            var isLast=false;
             if (item && item.png) {
               items.push(<td key={'item' + idx} style={{ border:0, cursor:'pointer' }}
                
@@ -1083,51 +1140,9 @@ export default class PracticeBoard extends Component {
               isLast=true;
             }
             if (isLast) {
-              var lastDate="";
-              Object.keys(simDates).map(key => {
-                lastDate=simDates[key];
-              })
-              items.push(<td key={'lastitem'} style={{ border:0, cursor:'pointer' }}>
-                    <center>
-                        <br />
-                        <br />
-                    Select Custom Start Date <br/>
-                    <img src="/images/practice_5days.png" width={iconWidth} onClick={() => {
-                        $('#custom_datepick').show();
-                    }} />
-                    <div style={{display:"none"}} id={'custom_datepick'}>
-                    <DatePicker
-                    inline
-                    withPortal
-                    highlightDates={
-                      [
-                        { "react-datepicker__day--highlighted": Object.keys(simDates).map(key => {
-                            return new moment(simDates[key]);
-                          })
-                        }
-                      ]
-                    }
-                    onChange={(e) => {
-                        var date=e.format('YYYYMMDD')
-                        console.log(date);
-                        var hasDate=false;
-                        Object.keys(simDates).map(key => {
-                          if (date == new moment(simDates[key]).format('YYYYMMDD'))
-                            hasDate=true;
-                        })
-                        if (hasDate) {
-
-                          window.location='/practice_board?date_picked=' + date
-
-                        }
-                    }}
-                    shouldCloseOnSelect={false}
-                    //selected={new moment(lastDate)}
-                    //value={self.state.date_picked}
-                    />
-                    </div>
-                            </center>                
-                            </td>)
+             
+              items.push(lastitem);
+              
             }
             simHtml.push(
                 
@@ -1136,6 +1151,15 @@ export default class PracticeBoard extends Component {
                 </tr>
             );
 
+          }
+          if (!isLast) {
+            idx+=1;
+            simHtml.push(
+                
+              <tr key={"row" + idx}>
+                  {lastitem}
+              </tr>
+          );
           }
 
           return (
