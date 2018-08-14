@@ -387,7 +387,7 @@ export default class PracticeBoard extends Component {
     'username':  username,
     'start_date': start_date,
     //'account_params':this.state.accounts
-    'account_params': this.state.account_params ? JSON.stringify(this.state.account_params) : "",
+    'account_params': this.state.account_params ? JSON.stringify(this.state.account_params) : JSON.stringify(this.props.accounts),
     'bets': this.state.bets ? JSON.stringify(this.state.bets) : ""
     },{timeout: 600000})
     .then(({ data }) => {

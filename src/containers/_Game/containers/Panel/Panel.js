@@ -1625,8 +1625,9 @@ export default class Panel extends Component {
         var update_bets="";
         if (data.update_bets)
           update_bets=JSON.stringify(data.update_bets);
-
-        window.location='/board?reinitialize=1&update_bets=' + update_bets;
+        var initQueue={'reinitialize':true, 'update_bets':update_bets}
+        localStorage.setItem("initQueue", JSON.stringify(initQueue));
+        window.location='/board';
       }
     })
     .catch(error => {

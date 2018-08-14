@@ -43,15 +43,6 @@ const insertChip = (systems, column, chip) => {
   });
 };
 
-const getParameterByName = (name, url) => {
-  if (!url) url = window.location.href;
-  name = name.replace(/[\[\]]/g, '\\$&');
-  var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-      results = regex.exec(url);
-  if (!results) return null;
-  if (!results[2]) return '';
-  return decodeURIComponent(results[2].replace(/\+/g, ' '));
-}
 
 const stateToProps = state => {
   return {
@@ -306,12 +297,17 @@ export default class LiveBoard extends Component {
     var reinit='false';
     if (reinitialize)
       reinit='true';
-    var update_param=getParameterByName('update_bets'); 
-    var reinit_param=getParameterByName('reinitialize');
-    if (update_param && !update_bets) {
-      update_bets=JSON.parse(update_param);
-      if (reinit_param) {
-        reinit='true';
+    var initQueue=localStorage.getItem("initQueue");
+    if (initQueue) {
+      var queue=JSON.parse(initQueue);
+
+      var update_param=queue.update_bets;
+      var reinit_param=queue.reinitialize;
+      if (update_param && !update_bets) {
+        update_bets=JSON.parse(update_param);
+        if (reinit_param) {
+          reinit='true';
+        }
       }
     }
     axios
@@ -322,6 +318,7 @@ export default class LiveBoard extends Component {
     'update_bets':update_bets
     },{timeout: 600000})
     .then(({ data }) => {
+      localStorage.setItem("initQueue", null);
       console.log('received initialize_live data')
       console.log(data);
       self.props.initializeData(data);
