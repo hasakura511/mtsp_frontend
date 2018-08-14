@@ -321,6 +321,11 @@ export default class PracticeBoard extends Component {
       if (user.email)
         username=user.email;
     }
+    if (!this.state.init_params) {
+      this.setState({init_params: {'username':username, 'start_date':start_date}})
+    } else {
+      start_date=this.state.init_params.start_date;
+    }
     axios
     .post("/utility/initialize_practice/", {
     // accounts: [{ portfolio, target, accountValue }],
