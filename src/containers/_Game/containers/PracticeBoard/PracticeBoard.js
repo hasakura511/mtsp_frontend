@@ -331,7 +331,7 @@ export default class PracticeBoard extends Component {
       console.log('received initialize_practice data')
       console.log(data);
       var accounts=data.accounts;
-      console.log(accounts);
+      //console.log(accounts);
       this.setState({accounts_orig:accounts})
       data.isPractice=true;
       self.props.initializeData(data);
@@ -383,6 +383,11 @@ export default class PracticeBoard extends Component {
     var username='demo';
     if (this.props.email)
         username=this.props.email;
+
+    var bets={};
+    (this.state.account_params ? this.state.account_params : this.props.accounts).map(account => {
+      bets[account.chip_id]=account.last_selection;
+    });
     axios
     .post("/utility/update_practice/", {
     // accounts: [{ portfolio, target, accountValue }],
@@ -390,7 +395,7 @@ export default class PracticeBoard extends Component {
     'start_date': start_date,
     //'account_params':this.state.accounts
     'account_params': this.state.accounts_orig, // this.state.account_params ? JSON.stringify(this.state.account_params) : JSON.stringify(this.props.accounts),
-    'bets': this.state.bets ? JSON.stringify(this.state.bets) : ""
+    'bets': JSON.stringify(bets)
     },{timeout: 600000})
     .then(({ data }) => {
       console.log('received initialize_practice data')
@@ -657,65 +662,7 @@ export default class PracticeBoard extends Component {
         console.log(accounts);
         this.moveOnBoard(chip,position,strat);
 
-        /*
-        var bets={};
-        var account_params=accounts.map(account => {
-          if (account.chip_id == chip.chip_id) {
-            account.chip_id=chip.chip_id;
-            account.chip_location=chip.chip_location;
-            account.prev_selection=account.last_selection;
-            account.position=chip.last_selection;
-            account.last_selection=chip.last_selection;
-          }
-          bets[account.chip_id]=account.chip_location;
-        });
        
-
-        axios
-          .post("/utility/update_practice/", {
-          // .get("https://api.myjson.com/bins/11pqxf", {
-          //only 5k chip for tier 0
-          // accounts: [{ portfolio, target, accountValue }],
-          'username': this.props.email,
-          'account_params': JSON.stringify(account_params),
-          'bets':JSON.stringify(bets)
-          },{timeout: 600000})
-          .then(({ data }) => {
-            console.log('received initialize_practice data')
-            var accounts=data.accounts;
-            data.isPractice=true;
-            self.props.initializeData(data);
-
-            if (!this.state.loading)
-              this.sendNotice("Board Refreshed with New Data");
-
-
-            this.setState({
-              loading:false,
-              rankingLoading: false,
-              refreshing:false,
-              accounts:accounts
-            });
-
-
-          })
-          .catch(error => {
-            this.sendNotice('Error Placing Bet' + JSON.stringify(error));
-            console.log('error initializing')
-            console.log(error)
-            // eslint-disable-next-line react/no-is-mounted
-            origChip.position=origPosition;
-            origChip.last_selection=origStrat;
-
-            this.moveOnBoard(origChip, origPosition, origStrat);
-
-            this.setState({
-              rankingLoading: false,
-              rankingError: error
-            });
-          });
-          */
-          
   };
 
   /**
@@ -744,64 +691,6 @@ export default class PracticeBoard extends Component {
         var origStrat=chip.orig_last_selection;
         this.moveOnBoard(chip, chip.position, chip.last_selection);
 
-        /*
-        var bets={};
-        var account_params=accounts.map(account => {
-          if (account.chip_id == chip.chip_id) {
-            account.chip_id=chip.chip_id;
-            account.chip_location=chip.chip_location;
-            account.prev_selection=account.last_selection;
-            account.position=chip.last_selection;
-            account.last_selection=chip.last_selection;
-          }
-          bets[account.chip_id]=account.chip_location;
-        });
-       
-
-        axios
-          .post("/utility/update_practice/", {
-          // .get("https://api.myjson.com/bins/11pqxf", {
-          //only 5k chip for tier 0
-          // accounts: [{ portfolio, target, accountValue }],
-          'username': this.props.email,
-          'account_params': JSON.stringify(account_params),
-          'bets':JSON.stringify(bets)
-          },{timeout: 600000})
-          .then(({ data }) => {
-            console.log('received initialize_practice data')
-            var accounts=data.accounts;
-            data.isPractice=true;
-            self.props.initializeData(data);
-
-            if (!this.state.loading)
-              this.sendNotice("Board Refreshed with New Data");
-
-
-            this.setState({
-              loading:false,
-              rankingLoading: false,
-              refreshing:false,
-              accounts:accounts
-            });
-
-
-          })
-          .catch(error => {
-            this.sendNotice('Error Placing Bet' + JSON.stringify(error));
-            console.log('error initializing')
-            console.log(error)
-            // eslint-disable-next-line react/no-is-mounted
-            origChip.position=origPosition;
-            origChip.last_selection=origStrat;
-
-            this.moveOnBoard(origChip, origPosition, origStrat);
-
-            this.setState({
-              rankingLoading: false,
-              rankingError: error
-            });
-          });
-          */
   };
 
   reset = () => {
