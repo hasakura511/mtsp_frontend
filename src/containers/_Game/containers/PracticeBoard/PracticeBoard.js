@@ -970,7 +970,7 @@ export default class PracticeBoard extends Component {
           var simData=this.state.simData;
           var simDates=simData.available_dates
           var simHtml=[];
-
+          var iconWidth=200;
           var idx=0;
           
           while (idx < simData.simulations.length) {
@@ -994,7 +994,7 @@ export default class PracticeBoard extends Component {
               {item.description}
               
               <br/>
-              <img src={"/images/" + item.png }  width={300} />
+              <img src={"/images/" + item.png }  width={iconWidth} />
               </center>
               </Link>
               : <center>
@@ -1003,7 +1003,7 @@ export default class PracticeBoard extends Component {
               {item.description}
               
               <br/>
-              <img src={"/images/" + item.png }  width={300} />
+              <img src={"/images/" + item.png }  width={iconWidth} />
               </center>
               }
               </td>);
@@ -1027,7 +1027,7 @@ export default class PracticeBoard extends Component {
                   {item2.description}
                   
                   <br/>
-                  <img src={"/images/" + item2.png } width={300} />
+                  <img src={"/images/" + item2.png } width={iconWidth} />
                   </center>
                   </Link> : 
                   <center>
@@ -1037,7 +1037,42 @@ export default class PracticeBoard extends Component {
                   {item2.description}
                   
                   <br/>
-                  <img src={"/images/" + item2.png } width={300} />
+                  <img src={"/images/" + item2.png } width={iconWidth} />
+                   </center>}
+                  </td>);
+              } else {
+                isLast=true;
+              }
+              idx+=1;
+
+              var item3=Object.assign({}, simData.simulations[idx]);
+              if (item3 && item3.png) {
+                items.push(<td  key={'item' + idx}  style={{ border:0, cursor:'pointer' }}
+                  >
+                   {item3.start_date ? <Link to={'/practice_board?date_picked=' + item3.start_date}
+                      onClick={() => {
+                        self.props.silenceHtmlDialog();
+
+                      }}
+                    >
+                  <center>
+                  <br />
+                  <br />
+
+                  {item3.description}
+                  
+                  <br/>
+                  <img src={"/images/" + item3.png } width={iconWidth} />
+                  </center>
+                  </Link> : 
+                  <center>
+                  <br />
+                  <br />
+
+                  {item3.description}
+                  
+                  <br/>
+                  <img src={"/images/" + item3.png } width={iconWidth} />
                    </center>}
                   </td>);
               } else {
@@ -1052,15 +1087,21 @@ export default class PracticeBoard extends Component {
               Object.keys(simDates).map(key => {
                 lastDate=simDates[key];
               })
-              items.push(<td key={'lastitem'} style={{ border:0 }}>
+              items.push(<td key={'lastitem'} style={{ border:0, cursor:'pointer' }}>
                     <center>
                         <br />
+                        <br />
                     Select Custom Start Date <br/>
+                    <img src="/images/practice_5days.png" width={iconWidth} onClick={() => {
+                        $('#custom_datepick').show();
+                    }} />
+                    <div style={{display:"none"}} id={'custom_datepick'}>
                     <DatePicker
+                    inline
                     withPortal
                     highlightDates={
                       [
-                        { "react-datepicker__day--selected": Object.keys(simDates).map(key => {
+                        { "react-datepicker__day--highlighted": Object.keys(simDates).map(key => {
                             return new moment(simDates[key]);
                           })
                         }
@@ -1081,9 +1122,10 @@ export default class PracticeBoard extends Component {
                         }
                     }}
                     shouldCloseOnSelect={false}
-                    selected={new moment(lastDate)}
+                    //selected={new moment(lastDate)}
                     //value={self.state.date_picked}
                     />
+                    </div>
                             </center>                
                             </td>)
             }
@@ -1166,7 +1208,14 @@ export default class PracticeBoard extends Component {
                </td>
                     <td  style={{border:0, textAlign:'center'}}>
                     <div style={{ marginTop:"-22px"}}>
-                    <PracticeClock  loading={this.state.refreshing} sendNotice={this.sendNotice} date_picked={this.state.simulate_dates[1]} initializeLive={this.initializeLive}  nextSimulationDay={this.nextSimulationDay} />
+                    {this.state.simulate_dates.length ? 
+                    <PracticeClock  
+                      loading={this.state.refreshing} 
+                      sendNotice={this.sendNotice} 
+                      date_picked={this.state.simulate_dates[1]} 
+                      initializeLive={this.initializeLive}  
+                      nextSimulationDay={this.nextSimulationDay} />
+                      : null}
                     </div>
                     </td>
                     <td  style={{border:0, textAlign:'center'}}>
