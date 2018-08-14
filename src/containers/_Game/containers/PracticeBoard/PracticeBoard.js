@@ -331,6 +331,8 @@ export default class PracticeBoard extends Component {
       console.log('received initialize_practice data')
       console.log(data);
       var accounts=data.accounts;
+      console.log(accounts);
+      this.setState({accounts_orig:accounts})
       data.isPractice=true;
       self.props.initializeData(data);
 
@@ -387,7 +389,7 @@ export default class PracticeBoard extends Component {
     'username':  username,
     'start_date': start_date,
     //'account_params':this.state.accounts
-    'account_params': this.state.account_params ? JSON.stringify(this.state.account_params) : JSON.stringify(this.props.accounts),
+    'account_params': this.state.accounts_orig, // this.state.account_params ? JSON.stringify(this.state.account_params) : JSON.stringify(this.props.accounts),
     'bets': this.state.bets ? JSON.stringify(this.state.bets) : ""
     },{timeout: 600000})
     .then(({ data }) => {
@@ -395,6 +397,8 @@ export default class PracticeBoard extends Component {
       console.log(data);
       var accounts=data.accounts;
       data.isPractice=true;
+      this.setState({accounts_orig:accounts})
+
       self.props.initializeData(data);
 
       if (!this.state.loading)
