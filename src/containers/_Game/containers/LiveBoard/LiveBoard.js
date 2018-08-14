@@ -300,13 +300,14 @@ export default class LiveBoard extends Component {
     var initQueue=localStorage.getItem("initQueue");
     if (initQueue) {
       var queue=JSON.parse(initQueue);
-
-      var update_param=queue.update_bets;
-      var reinit_param=queue.reinitialize;
-      if (update_param && !update_bets) {
-        update_bets=JSON.parse(update_param);
-        if (reinit_param) {
-          reinit='true';
+      if (queue) {
+        var update_param=queue.update_bets;
+        var reinit_param=queue.reinitialize;
+        if (update_param && !update_bets) {
+          update_bets=JSON.parse(update_param);
+          if (reinit_param) {
+            reinit='true';
+          }
         }
       }
     }
