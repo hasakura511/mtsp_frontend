@@ -458,7 +458,11 @@ const reducer = (state = initialState, action) => {
           heatmap_lookup_symbol:sym,
           heatmap_lookup_group:'',
           heatmap_lookup_link:link,
-          heatmap_lookup_date:action.date
+          heatmap_lookup_date:action.date,
+          heatmap_lookup_chip_id:action.chip_id,
+          heatmap_lookup_board_config_str:action.board_config_str,
+          heatmap_lookup_simulate_dates:action.simulate_dates
+          
 
         };
     }
@@ -478,7 +482,10 @@ const reducer = (state = initialState, action) => {
           heatmap_lookup_symbol:'',
           heatmap_lookup_group:group,
           heatmap_lookup_link:action.link,
-          heatmap_lookup_date:action.date
+          heatmap_lookup_date:action.date,
+          heatmap_lookup_chip_id:null,
+          heatmap_lookup_board_config_str:null,
+          heatmap_lookup_simulate_dates:null
         };
     }
     case actionTypes.INITIALIZE_DATA:

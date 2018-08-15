@@ -219,7 +219,7 @@ export default class Chip extends PureComponent {
     if (chip.display != undefined) {
       if (chip.tier)
         title="Tier: " + toTitleCase(chip.tier.toString()) + "\n"; 
-      if (chip.lockdown_text)
+      if (chip.lockdown_text && !chip.simulate_dates)
         title+="Lockdown: " + chip.lockdown_text.toString() + "\n"; 
       if (chip.unlocktime_text)
         title+="Unlock: " + chip.unlocktime_text.toString() + "\n"; 
@@ -237,7 +237,7 @@ export default class Chip extends PureComponent {
         else
           title+="Current Bet: " +  toTitleCase(chip.last_selection.toString()) + "\n";
       }
-      if (chip.status && !chip.isReadOnly)
+      if (chip.status && !chip.isReadOnly && !chip.simulate_dates)
         title+="Status: " +  toTitleCase(chip.status.toString());
     }
 

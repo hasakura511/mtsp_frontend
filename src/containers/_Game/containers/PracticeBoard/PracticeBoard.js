@@ -246,58 +246,6 @@ export default class PracticeBoard extends Component {
   }
 
   
-  initializeHeatmap=(account_id) => {
-    /*
-    if (this.state.refreshing)
-      return;
-    else
-      this.setState({refreshing:true})
-    */
-    //console.log(this.props);
-    axios
-    .post("/utility/market_heatmap/", {
-      "username":this.props.email, 
-      "account_id":account_id, 
-      "link":"current",
-      "date":this.props.liveDateText,
-
-      // accounts: [{ portfolio, target, accountValue }],
-    },{timeout: 600000})
-    .then(({ data }) => {
-      console.log('received initialize_live data')
-      console.log(data);
-      /*
-      this.props.initialize(data);
-
-      if (!this.state.loading)
-        this.sendNotice("Board Refreshed with New Data");
-
-
-      this.setState({
-        loading:false,
-        rankingLoading: false,
-        rankingData: data.rankingData,
-        refreshing:false
-      });*/
-
-    })
-    .catch(error => {
-      this.sendNotice('Heatmap Data not received: ' + JSON.stringify(error));
-      console.log('error initializing')
-      console.log(error)
-    // eslint-disable-next-line react/no-is-mounted
-    /*
-      this.setState({
-        rankingLoading: false,
-        rankingError: error,
-        loading:false,
-        refreshing:false
-      });
-          */
-
-    });
-
-  }
 
   initializeLive=(reinitialize=false, callback=undefined, start_date="") => {
     var self=this;
@@ -633,10 +581,10 @@ export default class PracticeBoard extends Component {
     var account_params=accounts.map(account => {
       if (account.chip_id == chip.chip_id) {
         account.chip_id=chip.chip_id;
-        account.chip_location=chip.chip_location;
-        account.prev_selection=account.last_selection;
-        account.position=chip.last_selection;
-        account.last_selection=chip.last_selection;
+        //account.chip_location=chip.chip_location;
+        //account.prev_selection=account.last_selection;
+        //account.position=chip.last_selection;
+        //account.last_selection=account.last_selection;
       }
       bets[account.chip_id]=account.chip_location;
       return account;
@@ -1085,7 +1033,7 @@ export default class PracticeBoard extends Component {
 
         <Aux id={'liveboard'}>
           
-          <LiveDashboard sendNotice={this.sendNotice} initializeLive={this.initializeLive}
+          <LiveDashboard isPractice={true} sendNotice={this.sendNotice} initializeLive={this.initializeLive}
             />
 
 
@@ -1190,7 +1138,7 @@ export default class PracticeBoard extends Component {
           >
             <div>
               <span style={{"marginTop":"-50px","float": "left", "width": "50%", "textAlign": "left", "display": "inline-block","verticalAlign": "top"}}>
-              <a href='#leaderboard' onClick={() => { self.props.showLeaderDialog(true); }} title="Show Global Leaderboards."><img src="/images/leaderboard_button.png" width="120"/></a><br/>
+              <br/>
               </span>
               <span style={{"marginTop":"-50px", "float": "right", "width": "50%",  "textAlign": "right",  "display": "inline-block", "verticalAlign":"top"}}>
                 <img src="/images/infotext_button.png" width="22" style={{"margin":"10px"}} />
@@ -1211,19 +1159,7 @@ export default class PracticeBoard extends Component {
               initializeLive={this.initializeLive}
             />
               <span style={{"marginTop":"30px","float": "left", "width": "50%", "textAlign": "left", "display": "inline-block","verticalAlign": "top"}}>
-                <a href='#accounts' 
-                title="Create or configure your accounts."
-                onClick={() => {
-                  window.location='/accounts'
-                }}
-                ><img src="/images/accounts_button.png" width="120"/></a><br/>
-                <a href={"#new_board"} 
-                   onClick={() => {
-
-                    self.checkLock();
-                   }
-                   } title="Edit your board."
-                ><img src="/images/edit_board_button.png" width="120"/></a><br/>  
+                <br/>  
               </span>
               {self.props.mute ? (
               <span style={{"marginTop":"60px", "paddingRight":"5px", "float": "right", "width": "50%", "textAlign": "right", "display": "inline-block","verticalAlign": "top"}}>

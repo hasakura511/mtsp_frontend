@@ -71,7 +71,7 @@ const dispatchToProps = dispatch => {
 @connect(stateToProps, dispatchToProps)
 
 
-export default class Clock extends PureComponent {
+export default class PracticeClock extends PureComponent {
   static propTypes = {
     //simulatedDate: PropTypes.string.isRequired,
     isLive:PropTypes.bool.isRequired,
@@ -132,8 +132,7 @@ export default class Clock extends PureComponent {
     const { updateDate,initializeData } = this.props;
     return (
      
-          <div className={classes.Widget} style={bgStyle}  onClick={()=>{ if (self.props.isLive)
-                                                                              self.props.showLockdownDialog(true); }} >
+          <div className={classes.Widget} style={bgStyle}>
           <div className={classes.Left}>
              <table><tbody><tr><td style={{border:"0px", maxWidth:"30px"}}>
                     <span style={{cursor:'pointer', fontSize:"12px"}} onClick={() => {
@@ -186,17 +185,19 @@ export default class Clock extends PureComponent {
           <table><tbody><tr><td style={{border:"0px", minWidth:"231px"}}>
             <div style={{"marginLeft":"3px", "marginTop":"-10px"}}>
               <h3>
-              <LiveClock format={'hh:mm:ss A '} ticking={true} timezone={'US/Eastern'} />
-              &nbsp;
-              EST </h3> 
+              {initializeData.clock_text.time}
+              </h3> 
               <p style={{ "marginTop":"-10px"}}>
-              <LiveClock format={'dddd, DD MMM YYYY'} ticking={true} timezone={'US/Eastern'} /> 
+              {initializeData.clock_text.date}
               <Moment format={'YYYY-MM-DD HH:mm:ss'} onChange={(val) => { console.log(val); updateDate(val); }} interval={5000} tz="US/Eastern" style={{"display":"none"}} className="datetime" aria-hidden={true}/>
               </p>
             </div>
           </td><td style={{border:"0px", marginLeft:"-30px", minWidth:"90px", textAlign:"center"}}>
                 <span style={{cursor:'pointer', fontSize:"12px"}} onClick={() => {
-                                      self.props.nextSimulationDay(false, undefined, this.props.date_picked);
+                    if (initializeData.stop_simulation)
+                      self.props.sendNotice("You have reached the end of your simulation.");
+                    else
+                      self.props.nextSimulationDay(false, undefined, this.props.date_picked);
                                     }}>
                 <img src="/images/practice_simulate.png" width={30} /><br/>
                 

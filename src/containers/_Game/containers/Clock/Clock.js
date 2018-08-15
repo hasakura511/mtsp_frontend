@@ -128,7 +128,8 @@ export default class Clock extends PureComponent {
     const { updateDate,dashboard_totals } = this.props;
     return (
      
-          <div className={classes.Widget} style={bgStyle}  onClick={()=>{ if (self.props.isLive)
+          <div className={classes.Widget} style={bgStyle}  onClick={()=>{ 
+            if (self.props.isLive)
                                                                               self.props.showLockdownDialog(true); }} >
           <div className={classes.Left}>
             {this.props.isLive ? (

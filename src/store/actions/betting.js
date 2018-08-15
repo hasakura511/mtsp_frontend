@@ -62,13 +62,16 @@ export const setStrat = (strat) => {
   };
 };
 
-export const initializeHeatmap = (account_id, link, sym='', date='') => {
+export const initializeHeatmap = (account_id, link, sym='', date='',chip_id='', board_config_str='', simulate_dates='') => {
   return {
     type: actionTypes.INITIALIZE_HEATMAP,
     account_id, 
     link, 
     sym,
-    date
+    date,
+    chip_id,
+    board_config_str,
+    simulate_dates
   };
 };
 

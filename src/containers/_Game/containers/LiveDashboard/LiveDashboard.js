@@ -42,8 +42,8 @@ const dispatchToProps = dispatch => {
     addTimedToaster: toaster => {
       dispatch(actions.addTimedToaster(toaster, 5000))
     },
-    initializeHeatmap:(action_id) => {
-      dispatch(actions.initializeHeatmap(action_id, 'current'))
+    initializeHeatmap:(account_id, link='current', sym='', date='',chip_id='', board_config_str='', simulate_dates='') => {
+      dispatch(actions.initializeHeatmap(account_id, link, sym, date, chip_id, board_config_str, simulate_dates))
     },
     showPerformance:(action_id) => {
       dispatch(actions.showPerformance(action_id))
@@ -70,7 +70,8 @@ export default class LiveDashboard extends Component {
     initializeLive:PropTypes.func.isRequired,
     sendNotice:PropTypes.func.isRequired,
     initializeHeatmap:PropTypes.func.isRequired,
-    showPerformance:PropTypes.func.isRequired
+    showPerformance:PropTypes.func.isRequired,
+    isPractice:PropTypes.bool
   };
     
   constructor(props) {
@@ -271,7 +272,14 @@ export default class LiveDashboard extends Component {
                 locktime=locktime.substring(5).replace('-','/');
                 lpBetDate=account.date.substring(5).replace('-','/')
               }
-
+              if (!betDate && account.next_date) 
+                betDate=account.next_date.substring(4,6) + '/' + account.next_date.substring(6,10)
+                
+              if (!lpBetDate && account.current_date)
+                lpBetDate=account.current_date.substring(4,6) + '/' + account.current_date.substring(6,10)
+              if (!locktime) {
+                locktime=account.lockdown_text
+              }
               const accountId=account.account_id;
               const accountValue=account.account_value;
               var lcBet = account.last_selection;
@@ -344,7 +352,10 @@ export default class LiveDashboard extends Component {
                       <a href='#viewportfolio' 
                         title="Display PnL Heatmap for this account"
                         onClick={() => { 
-                        self.props.initializeHeatmap(account.account_id);
+                          if (self.props.isPractice)  {
+                            self.props.initializeHeatmap(account.account_id, 'practice', '', account.current_date, account.chip_id, account.board_config_str, account.simulate_dates);
+                          } else
+                            self.props.initializeHeatmap(account.account_id);
                         $(window).scrollTop($("#marketTop").offset().top-111);
 
                       }}><img src="/images/view_portfolio.png" width="30" /></a>
