@@ -285,10 +285,9 @@ export default class PracticeBoard extends Component {
       console.log(data);
       var accounts=data.accounts;
       //console.log(accounts);
-      this.setState({accounts_orig:accounts})
+      this.setState({accounts_orig:accounts, account_params:undefined})
       data.isPractice=true;
       self.props.initializeData(data);
-
       //if (!this.state.loading)
       //  this.sendNotice("Board Refreshed with New Data");
 
