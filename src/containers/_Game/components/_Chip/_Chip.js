@@ -270,6 +270,9 @@ export default class Chip extends PureComponent {
     if (chip.account_chip_png) {
       chipImg="/images/" + chip.account_chip_png;
     }
+    if (chip.simulate_dates) {
+      chipImg="/images/practice_chip.png";      
+    }
     var chipStyle={ "backgroundImage": "linear-gradient(to top, #00468c 0%, #2a92fa 100%)" };
     var chipStyle2=chipStyle;
     if (chipImg)
