@@ -461,7 +461,9 @@ const reducer = (state = initialState, action) => {
           heatmap_lookup_date:action.date,
           heatmap_lookup_chip_id:action.chip_id,
           heatmap_lookup_board_config_str:action.board_config_str,
-          heatmap_lookup_simulate_dates:action.simulate_dates
+          heatmap_lookup_simulate_dates:action.simulate_dates,
+          heatmap_lookup_prev_selection:action.prev_selection,
+          
           
 
         };

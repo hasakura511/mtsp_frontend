@@ -54,6 +54,7 @@ const stateToProps = state => {
     heatmap_lookup_chip_id:state.betting.heatmap_lookup_chip_id,
     heatmap_lookup_board_config_str:state.betting.heatmap_lookup_board_config_str,
     heatmap_lookup_simulate_dates:state.betting.heatmap_lookup_simulate_dates,
+    heatmap_lookup_prev_selection:state.betting.heatmap_lookup_prev_selection,
     refresh_markets:state.betting.refresh_markets,
   };
 };
@@ -152,6 +153,7 @@ export default class Markets extends Component {
     heatmap_lookup_chip_id:PropTypes.string,
     heatmap_lookup_board_config_str:PropTypes.string,
     heatmap_lookup_simulate_dates:PropTypes.string,
+    heatmap_lookup_prev_selection:PropTypes.string,
   };
 
   getSubmitTitle(controls) {
@@ -187,7 +189,13 @@ export default class Markets extends Component {
       newProps.heatmap_lookup_link != self.props.heatmap_lookup_link)) {
       //alert(newProps.heatmap_lookup_simulate_dates)
       //alert(newProps.heatmap_lookup_board_config_str)
-      this.refreshData(newProps.heatmap_lookup_account_id,newProps.heatmap_lookup_link,'', '', newProps.heatmap_lookup_date ? newProps.heatmap_lookup_date : this.state.liveDateText, newProps.heatmap_lookup_chip_id, newProps.heatmap_lookup_board_config_str, newProps.heatmap_lookup_simulate_dates);
+      this.refreshData(newProps.heatmap_lookup_account_id,
+        newProps.heatmap_lookup_link,'', '', 
+        newProps.heatmap_lookup_date ? newProps.heatmap_lookup_date : this.state.liveDateText, 
+        newProps.heatmap_lookup_chip_id, 
+        newProps.heatmap_lookup_board_config_str, 
+        newProps.heatmap_lookup_simulate_dates,
+        newProps.heatmap_lookup_prev_selection);
     } else if (newProps.refresh_markets) {
       console.log("Received Refresh Market Status Check");
       if (newProps.liveDateText) {
@@ -220,7 +228,7 @@ export default class Markets extends Component {
     
   }
 
-  refreshData=(account_id='', link='', sym='', portfolio='',date=this.state.liveDateText, chip_id='', board_config_str='', simulate_dates='') => {
+  refreshData=(account_id='', link='', sym='', portfolio='',date=this.state.liveDateText, chip_id='', board_config_str='', simulate_dates='', prev_selection='') => {
     var self=this;
     if (self.state.last_heatmap_params.account_id != account_id ||
         self.state.last_heatmap_params.link != link ||
@@ -261,6 +269,7 @@ export default class Markets extends Component {
       params['chip_id']=chip_id;
       params['board_config']=board_config_str;
       params['simulate_dates']=simulate_dates;
+      params['current_bet']=prev_selection;
       //alert(link)
       //console.log(params);
     }

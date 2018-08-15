@@ -289,8 +289,8 @@ export default class PracticeBoard extends Component {
       data.isPractice=true;
       self.props.initializeData(data);
 
-      if (!this.state.loading)
-        this.sendNotice("Board Refreshed with New Data");
+      //if (!this.state.loading)
+      //  this.sendNotice("Board Refreshed with New Data");
 
 
       this.setState({
@@ -359,8 +359,8 @@ export default class PracticeBoard extends Component {
 
       self.props.initializeData(data);
 
-      if (!this.state.loading)
-        this.sendNotice("Board Refreshed with New Data");
+      //if (!this.state.loading)
+      //  this.sendNotice("Board Refreshed with New Data");
 
 
       this.setState({

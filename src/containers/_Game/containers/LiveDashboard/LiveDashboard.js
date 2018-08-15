@@ -42,8 +42,8 @@ const dispatchToProps = dispatch => {
     addTimedToaster: toaster => {
       dispatch(actions.addTimedToaster(toaster, 5000))
     },
-    initializeHeatmap:(account_id, link='current', sym='', date='',chip_id='', board_config_str='', simulate_dates='') => {
-      dispatch(actions.initializeHeatmap(account_id, link, sym, date, chip_id, board_config_str, simulate_dates))
+    initializeHeatmap:(account_id, link='current', sym='', date='',chip_id='', board_config_str='', simulate_dates='', prev_selection='') => {
+      dispatch(actions.initializeHeatmap(account_id, link, sym, date, chip_id, board_config_str, simulate_dates, prev_selection))
     },
     showPerformance:(action_id) => {
       dispatch(actions.showPerformance(action_id))
@@ -353,7 +353,7 @@ export default class LiveDashboard extends Component {
                         title="Display PnL Heatmap for this account"
                         onClick={() => { 
                           if (self.props.isPractice)  {
-                            self.props.initializeHeatmap(account.account_id, 'practice', '', account.current_date, account.chip_id, account.board_config_str, account.simulate_dates);
+                            self.props.initializeHeatmap(account.account_id, 'practice', '', account.current_date, account.chip_id, account.board_config_str, account.simulate_dates, account.prev_selection);
                           } else
                             self.props.initializeHeatmap(account.account_id);
                         $(window).scrollTop($("#marketTop").offset().top-111);
