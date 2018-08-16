@@ -10,6 +10,7 @@ import { toSystem, toAntiSystem } from "../../Config";
 import * as actions from "../../../../store/actions";
 import { toSlashDate, toSlashTime } from "../../../../util";
 import ClockLoader from "../../../../components/UI/ClockLoader/ClockLoader";
+import MicroAccountChart from "../../components/Accounts/MiniAccountChart/MicroAccountChart";
 import Moment from 'react-moment';
 import moment from 'moment-timezone';
 
@@ -261,7 +262,7 @@ export default class LiveDashboard extends Component {
           </tr>
         </thead>
         <tbody  style={tableStyle}>
-          {accounts.map(function(account) { 
+          {accounts.sort(function(b, a){return parseInt(b.account_value) - parseInt(a.account_value)}).map(function(account) { 
             //console.log(account);
               var locktime="";
               var betDate="";
@@ -298,7 +299,8 @@ export default class LiveDashboard extends Component {
               return (
                 <tr key={`dashboard-row-${accountId}`} style={tableStyle}>
                   <td style={tableStyle}>
-                    <div className={classes.Cell + " " + classes.Flex}>
+                    {account.sparklines ?
+                    <div className={classes.Cell + " " + classes.Flex} style={{minWidth:'300px'}}>
                       &nbsp;
                       <a href='#accountPerf' 
                         onClick={() => {self.props.showPerformance(account.account_id)}}
@@ -306,6 +308,12 @@ export default class LiveDashboard extends Component {
                         >
                         <img src="/images/account_chart_button.png" width="30" />
                       </a>&nbsp;&nbsp;
+                      <span style={{padding:"10px"}}> 
+                      <MicroAccountChart 
+                        chartData={account.sparklines} 
+                         />
+                      </span>
+
                       <strong>$ {display}</strong>
                       &nbsp;  
                       ( <span
@@ -319,6 +327,30 @@ export default class LiveDashboard extends Component {
                         {cummPercentChange.toFixed(2)}% 
                       </span> )
                     </div>
+                    :
+                    <div className={classes.Cell + " " + classes.Flex}>
+                    &nbsp;
+                    <a href='#accountPerf' 
+                      onClick={() => {self.props.showPerformance(account.account_id)}}
+                      title="Open Account Performance Chart"
+                      >
+                      <img src="/images/account_chart_button.png" width="30" />
+                    </a>&nbsp;&nbsp;
+
+                    <strong>$ {display}</strong>
+                    &nbsp;  
+                    ( <span
+                      style={{
+                        color:
+                          cummPercentChange > 0
+                            ? self.props.themes.live.dashboard.text_gain
+                            : cummPercentChange < 0 ? self.props.themes.live.dashboard.text_loss : bgText
+                      }}
+                    >
+                      {cummPercentChange.toFixed(2)}% 
+                    </span> )
+                  </div>
+                    }
                   </td>
                   <td style={tableStyle}>
                     <div className={classes.Cell}>

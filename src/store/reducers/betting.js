@@ -557,7 +557,11 @@ const reducer = (state = initialState, action) => {
               accounts[key]['chip_tier']="";
             if (!accounts[key].total_margin) 
               accounts[key]['total_margin']="";
-                            
+            
+            if (accounts[key].sparklines) {
+              accounts[key].sparklines=JSON.parse(accounts[key].sparklines)
+            }
+                          
           }
 
 
