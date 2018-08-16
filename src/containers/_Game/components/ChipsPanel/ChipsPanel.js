@@ -48,7 +48,7 @@ const chipsPanel = props => {
         <p>Off: </p>
       </div>
       <div className={classes.Right}>
-        {balanceChips.map(chip => {
+        {balanceChips.sort(function(b, a){return parseInt(b.account_value) - parseInt(a.account_value)}).map(chip => {
           return chip.count > 0 ? (
             <Chip
               key={"panel-chip-" + chip.accountId}

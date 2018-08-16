@@ -186,7 +186,10 @@ export default class Markets extends Component {
     if (newProps.heatmap_lookup_link == 'practice' && 
     newProps.heatmap_lookup_simulate_dates && 
     (newProps.heatmap_lookup_chip_id != self.props.heatmap_lookup_chip_id || 
-      newProps.heatmap_lookup_link != self.props.heatmap_lookup_link)) {
+      newProps.heatmap_lookup_link != self.props.heatmap_lookup_link ||
+      newProps.heatmap_lookup_date != self.props.heatmap_lookup_date ||
+      newProps.heatmap_lookup_prev_selection != self.props.heatmap_lookup_prev_selection ||
+      newProps.heatmap_lookup_board_config_str != self.props.heatmap_lookup_board_config_str )) {
       //alert(newProps.heatmap_lookup_simulate_dates)
       //alert(newProps.heatmap_lookup_board_config_str)
       this.refreshData(newProps.heatmap_lookup_account_id,
