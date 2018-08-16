@@ -154,7 +154,7 @@ export default class ChipSelector extends React.Component {
           <span style={contentStyle}>
           <Dropdown
             auto={true}
-            source={this.state.items}
+            source={this.state.items.sort(function(b, a){return parseInt(b.account_value) - parseInt(a.account_value)})}
             onChange={this.handleItemChange}
             template={this.customItem}
             value={this.state.itemSelected}

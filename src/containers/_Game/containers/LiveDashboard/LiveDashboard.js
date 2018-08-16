@@ -298,22 +298,22 @@ export default class LiveDashboard extends Component {
               // console.log(account.accountValue);
               return (
                 <tr key={`dashboard-row-${accountId}`} style={tableStyle}>
-                  <td style={tableStyle}>
+                  <td style={tableStyle} >
                     {account.sparklines ?
-                    <div className={classes.Cell + " " + classes.Flex} style={{minWidth:'300px'}}>
-                      &nbsp;
-                      <a href='#accountPerf' 
-                        onClick={() => {self.props.showPerformance(account.account_id)}}
-                        title="Open Account Performance Chart"
-                        >
-                        <img src="/images/account_chart_button.png" width="30" />
-                      </a>&nbsp;&nbsp;
-                      <span style={{padding:"10px"}}> 
+                    <div className={classes.Cell + " " + classes.Flex} 
+                    style={{minWidth:'275px', cursor:'pointer'}}
+                    onClick={() => {self.props.showPerformance(account.account_id)}}
+                    title="Open Account Performance Chart"
+                        
+                    >
+                      <span style={{padding:"2x"}}> 
                       <MicroAccountChart 
                         chartData={account.sparklines} 
                          />
                       </span>
-
+                      &nbsp;
+                         &nbsp;
+ 
                       <strong>$ {display}</strong>
                       &nbsp;  
                       ( <span

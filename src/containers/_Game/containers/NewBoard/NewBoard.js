@@ -537,8 +537,14 @@ export default class NewBoard extends Component {
         optimize:false,
       });
      
-      if (!chip_id && !skip_initialize)
-        self.initializeLive();
+      //if (!chip_id && !skip_initialize)
+      //  self.initializeLive();
+      this.setState({
+        loading:false,
+        rankingLoading: false,
+        refreshing:false
+      });
+
 
     })
     .catch(error => {

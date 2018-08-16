@@ -206,7 +206,7 @@ export default class StrategyButton extends PureComponent {
             }}>
                 <br/>
                 <font style={{opacity: 1}} color={textColor}>{strategy.display}</font>
-                <br/>
+                <br/> 
                 <span style={{ "fontSize":"9px" }}>{strategy.rank}</span>
             </span>
             </div>
@@ -216,13 +216,14 @@ export default class StrategyButton extends PureComponent {
           <div className={classes.StrategyButton} style={chipStyle}
 
         title={title}>
-          <p>
-          <span style={{fontSize:"15px"}}>{strategy.strategy}<br/>
-          </span>
-          <span style={{fontSize:"9px"}}>
+          <span style={{fontSize:"15px"}}>{strategy.strategy}
+            <div style={{marginTop:"-10px", fontSize:"9px"}}>
+            <br/>
             {strategy.rank}
+            </div>
+            
           </span>
-          </p>
+
           </div>
         );
       }

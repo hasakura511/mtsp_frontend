@@ -373,7 +373,7 @@ static propTypes = {
                     <Spinner />
                 </div>
         ) : performanceError ? (
-          <div style={{height: innerHeight - 172,  background: self.props.themes.live.dialog.tab_color_active} }>
+          <div style={{height: 25,  background: self.props.themes.live.dialog.tab_color_active} }>
 
           <center >  
           <br/> 
@@ -388,7 +388,7 @@ static propTypes = {
 
         ) : (
 
-            <AreaChart width={100} height={30} 
+            <AreaChart width={100} height={25} 
               data={chartData}
               
               margin={{ top: 0, right: 0, left: 0, bottom: 0 }}

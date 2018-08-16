@@ -731,8 +731,10 @@ export default class LiveBoard extends Component {
         this.sendNotice(data.message);
         
        
-      } else 
-        window.location='/new_board'
+      } else {
+        self.props.showHtmlDialog(<NewBoard />);
+        //window.location='/new_board'
+      }
     })
     .catch(error => {
       this.sendNotice('Account Data not received: ' + JSON.stringify(error));
