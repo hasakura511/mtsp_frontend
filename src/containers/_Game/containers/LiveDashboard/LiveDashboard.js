@@ -301,7 +301,7 @@ export default class LiveDashboard extends Component {
                   <td style={tableStyle} >
                     {account.sparklines ?
                     <div className={classes.Cell + " " + classes.Flex} 
-                    style={{minWidth:'275px', cursor:'pointer'}}
+                    style={{minWidth:'260px', cursor:'pointer'}}
                     onClick={() => {self.props.showPerformance(account.account_id)}}
                     title="Open Account Performance Chart"
                         
@@ -378,7 +378,10 @@ export default class LiveDashboard extends Component {
                   <td style={tableStyle}>
                     <div
                       className={classes.Cell}
-                      style={{ justifyContent: "center" }}
+                      style={{ 
+                               justifyContent: "center",
+                               minWidth:"190px" 
+                            }}
                     >
                       <span style={{'float':'left','marginLeft':"0px","paddingRight":"5px","marginTop":"5px"}}>
                       <a href='#viewportfolio' 

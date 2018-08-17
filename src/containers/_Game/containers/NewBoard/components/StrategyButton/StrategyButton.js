@@ -9,6 +9,7 @@ import Popover from 'react-tiny-popover'
 import Sound from 'react-sound';
 import { toTitleCase, numberWithCommas } from "../../../../../../util";
 import StrategyPreview from './StrategyPreview'
+import { DropTarget } from "react-dnd";
 
 const stateToProps = state => {
   return {
@@ -85,8 +86,8 @@ const collect = (connect, monitor) => {
   };
 };
 
-
 @DragSource("StrategyButton", strategySource,  collect)
+
 @connect(stateToProps, dispatchToProps)
 
 export default class StrategyButton extends PureComponent {
@@ -103,6 +104,7 @@ export default class StrategyButton extends PureComponent {
     viewMode:PropTypes.string,
     dictionary_strategy:PropTypes.object.isRequired,
     dontDrag:PropTypes.bool,
+
     //heatmap_selection:PropTypes.string
   };
 
@@ -172,7 +174,7 @@ export default class StrategyButton extends PureComponent {
     var rank=strategy.rank;
 
     
-    //console.log(chipStyle);
+
     if (isDragging) {
       return  <StrategyPreview {...this.props} viewMode={this.props.viewMode} getChipStyle={this.getChipStyle} strategy={strategy} />
     } else {

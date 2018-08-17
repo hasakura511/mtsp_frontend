@@ -234,8 +234,8 @@ export default class NewBoard extends Component {
       var dictionary_strategy=props.dictionary_strategy;
       accounts.map(function(account) {
         const board_config=account.board_config_fe;
-        console.log("Board Config")
-        console.log(account)
+        //console.log("Board Config")
+        //console.log(account)
       
         var chip=account;
         chip['count']=1;

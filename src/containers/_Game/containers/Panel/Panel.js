@@ -825,7 +825,178 @@ export default class Panel extends Component {
       this.makeEditBoard(obj);
   }
 
-  moveStratToSlot = (strat, position, isAnti=false) => {
+  swapStrats = (strat, position, swapStrat) => {
+    // Open order dialogue
+    var {
+      topStrats,
+      rightStrats,
+      bottomStrats,
+      leftStrats
+    } = this.state;
+
+    console.log("Swapping Strats")
+    console.log(strat);
+    console.log(position);  
+    console.log(swapStrat);  
+    strat.display=strat.strategy;
+    strat.color=strat.color_border;
+
+    var origTop=topStrats;
+    var origRight=rightStrats;
+    var origLeft=leftStrats;
+    var origBottom=bottomStrats;
+    
+
+    var strats=[];
+    topStrats=topStrats.map(s => {
+      if (s && s.strategy != strat.strategy && s.strategy != swapStrat.strategy)
+        strats.push(s);
+      else if (s && s.strategy == strat.strategy)
+        strats.push(swapStrat)
+      else if (s && s.strategy == swapStrat.strategy)
+        strats.push(strat)
+    })
+    topStrats=strats.slice(0);
+
+    strats=[];
+    leftStrats=leftStrats.map(s => {
+      if (s && s.strategy != strat.strategy && s.strategy != swapStrat.strategy)
+        strats.push(s);
+      else if (s && s.strategy == strat.strategy)
+        strats.push(swapStrat)
+      else if (s && s.strategy == swapStrat.strategy)
+        strats.push(strat)
+    })
+    leftStrats=strats.slice(0)
+
+    strats=[];
+    rightStrats=rightStrats.map(s => {
+      if (s && s.strategy != strat.strategy && s.strategy != swapStrat.strategy)
+        strats.push(s);
+      else if (s && s.strategy == strat.strategy)
+        strats.push(swapStrat)
+      else if (s && s.strategy == swapStrat.strategy)
+        strats.push(strat)
+    })
+    rightStrats=strats.slice(0)
+
+    strats=[];
+    bottomStrats=bottomStrats.map(s => {
+      if (s && s.strategy != strat.strategy && s.strategy != swapStrat.strategy)
+        strats.push(s);
+      else if (s && s.strategy == strat.strategy)
+        strats.push(swapStrat)
+      else if (s && s.strategy == swapStrat.strategy)
+        strats.push(strat)
+    })
+    bottomStrats=strats.slice(0);
+
+    /*
+    var found=false;
+    if (position == 'top') {
+      strat.column='top';
+      topStrats.map(s => {
+        if (s.strategy == strat.strategy)
+          found=true;
+      })
+      if (!found) 
+        topStrats.push(strat);
+
+
+    } else if (position == 'left') {
+      strat.column='left';
+      leftStrats.map(s => {
+        if (s.strategy == strat.strategy)
+          found=true;
+      })
+      if (!found) 
+        leftStrats.push(strat);
+    } else if (position == 'right') {
+
+      strat.column='right';
+      rightStrats.map(s => {
+        if (s && s.strategy == strat.strategy)
+          found=true;
+      })
+      if (!found) 
+        rightStrats.push(strat);
+    } else if (position == 'bottom') {
+      strat.column='bottom';
+      bottomStrats.map(s => {
+        if (s.strategy == strat.strategy)
+          found=true;
+      })
+      if (!found) 
+        bottomStrats.push(strat);
+    }
+    
+    if (topStrats.length > 0) {
+      if (topStrats.length > 6) {
+        topStrats=topStrats.slice(0,6);
+      }
+      var bottomNum=Math.floor(12/topStrats.length);
+      if (bottomNum < bottomStrats.length) {
+        bottomStrats=bottomStrats.slice(0,bottomNum);
+      }
+
+    }
+
+    if (rightStrats.length > 3) {
+        rightStrats=rightStrats.slice(0,3);
+    }
+    if (leftStrats.length > 3) {
+       leftStrats=leftStrats.slice(0,3);
+    }
+    if (bottomStrats.length > 12) {
+       bottomStrats=bottomStrats.slice(0,12);
+    }
+
+    // check if action completed
+    found=false;
+    topStrats.map(s => {
+      if (s.strategy == strat.strategy)
+        found=true;
+    })
+    rightStrats.map(s => {
+      if (s.strategy == strat.strategy)
+        found=true;
+    })
+    bottomStrats.map(s => {
+      if (s.strategy == strat.strategy)
+        found=true;
+    })
+    leftStrats.map(s => {
+      if (s.strategy == strat.strategy)
+        found=true;
+    })
+    // if not return;
+    if (!found)
+      return;
+    */
+  /*
+    this.setState({
+        topStrats:topStrats,
+        leftStrats:leftStrats,
+        bottomStrats:bottomStrats,
+        rightStrats:rightStrats
+      });
+      */
+      var obj={};
+      obj.topSystems=topStrats;
+      obj.leftSystems=leftStrats;
+      obj.bottomSystems=bottomStrats;
+      obj.rightSystems=rightStrats;
+      obj.topStrats=topStrats;
+      obj.leftStrats=leftStrats;
+      obj.bottomStrats=bottomStrats;
+      obj.rightStrats=rightStrats;
+
+      obj.isEdit=true;
+      this.makeEditBoard(obj);
+      
+  };
+
+  moveStratToSlot = (strat, position, isAnti=false, swapStrat=null) => {
     // Open order dialogue
     var {
       topStrats,
@@ -839,6 +1010,13 @@ export default class Panel extends Component {
     console.log(position);  
     strat.display=strat.strategy;
     strat.color=strat.color_border;
+
+
+    if (swapStrat) {
+      if (swapStrat.id != 'Optional' && swapStrat.id != 'Required') {
+        return this.swapStrats(strat, position, swapStrat);
+      }
+    }
 
     var origTop=topStrats;
     var origRight=rightStrats;

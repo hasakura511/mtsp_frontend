@@ -790,7 +790,6 @@ export default class PracticeBoard extends Component {
             <center>
              <ClockLoader show={true} />
              <br/>
-             <b>Please wait while we load your board. This could take a couple of minutes.</b>
             </center>
           </Aux>
 
