@@ -157,9 +157,9 @@ export default class AccountsNew extends Component {
   }
 
   componentWillReceiveProps(newProps) {
-      if (newProps.performance) {
+      if (this.props.performance != newProps.performance) {
 
-        if (this.props.chip_id || newProps.chip_id) {
+        if (this.props.chip_id != newProps.chip_id) {
           var chip_id=this.props.chip_id ? this.props.chip_id : newProps.chip_id;
 
           var account=performance.accounts[chip_id]

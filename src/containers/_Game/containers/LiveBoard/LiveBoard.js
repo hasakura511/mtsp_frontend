@@ -23,6 +23,7 @@ import { toSystem, toAntiSystem } from "../../Config";
 import Markets from "../../../Markets/Markets"
 import NewBoard from "../NewBoard/NewBoard"
 import { Link } from "react-router-dom";
+import Accounts from "../../components/Accounts/Accounts"
 
 // Inserts or removes chip into system
 const insertChip = (systems, column, chip) => {
@@ -940,7 +941,8 @@ export default class LiveBoard extends Component {
                 <a href='#accounts' 
                 title="Create or configure your accounts."
                 onClick={() => {
-                  window.location='/accounts'
+                  //window.location='/accounts'
+                  self.props.showHtmlDialog(<Accounts />)
                 }}
                 ><img src="/images/accounts_button.png" width="120"/></a><br/>
                 <a href={"#new_board"} 
