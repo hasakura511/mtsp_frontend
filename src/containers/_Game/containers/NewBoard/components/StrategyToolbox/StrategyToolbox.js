@@ -117,9 +117,10 @@ export default class StrategyToolbox extends Component {
           <div style={{
             width:"40%",
             float:'left',
-            marginBottom:'0px',paddingBottom:'0px', 
+            marginBottom:'0px',paddingBottom:'0px',
+             color:'black' 
           }}>
-           <span style={{fontSize: 14}}>
+           <span style={{fontSize: 14, color:'black'}}>
             <img src={'/images/chip_selector.png'} height={20} /> Chip Selector
            </span>
            <br/>
@@ -226,8 +227,9 @@ export default class StrategyToolbox extends Component {
         width:"60%",
         float:'left',
         marginBottom:'0px',paddingBottom:'0px', 
+         color:'black'
       }}>
-           <span style={{fontSize: 14}}>
+           <span style={{fontSize: 14, color:'black'}}>
             <img src={'/images/strategy_selector.png'} height={20} />  Strategy Selector
            </span>
           

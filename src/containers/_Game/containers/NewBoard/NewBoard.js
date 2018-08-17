@@ -989,7 +989,7 @@ export default class NewBoard extends Component {
       //console.log(editThemes);
       return (
 
-        <div className={classes.NewBoard} style={{background: editThemes.page.background}}>
+        <div className={classes.NewBoard} style={{background: editThemes.page.background,  color:'black'}}>
           
           <h4>&nbsp;<img src={'/images/new_board_icon.png'} height={24}/> <b>New Board</b></h4>
           <div style={{ zIndex:2, border: "1px solid black", }}>
