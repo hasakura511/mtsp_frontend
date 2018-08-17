@@ -309,12 +309,19 @@ export default class RankingChart extends Component {
         var idx=0;
         var chart_dict={};
         var chart_specs=[];
-  
+        console.log(performance);
         Object.keys(performance.chart_dict).map(period => {
           var dataJson= performance.chart_dict[period] 
           dataJson.all=JSON.parse(dataJson.all);
-          dataJson['anti-board']=JSON.parse(dataJson['anti-board']);
-          dataJson.board=JSON.parse(dataJson.board);
+          if (this.props.isEdit) {
+            dataJson['anti-board']=JSON.parse(dataJson['anti']);
+            dataJson.board=JSON.parse(dataJson['non-anti']);
+            dataJson['anti']=JSON.parse(dataJson['anti']);
+            dataJson['non-anti']=JSON.parse(dataJson['non-anti']);
+          } else {
+            dataJson['anti-board']=JSON.parse(dataJson['anti-board']);
+            dataJson.board=JSON.parse(dataJson.board);
+          }
           chart_dict[period]=dataJson;
           chart_specs.push(period);
 
@@ -398,11 +405,12 @@ export default class RankingChart extends Component {
             if (order.match(/^[\d]+$/)) {
               order=parseInt(order);
             }
-            if (chip_location != key)
-              self.props.moveChipToSlot(self.props.chip, order, true);
-            else
-              self.props.moveChipToSlot(self.props.chip, order, false);
-            
+            if (!self.props.isEdit) {
+                if (chip_location != key)
+                  self.props.moveChipToSlot(self.props.chip, order, true);
+                else
+                  self.props.moveChipToSlot(self.props.chip, order, false);
+            }            
 
             //console.log(order)
   

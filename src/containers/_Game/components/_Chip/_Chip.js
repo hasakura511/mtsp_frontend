@@ -107,7 +107,8 @@ export default class Chip extends PureComponent {
     showHeatmap:PropTypes.func.isRequired,
     accounts:PropTypes.array.isRequired,
     isReadOnly:PropTypes.bool,
-    dragNotice:PropTypes.func
+    dragNotice:PropTypes.func,
+    isNewBoard:PropTypes.bool
     //heatmap_selection:PropTypes.string
   };
 
@@ -311,7 +312,7 @@ export default class Chip extends PureComponent {
       return dragSource(
             <div className={classes.Chip} style={chipStyle} title={title}>
           
-            <p style={{fontWeight:800, fontSize:"12px", marginTop: chip.isAccountChip ? "-10px":"0px" }}><b>{chip.display}</b></p>
+            <p style={{fontWeight:800, fontSize:"12px", marginTop: chip.isAccountChip || this.props.isNewBoard ? "-10px":"0px" }}><b>{chip.display}</b></p>
             
             </div>
       );

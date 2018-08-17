@@ -119,7 +119,7 @@ export default class ChipSelector extends React.Component {
         <div style={containerStyle}>
             <span key={item.value}>
                 {item.chip ? 
-                  <Chip chip={item.chip} isReadOnly={true} />
+                  <Chip chip={item.chip} isReadOnly={true} isNewBoard={true} />
                   : <div style={{fontSize:'16px',marginTop:'12px', color:'black'}}><b>{item.value}</b></div>}
             </span>
 
