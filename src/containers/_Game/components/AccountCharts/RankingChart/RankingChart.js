@@ -160,7 +160,7 @@ class CustomTooltip extends Component {
     themes:PropTypes.object,
     dictionary_strategy:PropTypes.object,
     chart_specs:PropTypes.array,
-    lookback:PropTypes.string
+    lookback:PropTypes.string,
   };
 }
 
@@ -276,6 +276,10 @@ export default class RankingChart extends Component {
     var url="/utility/ranking_chart_live/";
     if (this.props.isPractice) {
       url="/utility/ranking_chart_practice/";
+    }
+    if (this.props.isEdit) {
+      url="/utility/ranking_chart_newboard/";
+
     }
 
     axios
@@ -660,7 +664,9 @@ export default class RankingChart extends Component {
     slot:PropTypes.object,
     dictionary_strategy:PropTypes.object.isRequired,
     moveChipToSlot:PropTypes.func,
-    isPractice:PropTypes.bool
+    isPractice:PropTypes.bool,
+    isAnti:PropTypes.bool,
+    isEdit:PropTypes.bool
 
   };
 }

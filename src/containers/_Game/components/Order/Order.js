@@ -8,10 +8,11 @@ import {numberWithCommas, toTitleCase} from "../../../../util"
 import OrderCharts from "../../containers/OrderCharts/OrderCharts";
 import AccountCharts from "../../components/AccountCharts/AccountCharts";
 import { toSystem  } from "../../Config";
-
+import StrategyButton from "../../containers/NewBoard/components/StrategyButton/StrategyButton"
 import { connect } from "react-redux";
 import * as actions from "../../../../store/actions";
 import Sound from 'react-sound';
+
 const getSystems = slot => {
   return Object.keys(slot)
     .filter(key => key.indexOf("System") !== -1)
@@ -45,8 +46,25 @@ const dispatchToProps = dispatch => {
     },
     setStrat(strat) {
       dispatch(actions.setStrat(strat));
-    }
-  };
+    },
+    
+    showHtmlDialog: (htmlContent) => {
+      dispatch(actions.showHtmlDialog(htmlContent));
+      
+    },
+    silenceHtmlDialog: () => {
+      dispatch(actions.silenceHtmlDialog());
+      
+    },
+    showHtmlDialog2: (htmlContent) => {
+      dispatch(actions.showHtmlDialog2(htmlContent));
+      
+    },
+    silenceHtmlDialog2: () => {
+      dispatch(actions.silenceHtmlDialog2());
+      
+    },
+  }
 };
 
 
@@ -63,6 +81,8 @@ export default class Order extends React.Component {
   static propTypes = {
       slot: PropTypes.object,
       chip: PropTypes.object.isRequired,
+      isEdit: PropTypes.bool,
+      strategy:PropTypes.object,
       isLive: PropTypes.bool.isRequired,
       isPractice: PropTypes.bool,
       performance: PropTypes.object,
@@ -82,6 +102,11 @@ export default class Order extends React.Component {
       themes:PropTypes.object,
       accounts:PropTypes.array.isRequired,
       moveChipToSlot:PropTypes.func,
+      showHtmlDialog:PropTypes.func,
+      silenceHtmlDialog:PropTypes.func,
+      showHtmlDialog2:PropTypes.func,
+      silenceHtmlDialog2:PropTypes.func,
+      stratParams:PropTypes.object
     };
     
     
@@ -118,7 +143,13 @@ export default class Order extends React.Component {
 
   }
   render() {
-      var { slot, chip, setAnti, setNotAnti, isAnti, toAntiSystem, submitBetHandler, close, isLive,  dictionary_strategy, isPerformance, accounts, themes } = this.props;
+      var self=this;
+      
+      var { slot, chip, setAnti, setNotAnti, isAnti, toAntiSystem, submitBetHandler, close, isLive,  dictionary_strategy, isPerformance, accounts, themes, isEdit } = this.props;
+
+      if (this.props.isEdit) {
+        isAnti=this.state.isAnti;
+      }
       if (this.state.orderChip)  {
         chip=this.state.orderChip;
         console.log('Order Rendering Chip')
@@ -130,10 +161,118 @@ export default class Order extends React.Component {
       if (!isPerformance) {
         isNumbered = !isNaN(Number(slot.position));
       }
-      var self=this;
       return (
         <div className={classes.Order} style={isLive ? {background: themes.live.dialog.background} : {}}>
-          {!isPerformance ? isLive ? (
+          {!isPerformance ? isLive ? isEdit ?(
+            
+
+
+          <div className={classes.TitleRow} style={{background: themes.live.dialog.background}}>
+            <div className={classes.Left}>
+              <div
+                className={classes.ElementContainer}
+                style={{ paddingTop: "15px", width: !isNumbered ? "160px" : "auto", background: themes.live.dialog.background_inner }}
+              >
+                <StrategyButton strategy={this.props.strategy} />
+              </div>
+              <div
+                className={classes.Systems}
+                style={isNumbered ? {} : { visibility: "hidden" }}
+              >
+                <ul>
+                  {getSystems(slot).map(system => (
+                    <li key={`${system.id}${Math.random().toFixed(3)}`}>
+                      <p>{system.display}</p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div
+                className={classes.ElementContainer}
+                style={{ paddingTop: "15px",background: themes.live.dialog.background_inner }}
+              >
+                <Chip chip={chip} />
+              </div>
+            </div>
+            <div className={classes.Right} style={{background: themes.live.dialog.background_inner}}>
+              <div className={classes.ElementContainer} style={{background: themes.live.dialog.background_inner}}>
+                <div style={{ display: "flex", width: "100%" }}>
+                  <input
+                    type="radio"
+                    id="system-radio"
+                    checked={!this.state.isAnti}
+                    onChange={(e) => {
+
+                      setNotAnti(e);
+                      self.props.setStrat(toSystem(slot.position));
+                      self.setState({isAnti:false, strat:toSystem(slot.position)})
+                    }}
+                    title={"Orders will be placed for the strategy selected here."}
+                  />
+                  {isLive ? (
+
+                      <label id="system-label" htmlFor="system-radio" style={{ color: "#8884d8" }}>
+                        {toSystem(slot.position)}
+                      </label>
+
+                      ) : (
+                      <label htmlFor="system-radio" style={{ color: "#8884d8" }}>
+                        {toSystem(slot.position)}
+                      </label>
+                      )}
+                </div>
+                <div style={{ display: "flex", width: "100%" }}>
+                  <input
+                    type="radio"
+                    id="anti-system-radio"
+                    checked={this.state.isAnti}
+                    onChange={(e) => {
+                      setAnti(e)
+                      self.props.setStrat(toAntiSystem(slot.position));
+                      self.setState({isAnti:true, strat:toAntiSystem(slot.position)})
+                      
+
+                    }}
+                    title={"Orders will be placed for the strategy selected here."}
+                  />
+                  {isLive ? (
+                    <label id="anti-system-label" htmlFor="anti-system-radio" style={{ color: "#63a57c" }}>
+                      {toAntiSystem(slot.position)}
+                    </label>
+                  ) : (
+                    <label htmlFor="anti-system-radio" style={{ color: "#63a57c" }}>
+                      {toAntiSystem(slot.position)}
+                    </label>
+                  )}
+                </div>
+              </div>
+              <div className={classes.ActionBar} style={{background: themes.live.dialog.background_inner}}>
+                <button className={classes.Submit} onClick={() => {
+                  var orderStrat=this.props.stratParams.strat;
+                  if (this.state.strat) {
+                    orderStrat.strategy=this.state.strat;
+                    orderStrat.display=this.state.strat;
+                    orderStrat.id=this.state.strat;
+                  }
+                  self.props.moveStratToSlot(orderStrat, 
+                            this.props.stratParams.position, 
+                            this.props.stratParams.isAnti, 
+                            this.props.stratParams.swapStrat)
+                  self.props.silenceHtmlDialog2();
+                }} title={"This Strategy will be Placed in the Slot"}>
+                  Place Strategy
+                </button>
+                <button onClick={close}>Cancel</button>
+              </div>
+            </div>
+
+            {/* <div className={classes.Right}>
+              <p style={{ color: "#8884d8" }}>System</p>
+              <Switch toggle={toggleSystem} />
+              <p style={{ color: "#63a57c" }}>Anti-System</p>
+            </div> */}
+          </div>
+          ) : (
             
 
 
@@ -731,15 +870,24 @@ export default class Order extends React.Component {
           </div>
         )}
           
-          {isLive ? (
+          {isLive ? isEdit ? (
 
             <div className={classes.Content}  style={{background:self.props.themes.live.dialog.background,
               color:self.props.themes.live.dialog.text, borderColor:self.props.themes.live.dialog.lines}}>
-              <AccountCharts isOrder={!isPerformance} chip={chip} slot={slot} {...this.props} />
+              <AccountCharts isOrder={!isPerformance} isEdit={true} chip={chip} slot={slot} isAnti={this.state.isAnti} rankingLoading={false} close={this.props.close} />
             </div>
 
 
-          ) :  (
+          ) :(
+
+            <div className={classes.Content}  style={{background:self.props.themes.live.dialog.background,
+              color:self.props.themes.live.dialog.text, borderColor:self.props.themes.live.dialog.lines}}>
+              <AccountCharts isOrder={!isPerformance} chip={chip} slot={slot} isAnti={isAnti} {...this.props} />
+            </div>
+
+
+          )
+          :  (
               <div className={classes.Content}>
                 <OrderCharts position={slot.position} moveChipToSlot={this.props.moveChipToSlot} {...this.props} />
                 {/* // performance={performance}

@@ -68,6 +68,7 @@ const stateToProps = state => {
     isLive:state.betting.isLive,
     init_data:state.betting.init_data,
     
+    
   };
 };
 
@@ -1078,6 +1079,7 @@ export default class NewBoard extends Component {
               optimizeDone={this.optimizeDone}
               optimizeData={this.optimizeData}
               updateStrats={this.updateStrats}
+              itemSelected={this.state.itemSelected}
             />
              
 

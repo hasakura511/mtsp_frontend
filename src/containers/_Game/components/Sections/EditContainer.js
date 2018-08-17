@@ -15,7 +15,7 @@ const systemTarget = {
    * @param {any} monitor
    */
   drop(props, monitor) {
-    props.moveStratToSlot(monitor.getItem(), props.column, false, props.strategy);
+    props.moveStratToSlot(monitor.getItem(), props.column, false, props.strategy, true, props);
   },
 
   /**

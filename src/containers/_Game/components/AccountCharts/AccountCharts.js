@@ -60,6 +60,7 @@ export default class AccountCharts extends Component {
     isOrder:PropTypes.bool.isRequired,
     moveChipToSlot:PropTypes.func,
     isAnti:PropTypes.bool,
+    isEdit:PropTypes.bool
   };
   constructor(props) {
     super(props);
@@ -97,6 +98,7 @@ export default class AccountCharts extends Component {
       chip,
       slot
     } = this.props;
+    //alert(this.props.isAnti)
     var self=this;
 
     return (
@@ -271,7 +273,7 @@ export default class AccountCharts extends Component {
               
               {isRankingChart ? (
                 <div className={classes.Content}>
-                  <RankingChart  isPractice={this.props.isPractice} moveChipToSlot={this.props.moveChipToSlot} chip={this.props.chip} slot={this.props.slot} toggle={this.props.toggle} />
+                  <RankingChart  isPractice={this.props.isPractice} moveChipToSlot={this.props.moveChipToSlot} chip={this.props.chip} slot={this.props.slot} toggle={this.props.toggle}  isAnti={this.props.isAnti} isEdit={this.props.isEdit} />
                 </div>
               ) : (
               null

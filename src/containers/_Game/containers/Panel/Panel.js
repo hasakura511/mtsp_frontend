@@ -10,6 +10,7 @@ import LeftSection from "../../components/Sections/LeftSection/LeftSection";
 import RightSection from "../../components/Sections/RightSection/RightSection";
 import TopSection from "../../components/Sections/TopSection/TopSection";
 import OrderDialog from "../OrderDialog/OrderDialog";
+import Order from "../../components/Order/Order";
 import LockdownDialog from "../LockdownDialog/LockdownDialog";
 import LeaderDialog from "../LeaderDialog/LeaderDialog";
 import axios from "../../../../axios-gsm";
@@ -21,6 +22,7 @@ import Sound from 'react-sound';
 import ChipsPanel from "../../components/ChipsPanel/ChipsPanel";
 import RemoveContainer from "../../components/Sections/RemoveContainer"
 import Bounce from 'bounce.js'
+import { toSystem } from "../../Config";
 /**
  * returns state to `Props` mapping object with keys that would later become props.
  * @function stateToProps
@@ -75,6 +77,23 @@ const dispatchToProps = dispatch => {
     showLeaderDialog(show) {
       dispatch(actions.showLeaderDialog(show));
     },
+    showHtmlDialog: (htmlContent) => {
+      dispatch(actions.showHtmlDialog(htmlContent));
+      
+    },
+    silenceHtmlDialog: () => {
+      dispatch(actions.silenceHtmlDialog());
+      
+    },
+    showHtmlDialog2: (htmlContent) => {
+      dispatch(actions.showHtmlDialog2(htmlContent));
+      
+    },
+    silenceHtmlDialog2: () => {
+      dispatch(actions.silenceHtmlDialog2());
+      
+    },
+
 
   };
 };
@@ -134,6 +153,11 @@ export default class Panel extends Component {
     updateStrats:PropTypes.func,
     dictionary_strategy:PropTypes.object,
     optimizeData:PropTypes.array,
+    showHtmlDialog:PropTypes.func,
+    silenceHtmlDialog:PropTypes.func,
+    showHtmlDialog2:PropTypes.func,
+    silenceHtmlDialog2:PropTypes.func,
+    itemSelected:PropTypes.string
   };
 
   /**
@@ -996,8 +1020,50 @@ export default class Panel extends Component {
       
   };
 
-  moveStratToSlot = (strat, position, isAnti=false, swapStrat=null) => {
+  
+  setNotAnti = event=> {
+    //console.log(event.target.id);
+    if (event.target.id == 'system-radio') {
+      this.setState({ isAnti: false});
+    }
+  };
+
+  setAnti = event => {
+    //console.log(event.target.id);
+    if (event.target.id == 'anti-system-radio') {
+        this.setState({ isAnti: true});
+    }
+  };
+
+  toAntiSystem = pos => {
+    if (pos in this.props.dictionary_strategy) {
+      console.log(this.props.dictionary_strategy[pos]);
+      return this.props.dictionary_strategy[pos].anti_tile_name;
+    }
+  
+    if (pos.toString().toLowerCase() === "riskon") {
+      return toSystem("riskOff");
+    }
+  
+    if (pos.toString().toLowerCase() === "riskoff") {
+      return toSystem("riskOn");
+    }
+  
+    if (isNaN(Number(pos))) {
+      return toSystem(pos).indexOf("Anti-") === -1 &&
+        toSystem(pos).indexOf("A-") === -1
+        ? "Anti-" + toSystem(pos)
+        : toSystem(pos)
+            .replace("Anti-", "")
+            .replace("A-", "");
+    } else {
+      return "Anti-" + pos;
+    }
+  };
+  
+  moveStratToSlot = (strat, position, isAnti=false, swapStrat=null, showDialog=false, slot=null) => {
     // Open order dialogue
+    var self=this;
     var {
       topStrats,
       rightStrats,
@@ -1011,6 +1077,65 @@ export default class Panel extends Component {
     strat.display=strat.strategy;
     strat.color=strat.color_border;
 
+    if (showDialog) {
+       var params={strat:strat,
+                position:position,
+                isAnti:isAnti,
+                swapStrat:swapStrat
+                }
+        this.setState({stratDialogParams:params})
+
+        var chip='';
+        //alert(this.props.itemSelected)
+        if (this.props.itemSelected.toLowerCase() == 'all') {
+          chip=Object.assign({}, this.props.accounts[0]);
+          chip.chip_id='ALL';
+          chip.display='ALL'
+          chip.account_chip_text='ALL';
+        } else {
+          this.props.accounts.map(account => {
+            if (account.chip_id == this.props.itemSelected)
+              chip=account;
+          })
+        }
+
+        console.log(slot)
+        var stratSlot=Object.assign({}, slot)
+        stratSlot.position=strat.strategy;
+        
+        this.props.showHtmlDialog2(<Order
+            {...this.props}
+            chip={chip}
+            slot={stratSlot}
+            dictionary_strategy={this.props.dictionary_strategy}
+            isLive={true}
+            isEdit={true}
+            isPractice={false}
+            isPerformance={false}
+            //performance_account_id={this.state.performance_account_id}
+            //performance={performance}
+            setAnti={this.setAnti}
+            setNotAnti={this.setNotAnti}
+            //rankingData={rankingData}
+            //rankingError={rankingError}
+            rankingLoading={false}
+            submitBetHandler={this.submitBetHandler}
+            toggle={() => {
+               self.props.silenceHtmlDialog2();
+            }}
+            close={() => {
+              self.props.silenceHtmlDialog2();
+            }}
+            toAntiSystem={this.toAntiSystem}
+            themes={this.props.themes}
+            isAnti={isAnti}
+            moveChipToSlot={this.moveChipToSlot}
+            moveStratToSlot={this.moveStratToSlot}
+            stratParams={params}
+            strategy={strat}
+          />)
+        return;
+    }
 
     if (swapStrat) {
       if (swapStrat.id != 'Optional' && swapStrat.id != 'Required') {
