@@ -223,7 +223,7 @@ export default class NewBoard extends Component {
   }
 
   componentWillReceiveProps(newProps) {
-    if (newProps.isLive) {
+    if (newProps.isLive != this.props.isLive) {
       var props=newProps;
       var accounts=props.accounts;
       var themes=props.themes;  

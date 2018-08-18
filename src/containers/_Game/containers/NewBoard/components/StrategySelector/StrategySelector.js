@@ -109,7 +109,7 @@ export default class StrategySelector extends React.Component {
 
     componentWillReceiveProps(newProps) {
       var self=this;
-      if (newProps.strats) {
+      if (newProps.strats != this.props.strats) {
         console.log('Strat Selector Received New Data')
         this.setState(this.getItemList(newProps.strats));
         setTimeout(() => {

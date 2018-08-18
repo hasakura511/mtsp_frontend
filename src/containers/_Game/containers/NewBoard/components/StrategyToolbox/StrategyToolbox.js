@@ -63,7 +63,7 @@ export default class StrategyToolbox extends Component {
 
   componentWillReceiveProps(newProps) {
     var self=this;
-    if (newProps.editData) {
+    if (newProps.editData != this.props.editData) {
       console.log("Strat Toolbox Received new data")
       setTimeout(() => {
         self.forceUpdate();
