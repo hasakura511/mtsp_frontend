@@ -157,7 +157,8 @@ export default class Panel extends Component {
     silenceHtmlDialog:PropTypes.func,
     showHtmlDialog2:PropTypes.func,
     silenceHtmlDialog2:PropTypes.func,
-    itemSelected:PropTypes.string
+    itemSelected:PropTypes.string,
+    showLoading:PropTypes.func
   };
 
   /**
@@ -1081,7 +1082,8 @@ export default class Panel extends Component {
        var params={strat:strat,
                 position:position,
                 isAnti:isAnti,
-                swapStrat:swapStrat
+                swapStrat:swapStrat,
+                slot:slot
                 }
         this.setState({stratDialogParams:params})
 
@@ -1255,8 +1257,9 @@ export default class Panel extends Component {
         found=true;
     })
     // if not return;
-    if (!found)
+    if (!found) {
       return;
+    }
   /*
     this.setState({
         topStrats:topStrats,
@@ -1276,6 +1279,7 @@ export default class Panel extends Component {
       obj.rightStrats=rightStrats;
 
       obj.isEdit=true;
+
       this.makeEditBoard(obj);
       
   };
@@ -1663,8 +1667,8 @@ export default class Panel extends Component {
           
           {this.props.isEdit ? (
               <div style={{
-                  width:(innerWidth -137) + "px",
-                  position:'absolute',marginTop: (71 + (60*this.state.maxHeight))+ "px", marginLeft: '-111px'}}>
+                  width:(innerWidth -157) + "px",
+                  position:'absolute',marginTop: (71 + (60*this.state.maxHeight))+ "px", marginLeft: '-121px'}}>
                 <div style={{float:'left', width: "161px"}}>
                 <img src={"/images/clear_board.png"} height={30} width={161} />
                 </div>
@@ -1692,7 +1696,7 @@ export default class Panel extends Component {
           
                 }}
                 >
-                    <div style={{float:'right', width: "161px" }} 
+                    <div style={{float:'right', width: "151px" }} 
                    >
                    {this.state.isEditComplete ? 
                       <img src={"/images/save_enabled.png"} height={30} width={161} />
@@ -1876,6 +1880,7 @@ export default class Panel extends Component {
 
   saveEditBoard = () => {
     var self=this;
+    self.props.showLoading(true);
     var board=[];
     var {leftStrats, rightStrats, bottomStrats, topStrats}=this.state;
     leftStrats.map(strat => {
@@ -1924,12 +1929,14 @@ export default class Panel extends Component {
           id: "save-error",
           text: data.message
         });
+        self.props.showLoading(false);
       } else {
         var update_bets="";
         if (data.update_bets)
           update_bets=JSON.stringify(data.update_bets);
         var initQueue={'reinitialize':true, 'update_bets':update_bets}
         localStorage.setItem("initQueue", JSON.stringify(initQueue));
+        self.props.showLoading(false);
         window.location='/board';
       }
     })
@@ -1940,7 +1947,7 @@ export default class Panel extends Component {
           rankingLoading: false,
           rankingError: error
         });
-    });
+      });
   }
   /**
    * Set the _isMounted property to be false for the component to handle Promise case.

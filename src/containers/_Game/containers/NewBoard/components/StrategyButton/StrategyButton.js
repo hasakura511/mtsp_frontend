@@ -104,6 +104,7 @@ export default class StrategyButton extends PureComponent {
     viewMode:PropTypes.string,
     dictionary_strategy:PropTypes.object.isRequired,
     dontDrag:PropTypes.bool,
+    isOver:PropTypes.bool
 
     //heatmap_selection:PropTypes.string
   };
@@ -208,7 +209,7 @@ export default class StrategyButton extends PureComponent {
             }}>
                 <br/>
                 <font style={{opacity: 1}} color={textColor}>{strategy.display}</font>
-                <br/> 
+                <br/>
                 <span style={{ "fontSize":"9px" }}>{strategy.rank}</span>
             </span>
             </div>
@@ -218,13 +219,18 @@ export default class StrategyButton extends PureComponent {
           <div className={classes.StrategyButton} style={chipStyle}
 
         title={title}>
-          <span style={{fontSize:"15px"}}>{strategy.strategy}
-            <div style={{marginTop:"-10px", fontSize:"9px"}}>
-            <br/>
+          {self.props.isOver ? <div style={{marginTop:"-10px", fontSize:"15px", backgroundColor:'white', 
+              color:'white'}}><b>{strategy.strategy}</b>
+            <div style={{marginTop:"-2px", fontSize:"9px"}}>
             {strategy.rank}
-            </div>
-            
-          </span>
+            </div>            
+          </div> : 
+
+            <div style={{marginTop:"-10px", fontSize:"15px"}}>{strategy.strategy}
+            <div style={{marginTop:"-2px", fontSize:"9px"}}>
+            {strategy.rank}
+            </div>            
+          </div>}
 
           </div>
         );

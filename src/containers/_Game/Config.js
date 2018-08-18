@@ -306,7 +306,7 @@ export const toSystem = pos => {
     } else {
       if (isNaN(Number(pos))) {
         if (!LSM[pos]) {
-          console.log(pos);
+          //console.log(pos);
         }
         return (
           LSM[pos]
@@ -328,7 +328,7 @@ export const toAntiSystem = (pos, dictionary_strategy=null) => {
     return "";
   if (dictionary_strategy != null) {
     if (pos in dictionary_strategy) {
-      console.log(dictionary_strategy[pos]);
+      //console.log(dictionary_strategy[pos]);
       return dictionary_strategy[pos].anti_tile_name;
     }
   

@@ -83,11 +83,17 @@ export default class RemoveContainer extends PureComponent {
 
   
   render() {
+    var self=this;
     var { dropTarget, isOver, canDrop } = this.props;
 
      return dropTarget(
       <div
-        className={classes.RemoveContainer}>
+        className={classes.RemoveContainer}
+        style={{
+          opacity: self.props.canDrop ? (self.props.isOver ? 0.2:1) : 1,
+
+        }}
+        >
 
                 
 
@@ -95,7 +101,8 @@ export default class RemoveContainer extends PureComponent {
                  <div style={{width:"350px", marginTop: "0px", float:"left"}}>
                      <img src={"/images/remove_strategy.png"} height={30} style={{width:"350px"}}/>
                 </div>
-                <div style={{ marginLeft: '-290px', marginTop: '2px', fontSize: "18px", color:"#ffffff", float:"left"}}>Place here to Remove Strategy</div>
+                <div style={{ marginLeft: '-290px', marginTop: '2px', fontSize: "18px", color:"#ffffff", float:"left"}}>
+                Place here to Remove Strategy</div>
                
 
       </div>

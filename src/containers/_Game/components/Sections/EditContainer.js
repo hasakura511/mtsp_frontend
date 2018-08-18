@@ -122,7 +122,7 @@ export default class EditContainer extends PureComponent {
         style={{
           backgroundColor: bgColor,
           color: textColor,
-          opacity: canDrop ? (isOver ? 1:1) : 1,
+          opacity: canDrop ? (isOver ? 0.2:1) : 1,
           textAlign: "center",
         }}
       >
@@ -135,7 +135,7 @@ export default class EditContainer extends PureComponent {
                 "whiteSpace": "nowrap",
                 backgroundColor: canDrop ? bgColor : "transparent",
                 color: textColor,
-                opacity: 1,
+                opacity: canDrop ? (isOver ? 0.2:1) : 1,
                 position:"absolute",
                 textAlign: "center",
                 height:"24px",
@@ -149,7 +149,7 @@ export default class EditContainer extends PureComponent {
           
             </span>
             {strategy.id != 'Required' && strategy.id != 'Optional' ?
-                <StrategyButton viewMode={'tab'} strategy={strategy} />
+                <StrategyButton viewMode={'tab'} strategy={strategy} isOver={isOver} />
                 : 
                 <span 
                 className={strategy.id == 'Required' ? " required" : ""}

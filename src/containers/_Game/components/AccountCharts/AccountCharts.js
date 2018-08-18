@@ -59,6 +59,8 @@ export default class AccountCharts extends Component {
     themes:PropTypes.object.isRequired,
     isOrder:PropTypes.bool.isRequired,
     moveChipToSlot:PropTypes.func,
+    moveStratToSlot:PropTypes.func,
+    stratParams:PropTypes.object,
     isAnti:PropTypes.bool,
     isEdit:PropTypes.bool
   };
@@ -273,7 +275,16 @@ export default class AccountCharts extends Component {
               
               {isRankingChart ? (
                 <div className={classes.Content}>
-                  <RankingChart  isPractice={this.props.isPractice} moveChipToSlot={this.props.moveChipToSlot} chip={this.props.chip} slot={this.props.slot} toggle={this.props.toggle}  isAnti={this.props.isAnti} isEdit={this.props.isEdit} />
+                  <RankingChart  
+                  isPractice={this.props.isPractice} 
+                  stratParams={this.props.stratParams}
+                  moveStratToSlot={this.props.moveStratToSlot} 
+                  moveChipToSlot={this.props.moveChipToSlot} 
+                  chip={this.props.chip} 
+                  slot={this.props.slot} 
+                  toggle={this.props.toggle}  
+                  isAnti={this.props.isAnti} 
+                  isEdit={this.props.isEdit} />
                 </div>
               ) : (
               null

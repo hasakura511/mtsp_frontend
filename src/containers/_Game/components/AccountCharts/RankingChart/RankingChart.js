@@ -351,6 +351,28 @@ export default class RankingChart extends Component {
 
   }
 
+  getStrat = (strat, key) => {
+    var self=this;
+    console.log(strat);
+    var order=strat;
+    order=order.replace(/\ \(.*\)/,'');
+    if (order.match(/^[\d]+$/)) {
+      order=parseInt(order);
+    }
+    if (!self.props.isEdit) {
+        if (chip_location != key)
+          self.props.moveChipToSlot(self.props.chip, order, true);
+        else
+          self.props.moveChipToSlot(self.props.chip, order, false);
+    } else {
+          var s=Object.assign({}, this.props.stratParams.strat);
+          s.id=order;
+          s.strategy=order;
+          s.display=order;
+          this.props.moveStratToSlot(s, self.props.stratParams.position, self.props.stratParams.isAnti, self.props.stratParams.swapStrat, true, self.props.stratParams.slot);
+          //, slot=null)
+    }
+  }
 
   getColor(props, chartData) {
     var self=this;
@@ -396,10 +418,14 @@ export default class RankingChart extends Component {
           fill={color || "#8884d8"}
           transform="rotate(-70)"
           fontSize={14}
-          style={{cursor:'pointer'}} onClick={() => {
+          style={{cursor:'pointer'}} 
+          
+          onClick={() => {
             console.log("Clicked on " + chip_location);
             
-            
+            self.getStrat(chip_location, key)
+
+            /*
             var order=chip_location;
             order=order.replace(/\ \(.*\)/,'');
             if (order.match(/^[\d]+$/)) {
@@ -411,7 +437,7 @@ export default class RankingChart extends Component {
                 else
                   self.props.moveChipToSlot(self.props.chip, order, false);
             }            
-
+            */
             //console.log(order)
   
           } }
@@ -511,9 +537,17 @@ export default class RankingChart extends Component {
       console.log(yticks);
        
       var filters=[];
-      filters.push({'value':'all','name':'All'});
-      filters.push({'value':'board','name':'Board'});
-      filters.push({'value':'anti-board','name':'Anti-Board'});
+      if (this.props.isEdit) {
+        filters.push({'value':'all','name':'All'});
+        filters.push({'value':'board','name':'Non-Anti'});
+        filters.push({'value':'anti-board','name':'Anti'});
+  
+      } else {
+        filters.push({'value':'all','name':'All'});
+        filters.push({'value':'board','name':'Board'});
+        filters.push({'value':'anti-board','name':'Anti-Board'});
+  
+      }
     }
     return (
         <div className={classes.RankingChart}>
@@ -633,6 +667,10 @@ export default class RankingChart extends Component {
                 dataKey={'cum_per'}
                 stackId="stack"
                 fill={performance.chart_dict[lookback].color}
+                onClick={(e) => {
+                  console.log(e);
+                  self.getStrat(e.chip_location, "")
+                }}
               />
 
             {performance.chart_specs.map(period => {   
@@ -644,6 +682,10 @@ export default class RankingChart extends Component {
                   dataKey={'cum_pers_' + period}
                   stackId="stack"
                   fill={performance.chart_dict[period].color}
+                  onClick={(e) => {
+                    console.log(e);
+                    self.getStrat(e.chip_location, "")
+                  }}
                 />
               }
 
@@ -672,6 +714,8 @@ export default class RankingChart extends Component {
     slot:PropTypes.object,
     dictionary_strategy:PropTypes.object.isRequired,
     moveChipToSlot:PropTypes.func,
+    moveStratToSlot:PropTypes.func,
+    stratParams:PropTypes.object,
     isPractice:PropTypes.bool,
     isAnti:PropTypes.bool,
     isEdit:PropTypes.bool

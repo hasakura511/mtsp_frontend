@@ -92,6 +92,7 @@ export default class Accounts extends Component {
     themes:PropTypes.object,
     isOrder:PropTypes.bool,
     moveChipToSlot:PropTypes.func,
+    moveStratToSlot:PropTypes.func,
     isAnti:PropTypes.bool,
     initializeData:PropTypes.func.isRequired,
     showHtmlDialog:PropTypes.func.isRequired,
@@ -276,7 +277,6 @@ export default class Accounts extends Component {
             <center>
              <ClockLoader show={true} />
              <br/><br/>
-             <b>Processing... This could take a couple of minutes.</b>
             </center>
           </div>
 

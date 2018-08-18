@@ -82,13 +82,13 @@ class DragPreview extends Component {
                         return (
 
                             <div className={classes.StrategyButton2} style={chipStyle} title={title}>
-                                <p>
-                                <span style={{fontSize:"15px"}}>{strategy.strategy}<br/>
-                                </span>
-                                <span style={{fontSize:"9px"}}>
-                                {strategy.rank}
-                                </span>
-                                </p>
+                                 <div style={{marginTop:"-10px", fontSize:"15px"}}>{strategy.strategy}
+                                    <div style={{marginTop:"-2px", fontSize:"9px"}}>
+                                    {strategy.rank}
+                                    </div>
+                                    
+                                </div>
+
                             </div>
                         );
                     }

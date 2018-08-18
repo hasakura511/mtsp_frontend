@@ -102,6 +102,7 @@ export default class Order extends React.Component {
       themes:PropTypes.object,
       accounts:PropTypes.array.isRequired,
       moveChipToSlot:PropTypes.func,
+      moveStratToSlot:PropTypes.func,
       showHtmlDialog:PropTypes.func,
       silenceHtmlDialog:PropTypes.func,
       showHtmlDialog2:PropTypes.func,
@@ -874,7 +875,12 @@ export default class Order extends React.Component {
 
             <div className={classes.Content}  style={{background:self.props.themes.live.dialog.background,
               color:self.props.themes.live.dialog.text, borderColor:self.props.themes.live.dialog.lines}}>
-              <AccountCharts isOrder={!isPerformance} isEdit={true} chip={chip} slot={slot} isAnti={this.state.isAnti} rankingLoading={false} close={this.props.close} />
+              <AccountCharts 
+              isOrder={!isPerformance} 
+              moveChipToSlot={this.props.moveChipToSlot} 
+              moveStratToSlot={this.props.moveStratToSlot}
+              stratParams={this.props.stratParams}
+              isEdit={true} chip={chip} slot={slot} isAnti={this.state.isAnti} rankingLoading={false} close={this.props.close} />
             </div>
 
 

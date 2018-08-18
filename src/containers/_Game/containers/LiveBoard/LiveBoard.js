@@ -361,6 +361,7 @@ export default class LiveBoard extends Component {
     })
     .catch(error => {
       this.sendNotice('Account Data not received: ' + JSON.stringify(error));
+      window.location='/board';
       console.log('error initializing')
       console.log(error)
     // eslint-disable-next-line react/no-is-mounted

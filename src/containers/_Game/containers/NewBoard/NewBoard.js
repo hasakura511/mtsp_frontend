@@ -957,7 +957,20 @@ export default class NewBoard extends Component {
       toggleActive,
     } = this.state;
 
-    if (this.state.loading || this.state.refreshing) {
+    if (this.state.loadingBoard) {
+      return ( 
+
+        <Aux>
+          
+          <center>
+           <ClockLoader show={true} />
+           <br/>
+           <b>Please wait while we save your board. This could take a couple of minutes.</b>
+          </center>
+        </Aux>
+
+      );
+    } else if (this.state.loading || this.state.refreshing) {
         return ( 
 
           <Aux>
@@ -965,8 +978,7 @@ export default class NewBoard extends Component {
             <center>
              <ClockLoader show={true} />
              <br/><br/>
-             <b>Please wait while we load your board. This could take a couple of minutes.</b>
-            </center>
+             </center>
           </Aux>
 
         );
@@ -1080,6 +1092,10 @@ export default class NewBoard extends Component {
               optimizeData={this.optimizeData}
               updateStrats={this.updateStrats}
               itemSelected={this.state.itemSelected}
+              showLoading={(show) => {
+                self.setState({loadingBoard:show})
+
+              }}
             />
              
 
