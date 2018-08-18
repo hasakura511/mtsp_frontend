@@ -739,7 +739,7 @@ export default class LiveBoard extends Component {
       }
     })
     .catch(error => {
-      this.sendNotice('Account Data not received: ' + JSON.stringify(error));
+      this.sendNotice('New Board Data not received: ' + JSON.stringify(error));
       console.log('error initializing')
       console.log(error)
     // eslint-disable-next-line react/no-is-mounted
@@ -749,7 +749,6 @@ export default class LiveBoard extends Component {
         loading:false,
         refreshing:false
       });
-      window.location='/board'
 
     });
 
