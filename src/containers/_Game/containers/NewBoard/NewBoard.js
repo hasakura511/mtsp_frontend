@@ -113,6 +113,9 @@ const dispatchToProps = dispatch => {
     silenceDialog() {
       dispatch(actions.silenceDialog());
     },
+    silenceHtmlDialog() {
+      dispatch(actions.silenceHtmlDialog());
+    },
     showLeaderDialog: (show) => {
       dispatch(actions.showLeaderDialog(show));
     },
@@ -177,6 +180,7 @@ export default class NewBoard extends Component {
     isLive:PropTypes.bool.isRequired,
     showDialog:PropTypes.func.isRequired,
     silenceDialog:PropTypes.func.isRequired,
+    silenceHtmlDialog:PropTypes.func.isRequired,
     init_data:PropTypes.object.isRequired,
   };
 
@@ -223,7 +227,7 @@ export default class NewBoard extends Component {
   }
 
   componentWillReceiveProps(newProps) {
-    if (newProps.isLive != this.props.isLive) {
+    if (newProps.accounts != this.props.accounts) {
       var props=newProps;
       var accounts=props.accounts;
       var themes=props.themes;  
@@ -423,8 +427,9 @@ export default class NewBoard extends Component {
       console.log(data);
       if (data.message != "OK") {
         this.sendNotice(data.message);
-        window.location='/board'
-        self.initializeNewBoard(reinitialize, chip_id, last_date, board_config);
+        //window.location='/board'
+        //self.initializeNewBoard(reinitialize, chip_id, last_date, board_config);
+        self.props.silenceHtmlDialog();
 
       } else {
           self.initializeNewBoard(reinitialize, chip_id, last_date, board_config, skip_initialize);
@@ -439,10 +444,11 @@ export default class NewBoard extends Component {
       this.setState({
         rankingLoading: false,
         rankingError: error,
-        loading:false,
-        refreshing:false
+        //loading:false,
+        //refreshing:false
       });
-      window.location='/board'
+      //window.location='/board'
+      self.props.silenceHtmlDialog();
 
     });
 
@@ -549,7 +555,7 @@ export default class NewBoard extends Component {
 
     })
     .catch(error => {
-      this.sendNotice('Account Data not received: ' + JSON.stringify(error));
+      this.sendNotice('New Board Live Failed Initialization: ' + JSON.stringify(error));
       console.log('error initializing')
       console.log(error)
     // eslint-disable-next-line react/no-is-mounted
@@ -559,7 +565,8 @@ export default class NewBoard extends Component {
         loading:false,
         refreshing:false
       });
-      window.location='/board'
+      self.props.silenceHtmlDialog();
+      //window.location='/board'
     });
 
   }

@@ -947,6 +947,7 @@ export default class LiveBoard extends Component {
                 ><img src="/images/accounts_button.png" width="120"/></a><br/>
                 <a href={"#new_board"} 
                    onClick={() => {
+                    //self.props.showHtmlDialog(<NewBoard />);
 
                     self.checkLock();
                    }
