@@ -432,7 +432,7 @@ export default class NewBoard extends Component {
         self.props.silenceHtmlDialog();
 
       } else {
-          self.initializeNewBoard(reinitialize, chip_id, last_date, board_config, skip_initialize);
+          self.initializeNewBoard(reinitialize, chip_id.toString(), last_date, board_config, skip_initialize);
       }
      
     })
@@ -542,15 +542,20 @@ export default class NewBoard extends Component {
         editData:data,
         itemSelected:itemSelected,
         optimize:false,
-      });
-     
-      //if (!chip_id && !skip_initialize)
-      //  self.initializeLive();
-      this.setState({
         loading:false,
         rankingLoading: false,
         refreshing:false
       });
+
+      //setTimeout(() => {
+      //  self.forceUpdate();
+      //}, 2000);
+     
+      self.forceUpdate();
+      //if (!chip_id && !skip_initialize)
+      //  self.initializeLive();
+      //this.setState({
+      //});
 
 
     })
@@ -1012,7 +1017,9 @@ export default class NewBoard extends Component {
           
           <h4>&nbsp;<img src={'/images/new_board_icon.png'} height={24}/> <b>New Board</b></h4>
           <div style={{ zIndex:2, border: "1px solid black", }}>
-          <StrategyToolbox editData={this.state.editData} sendNotice={this.sendNotice} initializeLive={this.initializeLive}
+          <StrategyToolbox editData={this.state.editData} 
+            sendNotice={this.sendNotice} 
+            initializeLive={this.initializeLive}
             checkLock={this.checkLock}
             itemSelected={this.state.itemSelected}
             optimizeBoard={this.optimizeBoard}

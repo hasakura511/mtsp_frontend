@@ -83,6 +83,7 @@ export default class ChipSelector extends React.Component {
     handleItemChange = (value) => {
       console.log(value);
       var self=this;
+      this.setState({itemSelected: value});
       if (value != 'All') {
         this.props.accounts.map(account => {
           if (value == account.chip_id) {
@@ -93,7 +94,6 @@ export default class ChipSelector extends React.Component {
       } else {
         self.props.checkLock(true, "", "", "", true);
       }
-        this.setState({itemSelected: value});
     };
   
   

@@ -55,19 +55,25 @@ export default class StrategyToolbox extends Component {
     super(props);
     this.state = {
       isPopoverOpen:false,
+      strat_dict:props.editData.strat_dict
 
     };
     this.myRef = React.createRef();
+
 
   }
 
   componentWillReceiveProps(newProps) {
     var self=this;
-    if (newProps.editData != this.props.editData) {
+    if (newProps.editData && 
+        (!(JSON.stringify(newProps.editData) === JSON.stringify(this.props.editData)))) {
       console.log("Strat Toolbox Received new data")
+      self.setState({strat_dict:newProps.editData.strat_dict});
+      
       setTimeout(() => {
         self.forceUpdate();
       }, 2000);
+      
     }
   }
 
@@ -106,7 +112,9 @@ export default class StrategyToolbox extends Component {
       switchTxt=this.props.themes.live.action_row.switch_text;
 
     }
-    var strat_dict=this.props.editData.strat_dict;
+    var strat_dict=this.state.strat_dict;
+    console.log('strat dict')
+    console.log(strat_dict)
     var editThemes=this.props.editData.themes;
     var optimized_board=this.props.editData.optimized_board;
     var editData=this.props.editData; 
@@ -230,7 +238,8 @@ export default class StrategyToolbox extends Component {
          color:'black'
       }}>
            <span style={{fontSize: 14, color:'black'}}>
-            <img src={'/images/strategy_selector.png'} height={20} />  Strategy Selector
+            <img src={'/images/strategy_selector.png'} height={20} />  
+            Strategy Selector
            </span>
           
            <br/>
@@ -238,11 +247,11 @@ export default class StrategyToolbox extends Component {
           
            minHeight:'320px',background:editThemes.page.strategy_selector}}>
            
-           <div style={{textAlign:"left"}}>
-           {editThemes.page.strategy_selector_desc}
-           <br/>
-           
-                </div>
+                <div style={{textAlign:"left"}}>
+                {editThemes.page.strategy_selector_desc}
+                <br/>
+                
+                      </div>
                                 {Object.keys(strat_dict).map(key => {
                                     var items=strat_dict[key];
                                     //console.log(items);

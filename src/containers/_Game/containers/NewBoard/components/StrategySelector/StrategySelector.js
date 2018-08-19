@@ -109,13 +109,21 @@ export default class StrategySelector extends React.Component {
 
     componentWillReceiveProps(newProps) {
       var self=this;
-      if (newProps.strats != this.props.strats) {
+      //console.log('strat Selector Props')
+      //console.log(newProps);
+      if ((newProps.items && newProps.items.length > 0 
+        && !(JSON.stringify(newProps.items) === JSON.stringify(self.props.items))) || 
+        (newProps.strats && newProps.strats.length > 0
+        && !(JSON.stringify(newProps.strats) === JSON.stringify(self.props.strats)))) {
         console.log('Strat Selector Received New Data')
-        this.setState(this.getItemList(newProps.strats));
+        self.setState(self.getItemList(newProps.strats))
+        //self.forceUpdate();
+        
         setTimeout(() => {
           self.setState(self.getItemList(newProps.strats));
           self.forceUpdate();
         }, 1000);
+        
       }
 
 
