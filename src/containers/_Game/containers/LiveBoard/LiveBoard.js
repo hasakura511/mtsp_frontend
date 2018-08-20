@@ -942,7 +942,7 @@ export default class LiveBoard extends Component {
                 title="Create or configure your accounts."
                 onClick={() => {
                   //window.location='/accounts'
-                  self.props.showHtmlDialog(<Accounts />)
+                  self.props.showHtmlDialog(<Accounts isPopup={true} />)
                 }}
                 ><img src="/images/accounts_button.png" width="120"/></a><br/>
                 <a href={"#new_board"} 

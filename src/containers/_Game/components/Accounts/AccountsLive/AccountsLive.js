@@ -92,13 +92,22 @@ const dispatchToProps = dispatch => {
 };
 @connect(stateToProps, dispatchToProps)
 export default class AccountsLive extends Component {
+  
+
+
   static propTypes = {
     showHtmlDialog:PropTypes.func.isRequired,
     silenceHtmlDialog:PropTypes.func.isRequired,
     showHtmlDialog2:PropTypes.func.isRequired,
     silenceHtmlDialog2:PropTypes.func.isRequired,
     dictionary_strategy:PropTypes.object.isRequired,
-    themes:PropTypes.object.isRequired
+    isPopup:PropTypes.bool,
+    toggle:PropTypes.func,
+    initializeHeatmap:PropTypes.func,
+    themes:PropTypes.object,
+    addTimedToaster: PropTypes.func.isRequired,
+    initializeLive:PropTypes.func.isRequired,
+    performance:PropTypes.object.isRequired
   };
   constructor(props) {
     super(props);
@@ -457,7 +466,8 @@ export default class AccountsLive extends Component {
                     var chip = Object.assign({}, props.original); 
                     chip.display=props.original.account_chip_text;
                     chip.isReadOnly=false; //true;
-                    chip.isAccountChip=true;
+                    if (this.props.isPopup)
+                      chip.isAccountChip=true;
                     
                     chip.tier = props.original.tier;
 
@@ -525,6 +535,7 @@ export default class AccountsLive extends Component {
                                 dictionary_strategy={self.props.dictionary_strategy}
                                 isLive={true}
                                 isPerformance={true}
+                                isAccount={true}
                                 performance_account_id={props.original.account_id}
                                 rankingLoading={false}
                                 toggle={() => {
@@ -632,11 +643,14 @@ export default class AccountsLive extends Component {
                     onClick={() => {  
                         
                               chip.isAccountView=true;
+                              chip.isReadOnly=false; //true;
+                              chip.isAccountChip=true;
                               self.props.showHtmlDialog2(<Order
                                 chip={chip}
                                 dictionary_strategy={self.props.dictionary_strategy}
                                 isLive={true}
                                 isPerformance={true}
+                                isAccount={true}
                                 performance_account_id={props.original.account_id}
                                 rankingLoading={false}
                                 toggle={() => {
@@ -706,6 +720,8 @@ export default class AccountsLive extends Component {
                       */
                      onClick={() => {  
                         
+                      chip.isReadOnly=false; //true;
+                      chip.isAccountChip=true;
                       chip.isAccountView=true;
                       self.props.showHtmlDialog2(<Order
                         chip={chip}
@@ -713,6 +729,7 @@ export default class AccountsLive extends Component {
                         isLive={true}
                         isPerformance={true}
                         isPortfolio={true}
+                        isAccount={true}
                         performance_account_id={props.original.account_id}
                         rankingLoading={false}
                         toggle={() => {
@@ -1177,19 +1194,4 @@ export default class AccountsLive extends Component {
     );
   }
 
-  static propTypes = {
-   
-    //performance: PropTypes.object,
-    //position: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    //performance_account_id: PropTypes.string.isRequired,
-    toggle:PropTypes.func,
-    initializeHeatmap:PropTypes.func,
-    themes:PropTypes.object,
-    //dictionary_strategy:PropTypes.object.isRequired,
-    //showDialog:PropTypes.func.isRequired,
-    //silenceDialog:PropTypes.func.isRequired,
-    addTimedToaster: PropTypes.func.isRequired,
-    initializeLive:PropTypes.func.isRequired,
-    performance:PropTypes.object.isRequired
-  };
 }

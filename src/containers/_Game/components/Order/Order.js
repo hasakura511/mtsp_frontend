@@ -99,6 +99,7 @@ export default class Order extends React.Component {
       dictionary_strategy:PropTypes.object.isRequired,
       isPerformance:PropTypes.bool,
       isPortfolio:PropTypes.bool,
+      isAccount:PropTypes.bool,
       performance_account_id:PropTypes.string,
       themes:PropTypes.object,
       accounts:PropTypes.array.isRequired,
@@ -308,7 +309,7 @@ export default class Order extends React.Component {
                 className={classes.ElementContainer}
                 style={{ paddingTop: "15px",background: themes.live.dialog.background_inner }}
               >
-                <Chip chip={chip} />
+                <Chip chip={chip}  />
               </div>
             </div>
             <div className={classes.Right} style={{background: themes.live.dialog.background_inner}}>
@@ -410,7 +411,7 @@ export default class Order extends React.Component {
               style={{ paddingTop: "15px" }}
             >
               
-              <Chip chip={chip} />
+              <Chip chip={chip}  />
 
             </div>
           </div>
@@ -480,7 +481,8 @@ export default class Order extends React.Component {
               style={{ paddingTop: "15px",background:self.props.themes.live.dialog.background_inner,
               color:self.props.themes.live.dialog.text }}
             >
-              <Chip chip={chip} />
+            
+              <Chip chip={chip} isAccount={self.props.isAccount} />
             </div>
             <div           style={{ minWidth:"100px", padding: "15px" }}
     >
@@ -740,7 +742,7 @@ export default class Order extends React.Component {
               style={{ paddingTop: "15px",background:self.props.themes.live.dialog.background_inner,
               color:self.props.themes.live.dialog.text }}
             >
-              <Chip chip={chip}  />
+              <Chip chip={chip} isAccount={self.props.isAccount} />
             </div>
             <div           style={{ minWidth:"100px", padding: "15px" }}
     >

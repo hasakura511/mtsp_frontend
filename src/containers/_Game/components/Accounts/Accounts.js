@@ -91,6 +91,7 @@ export default class Accounts extends Component {
     showPerformance:PropTypes.func,
     themes:PropTypes.object,
     isOrder:PropTypes.bool,
+    isPopup:PropTypes.bool,
     moveChipToSlot:PropTypes.func,
     moveStratToSlot:PropTypes.func,
     isAnti:PropTypes.bool,
@@ -122,8 +123,10 @@ export default class Accounts extends Component {
   
   componentDidMount() {
     var self=this;
-    //this.initializeLive();
-    self.initializeAccounts();
+    if (!self.props.isPopup)
+      self.initializeLive();
+    else
+      self.initializeAccounts();
   }
 
 
@@ -312,7 +315,7 @@ export default class Accounts extends Component {
                 <div className={classes.Row} style={{background: page_background,
                 color:text_color, borderColor:lines}}>
 
-                       <AccountsLive performance={self.state.editData} initializeLive={this.initializeLive} themes={themes} />
+                       <AccountsLive performance={self.state.editData} isPopup={this.props.isPopup} initializeLive={this.initializeLive} themes={themes} />
 
                 </div>
 
