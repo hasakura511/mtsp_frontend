@@ -1064,7 +1064,7 @@ export default class AccountsLive extends Component {
           minRows={6}
           style={{
             width:"100%",
-            height:innerHeight - 100,
+            height: self.props.isPopup ? innerHeight-100 : innerHeight - 200,
             maxHeight:"100%",
             overflow:"auto",
             fontSize:"12px",
