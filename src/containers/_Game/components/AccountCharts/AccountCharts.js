@@ -62,17 +62,18 @@ export default class AccountCharts extends Component {
     moveStratToSlot:PropTypes.func,
     stratParams:PropTypes.object,
     isAnti:PropTypes.bool,
-    isEdit:PropTypes.bool
+    isEdit:PropTypes.bool,
+    isPortfolio:PropTypes.bool
   };
   constructor(props) {
     super(props);
 
     this.state = {
-      isPerformance: true,
+      isPerformance: props.isPortfolio ? false : true,
       isOpenPositions:false,
       isTradingCosts:false,
       isPreviousPnL:false,
-      isLockdownTimetable:false,
+      isLockdownTimetable: props.isPortfolio ? true : false,
       isRankingChart:false,
       isSignalHistory: false,
       isBetHistory:false

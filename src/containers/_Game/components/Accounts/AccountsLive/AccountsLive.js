@@ -79,6 +79,14 @@ const dispatchToProps = dispatch => {
       dispatch(actions.silenceHtmlDialog());
       
     },
+    showHtmlDialog2: (htmlContent) => {
+      dispatch(actions.showHtmlDialog2(htmlContent));
+      
+    },
+    silenceHtmlDialog2: () => {
+      dispatch(actions.silenceHtmlDialog2());
+      
+    },
     
   };
 };
@@ -87,6 +95,8 @@ export default class AccountsLive extends Component {
   static propTypes = {
     showHtmlDialog:PropTypes.func.isRequired,
     silenceHtmlDialog:PropTypes.func.isRequired,
+    showHtmlDialog2:PropTypes.func.isRequired,
+    silenceHtmlDialog2:PropTypes.func.isRequired,
     dictionary_strategy:PropTypes.object.isRequired,
     themes:PropTypes.object.isRequired
   };
@@ -444,15 +454,14 @@ export default class AccountsLive extends Component {
                   width: 250,
                   Cell: props => {
          
-                    var chip=props.original;
+                    var chip = Object.assign({}, props.original); 
                     chip.display=props.original.account_chip_text;
+                    chip.isReadOnly=false; //true;
+                    chip.isAccountChip=true;
+                    
                     chip.tier = props.original.tier;
-                    //chip.status = 'locked';
-                    chip.isReadOnly=true;
-                    //chip.starting_value=props.original.account_chip_text;
-                    //chip.account_value=props.original.account_chip_text;
-                    //chip.total_margin="";
 
+                    
                     var items=[];
 
                     //<div  style={{marginTop:"12px", minWidth: '235px'}}>
@@ -495,8 +504,43 @@ export default class AccountsLive extends Component {
 
                     <div key={'item-5'} style={{"clear": "both"}}></div>
                     )
-                    return items;
+                    return (
+                      <span className='number'><center>
+                        
   
+                      <a 
+                      href={'JavaScript:console.log("account performance")'} 
+                      style={{ cursor:  'pointer'  }} 
+                      title={"Show Account Performance."} 
+                      onClick={() => {  
+                              chip.isAccountView=true;
+                              chip.isReadOnly=false;
+                              chip.display=props.original.account_chip_text;
+                              chip.isReadOnly=false; //true;
+                              chip.isAccountChip=true;
+                              
+                              chip.tier = props.original.tier;
+                              self.props.showHtmlDialog2(<Order
+                                chip={chip}
+                                dictionary_strategy={self.props.dictionary_strategy}
+                                isLive={true}
+                                isPerformance={true}
+                                performance_account_id={props.original.account_id}
+                                rankingLoading={false}
+                                toggle={() => {
+                                  self.props.silenceHtmlDialog2();
+                                }}
+                                themes={this.themes}
+                                close={() => {
+                                  self.props.silenceHtmlDialog2();
+                                }}
+                                />);
+                                //self.props.showPerformance(props.original.account_id, chip);
+                      }}
+                      >{items}</a>
+                      </center></span>
+                      );
+                      
 
                   }, // Custom cell components!,
 
@@ -588,18 +632,22 @@ export default class AccountsLive extends Component {
                     onClick={() => {  
                         
                               chip.isAccountView=true;
-                              self.props.showHtmlDialog(<Order
+                              self.props.showHtmlDialog2(<Order
                                 chip={chip}
-                                dictionary_strategy={this.props.dictionary_strategy}
+                                dictionary_strategy={self.props.dictionary_strategy}
                                 isLive={true}
                                 isPerformance={true}
                                 performance_account_id={props.original.account_id}
                                 rankingLoading={false}
-                                toggle={this.props.silenceHtmlDialog}
+                                toggle={() => {
+                                  self.props.silenceHtmlDialog2();
+                                }}
                                 themes={this.themes}
-                                close={this.props.silenceHtmlDialog}
+                                close={() => {
+                                  self.props.silenceHtmlDialog2();
+                                }}
                                 />);
-                                self.props.showPerformance(props.original.account_id, chip);
+                                //self.props.showPerformance(props.original.account_id, chip);
                                 
                           }}>
                       {props.value}
@@ -630,20 +678,55 @@ export default class AccountsLive extends Component {
 
                   accessor: "num_markets",
 
-                  Cell: props => (
+                  Cell: props => {
+                    var chip = Object.assign({}, props.original); 
+                    chip.display=props.original.account_chip_text;
+                    //chip.tier = props.original.tier;
+                    //chip.status = 'unlocked';
+                    //chip.chip_tier_text=chip.filter;
+                    chip.isReadOnly=false; //true;
+                    chip.isAccountChip=true;
+                    
+                    return (
                     <span className='number'><center>
                         
                     <a href='JavaScript:console.log("popover called")' style={{ cursor:'pointer'  }} 
                     title={"Show Account Portfolio."}
                     ref={ref => self[props.original.rank] = ref}
-                    onClick={() => {  
+                    /*
+                    onClick={() => 
+                      {  
                                 var portfolio=props.original.portfolio
                                 self.items=portfolio.map(item => {
                                     return self.state.performance.margins[item]
                                 });
                                 console.log(self.items)
                                 self.handleClick(props.original.rank);
-                      }}>{props.value}</a>
+                      }}
+                      */
+                     onClick={() => {  
+                        
+                      chip.isAccountView=true;
+                      self.props.showHtmlDialog2(<Order
+                        chip={chip}
+                        dictionary_strategy={self.props.dictionary_strategy}
+                        isLive={true}
+                        isPerformance={true}
+                        isPortfolio={true}
+                        performance_account_id={props.original.account_id}
+                        rankingLoading={false}
+                        toggle={() => {
+                          self.props.silenceHtmlDialog2();
+                        }}
+                        themes={this.themes}
+                        close={() => {
+                          self.props.silenceHtmlDialog2();
+                        }}
+                        />);
+                        //self.props.showPerformance(props.original.account_id, chip);
+                        
+                  }}  
+                      >{props.value}</a>
                     <Popover
                         placement='bottom'
                         container={self}
@@ -703,7 +786,8 @@ export default class AccountsLive extends Component {
                             </div>
                         </Popover>
                     </center></span>
-                  ), // Custom cell components!,
+                  )
+                }, // Custom cell components!,
 
                   
                 },
@@ -892,18 +976,24 @@ export default class AccountsLive extends Component {
 
                             self.props.showDialog(
                               <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center"
-      }}
-    >
-    <Chip 
+     >
+   
+      <h2>
+      <span>
+        <center>
+
+      <Chip 
                               chip={chip} 
-                              //isReadOnly={true} 
+                              isReadOnly={true}
+
                               account_chip_text={props.original.account_chip_text} />
-      &nbsp;&nbsp;<h2 style={{ marginRight: "4px" }}>
+        </center>
+      </span>
+      <span>
       Are you sure you want to Delete the Account?
+        
+      </span>
+      
       </h2>
     </div>,
                               " Your deleted account will be permanently removed from the board. " ,
@@ -957,7 +1047,7 @@ export default class AccountsLive extends Component {
           minRows={6}
           style={{
             width:"100%",
-            height:innerHeight - 170,
+            height:innerHeight - 100,
             maxHeight:"100%",
             overflow:"auto",
             fontSize:"12px",

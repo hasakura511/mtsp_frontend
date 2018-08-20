@@ -145,10 +145,14 @@ export default class Chip extends PureComponent {
     //console.log("Chip Received New Props")
     //console.log(newProps);
     var self=this;
-      if (newProps.chip && newProps.chip != this.state.chip) {
+      if (newProps.chip && JSON.stringify(newProps.chip) != JSON.stringify(this.state.chip)) {
         var chip=newProps.chip;
-        if (newProps.isReadOnly) {
-          chip.isReadOnly=true;
+        if (newProps.isReadOnly || newProps.isAccountChip) {
+          if (newProps.isReadOnly)
+            chip.isReadOnly=true;
+          if (newProps.isAccountChip)
+            chip.isAccountChip=true;
+        
           if (chip.locktime && chip.unlocktime) {      
             var date = new moment().tz("US/Eastern");
             const liveDate = date;

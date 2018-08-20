@@ -121,7 +121,9 @@ export default class Accounts extends Component {
 
   
   componentDidMount() {
-    this.initializeLive();
+    var self=this;
+    //this.initializeLive();
+    self.initializeAccounts();
   }
 
 

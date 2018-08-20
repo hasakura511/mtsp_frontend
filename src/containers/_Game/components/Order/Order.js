@@ -98,6 +98,7 @@ export default class Order extends React.Component {
       toggle:PropTypes.func,
       dictionary_strategy:PropTypes.object.isRequired,
       isPerformance:PropTypes.bool,
+      isPortfolio:PropTypes.bool,
       performance_account_id:PropTypes.string,
       themes:PropTypes.object,
       accounts:PropTypes.array.isRequired,
