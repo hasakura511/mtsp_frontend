@@ -279,17 +279,24 @@ export default class Accounts extends Component {
     if (this.state.loading || this.state.refreshing || !this.state.editData || !this.state.editData.themes) {
         return ( 
 
-          <div>
-            
-            <center>
+          <div style={{ height: outerHeight + 100,
+            top: 0, left:0, 
+            position: 'absolute', 
+            width: innerWidth + 2222,
+            marginLeft: "-1000px",
+            marginTop: "-100px",
+            overflow: "hide",
+            background:'white'}}>
+
+          <center>
             <br/>
             <br/>
             <br/>
-            <br/>
-            <br/>
-             <ClockLoader show={true} />
-             <br/><br/>
-             {!self.props.isPopup ? <b>Please wait while we load your accounts. This could take a couple of minutes.</b> : null}
+          <ClockLoader show={true} />
+          <br/><br/>
+             {!self.props.isPopup ? <b>Please wait while we update your accounts. This could take a couple of minutes.</b> : null}
+          <br/>
+
             </center>
           </div>
 
