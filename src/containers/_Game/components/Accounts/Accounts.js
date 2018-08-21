@@ -288,12 +288,14 @@ export default class Accounts extends Component {
             position: 'absolute', 
             width: innerWidth + 2000,
             marginLeft: "-1000px",
-            marginTop: "-100px",
+            marginTop: "0px",
             overflow: "hide",
             pointerEvents:'none',
             background:'white'}}>
 
           <center>
+            <br/>
+            <br/>
             <br/>
             <br/>
             <br/>
