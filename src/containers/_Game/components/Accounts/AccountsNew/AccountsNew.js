@@ -247,9 +247,9 @@ export default class AccountsNew extends Component {
           var update_bets="";
           if (data.update_bets)
             update_bets=data.update_bets;
-            self.props.initializeLive(true, update_bets);
-            self.props.silenceHtmlDialog2();
-            self.props.silenceHtmlDialog();
+          self.props.initializeLive(true, update_bets);
+          self.props.silenceHtmlDialog2();
+          self.props.silenceHtmlDialog();
 
         }
        this.setState({
