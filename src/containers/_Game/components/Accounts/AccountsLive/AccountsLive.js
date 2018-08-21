@@ -312,8 +312,8 @@ export default class AccountsLive extends Component {
       } else {
 
         self.setState({refreshing:false})
-        self.props.silenceHtmlDialog();
         self.props.initializeLive(true);
+        self.props.silenceHtmlDialog();
       }
       
       

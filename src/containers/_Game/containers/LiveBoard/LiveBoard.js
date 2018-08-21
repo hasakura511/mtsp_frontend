@@ -797,7 +797,7 @@ export default class LiveBoard extends Component {
       toggleActive,
     } = this.state;
 
-    if (this.state.loading) {
+    if (this.state.loading || this.state.refreshing) {
         return ( 
 
           <Aux>
