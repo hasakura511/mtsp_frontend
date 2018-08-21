@@ -133,9 +133,9 @@ export default class Accounts extends Component {
 
   
   
-  initializeLive=(reinitialize=false, update_bets="" ) => {
-    if (this.props.isPopup)
-      return this.props.initializeLive(reinitialize, update_bets);
+  initializeLive=(reinitialize=false,  callback=undefined, update_bets="" ) => {
+    if (this.props.initializeLive)
+      return this.props.initializeLive(reinitialize, callback, update_bets);
     console.log("NEW BOARD Initialize")
     var self=this;
     if (this.state.refreshing)

@@ -260,7 +260,7 @@ export default class AccountsLive extends Component {
         var update_bets="";
         if (res.update_bets)
           update_bets=res.update_bets;
-        self.props.initializeLive(reinitialize, update_bets);
+        self.props.initializeLive(reinitialize, undefined, update_bets);
         
       }
       
