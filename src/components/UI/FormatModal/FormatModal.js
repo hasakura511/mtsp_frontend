@@ -17,7 +17,7 @@ const formatModal = props => {
   );
 };
 formatModal.propTypes = {
-  title: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+  title: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.func]),
   children: PropTypes.any
 };
 export default formatModal;

@@ -34,8 +34,8 @@ export default class Dialog extends Component {
   static propTypes = {
     hidden: PropTypes.bool.isRequired,
     onCancel: PropTypes.func,
-    message: PropTypes.string,
-    title: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+    message:  PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+    title: PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.string]),
     cancelAction: PropTypes.string,
     successAction: PropTypes.string,
     onSuccess: PropTypes.func,
