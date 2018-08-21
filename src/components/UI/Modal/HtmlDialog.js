@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Modal from "./Modal";
 import FormatModal from "../FormatModal/FormatModal";
-import classes from "./Modal.css";
+import classes from "./Dialog.css";
 import CancelButton from "../CancelButton/CancelButton";
 import Button from "../Button/Button";
 import * as actions from "../../../store/actions";
@@ -53,6 +53,7 @@ export default class HtmlDialog extends Component {
     return (
         
        <Dialog
+        className={classes.Dialog}
         actions={[]}
         active={!this.props.hidden}
         onEscKeyDown={this.cancelHandler}
@@ -60,8 +61,11 @@ export default class HtmlDialog extends Component {
         type={'large'}
       >
       <div style={{
-          height:(innerHeight-10)+"px",
-          overflow:"auto",
+                    height:(innerHeight-30)+"px",
+                    padding:"0px",
+                    margin:"-20px",
+          
+                    overflow:"auto",
         }}>
       {htmlContent}
       </div>

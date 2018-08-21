@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import classes from "./Modal.css";
+import classes from "./Dialog.css";
 import Aux from "../../../hoc/_Aux/_Aux";
 import Backdrop from "../Backdrop/Backdrop";
 import Dialog from 'react-toolbox/lib/dialog';
@@ -22,12 +22,21 @@ class Modal extends Component {
     }
     return (
          <Dialog
+         className={classes.Dialog}
          actions={[]}
         active={this.props.hidden ? false : true}
         type={'large'}
       >
-        <div
-        >
+        <div style={{
+          /*height:(innerHeight-50)+"px",*/
+          padding:"0px",
+          margin:"-20px",
+          overflow:"auto",
+          //fontSize: "18px",
+          fontWeight: 500,
+          height:"100%" ,
+        
+        }}>
           {this.props.children}
         </div>
         </Dialog>
