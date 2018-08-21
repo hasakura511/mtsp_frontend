@@ -977,6 +977,10 @@ export default class AccountsNew extends Component {
                   if (account.margin_percent)
                     marginValue=parseInt(account.margin_percent); 
                   var startingValue = parseInt(self.props.performance.new_account_params.default_starting_value);
+                  if (account.starting_value)
+                    startingValue=parseInt(account.starting_value);
+                  if (account.account_value)
+                    startingValue=parseInt(account.account_value);
                   var maxMargin= startingValue * marginValue / 100;
                   var marginCallType =self.props.performance.new_account_params.default_margin_call_type;
                   if (account.recreate_if_margin_call)
