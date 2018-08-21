@@ -138,7 +138,7 @@ export default class Accounts extends Component {
     if (this.state.refreshing)
       return;
     else
-      this.setState({refreshing:true})
+      this.setState({refreshing:true, boardInit:true})
 
     var reinit='false';
     if (reinitialize)
@@ -187,7 +187,8 @@ export default class Accounts extends Component {
         rankingLoading: false,
         rankingError: error,
         loading:false,
-        refreshing:false
+        refreshing:false,
+        boardInit:false,
       });
       window.location='/board'
 
@@ -282,7 +283,7 @@ export default class Accounts extends Component {
           <div style={{ height: outerHeight + 100,
             top: 0, left:0, 
             position: 'absolute', 
-            width: innerWidth + 2222,
+            width: innerWidth + 2000,
             marginLeft: "-1000px",
             marginTop: "-100px",
             overflow: "hide",
@@ -294,7 +295,7 @@ export default class Accounts extends Component {
             <br/>
           <ClockLoader show={true} />
           <br/><br/>
-             {!self.props.isPopup ? <b>Please wait while we update your accounts. This could take a couple of minutes.</b> : null}
+             {!self.props.isPopup || self.state.boardInit ? <b>Please wait while we update your accounts. This could take a couple of minutes.</b> : null}
           <br/>
 
             </center>
