@@ -122,15 +122,7 @@ class App extends Component<PropType, { showSideDrawer: boolean }> {
         showSideDrawer={this.state.showSideDrawer}
         toggleSideDrawer={this.toggleSideDrawer}
       >
-      <div style={{zIndex:1}}>
-         <HtmlDialog />
-      </div>
-      <div style={{zIndex:2}}>
-         <HtmlDialog2 />
-      </div>
-      <div style={{zIndex:2}}>
-         <HtmlDialog3 />
-      </div>
+
         <Switch>
           <Route path="/logout" component={Logout} />
           <Route path="/contact" component={Contact} />

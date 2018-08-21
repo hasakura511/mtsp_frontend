@@ -8,7 +8,9 @@ import Backdrop from "../../components/UI/Backdrop/Backdrop";
 import Footer from "../../components/UI/Footer/Footer";
 import Toasters from "../../containers/UI/Toasters/Toasters";
 import Dialog from "../../components/UI/Modal/Dialog";
-
+import HtmlDialog from "../../components/UI/Modal/HtmlDialog"
+import HtmlDialog2 from "../../components/UI/Modal/HtmlDialog2"
+import HtmlDialog3 from "../../components/UI/Modal/HtmlDialog3"
 // show 0 to show always, 1 for logged out and 2 for logged in users
 const LINKS = [
   
@@ -60,6 +62,8 @@ const LINKS = [
 
 const layout = props => (
   <Aux style={{zIndex:0}}>
+    
+
     <Toolbar links={LINKS} toggleSideDrawer={props.toggleSideDrawer} />
     {/* <div>SideDrawer, Backdrop</div> */}
     <SideDrawer
@@ -71,7 +75,18 @@ const layout = props => (
     <main style={{zIndex:0}} className={styles.Content}>{props.children}</main>
     <Footer />
     <Dialog />
+    
+    <div style={{zIndex:1}}>
+        <HtmlDialog />
+    </div>
+    <div style={{zIndex:2}}>
+        <HtmlDialog2 />
+    </div>
+    <div style={{zIndex:3}}>
+        <HtmlDialog3 />
+    </div>
     <Toasters />
+    
   </Aux>
 );
 

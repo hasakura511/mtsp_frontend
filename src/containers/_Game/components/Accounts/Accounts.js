@@ -98,6 +98,7 @@ export default class Accounts extends Component {
     initializeData:PropTypes.func.isRequired,
     showHtmlDialog:PropTypes.func.isRequired,
     silenceHtmlDialog:PropTypes.func.isRequired,
+    initializeLive:PropTypes.func
   };
   constructor(props) {
     super(props);
@@ -133,6 +134,8 @@ export default class Accounts extends Component {
   
   
   initializeLive=(reinitialize=false, update_bets="" ) => {
+    if (this.props.isPopup && this.props.initializeLive)
+      return this.props.initializeLive(reinitialize, update_bets);
     console.log("NEW BOARD Initialize")
     var self=this;
     if (this.state.refreshing)
@@ -280,13 +283,14 @@ export default class Accounts extends Component {
     if (this.state.loading || this.state.refreshing || !this.state.editData || !this.state.editData.themes) {
         return ( 
 
-          <div style={{ height: outerHeight + 100,
+          <div style={{ height: outerHeight + 1000,
             top: 0, left:0, 
             position: 'absolute', 
             width: innerWidth + 2000,
             marginLeft: "-1000px",
             marginTop: "-100px",
             overflow: "hide",
+            pointerEvents:'none',
             background:'white'}}>
 
           <center>

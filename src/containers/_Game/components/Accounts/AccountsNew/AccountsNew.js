@@ -499,8 +499,11 @@ export default class AccountsNew extends Component {
                                 <span style={{textAlign:'left'}} >
                                 <a href='#chartTop' 
                                 onClick={() => {
-                                  self.props.showHtmlDialog3(<Markets load_account_id={''} 
-                                    load_symbol={props.original.key} 
+                                  var sym=props.original.key;
+                                  //alert(sym);
+                                  self.props.showHtmlDialog3(<Markets 
+                                    load_account_id={''} 
+                                    load_symbol={sym} 
                                     load_link={'accounts'}
                                     load_portfolio={JSON.stringify(self.state.orig_portfolio)} 
                                     is_dialog={true}

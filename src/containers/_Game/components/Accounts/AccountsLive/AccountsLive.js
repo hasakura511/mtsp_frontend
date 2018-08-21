@@ -389,13 +389,14 @@ export default class AccountsLive extends Component {
     if (this.state.refreshing) {
       return ( 
 
-        <div style={{ height: outerHeight + 100,
+        <div style={{ height: outerHeight + 1000,
                       top: 0, left:0, 
                       position: 'absolute', 
                       width: innerWidth + 2000,
                       marginLeft: "-1000px",
                       marginTop: "-100px",
                       overflow: "hide",
+                      pointerEvents:'none',
                       background:themes.table_background }}>
           
           <center>
