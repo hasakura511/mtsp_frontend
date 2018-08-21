@@ -334,7 +334,7 @@ export default class Accounts extends Component {
                 <div className={classes.Row} style={{background: page_background,
                 color:text_color, borderColor:lines}}>
 
-                       <AccountsLive performance={self.state.editData} isPopup={this.props.isPopup} initializeLive={this.initializeLive} themes={themes} />
+                       <AccountsLive performance={self.state.editData} isPopup={this.props.isPopup} initializeLive={this.props.isPopup && this.props.initializeLive ? this.props.initializeLive : this.initializeLive} themes={themes} />
 
                 </div>
 
