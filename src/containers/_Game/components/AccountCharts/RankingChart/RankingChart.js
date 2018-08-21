@@ -360,7 +360,7 @@ export default class RankingChart extends Component {
       order=parseInt(order);
     }
     if (!self.props.isEdit) {
-        if (chip_location != key)
+        if (self.props.chip.chip_location != key)
           self.props.moveChipToSlot(self.props.chip, order, true);
         else
           self.props.moveChipToSlot(self.props.chip, order, false);
