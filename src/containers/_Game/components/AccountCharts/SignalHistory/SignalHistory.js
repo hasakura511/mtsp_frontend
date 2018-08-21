@@ -330,7 +330,7 @@ export default class SignalHistory extends Component {
         <div className={classes.SignalHistory}>
         
         {performanceLoading || this.state.refreshing ? (
-                <div>
+                <div style={{height: innerHeight - 172,  background: self.props.themes.live.dialog.tab_color_active} }>
                   <Spinner />
                 </div>
         ) : performanceError ? (
@@ -347,7 +347,7 @@ export default class SignalHistory extends Component {
           </div>
 
         ) : !self.state.date_picked ? (
-          <div style={{height: innerHeight - 172,  background: self.props.themes.live.dialog.tab_color_active} }>
+          <div style={{  background: self.props.themes.live.dialog.tab_color_active} }>
           <center>
               <DatePicker
                inline
@@ -383,7 +383,7 @@ export default class SignalHistory extends Component {
         :
         (
 
-        <div className={classes.SignalHistory} style={{margin:"0px", background:self.props.themes.live.dialog.tab_color_active}}>
+        <div className={classes.SignalHistory} style={{marginTop:"-20px", background:self.props.themes.live.dialog.tab_color_active}}>
           
                 <span style={{margin:"0px", background:self.props.themes.live.dialog.tab_color_active, "float": "right", "width": "100%", "textAlign": "right"}}>
                   <img src="/images/infotext_button.png" width="22" style={{"marginRight":"5px"}}/>

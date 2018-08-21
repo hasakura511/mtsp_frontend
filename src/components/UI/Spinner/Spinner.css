@@ -1,5 +1,6 @@
 .Loader,
 .Loader:before,
+/*
 .Loader:after {
   border-radius: 50%;
 }
@@ -49,7 +50,7 @@
   -webkit-animation: load2 2s infinite ease;
   animation: load2 2s infinite ease;
 }
-
+*/
 @-webkit-keyframes load2 {
   0% {
     -webkit-transform: rotate(0deg);

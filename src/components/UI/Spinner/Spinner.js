@@ -8,9 +8,9 @@ const spinner = () => {
     style={{
       background: "white",
       opacity: "1",
-      height: "100%",
+      height: innerHeight-200,
       width: "98%",
-      position: "absolute",
+      position: "relative",
       zIndex: "100",
       display: "flex",
       flexFlow: "row",

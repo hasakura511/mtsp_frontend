@@ -74,15 +74,16 @@ const layout = props => (
     <Backdrop show={props.showSideDrawer} toggle={props.toggleSideDrawer} />
     <main style={{zIndex:0}} className={styles.Content}>{props.children}</main>
     <Footer />
-    <Dialog />
-    
     <div style={{zIndex:1}}>
+      <Dialog />
+    </div>  
+    <div style={{zIndex:2}}>
         <HtmlDialog />
     </div>
-    <div style={{zIndex:2}}>
+    <div style={{zIndex:3}}>
         <HtmlDialog2 />
     </div>
-    <div style={{zIndex:3}}>
+    <div style={{zIndex:4}}>
         <HtmlDialog3 />
     </div>
     <Toasters />

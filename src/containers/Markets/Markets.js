@@ -126,6 +126,9 @@ export default class Markets extends Component {
       refreshing:false,
       heatmap_account_id:'',
       last_heatmap_params:{},
+      showChartArea:false,
+      showGroupArea:false,
+      marketId:Math.round(Math.random() * 1000000).toString()
     };
   }
 
@@ -183,6 +186,12 @@ export default class Markets extends Component {
       this.setState({liveDateText:newProps.liveDateText});
     }
     
+    /*
+    if (newProps.load_symbol && newProps.load_symbol != this.props.load_symbol) {
+      alert(newProps.load_symbol);
+      this.refreshData(newProps.load_account_id, newProps.load_link, newProps.load_symbol, newProps.load_portfolio);
+    }
+    */
     //console.log(newProps.heatmap_lookup_group);
 
     if (newProps.heatmap_lookup_link == 'practice' && 
@@ -229,7 +238,8 @@ export default class Markets extends Component {
      
       //alert(newProps.heatmap_lookup_symbol);
       this.refreshData('','',newProps.heatmap_lookup_symbol, '',  newProps.heatmap_lookup_date ? newProps.heatmap_lookup_date : this.state.liveDateText );
-    }
+    } 
+    
     
   }
 
@@ -297,6 +307,7 @@ export default class Markets extends Component {
         console.log(groups)
         console.log(markets)
         console.log(themes)
+        //alert(sym)
         /*
         const controls = { ...initialControls };
         for (let key in controls) {
@@ -540,9 +551,10 @@ export default class Markets extends Component {
             themes:response.data.themes,
           firstPeriod:firstPeriod,
           chartLoading:false,
-          selected_period:firstPeriod});
+          selected_period:firstPeriod,
+          showChartArea:true
+        });
         this.onGetChartDate(symbol, date, firstPeriod)
-        $('#chartArea').show()
         
     })
     .catch((error) => {
@@ -565,7 +577,7 @@ export default class Markets extends Component {
         selected_period:period});
 
         var color;
-        var chart = AmCharts.makeChart( "chartdiv", {
+        var chart = AmCharts.makeChart( "chartdiv" + self.state.marketId, {
           "type": "stock",
           "theme": "light",
         
@@ -916,7 +928,7 @@ export default class Markets extends Component {
         
         });
 
-          $('#chartdiv').show();
+          $("#chartdiv" + self.state.marketId).show();
         
           console.log(chartData);
   }
@@ -970,9 +982,9 @@ export default class Markets extends Component {
             selected_period:firstPeriod,
             chartLoading:false,
             firstPeriod:firstPeriod,
+            showChartArea:true
             });
         this.onGetGroupChartDate(symbol, date, firstPeriod)
-        $('#chartArea').show()
         
     })
     .catch((error) => {
@@ -993,7 +1005,7 @@ export default class Markets extends Component {
     this.setState({symbol:symbol, selected_period:period, date:date})
 
     var color;
-    var chart = AmCharts.makeChart( "chartdiv", {
+    var chart = AmCharts.makeChart( "chartdiv" + self.state.marketId, {
       "type": "stock",
       "theme": "light",
     
@@ -1265,7 +1277,7 @@ export default class Markets extends Component {
       */
     
     });
-      $('#chartdiv').show();
+      $("#chartdiv" + self.state.marketId).show();
     
       console.log(chartData);
   }
@@ -1388,13 +1400,13 @@ export default class Markets extends Component {
                */
               }
               
-              <div id="chartArea"  style={{display:"none", width:"100%", textAlign:"left", padding:"10px"}}>
+              <div id="chartArea"  style={{display: self.state.showChartArea ? "":"none", width:"100%", textAlign:"left", padding:"10px"}}>
               <span style={{'float':'right'}}><button onClick={()=>{ 
                 
                 if (self.props.load_symbol)
                   self.props.silenceHtmlDialog3();
                 else
-                  $('#chartArea').hide();
+                  self.setState({showChartArea:false})
                 
                 }}>Close</button></span>
                   {this.state.specifications.chart_title ? (
@@ -1432,7 +1444,7 @@ export default class Markets extends Component {
                   </h4>
                   
 
-                 <div id="chartdiv"  style={{display:"none", width:"100%",height:"600px", paddingRight:"60px",  marginBottom:"5px"}}></div>
+                 <div id={"chartdiv" + self.state.marketId}  style={{display:self.state.showChartArea ? "":"none", width:"100%",height:"600px", paddingRight:"60px",  marginBottom:"5px"}}></div>
                  {this.state.specifications['Contract Specifications'] ? 
                  (
                   <div>                    
