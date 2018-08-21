@@ -311,8 +311,9 @@ export default class AccountsLive extends Component {
           self.setState({refreshing:false})
       } else {
 
-          //self.setState({refreshing:false})
-          self.props.initializeLive(true);
+        self.setState({refreshing:false})
+        self.props.silenceHtmlDialog();
+        self.props.initializeLive(true);
       }
       
       
@@ -328,6 +329,7 @@ export default class AccountsLive extends Component {
           5000
           );
       }
+      self.setState({refreshing:false})
       
      
     });
