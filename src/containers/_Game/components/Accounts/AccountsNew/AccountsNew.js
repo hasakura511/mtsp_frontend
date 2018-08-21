@@ -249,7 +249,7 @@ export default class AccountsNew extends Component {
             update_bets=data.update_bets;
           self.props.initializeLive(true, update_bets);
 
-          self.props.silenceHtmlDialog();
+          self.props.silenceHtmlDialog2();
         }
        this.setState({
           //controls: controls,
@@ -1000,7 +1000,7 @@ export default class AccountsNew extends Component {
             <td style={{textAlign:"right", border: "none", margin: "0px", padding: "5px"}}>
             <Button label='Cancel' raised ripple={false} 
              onClick={() => {
-              self.props.silenceHtmlDialog();
+              self.props.silenceHtmlDialog2();
             }}
              />
             {!self.props.chip_id ?
