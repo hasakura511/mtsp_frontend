@@ -146,13 +146,40 @@ export default class Chip extends PureComponent {
     //console.log("Chip Received New Props")
     //console.log(newProps);
     var self=this;
+    //if (!this.state.chip.isReadOnly) {
+      if (newProps.accounts) {
+        var updated=false;
+        newProps.accounts.map(account => {
+            if (account.account_id == self.props.chip.account_id) {
+              self.setState({chip:account});
+              //console.log("Chip Received new state for chip " + account.account_id);
+              //console.log(account);
+              updated=true;
+            }
+        });
+        if (updated) 
+          self.forceUpdate();
+
+    }
+    //}
       if (newProps.chip && JSON.stringify(newProps.chip) != JSON.stringify(this.state.chip)) {
         var chip=newProps.chip;
-        if (newProps.isReadOnly || newProps.isAccountChip) {
+        //if (newProps.isReadOnly || newProps.isAccountChip) {
+          if (newProps.accounts) {
+            newProps.accounts.map(account => {
+                if (account.account_id == chip.account_id) {
+                  chip=Object.assign(chip, account);                  
+                }
+            });
+          }
           if (newProps.isReadOnly)
             chip.isReadOnly=true;
-          if (newProps.isAccountChip)
+          if (newProps.isAccountChip) {
             chip.isAccountChip=true;
+          }
+          if (newProps.isAccount) {
+            chip.isAccount=true;
+          }
         
           if (chip.locktime && chip.unlocktime) {      
             var date = new moment().tz("US/Eastern");
@@ -169,28 +196,13 @@ export default class Chip extends PureComponent {
             } else {
               chip['status']='locked';
             }
-          }
+          //}
         }
 
         self.setState({chip:chip});
         
       }
-    if (!this.state.chip.isReadOnly) {
-        if (newProps.accounts) {
-            var updated=false;
-            newProps.accounts.map(account => {
-                if (account.account_id == self.props.chip.account_id) {
-                  self.setState({chip:account});
-                  //console.log("Chip Received new state for chip " + account.account_id);
-                  //console.log(account);
-                  updated=true;
-                }
-            });
-            if (updated) 
-              self.forceUpdate();
-
-        }
-      }
+    
   }
 
 
@@ -231,21 +243,24 @@ export default class Chip extends PureComponent {
         title+="Unlock: " + chip.unlocktime_text.toString() + "\n"; 
       if (chip.account_value)
         title+="Account Value: " + '$' + numberWithCommas(chip.account_value.toString()) + "\n"; 
+      if (chip.last_selection) {
+        if (chip.isReadOnly || chip.isAccount || chip.isAccountChip)
+          title+="Next Bet: " +  toTitleCase(chip.last_selection.toString()) + "\n";
+        else
+          title+="Current Bet: " +  toTitleCase(chip.last_selection.toString()) + "\n";
+      }
+  
       if (chip.pnl_cumpct)
         title+="Cumulative % Chg: " + chip.pnl_cumpct.toString() + "%\n";
       if (chip.num_markets)
         title+="Markets in Portfolio: " + chip.num_markets.toString() + "\n"; 
       if (chip.age)
         title+="Age: " + chip.age.toString() + "\n";
-      if (chip.last_selection) {
-        if (chip.isReadOnly)
-          title+="Next Bet: " +  toTitleCase(chip.last_selection.toString()) + "";
-        else
-          title+="Current Bet: " +  toTitleCase(chip.last_selection.toString()) + "\n";
-      }
       if (chip.status && !chip.isReadOnly && !chip.simulate_dates)
         title+="Status: " +  toTitleCase(chip.status.toString());
     }
+    //console.log("chip info")
+    console.log(chip)
 
     if (chip.locktime && chip.unlocktime) {      
       var date = new moment().tz("US/Eastern");

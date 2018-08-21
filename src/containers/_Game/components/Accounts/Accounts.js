@@ -274,14 +274,22 @@ export default class Accounts extends Component {
   }
 
   render() {
+    var self=this;
+            
     if (this.state.loading || this.state.refreshing || !this.state.editData || !this.state.editData.themes) {
         return ( 
 
           <div>
             
             <center>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
              <ClockLoader show={true} />
              <br/><br/>
+             {!self.props.isPopup ? <b>Please wait while we load your accounts. This could take a couple of minutes.</b> : null}
             </center>
           </div>
 
@@ -306,7 +314,6 @@ export default class Accounts extends Component {
             var text_loess=themes.text_loss;
 
             console.log(themes)
-            var self=this;
             return (
             <div className={classes.Accounts} style={{background: page_background,
                 color:text_color, borderColor:lines}}>

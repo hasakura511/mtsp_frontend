@@ -39,6 +39,7 @@ const stateToProps = state => ({
   themes:state.betting.themes,
   email:state.auth.email,
   dictionary_strategy:state.betting.dictionary_strategy,
+  accounts:state.betting.accounts
 });
 
 const convert = pnlObj => {
@@ -107,7 +108,8 @@ export default class AccountsLive extends Component {
     themes:PropTypes.object,
     addTimedToaster: PropTypes.func.isRequired,
     initializeLive:PropTypes.func.isRequired,
-    performance:PropTypes.object.isRequired
+    performance:PropTypes.object.isRequired,
+    accounts:PropTypes.array.isRequired
   };
   constructor(props) {
     super(props);
@@ -136,6 +138,18 @@ export default class AccountsLive extends Component {
       if (newProps.performance) {
           this.setState({performance:newProps.performance})
       }
+      /*
+      if (newProps.accounts) {
+        var data=this.state.performance;
+        newProps.accounts.map(account => {
+
+          data.accounts[account.chip_id]['last_selection']=account.last_selection;
+          data.accounts[account.chip_id]['prev_selection']=account.prev_selection;
+          
+        });
+        this.setState({performance:data})
+      }
+      */
   }
 
   lookbackHandler = lookback => {
@@ -388,9 +402,11 @@ export default class AccountsLive extends Component {
             <br/>
             <br/>
             <br/>
+            <br/>
+            <br/>
            <ClockLoader show={true} />
            <br/>
-           <b>Please wait while we load your board. This could take a couple of minutes.</b>
+           <b>Please wait while we update your accounts. This could take a couple of minutes.</b>
           </center>
         </div>
       );
@@ -460,7 +476,7 @@ export default class AccountsLive extends Component {
                 {
                   Header: "Account Value",
                   accessor: "account_value",
-                  width: 250,
+                  width: 270,
                   Cell: props => {
          
                     var chip = Object.assign({}, props.original); 
@@ -1067,7 +1083,7 @@ export default class AccountsLive extends Component {
             height: self.props.isPopup ? innerHeight-100 : innerHeight - 200,
             maxHeight:"100%",
             overflow:"auto",
-            fontSize:"12px",
+            fontSize:"16px",
             fontWeight: 800,
           }}
           defaultSorted={[{
