@@ -63,3 +63,19 @@ export const silenceHtmlDialog2 = () => {
     type: actionTypes.SILENCE_HTML_DIALOG2
   };
 };
+
+export const showHtmlDialog3 = (
+  htmlContent
+) => {
+  console.log(arguments);
+  return {
+    type: actionTypes.SHOW_HTML_DIALOG3,
+    htmlContent
+  };
+};
+
+export const silenceHtmlDialog3 = () => {
+  return {
+    type: actionTypes.SILENCE_HTML_DIALOG3
+  };
+};

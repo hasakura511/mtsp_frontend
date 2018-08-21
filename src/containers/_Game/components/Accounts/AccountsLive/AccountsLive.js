@@ -910,7 +910,7 @@ export default class AccountsLive extends Component {
                                 () => {
                                       self.props.silenceDialog();
                               
-                                      self.props.showHtmlDialog(<AccountsNew  chip_id={props.original.chip_id} performance={self.state.performance} themes={self.props.themes} initializeLive={self.props.initializeLive} />);
+                                      self.props.showHtmlDialog2(<AccountsNew  chip_id={props.original.chip_id} performance={self.state.performance} themes={self.props.themes} initializeLive={self.props.initializeLive} />);
 
                       
                                   },
@@ -960,7 +960,7 @@ export default class AccountsLive extends Component {
                     <div>
                       {self.props.performance.enable_create_new ? <div style={{width:"100px", cursor:'pointer'}} onClick={() => {
 
-                        self.props.showHtmlDialog(<AccountsNew  performance={self.props.performance} themes={self.props.themes}  initializeLive={self.props.initializeLive}  />);
+                        self.props.showHtmlDialog2(<AccountsNew  performance={self.props.performance} themes={self.props.themes}  initializeLive={self.props.initializeLive}  />);
                     
                     }}>
                     

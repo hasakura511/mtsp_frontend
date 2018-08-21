@@ -95,6 +95,14 @@ const dispatchToProps = dispatch => {
       dispatch(actions.silenceHtmlDialog2());
       
     },
+    showHtmlDialog3: (htmlContent) => {
+      dispatch(actions.showHtmlDialog3(htmlContent));
+      
+    },
+    silenceHtmlDialog3: () => {
+      dispatch(actions.silenceHtmlDialog3());
+      
+    },
     
   };
 };
@@ -105,6 +113,8 @@ export default class AccountsNew extends Component {
     silenceHtmlDialog:PropTypes.func.isRequired,
     showHtmlDialog2:PropTypes.func.isRequired,
     silenceHtmlDialog2:PropTypes.func.isRequired,
+    showHtmlDialog3:PropTypes.func.isRequired,
+    silenceHtmlDialog3:PropTypes.func.isRequired,
     dictionary_strategy:PropTypes.object.isRequired,
     themes:PropTypes.object.isRequired,
     chip_id:PropTypes.string
@@ -489,7 +499,7 @@ export default class AccountsNew extends Component {
                                 <span style={{textAlign:'left'}} >
                                 <a href='#chartTop' 
                                 onClick={() => {
-                                  self.props.showHtmlDialog2(<Markets load_account_id={''} 
+                                  self.props.showHtmlDialog3(<Markets load_account_id={''} 
                                     load_symbol={props.original.key} 
                                     load_link={'accounts'}
                                     load_portfolio={JSON.stringify(self.state.orig_portfolio)} 

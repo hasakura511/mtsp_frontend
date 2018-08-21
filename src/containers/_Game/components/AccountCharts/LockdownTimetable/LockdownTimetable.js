@@ -10,6 +10,7 @@ import gainIcon from "../../../../../assets/images/gain-icon.png";
 import ReactTable from "react-table";
 import tableClasses from "react-table/react-table.css";
 import * as actions from "../../../../../store/actions";
+import Markets from "../../../../Markets/Markets"
 
 import {
   LineChart,
@@ -31,6 +32,7 @@ const stateToProps = state => ({
   liveDateText:state.betting.liveDateText,
   timetable_dialog:state.betting.timetable_dialog,
   themes:state.betting.themes,
+  
 
 });
 
@@ -39,7 +41,15 @@ const dispatchToProps = dispatch => {
   return {
     initializeHeatmap:(account_id, link, sym) => {
       dispatch(actions.initializeHeatmap(account_id, link, sym))
-    }
+    },
+    showHtmlDialog3: (htmlContent) => {
+      dispatch(actions.showHtmlDialog3(htmlContent));
+      
+    },
+    silenceHtmlDialog3: () => {
+      dispatch(actions.silenceHtmlDialog3());
+      
+    },
     
   };
 };
@@ -71,6 +81,9 @@ export default class LockdownTimetable extends Component {
     initializeHeatmap:PropTypes.func.isRequired,
     gap:PropTypes.number,
     themes:PropTypes.object.isRequired,
+    showHtmlDialog3:PropTypes.func.isRequired,
+    silenceHtmlDialog3:PropTypes.func.isRequired,
+
   };
 
   constructor(props) {
@@ -281,10 +294,20 @@ export default class LockdownTimetable extends Component {
                     console.log(props);
                     var sym= props.value;
                     sym=sym.substr(0, sym.indexOf(' ')); 
+                    /*
                     self.props.initializeHeatmap('','',sym);
                     if (self.props.toggle)
                       self.props.toggle();
                     $(window).scrollTop($("#marketTop").offset().top-111);
+                    */
+                      self.props.showHtmlDialog3(<Markets load_account_id={''} 
+                        load_symbol={sym} 
+                        load_link={''}
+                        load_portfolio={''} 
+                        is_dialog={true}
+                        />)
+
+
                   }} >{props.value}</a></span>, // Custom cell components!,
 
                 },

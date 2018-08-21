@@ -10,6 +10,7 @@ import gainIcon from "../../../../../assets/images/gain-icon.png";
 import ReactTable from "react-table";
 import tableClasses from "react-table/react-table.css";
 import * as actions from "../../../../../store/actions";
+import Markets from "../../../../Markets/Markets"
 
 import {
   LineChart,
@@ -154,7 +155,15 @@ const dispatchToProps = dispatch => {
   return {
     initializeHeatmap:(account_id, link, sym) => {
       dispatch(actions.initializeHeatmap(account_id, link, sym))
-    }
+    },
+    showHtmlDialog3: (htmlContent) => {
+      dispatch(actions.showHtmlDialog3(htmlContent));
+      
+    },
+    silenceHtmlDialog3: () => {
+      dispatch(actions.silenceHtmlDialog3());
+      
+    },
     
   };
 };
@@ -308,10 +317,18 @@ export default class PreviousPnL extends Component {
                     console.log(props);
                     var sym= props.value;
                     sym=sym.substr(0, sym.indexOf(' ')); 
+                    self.props.showHtmlDialog3(<Markets load_account_id={''} 
+                      load_symbol={sym} 
+                      load_link={''}
+                      load_portfolio={''} 
+                      is_dialog={true}
+                      />)
+                      /*
                     self.props.initializeHeatmap(self.props.performance_account_id,'previous',sym);
                     if (self.props.toggle)
                       self.props.toggle();
                     $(window).scrollTop($("#marketTop").offset().top-111);
+                    */
                   }} >{props.value}</a></span>, // Custom cell components!,
 
                 },
@@ -488,6 +505,9 @@ export default class PreviousPnL extends Component {
     liveDateText:PropTypes.string.isRequired,
     toggle:PropTypes.func,
     initializeHeatmap:PropTypes.func,
-    themes:PropTypes.object.isRequired
+    themes:PropTypes.object.isRequired,
+    showHtmlDialog3:PropTypes.func.isRequired,
+    silenceHtmlDialog3:PropTypes.func.isRequired,
+
   };
 }

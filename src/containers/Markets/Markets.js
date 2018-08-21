@@ -91,7 +91,8 @@ const dispatchToProps = dispatch => {
     refreshMarketDone:() => {
       dispatch(actions.refreshMarketDone())
     },
-    silenceHtmlDialog2: () => dispatch(actions.silenceHtmlDialog2())
+    silenceHtmlDialog2: () => dispatch(actions.silenceHtmlDialog2()),
+    silenceHtmlDialog3: () => dispatch(actions.silenceHtmlDialog3())
   };
 };
 
@@ -147,6 +148,7 @@ export default class Markets extends Component {
     link:PropTypes.string,
     initializeHeatmap:PropTypes.func.isRequired,
     silenceHtmlDialog2:PropTypes.func.isRequired,
+    silenceHtmlDialog3:PropTypes.func.isRequired,
     is_dialog:PropTypes.bool,
     heatmap_lookup_date:PropTypes.string,
     heatmap_lookup_group:PropTypes.string,
@@ -1390,7 +1392,7 @@ export default class Markets extends Component {
               <span style={{'float':'right'}}><button onClick={()=>{ 
                 
                 if (self.props.load_symbol)
-                  self.props.silenceHtmlDialog2();
+                  self.props.silenceHtmlDialog3();
                 else
                   $('#chartArea').hide();
                 
