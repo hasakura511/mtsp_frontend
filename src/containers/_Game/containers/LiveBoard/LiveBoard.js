@@ -296,8 +296,11 @@ export default class LiveBoard extends Component {
     
     //console.log(this.props);
     var reinit='false';
-    if (reinitialize)
+    if (reinitialize) {
       reinit='true';
+      this.setState({loading:true})
+
+    }
     var initQueue=localStorage.getItem("initQueue");
     if (initQueue) {
       var queue=JSON.parse(initQueue);
@@ -797,7 +800,7 @@ export default class LiveBoard extends Component {
       toggleActive,
     } = this.state;
 
-    if (this.state.loading || this.state.refreshing) {
+    if (this.state.loading) {
         return ( 
 
           <Aux>
