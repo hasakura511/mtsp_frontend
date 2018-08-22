@@ -132,8 +132,11 @@ export default class LockdownDialog extends Component {
               "Could not load performance data, contact us to report this bug."}
           </h1>
         ) : (
-          <div  style={{background:self.props.themes.live.dialog.background,
-            color:self.props.themes.live.dialog.text}}
+          <div  style={{
+            background:self.props.themes.live.dialog.background,
+            color:self.props.themes.live.dialog.text,
+            maxHeight: innerHeight - 170
+          }}
             >
          
               <div style={{ "width": "100%", "padding":"0px", "margin":"0px", background:self.props.themes.live.dialog.background}}>
@@ -171,10 +174,13 @@ export default class LockdownDialog extends Component {
                 </span>
                 </span>
               </div>
-               <div style={{clear: "both"}}></div>​
+               <div style={{
+                 clear: "both"
+               
+              }}></div>​
 
          
-            <LockdownTimetable isdialog={true} gap={107} />
+            <LockdownTimetable isdialog={true} gap={-207} />
           </div>            
         )}
        

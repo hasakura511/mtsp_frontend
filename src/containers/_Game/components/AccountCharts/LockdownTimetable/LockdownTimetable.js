@@ -237,13 +237,14 @@ export default class LockdownTimetable extends Component {
     */
     var adjHeight=0;
     if (self.props.gap != undefined)
-      adjHeight+=self.props.gap;
+      adjHeight+=parseInt(self.props.gap);
     var tableStyle={ fontSize:'12px',background: bgColor, color:bgText, borderLeft: "1px solid " + bdColor, borderRight: "1px solid " + bdColor, borderTop: "0.1px solid " + bhColor, borderBottom: "0.1px solid " + bhColor};
 
     var chartData={};
 
     return (
-        <div className={classes.LockdownTimetable} style={{background:self.props.themes.live.dialog.background,
+        <div className={classes.LockdownTimetable} 
+        style={{background:self.props.themes.live.dialog.background,
           color:self.props.themes.live.dialog.text}}>
                
         
@@ -252,7 +253,10 @@ export default class LockdownTimetable extends Component {
                     <Spinner />
                 </div>
         ) : performanceError ? (
-          <div style={{height: innerHeight - 172,  background: self.props.isdialog ? self.props.themes.live.dialog.background : self.props.themes.live.dialog.tab_color_active} }>
+          <div style={{
+            height: innerHeight - 172 ,  
+            background: self.props.isdialog ? self.props.themes.live.dialog.background : self.props.themes.live.dialog.tab_color_active
+          }}>
 
           <center >  
           <br/>
@@ -312,6 +316,34 @@ export default class LockdownTimetable extends Component {
 
                 },
                 {
+                  Header: "Group",
+                  accessor: "Group",
+                  Cell: props => <span><a href='#market' onClick={()=> {
+                    console.log(props);
+                    var sym= props.value;
+                    //sym=sym.substr(0, sym.indexOf(' ')); 
+                    /*
+                    self.props.initializeHeatmap('','',sym);
+                    if (self.props.toggle)
+                      self.props.toggle();
+                    $(window).scrollTop($("#marketTop").offset().top-111);
+                    */
+                      self.props.showHtmlDialog3(<Markets load_account_id={''} 
+                        load_symbol={''} 
+                        load_group={sym}
+                        load_link={''}
+                        load_portfolio={''} 
+                        is_dialog={true}
+                        />)
+
+
+                  }} >
+                  <center>{props.value}
+                  </center>
+                  </a></span>, // Custom cell components!,
+
+                },
+                {
                   Header: "Quantity",
                   accessor: "qty",
                   id:"qty",
@@ -341,6 +373,34 @@ export default class LockdownTimetable extends Component {
                         self.props.toggle();
                       $(window).scrollTop($("#marketTop").offset().top-111);
                     }} >{props.value}</a></span>, // Custom cell components!,
+  
+                  },
+                  {
+                    Header: "Group",
+                    accessor: "Group",
+                    Cell: props => <span><a href='#market' onClick={()=> {
+                      console.log(props);
+                      var sym= props.value;
+                      //sym=sym.substr(0, sym.indexOf(' ')); 
+                      /*
+                      self.props.initializeHeatmap('','',sym);
+                      if (self.props.toggle)
+                        self.props.toggle();
+                      $(window).scrollTop($("#marketTop").offset().top-111);
+                      */
+                        self.props.showHtmlDialog3(<Markets load_account_id={''} 
+                          load_symbol={''} 
+                          load_group={sym}
+                          load_link={''}
+                          load_portfolio={''} 
+                          is_dialog={true}
+                          />)
+  
+  
+                    }} >
+                    <center>{props.value}
+                    </center>
+                    </a></span>, // Custom cell components!,
   
                   },
                   {

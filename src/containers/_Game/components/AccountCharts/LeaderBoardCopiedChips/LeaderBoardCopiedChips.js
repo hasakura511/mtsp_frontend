@@ -1190,7 +1190,7 @@ export default class LeaderBoardCopiedChips extends Component {
           minRows={10}
           style={{
             width:"100%",
-            height:innerHeight - 170,
+            height:innerHeight - 170 + parseInt(self.props.gap),
             maxHeight:"100%",
             overflow:"auto",
             fontSize:"12px",

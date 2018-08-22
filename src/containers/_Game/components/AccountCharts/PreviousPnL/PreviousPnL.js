@@ -335,7 +335,27 @@ export default class PreviousPnL extends Component {
                 {
                   Header: "Group",
                   accessor: "group",
-                  Cell: props => <span><center>{props.value}</center></span>, // Custom cell components!,
+                  Cell: props => 
+                  <span
+                 
+                  ><center>
+                  <a href='#market'  
+                  onClick={() => {
+                    var sym= props.value;
+                    self.props.showHtmlDialog3(<Markets load_account_id={''} 
+                    load_symbol={''} 
+                    load_group={sym}
+                    load_link={''}
+                    load_portfolio={''} 
+                    is_dialog={true}
+                    />)
+
+
+                  }}>
+                    {props.value}
+                    </a>
+                    </center></span>,
+
                 }
 
               ]

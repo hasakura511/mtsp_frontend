@@ -16,7 +16,7 @@ import Chip from "../../_Chip/_Chip";
 import Panel from "../../../containers/Panel/Panel";
 import Popover  from 'react-simple-popover'
 import { toSystem, toAntiSystem, toSystemNum } from "../../../Config";
-
+import Markets from "../../../../Markets/Markets"
 
 import {
   LineChart,
@@ -180,6 +180,14 @@ const dispatchToProps = dispatch => {
     },
     silenceHtmlDialog2: () => {
       dispatch(actions.silenceHtmlDialog2());
+      
+    },
+    showHtmlDialog3: (htmlContent) => {
+      dispatch(actions.showHtmlDialog3(htmlContent));
+      
+    },
+    silenceHtmlDialog3: () => {
+      dispatch(actions.silenceHtmlDialog3());
       
     },
     
@@ -772,19 +780,53 @@ export default class BetHistory extends Component {
                                 {
                                 Header: "",
                                 columns: [
-                                    {
+                                  {
                                     Header: "Markets",
                                     accessor: "Display",
-                                    },
-                                    {
+                                    Cell: props => <span><a href='#market' onClick={()=> {
+                                      console.log(props);
+                                      var sym= props.value;
+                                      sym=sym.substr(0, sym.indexOf(' ')); 
+                                      self.props.showHtmlDialog3(<Markets load_account_id={''} 
+                                        load_symbol={sym} 
+                                        load_link={''}
+                                        load_portfolio={''} 
+                                        is_dialog={true}
+                                        />)
+                                        /*
+                                      self.props.initializeHeatmap(self.props.performance_account_id,'current',sym);
+                                      if (self.props.toggle)
+                                        self.props.toggle();
+                                      $(window).scrollTop($("#marketTop").offset().top-111);
+                                      */
+                                    }} >{props.value}</a></span>, // Custom cell components!,
+                  
+                                  },
+                                  {
                                     Header: "Group",
                                     accessor: "Group",
-                                    Cell: props => (
-                                        <span className='number'><center>
-                                        {props.value}
-                                        </center></span>
-                                      ), // Custom cell components!,
-                                    }
+                                    Cell: props =>  <span
+                                   
+                                    ><center>
+                                    <a href='#market'  
+                                    onClick={() => {
+                                      var sym= props.value;
+                                      self.props.showHtmlDialog3(<Markets load_account_id={''} 
+                                      load_symbol={''} 
+                                      load_group={sym}
+                                      load_link={''}
+                                      load_portfolio={''} 
+                                      is_dialog={true}
+                                      />)
+                  
+                  
+                                    }}>
+                                      {props.value}
+                                      </a>
+                                      </center></span>,
+                                  }
+                  
+                              
                                 ]}]}
                                 defaultPageSize={self.items.length}
                                 style={{
@@ -980,6 +1022,8 @@ export default class BetHistory extends Component {
     showHtmlDialog2:PropTypes.func.isRequired,
     silenceHtmlDialog2:PropTypes.func.isRequired,
     dictionary_strategy:PropTypes.object.isRequired,
+    showHtmlDialog3:PropTypes.func.isRequired,
+    silenceHtmlDialog3:PropTypes.func.isRequired,
 
   };
 }

@@ -883,7 +883,13 @@ export default class Order extends React.Component {
               moveChipToSlot={this.props.moveChipToSlot} 
               moveStratToSlot={this.props.moveStratToSlot}
               stratParams={this.props.stratParams}
-              isEdit={true} chip={chip} slot={slot} isAnti={this.state.isAnti} rankingLoading={false} close={this.props.close} />
+              isEdit={true} 
+              chip={chip} 
+              slot={slot} 
+              isAnti={this.state.isAnti} 
+              rankingLoading={false} 
+              close={this.props.close} 
+              />
             </div>
 
 

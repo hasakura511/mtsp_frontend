@@ -131,7 +131,11 @@ export default class LeaderDialog extends Component {
     } = this.state;
     var self=this;
     return (
-      <Modal hidden={!showModal} toggle={this.toggle} isLarge
+      <Modal 
+        hidden={!showModal} 
+        toggle={this.toggle} 
+        isLarge
+      
        >
         {performanceLoading ? (
           <Spinner />
@@ -141,8 +145,11 @@ export default class LeaderDialog extends Component {
               "Could not load performance data, contact us to report this bug."}
           </h1>
         ) : (
-          <div  style={{background:self.props.themes.live.dialog.background,
-            color:self.props.themes.live.dialog.text}}
+          <div  style={{
+            background:self.props.themes.live.dialog.background,
+            color:self.props.themes.live.dialog.text,
+            //maxHeight: innerHeight - 230
+          }}
             >
          
               <div style={{ "width": "100%", "padding":"0px", "margin":"0px", background:self.props.themes.live.dialog.background}}>
@@ -182,8 +189,13 @@ export default class LeaderDialog extends Component {
               </div>
                <div style={{clear: "both"}}></div>​
             
-               <div className={classes.Tabs} style={{ background:self.props.themes.live.dialog.background,
-                  color:self.props.themes.live.dialog.text, textAlign:'center' }}>
+               <div className={classes.Tabs} style={{ 
+                  background:self.props.themes.live.dialog.background,
+                  color:self.props.themes.live.dialog.text, 
+                  textAlign:'center',
+                  
+
+                 }}>
                       
                       
                       <div
@@ -212,16 +224,20 @@ export default class LeaderDialog extends Component {
          
               <div className={classes.Contents}>
               {isLeaderBoard ? (
-                <div className={classes.Content}>
-                  <LeaderBoardLive initializeLive={this.props.initializeLive} isdialog={true} gap={107} toggle={self.toggle} />
+                <div className={classes.Content}
+                
+                >
+                  <LeaderBoardLive initializeLive={this.props.initializeLive} isdialog={true} gap={-217} toggle={self.toggle} />
                 </div>
               ) : (
               null
               )}
 
               {isLeaderboardCopiedChips ? (
-                <div className={classes.Content}>
-                 <LeaderBoardCopiedChips initializeLive={this.props.initializeLive} isdialog={true} gap={107} toggle={self.toggle} />
+                <div className={classes.Content}
+                
+                >
+                 <LeaderBoardCopiedChips initializeLive={this.props.initializeLive} isdialog={true} gap={-217} toggle={self.toggle} />
                 </div>
               ) : (
               null

@@ -14,6 +14,7 @@ import Panel from "../../../containers/Panel/Panel";
 import Popover  from 'react-simple-popover'
 import { toSystem, toAntiSystem, toSystemNum } from "../../../Config";
 import ClockLoader from "../../../../../components/UI/ClockLoader/ClockLoader";
+import Markets from "../../../../Markets/Markets"
 
 import {
   LineChart,
@@ -65,7 +66,16 @@ const dispatchToProps = dispatch => {
     },
     addTimedToaster: toaster => {
       dispatch(actions.addTimedToaster(toaster, 5000))
-  },
+    },
+    showHtmlDialog3: (htmlContent) => {
+      dispatch(actions.showHtmlDialog3(htmlContent));
+      
+    },
+    silenceHtmlDialog3: () => {
+      dispatch(actions.silenceHtmlDialog3());
+      
+    },
+
     
   };
 };
@@ -438,9 +448,27 @@ export default class LeaderBoardLive extends Component {
               Header: "",
               columns: [
                 {
-                  Header: "Player",
+                  Header: "Rank",
                   accessor: "rank",
-                  width: 240,
+                  width: 60,
+                  Cell: props => {
+         
+                  
+                    
+                    return <span><center>
+                    {props.value}.
+                    </center>
+                   </span>
+  
+
+                  }, // Custom cell components!,
+
+
+                },
+                {
+                  Header: "Player",
+                  accessor: "account_value",
+                  width: 140,
                   Cell: props => {
          
                     var chip=props.original;
@@ -448,6 +476,7 @@ export default class LeaderBoardLive extends Component {
                     chip.tier = props.original.tier;
                     chip.status = 'unlocked';
                     chip.isReadOnly=true;
+                    chip.isAccountChip=true;
                     chip.starting_value=props.original.account_chip_text;
                     chip.account_value=props.original.account_chip_text;
                     chip.total_margin="";
@@ -455,13 +484,15 @@ export default class LeaderBoardLive extends Component {
                     var items=[];
 
                     //<div  style={{marginTop:"12px", minWidth: '235px'}}>
-                    items.push(
+                    /*items.push(
                     <div key={'item-1'} style={{'float':'left', minWidth:'25px', height:"12px", fontSize:'24px', marginTop:"12px"}}>
                      {props.value}.
                     </div>)
+                    */
                     items.push(
                       <div key={'item-2'} style={{'float':'left', minWidth: '60px', height:'60px', padding:"1px", marginTop:"1px", marginBottom:"-10px"}}>
-                      <Chip chip={chip} isReadOnly={true} account_chip_text={props.original.account_chip_text} />&nbsp;&nbsp;
+                      <Chip chip={chip} isReadOnly={true} isAccount={true}
+                      account_chip_text={props.original.account_chip_text} />&nbsp;&nbsp;
                       </div>
                       )
                     items.push(
@@ -602,7 +633,7 @@ export default class LeaderBoardLive extends Component {
                         onHide={self.handleClose.bind(this)} 
                         hideWithOutsideClick={true}
                         containerStyle={{ 
-                            marginTop: self.props.gap + "px",
+                            marginTop: -self.props.gap + "px",
                             padding:"0px"
                         }}
                         style={{
@@ -622,19 +653,51 @@ export default class LeaderBoardLive extends Component {
                                 {
                                 Header: "",
                                 columns: [
-                                    {
+                                  {
                                     Header: "Markets",
                                     accessor: "Display",
-                                    },
-                                    {
+                                    Cell: props => <span><a href='#market' onClick={()=> {
+                                      console.log(props);
+                                      var sym= props.value;
+                                      sym=sym.substr(0, sym.indexOf(' ')); 
+                                      self.props.showHtmlDialog3(<Markets load_account_id={''} 
+                                        load_symbol={sym} 
+                                        load_link={''}
+                                        load_portfolio={''} 
+                                        is_dialog={true}
+                                        />)
+                                        /*
+                                      self.props.initializeHeatmap(self.props.performance_account_id,'current',sym);
+                                      if (self.props.toggle)
+                                        self.props.toggle();
+                                      $(window).scrollTop($("#marketTop").offset().top-111);
+                                      */
+                                    }} >{props.value}</a></span>, // Custom cell components!,
+                  
+                                  },
+                                  {
                                     Header: "Group",
                                     accessor: "Group",
-                                    Cell: props => (
-                                        <span className='number'><center>
-                                        {props.value}
-                                        </center></span>
-                                      ), // Custom cell components!,
-                                    }
+                                    Cell: props =>  <span
+                                   
+                                    ><center>
+                                    <a href='#market'  
+                                    onClick={() => {
+                                      var sym= props.value;
+                                      self.props.showHtmlDialog3(<Markets load_account_id={''} 
+                                      load_symbol={''} 
+                                      load_group={sym}
+                                      load_link={''}
+                                      load_portfolio={''} 
+                                      is_dialog={true}
+                                      />)
+                  
+                  
+                                    }}>
+                                      {props.value}
+                                      </a>
+                                      </center></span>,
+                                  }
                                 ]}]}
                                 defaultPageSize={self.items.length}
                                 style={{
@@ -785,7 +848,7 @@ export default class LeaderBoardLive extends Component {
                         onHide={self.handleClose.bind(this)} 
                         hideWithOutsideClick={true}
                         containerStyle={{ 
-                            marginTop: self.props.gap + -innerHeight + 27 + "px",
+                            marginTop: -self.props.gap + -innerHeight + 27 + "px",
                             background:self.props.themes.live.dialog.background,
                             width: "99.9%",
                             height: "99%",
@@ -1135,7 +1198,7 @@ export default class LeaderBoardLive extends Component {
           minRows={10}
           style={{
             width:"100%",
-            height:innerHeight - 170,
+            height:innerHeight - 170 + parseInt(self.props.gap),
             maxHeight:"100%",
             overflow:"auto",
             fontSize:"12px",
@@ -1278,6 +1341,9 @@ export default class LeaderBoardLive extends Component {
     showDialog:PropTypes.func.isRequired,
     silenceDialog:PropTypes.func.isRequired,
     addTimedToaster: PropTypes.func.isRequired,
-    initializeLive:PropTypes.func.isRequired
+    initializeLive:PropTypes.func.isRequired,
+    showHtmlDialog3: PropTypes.func.isRequired,
+    silenceHtmlDialog3: PropTypes.func.isRequired,
+    
   };
 }

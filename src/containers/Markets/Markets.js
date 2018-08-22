@@ -141,6 +141,7 @@ export default class Markets extends Component {
     refreshing:PropTypes.bool,
     load_account_id:PropTypes.string,
     load_symbol:PropTypes.string,
+    load_group:PropTypes.string,
     load_link:PropTypes.string,
     load_portfolio:PropTypes.string,
     heatmap_account_id:PropTypes.string,
@@ -243,7 +244,7 @@ export default class Markets extends Component {
     
   }
 
-  refreshData=(account_id='', link='', sym='', portfolio='',date=this.state.liveDateText, chip_id='', board_config_str='', simulate_dates='', prev_selection='') => {
+  refreshData=(account_id='', link='', sym='', portfolio='',date=this.state.liveDateText, chip_id='', board_config_str='', simulate_dates='', prev_selection='', group='') => {
     var self=this;
     if (self.state.last_heatmap_params.account_id != account_id ||
         self.state.last_heatmap_params.link != link ||
@@ -339,6 +340,8 @@ export default class Markets extends Component {
           self.onGetChart(sym, self.props.heatmap_lookup_date ? self.props.heatmap_lookup_date : liveDateText);
         } else if (self.props.heatmap_lookup_group) {
           self.onGetGroupChart(self.props.heatmap_lookup_group, self.props.heatmap_lookup_date ? self.props.heatmap_lookup_date : liveDateText);
+        } else if (group) {
+          self.onGetGroupChart(group, liveDateText);
         }
         self.props.refreshMarketDone();
       })
@@ -409,6 +412,10 @@ export default class Markets extends Component {
     
     if (this.props.load_symbol) {
       this.refreshData(this.props.load_account_id, this.props.load_link, this.props.load_symbol, this.props.load_portfolio);
+    } else if (this.props.load_group) {
+
+      this.refreshData(this.props.load_account_id, this.props.load_link, this.props.load_symbol, this.props.load_portfolio, 
+        this.state.liveDateText, '', '', '', '', this.props.load_group );
     } else {
   
       this.refreshData('',link);
@@ -1403,7 +1410,7 @@ export default class Markets extends Component {
               <div id="chartArea"  style={{display: self.state.showChartArea ? "":"none", width:"100%", textAlign:"left", padding:"10px"}}>
               <span style={{'float':'right'}}><button onClick={()=>{ 
                 
-                if (self.props.load_symbol)
+                if (self.props.load_symbol || self.props.load_group)
                   self.props.silenceHtmlDialog3();
                 else
                   self.setState({showChartArea:false})

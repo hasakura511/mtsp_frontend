@@ -245,7 +245,7 @@ export default class Chip extends PureComponent {
       if (chip.account_value)
         title+="Account Value: " + '$' + numberWithCommas(chip.account_value.toString()) + "\n"; 
       if (chip.last_selection) {
-        if (chip.isReadOnly || chip.isAccount || chip.isAccountChip)
+        if (chip.isReadOnly || chip.isAccount || chip.isAccountChip || this.props.isAccount)
           title+="Next Bet: " +  toTitleCase(chip.last_selection.toString()) + "\n";
         else
           title+="Current Bet: " +  toTitleCase(chip.last_selection.toString()) + "\n";

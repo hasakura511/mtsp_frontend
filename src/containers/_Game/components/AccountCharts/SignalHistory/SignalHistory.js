@@ -347,7 +347,20 @@ export default class SignalHistory extends Component {
           </div>
 
         ) : !self.state.date_picked ? (
-          <div style={{  background: self.props.themes.live.dialog.tab_color_active} }>
+          <div style={{  background: self.props.themes.live.dialog.tab_color_active} }
+          id={'custom_datepick'}    
+          onClick={(e) => {
+            if (e.target.toString() == "[object HTMLDivElement]") {
+              //alert(e.target.toString())
+              if (e.target.classList.contains("react-datepicker__portal")) {
+                self.setState({date_picked:self.state.orig_date});
+                //$('#custom_datepick').hide();
+              }
+            }
+            console.log(e.target)
+            
+          }}
+          >
           <center>
               <DatePicker
                inline
@@ -393,10 +406,66 @@ export default class SignalHistory extends Component {
           </center>
           <p align={'right'}>
           <button onClick={() => {
-            this.setState({date_picked:""})
+              var idx=0;
+              var prev_idx=0;
+              var dates=Object.keys(performance.available_dates).map(key => {
+                if (new moment(performance.available_dates[key]).format('YYYYMMDD') == this.state.date_picked) {
+                    if (idx - 1 > 0)
+                      prev_idx=idx-1;
+                }
+
+                idx+=1;
+                
+                return new moment(performance.available_dates[key]).format('YYYYMMDD')
+              })
+              var date=dates[prev_idx];
+              //console.log(dates);
+              //alert(date);
+              //alert(self.state.date_picked);
+               var parents=[];
+              Object.keys(self.props.slot).map(key => {
+                if (self.props.slot[key].id)
+                  parents.push(self.props.slot[key].id);
+              });
+              self.signalHistory(self.props.chip.chip_id, self.props.slot.position, parents, date, true);
+
+          }}>
+          Previous Date
+          </button>
+          <button onClick={() => {
+            var orig_date=this.state.date_picked;
+            this.setState({orig_date, date_picked:""})
           }} 
-          style={{marginRight: '10px', textAlign:'right','cursor':'pointer'}}>
+         >
           Select Date
+          </button>
+          <button onClick={() => {
+              var idx=0;
+              var prev_idx=0;
+              var dates=Object.keys(performance.available_dates).map(key => {
+                if (new moment(performance.available_dates[key]).format('YYYYMMDD') == this.state.date_picked) {
+                      prev_idx=idx+1;
+                }
+
+                idx+=1;
+                
+                return new moment(performance.available_dates[key]).format('YYYYMMDD')
+              })
+              if (prev_idx >= dates.length)
+                prev_idx=dates.length-1;
+              var date=dates[prev_idx];
+              //console.log(dates);
+              //alert(date);
+              //alert(self.state.date_picked);
+               var parents=[];
+              Object.keys(self.props.slot).map(key => {
+                if (self.props.slot[key].id)
+                  parents.push(self.props.slot[key].id);
+              });
+              self.signalHistory(self.props.chip.chip_id, self.props.slot.position, parents, date, true);
+
+          }}>
+          Next Date
           </button>
           <br/>
           </p>
