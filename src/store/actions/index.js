@@ -22,7 +22,9 @@ export {  silenceDialog,
           showHtmlDialog2,
           silenceHtmlDialog2,
           showHtmlDialog3,
-          silenceHtmlDialog3 
+          silenceHtmlDialog3,
+          showHtmlDialogModal,
+          silenceHtmlDialogModal 
       } from "./modal";
 export { addBet, 
          nextDay, 

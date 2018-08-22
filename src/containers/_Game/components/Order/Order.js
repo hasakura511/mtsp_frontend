@@ -742,7 +742,7 @@ export default class Order extends React.Component {
               style={{ paddingTop: "15px",background:self.props.themes.live.dialog.background_inner,
               color:self.props.themes.live.dialog.text }}
             >
-              <Chip chip={chip} isAccount={self.props.isAccount} />
+              <Chip chip={chip} isAccount={true} />
             </div>
             <div           style={{ minWidth:"100px", padding: "15px" }}
     >

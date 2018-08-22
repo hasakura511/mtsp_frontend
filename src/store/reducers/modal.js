@@ -8,6 +8,8 @@ const initialState = {
   htmlContent2: null,
   showHtml3: false,
   htmlContent3: null,
+  showHtmlModal: false,
+  htmlContentModal: null,
   title: "",
   message: null,
   onSuccess: null,
@@ -64,6 +66,22 @@ const reducer = (state = initialState, action) => {
         ...state,
         showHtml3: false,
         htmlContent3: null,
+        
+      }
+
+    case actionTypes.SHOW_HTML_DIALOGMODAL:
+      return {
+        ...state,
+        showHtmlModal: true,
+        htmlContentModal: action.htmlContent
+
+      }
+
+    case actionTypes.SILENCE_HTML_DIALOGMODAL:
+      return {
+        ...state,
+        showHtmlModal: false,
+        htmlContentModal: null,
         
       }
 

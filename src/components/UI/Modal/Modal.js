@@ -4,8 +4,36 @@ import classes from "./Dialog.css";
 import Aux from "../../../hoc/_Aux/_Aux";
 import Backdrop from "../Backdrop/Backdrop";
 import Dialog from 'react-toolbox/lib/dialog';
+import * as actions from "../../../store/actions";
+import { connect } from "react-redux";
+import ReactDOM from "react-dom";
 
+const stateToProps = state => {
+  return {
+    showHtmlModal: state.modal.showHtmlModal,
+    htmlContentModal: state.modal.htmlContentModal,
+   
+    loading: state.modal.loading
+  };
+};
+
+const dispatchToProps = dispatch => {
+  return {
+    showHtmlDialogModal: (htmlContent) => dispatch(actions.showHtmlDialogModal(htmlContent)),
+    silenceHtmlDialogModal: () => dispatch(actions.silenceHtmlDialogModal())
+  };
+};
+
+@connect(stateToProps, dispatchToProps)
 class Modal extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      hidden:props.hidden
+    }
+  }
+
   shouldComponentUpdate(nextProps) {
     return (
       nextProps.hidden !== this.props.hidden ||
@@ -15,16 +43,40 @@ class Modal extends Component {
     );
   }
 
+  successHandler = event => {
+    event.preventDefault();
+  };
+
+  cancelHandler = event => {
+    event.preventDefault();
+    //this.props.silenceHtmlDialogModal();
+    //this.setState({hidden:true})
+  };
+
+  componentDidMount() {
+   
+  }
+
+  componentWillReceiveProps(newProps) {
+    //console.log("newprops");
+    //console.log(newProps)
+
+    //if (newProps.children)
+    this.setState({hidden:newProps.hidden})
+  }
+
   render() {
     let hidden = "";
-    if (this.props.hidden) {
+    if (this.state.hidden) {
       hidden = classes.Hidden;
     }
     return (
          <Dialog
          className={classes.Dialog}
          actions={[]}
-        active={this.props.hidden ? false : true}
+        active={this.state.hidden ? false : true}
+        onEscKeyDown={this.props.toggle}
+        onOverlayClick={this.props.toggle}
         type={'large'}
       >
         <div style={{
@@ -57,8 +109,12 @@ class Modal extends Component {
 Modal.propTypes = {
   children: PropTypes.any,
   hidden: PropTypes.bool.isRequired,
+  showHtmlModal:PropTypes.bool,
   isLarge: PropTypes.bool,
-  toggle: PropTypes.func
+  toggle: PropTypes.func,
+  silenceHtmlDialogModal:PropTypes.func,
+  showHtmlDialogModal:PropTypes.func,
+ 
 };
 
 export default Modal;

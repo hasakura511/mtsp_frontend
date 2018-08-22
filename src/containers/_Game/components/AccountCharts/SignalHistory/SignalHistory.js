@@ -347,7 +347,9 @@ export default class SignalHistory extends Component {
           </div>
 
         ) : !self.state.date_picked ? (
-          <div style={{  background: self.props.themes.live.dialog.tab_color_active} }
+          <div style={{  background: self.props.themes.live.dialog.tab_color_active,
+            height: innerHeight - 172
+          } }
           id={'custom_datepick'}    
           onClick={(e) => {
             if (e.target.toString() == "[object HTMLDivElement]") {
@@ -391,6 +393,7 @@ export default class SignalHistory extends Component {
                }}  
                 />
             </center>
+            
           </div>
         ) 
         :
