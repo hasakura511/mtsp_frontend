@@ -514,6 +514,7 @@ export default class Markets extends Component {
   onGetChart = (symbol, date) => {
     this.setState({symbol:symbol,
                     date:date,
+                    loading:true,
                   chartLoading:true});
     //$(window).scrollTop(0);
 
@@ -558,6 +559,7 @@ export default class Markets extends Component {
             themes:response.data.themes,
           firstPeriod:firstPeriod,
           chartLoading:false,
+          loading:false,
           selected_period:firstPeriod,
           showChartArea:true
         });
@@ -944,6 +946,7 @@ export default class Markets extends Component {
   onGetGroupChart = (symbol, date) => {
     this.setState({symbol:symbol,
       chartLoading:true,
+      loading:true,
                     date:date});
 
 
@@ -988,6 +991,7 @@ export default class Markets extends Component {
             themes:response.data.themes,
             selected_period:firstPeriod,
             chartLoading:false,
+            loading:false,
             firstPeriod:firstPeriod,
             showChartArea:true
             });
@@ -1285,7 +1289,8 @@ export default class Markets extends Component {
     
     });
       $("#chartdiv" + self.state.marketId).show();
-    
+
+      
       console.log(chartData);
   }
   render() {
@@ -1321,7 +1326,7 @@ export default class Markets extends Component {
         if (items[key]!= undefined) {
             items[key].map( item => {
               group2.push (
-                <a  href='#chartTop' className={classes.flex_item2}
+                <a  href={self.props.is_dialog ? '#htmlDialog3' : '#chartTop'} className={classes.flex_item2}
                     style={{
                       "background":item.color_fill,
                       "color":item.color_text,
@@ -1332,9 +1337,11 @@ export default class Markets extends Component {
                     key={item.key + idx.toString()}
                     onClick={ () => {
                       self.onGetChart(item.key, this.state.liveDateText);
-                      $(window).scrollTop($("#chartTop").offset().top-111);
                       if (self.props.is_dialog) {
-                        $(window).scrollTop();
+                        $(this).scrollTop();
+                      } else {
+                        $(window).scrollTop($("#chartTop").offset().top-111);
+                      
                       }
                     }}
                 >

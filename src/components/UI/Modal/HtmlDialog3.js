@@ -67,7 +67,10 @@ export default class HtmlDialog3 extends Component {
           height:(innerHeight-50)+"px",
           overflow:"auto",
           
-        }}>
+        }}
+        id={"htmlDialog3"}
+
+        >
       {htmlContent3}
       </div>
       </Dialog>

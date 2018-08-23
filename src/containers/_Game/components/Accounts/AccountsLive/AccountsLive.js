@@ -879,19 +879,20 @@ export default class AccountsLive extends Component {
                        Edit
                     </span>),
                     accessor: "account_id",
+                    width:120,
                     headerStyle: {
                       background:self.props.themes.live.dialog.table_left_background
                     },
                     Footer: props => (
-                      <div style={{width:"100px", cursor:'pointer'}} onClick={() => {
+                      <div style={{width:"120px", cursor:'pointer'}} onClick={() => {
   
                          window.location='/board'
 
                       }}>
                         <div style={{float:"left", width:"100px"}}>
-                            <img src={"/images/cancel.png"} width={120} height={30} />
+                            <img src={"/images/cancel.png"} width={100} height={30} />
                         </div>
-                        <div style={{float:"left", marginLeft: "-60px", width:"60px", marginTop: "6px", color:themes.text_color}}>
+                        <div style={{float:"left", marginLeft: "-100px", width:"100px", marginTop: "6px", color:themes.text_color, textAlign:'center'}}>
                           Cancel
                         </div>
                       </div>
@@ -957,26 +958,27 @@ export default class AccountsLive extends Component {
                        Delete
                     </span>),
                     accessor: "account_id",
+                    width:170,
                     headerStyle: {
                       background:self.props.themes.live.dialog.table_left_background,
                       whiteSpace: 'unset' 
                     },
                     Footer: props => (
                     <div>
-                      {self.props.performance.enable_create_new ? <div style={{width:"100px", cursor:'pointer'}} onClick={() => {
+                      {self.props.performance.enable_create_new ? <div style={{width:"150px", cursor:'pointer'}} onClick={() => {
 
                         self.props.showHtmlDialog2(<AccountsNew  performance={self.props.performance} themes={self.props.themes}  initializeLive={self.props.initializeLive}  />);
                     
                     }}>
                     
-                      <div style={{float:"left", width:"100px"}}>
-                          <img src={"/images/account_create_enabled.png"} width={120} height={30} />
+                      <div style={{float:"left", width:"150px"}}>
+                          <img src={"/images/account_create_enabled.png"} width={150} height={30} />
                       </div>
-                      <div style={{float:"left", marginLeft: "-70px", width:"70px", marginTop: "10px", color:themes.text_color}}>
+                      <div style={{float:"left", marginLeft: "-130px", width:"130px", marginTop: "6px", textAlign:"center", color:themes.text_color}}>
                         Create New..
                       </div>
                     </div>
-                    : <div style={{width:"100px", cursor:'pointer'}} onClick={() => {
+                    : <div style={{width:"150px", cursor:'pointer'}} onClick={() => {
                       self.props.addTimedToaster(
                         {
                           id: "board_notice_" + Math.random().toFixed(3),
@@ -987,10 +989,10 @@ export default class AccountsLive extends Component {
 
                   }}>
                   
-                    <div style={{float:"left", width:"100px"}}>
-                        <img src={"/images/account_create_disabled.png"} width={120} height={30} />
+                    <div style={{float:"left", width:"150px"}}>
+                        <img src={"/images/account_create_disabled.png"} width={150} height={30} />
                     </div>
-                    <div style={{float:"left", marginLeft: "-70px", width:"70px", marginTop: "10px", color:"white"}}>
+                    <div style={{float:"left", marginLeft: "-130px", width:"130px", textAlign:"center", marginTop: "6px", color:"white"}}>
                       Create New..
                     </div>
                   </div>}

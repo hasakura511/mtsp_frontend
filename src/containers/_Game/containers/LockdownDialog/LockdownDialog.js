@@ -135,7 +135,7 @@ export default class LockdownDialog extends Component {
           <div  style={{
             background:self.props.themes.live.dialog.background,
             color:self.props.themes.live.dialog.text,
-            maxHeight: innerHeight - 170
+            //maxHeight: innerHeight - 100
           }}
             >
          

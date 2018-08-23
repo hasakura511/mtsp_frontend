@@ -368,10 +368,19 @@ export default class LockdownTimetable extends Component {
                       console.log(props);
                       var sym= props.value;
                       sym=sym.substr(0, sym.indexOf(' ')); 
+                      /*
                       self.props.initializeHeatmap('','',sym);
                       if (self.props.toggle)
                         self.props.toggle();
                       $(window).scrollTop($("#marketTop").offset().top-111);
+                      */
+                      self.props.showHtmlDialog3(<Markets load_account_id={''} 
+                      load_symbol={sym} 
+                      load_link={''}
+                      load_portfolio={''} 
+                      is_dialog={true}
+                      />)
+
                     }} >{props.value}</a></span>, // Custom cell components!,
   
                   },
@@ -424,7 +433,7 @@ export default class LockdownTimetable extends Component {
 
           style={{
             width:"100%",
-            height: innerHeight - 230 + adjHeight,
+            height: innerHeight + adjHeight,
             maxHeight: "100%",
             overflow: performance.length > 13 ? "auto" : "hidden",
             fontSize:"12px",

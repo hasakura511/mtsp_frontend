@@ -205,7 +205,7 @@ class SocialAuth extends Component {
   };
 
   linkedinAuth = () => {
-    window.open(this.state.linkedinUrl, "newWindow", "width=500, height=500");
+    window.open(this.state.linkedinUrl, "_newWindow", "width=500, height=500");
   };
 
   render() {

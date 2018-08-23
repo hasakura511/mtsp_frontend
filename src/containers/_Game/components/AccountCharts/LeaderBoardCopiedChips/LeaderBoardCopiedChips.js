@@ -832,7 +832,7 @@ export default class LeaderBoardCopiedChips extends Component {
                         onHide={self.handleClose.bind(this)} 
                         hideWithOutsideClick={true}
                         containerStyle={{ 
-                            marginTop: self.props.gap + -innerHeight + 27 + "px",
+                            marginTop: -self.props.gap + -innerHeight + 141 + "px",
                             background:self.props.themes.live.dialog.background,
                             width: "99.9%",
                             height: "99%",

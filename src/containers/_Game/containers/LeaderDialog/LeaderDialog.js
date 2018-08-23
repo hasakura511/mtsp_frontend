@@ -227,7 +227,7 @@ export default class LeaderDialog extends Component {
                 <div className={classes.Content}
                 
                 >
-                  <LeaderBoardLive initializeLive={this.props.initializeLive} isdialog={true} gap={-217} toggle={self.toggle} />
+                  <LeaderBoardLive initializeLive={this.props.initializeLive} isdialog={true} gap={-107} toggle={self.toggle} />
                 </div>
               ) : (
               null
@@ -237,7 +237,7 @@ export default class LeaderDialog extends Component {
                 <div className={classes.Content}
                 
                 >
-                 <LeaderBoardCopiedChips initializeLive={this.props.initializeLive} isdialog={true} gap={-217} toggle={self.toggle} />
+                 <LeaderBoardCopiedChips initializeLive={this.props.initializeLive} isdialog={true} gap={-107} toggle={self.toggle} />
                 </div>
               ) : (
               null

@@ -12,7 +12,7 @@ import 'react-table/react-table.css'
 import * as actions from "../../../../../store/actions";
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
-
+import Markets from "../../../../Markets/Markets"
 
 import {
   LineChart,
@@ -179,6 +179,14 @@ const dispatchToProps = dispatch => {
     },
     silenceHtmlDialog2: () => {
       dispatch(actions.silenceHtmlDialog2());
+      
+    },
+    showHtmlDialog3: (htmlContent) => {
+      dispatch(actions.showHtmlDialog3(htmlContent));
+      
+    },
+    silenceHtmlDialog3: () => {
+      dispatch(actions.silenceHtmlDialog3());
       
     },
     
@@ -498,10 +506,18 @@ export default class SignalHistory extends Component {
                     var sym= props.value;
                     sym=sym.substr(0, sym.indexOf(' ')); 
                     //alert(self.state.date_picked)
+                    /*
                     self.props.initializeHeatmap('','',sym, self.state.date_picked);
                     if (self.props.toggle)
                       self.props.toggle();
                     $(window).scrollTop($("#marketTop").offset().top-111);
+                    */
+                    self.props.showHtmlDialog3(<Markets load_account_id={''} 
+                    load_symbol={sym} 
+                    load_link={''}
+                    load_portfolio={''} 
+                    is_dialog={true}
+                    />)
                   }} >{props.value}</a></span>, // Custom cell components!,
 
                 },
@@ -510,12 +526,21 @@ export default class SignalHistory extends Component {
                   accessor: "Group",
                   Cell: props => <span><a href='#market' onClick={()=> {
                     console.log(self.props.chip.account_id);
-                    var group= props.value;
+                    var sym= props.value;
                     //sym=sym.substr(0, sym.indexOf(' ')); 
+                    self.props.showHtmlDialog3(<Markets load_account_id={''} 
+                          load_symbol={''} 
+                          load_group={sym}
+                          load_link={''}
+                          load_portfolio={''} 
+                          is_dialog={true}
+                          />)
+                          /*
                     self.props.initializeHeatmapGroup(self.props.chip.account_id,'current',group, self.state.date_picked);
                     if (self.props.toggle)
                       self.props.toggle();
                     $(window).scrollTop($("#marketTop").offset().top-111);
+                    */
                   }} >
                   <center>
                   {props.value}
@@ -890,6 +915,8 @@ export default class SignalHistory extends Component {
     silenceHtmlDialog:PropTypes.func.isRequired,
     showHtmlDialog2:PropTypes.func.isRequired,
     silenceHtmlDialog2:PropTypes.func.isRequired,
+    showHtmlDialog3:PropTypes.func.isRequired,
+    silenceHtmlDialog3:PropTypes.func.isRequired,
     strat:PropTypes.string
   };
 }

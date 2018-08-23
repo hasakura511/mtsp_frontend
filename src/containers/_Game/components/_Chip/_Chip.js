@@ -57,7 +57,7 @@ const chipSource = {
   },
   canDrag(props) {
     const { chip } = props;
-    if (chip.status == undefined || chip.status == 'locked' || chip.isReadOnly)
+    if (chip.status == undefined || chip.status == 'locked')
       return false;
     
     return true;
@@ -151,7 +151,7 @@ export default class Chip extends PureComponent {
         var updated=false;
         newProps.accounts.map(account => {
             if (account.account_id == self.props.chip.account_id) {
-              self.setState({chip:account});
+              self.setState({chip:Object.assign({},account)});
               //console.log("Chip Received new state for chip " + account.account_id);
               //console.log(account);
               updated=true;
@@ -306,10 +306,10 @@ export default class Chip extends PureComponent {
             
       };
     
-      if (chip.isReadOnly) {
-        chipStyle['border'] = "3px solid transparent";
-        chipStyle["borderRadius"]= "32px";
-      }
+      //if (chip.isReadOnly) {
+      //  chipStyle['border'] = "3px solid transparent";
+      //  chipStyle["borderRadius"]= "32px";
+      //}
       
       return {chipStyle, title};
   }

@@ -309,7 +309,7 @@ export default class Order extends React.Component {
                 className={classes.ElementContainer}
                 style={{ paddingTop: "15px",background: themes.live.dialog.background_inner }}
               >
-                <Chip chip={chip}  />
+                <Chip chip={chip} isAccount={true}  />
               </div>
             </div>
             <div className={classes.Right} style={{background: themes.live.dialog.background_inner}}>

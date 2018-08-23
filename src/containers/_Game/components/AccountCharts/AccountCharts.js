@@ -335,7 +335,7 @@ export default class AccountCharts extends Component {
 
               {isLockdownTimetable ? (
                 <div className={classes.Content}>
-                  <LockdownTimetable  chip={this.props.chip} toggle={this.props.toggle}/>
+                  <LockdownTimetable   gap={-227} chip={this.props.chip} toggle={this.props.toggle}/>
                 </div>
               ) : (
               null

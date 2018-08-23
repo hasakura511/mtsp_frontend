@@ -519,9 +519,25 @@ export default class AccountsNew extends Component {
                             Header: "Group",
                             accessor: "Group",
                             Cell: props => (
-                                <span className='number'><center>
+                                <span className='number'
+                                style={{cursor:'pointer'}}>
+                                <a href='#chartTop' 
+                                onClick={() => {
+                                  var sym=props.value;
+                                  //alert(sym);
+                                  self.props.showHtmlDialog3(<Markets 
+                                    load_account_id={''} 
+                                    load_symbol={''} 
+                                    load_group={sym}
+                                    load_link={'accounts'}
+                                    load_portfolio={JSON.stringify(self.state.orig_portfolio)} 
+                                    is_dialog={true}
+                                    />)
+                                }}
+                                
+                                ><center>
                                 {props.value}
-                                </center></span>
+                                </center></a></span>
                               ), // Custom cell components!,
                             },
                             {

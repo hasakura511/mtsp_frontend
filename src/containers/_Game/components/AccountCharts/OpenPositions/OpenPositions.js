@@ -279,11 +279,18 @@ export default class OpenPositions extends Component {
         ) : (
 
         <div className={classes.OpenPositions} style={{margin:"0px", background:self.props.themes.live.dialog.tab_color_active}} >
-                <span style={{margin:"0px", background:self.props.themes.live.dialog.tab_color_active, "float": "right", "width": "100%", "textAlign": "right"}}>
+              <div style={{"width": "90%", margin:"0px", padding:"0px", height:"40px", "float":"left", background: self.props.isdialog ? self.props.themes.live.dialog.background : self.props.themes.live.dialog.tab_color_active}}>
+                  <center><h3 style={{marginTop:"10px"}}>
+                  {performance.bet}
+                  </h3></center>
+              </div>
+              <div style={{"width": "10%", margin:"0px", padding:"10px", height:"40px", "float":"left", "textAlign": "right", background: self.props.isdialog ? self.props.themes.live.dialog.background : self.props.themes.live.dialog.tab_color_active}}>
                   <img src="/images/infotext_button.png" width="22" style={{"marginRight":"5px"}}/>
-                </span>
+                </div>
 
-          <center><h3>{performance.bet}</h3></center>
+              <div style={{"clear": "both"}}></div>
+
+
           <div className={classes.ChartContainer}>
           <ReactTable
           

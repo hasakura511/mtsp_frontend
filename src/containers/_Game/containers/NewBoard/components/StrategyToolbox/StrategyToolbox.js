@@ -190,7 +190,7 @@ export default class StrategyToolbox extends Component {
                   var item="";
                   self.props.accounts.map(account => {
                     if (account.chip_id==this.props.itemSelected) 
-                      item=account;
+                      item=Object.assign({}, account);
                   })
                   if (item && item.board_config_fe) {
                     //console.log(JSON.parse(editData.optimized_board));
@@ -211,7 +211,7 @@ export default class StrategyToolbox extends Component {
                   var item="";
                   self.props.accounts.map(account => {
                     if (!item)
-                      item=account;
+                      item=Object.assign({}, account);
                   })
                   if (item && item.board_config_fe) {
                     //console.log(JSON.parse(editData.optimized_board));
