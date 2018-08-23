@@ -98,7 +98,9 @@ export default class Accounts extends Component {
     initializeData:PropTypes.func.isRequired,
     showHtmlDialog:PropTypes.func.isRequired,
     silenceHtmlDialog:PropTypes.func.isRequired,
-    initializeLive:PropTypes.func
+    initializeLive:PropTypes.func,
+    isPerformance:PropTypes.bool
+
   };
   constructor(props) {
     super(props);

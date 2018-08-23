@@ -225,7 +225,7 @@ export default class SignalHistory extends Component {
 
     var self=this;
     this.setState({refreshing:true})
-    if (this.props.strat)
+    if (!strategy && this.props.strat)
       strategy=this.props.strat;
 
     axios

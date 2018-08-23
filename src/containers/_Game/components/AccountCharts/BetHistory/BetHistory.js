@@ -414,15 +414,24 @@ export default class BetHistory extends Component {
 
                       chip.status = 'unlocked';
                       chip.isReadOnly=true;
+                      chip.isAccount=true;
                       chip.position=toSystemNum(chip.chip_location)
                       var balanceChips=[];
                       var bettingChips=[];
-                      if (chip.position.toString().toLowerCase() != 'off')
+                      if (chip.position.toString().toLowerCase() != 'off') {
+                        chip.isReadOnly=true;
+                        chip.isAccount=true;
+  
+                        chip.isAccountChip=true;
                         bettingChips.push(chip);
-                      else
+                      } else
                       {
                         chip.count=1;
                         chip.accountId=chip.account_id;
+                        chip.isReadOnly=true;
+                        chip.isAccount=true;
+  
+                        chip.isAccountChip=true;
                         balanceChips.push(chip);
                       }
   
@@ -678,6 +687,7 @@ export default class BetHistory extends Component {
                          <Panel
                                   isLive={true}
                                   isReadOnly={true}
+                                  isAccount={true}
                                   accounts={[chip]}
                                   leftSystems={self.leader_board_config.leftSystems || []}
                                   rightSystems={self.leader_board_config.rightSystems || []}

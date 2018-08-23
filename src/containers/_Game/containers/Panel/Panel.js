@@ -310,7 +310,7 @@ export default class Panel extends Component {
         chip=newProps.performance_chip;
         //console.log(chip);
       }
-      self.setState({showOrderDialog:true, performance_account_id:newProps.performance_account_id, orderChip:chip, isPerformance:true});
+      self.setState({showOrderDialog:true, performance_account_id:newProps.performance_account_id, orderChip:chip, isPerformance:true, showPerformance:true});
       //self.forceUpdate();
     } else if (!newProps.performance_account_id) {
       this.setState({performance_account_id:''});

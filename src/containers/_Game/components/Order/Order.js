@@ -471,7 +471,7 @@ export default class Order extends React.Component {
           </div> */}
         </div>
           
-        ) : chip.isReadOnly ? chip.isAccountView ? (
+        ) : !isPerformance && chip.isReadOnly ? chip.isAccountView ? (
           <div className={classes.TitleRow} style={{background:self.props.themes.live.dialog.background,
             color:self.props.themes.live.dialog.text, fontSize:"12px", fontWeight:400}}
             >
