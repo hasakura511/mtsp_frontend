@@ -468,7 +468,7 @@ export default class LeaderBoardLive extends Component {
                 {
                   Header: "Player",
                   accessor: "account_value",
-                  width: 140,
+                  width: 210,
                   Cell: props => {
          
                     var chip=props.original;
