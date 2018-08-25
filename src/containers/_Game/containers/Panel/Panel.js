@@ -1109,7 +1109,6 @@ export default class Panel extends Component {
         console.log(slot)
         var stratSlot=Object.assign({}, slot)
         stratSlot.position=strat.strategy;
-        self.props.setStrat(toSystem(strat.strategy));
 
         this.props.showHtmlDialog2(<Order
             {...this.props}
@@ -1290,6 +1289,7 @@ export default class Panel extends Component {
       
   };
   moveChipToSlot = (chip, position, isAnti=false) => {
+    var self=this;
     // Open order dialogue
     const {
       topSystems,
@@ -1308,6 +1308,7 @@ export default class Panel extends Component {
     chip.orig_position=chip.position;
     chip.orig_last_selection=chip.last_selection;
 
+    self.props.setStrat(position);
 
 
     const system = [
