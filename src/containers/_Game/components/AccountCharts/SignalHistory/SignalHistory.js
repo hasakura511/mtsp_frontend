@@ -399,7 +399,10 @@ export default class SignalHistory extends Component {
                       if (self.props.slot[key].id)
                         parents.push(self.props.slot[key].id);
                     });
-                    self.signalHistory(self.props.chip.chip_id, self.props.slot.position, parents, date, true);
+                    if (self.props.strat)
+                      self.signalHistory(self.props.chip.chip_id, self.props.strat, parents, date, true);
+                    else
+                      self.signalHistory(self.props.chip.chip_id, self.props.slot.position, parents, date, true);
                   }
                }}  
                 />
