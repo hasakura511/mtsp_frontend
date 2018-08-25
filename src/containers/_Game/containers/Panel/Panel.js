@@ -1083,6 +1083,7 @@ export default class Panel extends Component {
     strat.display=strat.strategy;
     strat.color=strat.color_border;
 
+    self.props.setStrat(strat.strategy);
     if (showDialog) {
        var params={strat:strat,
                 position:position,

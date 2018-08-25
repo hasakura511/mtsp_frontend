@@ -415,6 +415,7 @@ export default class NewBoard extends Component {
     console.log("Lock Check")
     var self=this;
     
+    this.setState({loading:true})
     //console.log(this.props);
     axios
     .post("/utility/lock_check/", {
@@ -425,11 +426,13 @@ export default class NewBoard extends Component {
     .then(({ data }) => {
       console.log('received lock check')
       console.log(data);
+
       if (data.message != "OK") {
         this.sendNotice(data.message);
         //window.location='/board'
         //self.initializeNewBoard(reinitialize, chip_id, last_date, board_config);
         self.props.silenceHtmlDialog();
+        this.setState({loading:false})
 
       } else {
           self.initializeNewBoard(reinitialize, chip_id.toString(), last_date, board_config, skip_initialize);
@@ -444,7 +447,7 @@ export default class NewBoard extends Component {
       this.setState({
         rankingLoading: false,
         rankingError: error,
-        //loading:false,
+        loading:false,
         //refreshing:false
       });
       //window.location='/board'
