@@ -93,6 +93,10 @@ const dispatchToProps = dispatch => {
       dispatch(actions.silenceHtmlDialog2());
       
     },
+    setStrat(strat) {
+      dispatch(actions.setStrat(strat));
+    },
+    
 
 
   };
@@ -158,7 +162,8 @@ export default class Panel extends Component {
     showHtmlDialog2:PropTypes.func,
     silenceHtmlDialog2:PropTypes.func,
     itemSelected:PropTypes.string,
-    showLoading:PropTypes.func
+    showLoading:PropTypes.func,
+    setStrat:PropTypes.func
   };
 
   /**
@@ -1104,7 +1109,8 @@ export default class Panel extends Component {
         console.log(slot)
         var stratSlot=Object.assign({}, slot)
         stratSlot.position=strat.strategy;
-        
+        self.props.setStrat(toSystem(strat.strategy));
+
         this.props.showHtmlDialog2(<Order
             {...this.props}
             chip={chip}
