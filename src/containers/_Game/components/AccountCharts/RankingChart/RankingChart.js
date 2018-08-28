@@ -363,10 +363,11 @@ export default class RankingChart extends Component {
         //alert(self.props.chip.chip_location)
         //alert(key)
         //alert(order)
-        if (order != key)
+        if (order != key) {
           self.props.moveChipToSlot(self.props.chip, order, true);
-        else
+        } else {
           self.props.moveChipToSlot(self.props.chip, order, false);
+        }
     } else {
           var s=Object.assign({}, this.props.stratParams.strat);
           s.id=order;
@@ -424,7 +425,7 @@ export default class RankingChart extends Component {
           style={{cursor:'pointer'}} 
           
           onClick={() => {
-            console.log("Clicked on " + chip_location);
+            console.log("Clicked on " + chip_location + ", " + key);
             
             self.getStrat(chip_location, key)
 
@@ -671,8 +672,8 @@ export default class RankingChart extends Component {
                 stackId="stack"
                 fill={performance.chart_dict[lookback].color}
                 onClick={(e) => {
-                  console.log(e);
-                  self.getStrat(e.chip_location, "")
+                  console.log('Clicked on ' + e.chip_location + ' , ' + e.key);
+                  self.getStrat(e.chip_location, e.key)
                 }}
               />
 
@@ -686,8 +687,8 @@ export default class RankingChart extends Component {
                   stackId="stack"
                   fill={performance.chart_dict[period].color}
                   onClick={(e) => {
-                    console.log(e);
-                    self.getStrat(e.chip_location, "")
+                    console.log('Clicked on ' + e.chip_location + ' , ' + e.key);
+                    self.getStrat(e.chip_location,  e.key)
                   }}
                 />
               }

@@ -1038,10 +1038,10 @@ export default class PracticeBoard extends Component {
 
           <div className={classes.ActionRow} style={{background:actionBg, backgroundRepeat: "no-repeat",
                 backgroundSize: "62px 62px",color:heatmapTxt}}>
-              <span style={{color:switchTxt, "float": "left", "width": "70%", "height":"75px", "textAlign": "left", "verticalAlign":"middle", zIndex:1}}>
+              <span style={{color:switchTxt, "width": "100%", "height":"75px", "textAlign": "left", "verticalAlign":"middle", zIndex:1}}>
 
-               <table><tbody><tr>
-               <td style={{border:0, textAlign:'left'}}>
+               <table style={{minWidth:"100%"}}><tbody><tr>
+               <td style={{border:0, minWidth:"300px", textAlign:'left'}}>
                               <Link  style={{textDecoration: "none", color:'black',textAlign:'left',fontSize: "12px"}} to="/board">
                             <span>
                                <div style={{
@@ -1071,12 +1071,13 @@ export default class PracticeBoard extends Component {
                             <img src="/images/switch_toggle.png" style={{marginTop:"-84px", maxWidth:"60px"}} width={60} />
                             </span>                            
                               </Link>
+                              <div style={{"clear": "both"}}></div>
 
                             
 
                </td>
-                    <td  style={{border:0, textAlign:'center'}}>
-                    <div style={{ marginTop:"-22px"}}>
+               <td  style={{border:0,minWidth:"70%", textAlign:'right'}}>
+                    <div style={{ textAlign:'right', marginTop:"-22px"}}>
                     {this.state.simulate_dates.length ? 
                     <PracticeClock  
                       loading={this.state.refreshing} 
@@ -1086,16 +1087,9 @@ export default class PracticeBoard extends Component {
                       nextSimulationDay={this.nextSimulationDay} />
                       : null}
                     </div>
-                    </td>
-                    <td  style={{border:0, textAlign:'center'}}>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                      
-                    </td>
-                    </tr></tbody></table>
-
-              </span>
-              <span style={{"float": "left", "width": "30%", "height":"90px", "textAlign": "right", "verticalAlign":"middle"}}>
-                  <span style={{"float": "left", "width": "80%", "height":"90px", "textAlign": "left", "verticalAlign":"middle"}}> 
+                </td>
+                <td style={{border:0, textAlign:'right', minWidth: "300px"}}>
+                <div style={{"width": "100%", "height":"90px", marginTop: "-15px", "textAlign": "left", "verticalAlign":"top"}}> 
                     <div className="isLive">
                       <center><b style={{color:heatmapTxt}} >{this.props.themes.live.heatmap.top_text}</b></center>
                       <div style={{  "border": "1px solid",
@@ -1115,11 +1109,20 @@ export default class PracticeBoard extends Component {
                         </span>
                       </div>
                     </div>
-                </span>
-                <span style={{"float": "left", "width": "20%", "height":"90px", "textAlign": "right", "verticalAlign":"top"}}>
-                    <img src="/images/infotext_button.png" width="22"/>
-                </span>
-          </span>
+                    
+                </div>
+                <div style={{"clear": "both"}}></div>
+
+                </td>
+                <td style={{border:0}}>
+                  <div style={{marginTop:"0px", "height":"90px", "textAlign": "right", "verticalAlign":"top"}}>
+                      <img src="/images/infotext_button.png" width="22"/>
+                  </div>
+                </td>
+                    </tr></tbody></table>
+
+              </span>
+             
         </div>
         <div
             className={classes.Board}

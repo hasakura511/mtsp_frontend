@@ -1309,7 +1309,11 @@ export default class Panel extends Component {
     chip.orig_position=chip.position;
     chip.orig_last_selection=chip.last_selection;
 
-    self.props.setStrat(position);
+    if (isAnti) {
+      //var strat=this.toAntiSystem(position);
+      //alert(strat)
+      self.props.setStrat(position);
+    }
 
 
     const system = [
