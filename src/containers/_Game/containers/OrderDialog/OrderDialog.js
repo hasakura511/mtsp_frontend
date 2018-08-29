@@ -261,7 +261,9 @@ export default class OrderDialog extends Component {
     if (newProps.orderAnti && (!this.props.orderAnti || !this.state.isAnti)) {
       this.setState({isAnti:true});
     } else if (!newProps.orderAnti && (this.props.orderAnti || this.state.isAnti)) {
-      this.setState({isAnti:false});
+      if (newProps.slot.position != this.props.slot.position) {
+        this.setState({isAnti:false});
+      }
     }
     if (this.state.performance_account_id && this.state.isPerformance) {
       if (newProps.accounts) {

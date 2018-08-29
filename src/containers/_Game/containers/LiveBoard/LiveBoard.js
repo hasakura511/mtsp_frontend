@@ -534,7 +534,7 @@ export default class LiveBoard extends Component {
           'strategy':strat,
           },{timeout: 600000})
           .then(({ data }) => {
-            this.sendNotice(strat + ' Bet Placed' + JSON.stringify(data));
+            //this.sendNotice(strat + ' Bet Placed' + JSON.stringify(data));
             if (data.message && data.message.match(/ERROR/)) {
               origChip.position=origPosition;
               origChip.last_selection=origStrat;
