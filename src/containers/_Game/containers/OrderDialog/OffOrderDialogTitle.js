@@ -11,7 +11,7 @@ export default props => () => {
       }}
     >
      
-      <Chip {...props} />
+      <Chip isAccount={true} {...props} />
       &nbsp;&nbsp;<h2 style={{ marginRight: "4px" }}>Off</h2>
     </div>
   );
