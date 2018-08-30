@@ -138,5 +138,7 @@
     "flow-bin": "^0.63.1",
     "jsdoc": "^3.5.5",
     "jsdoc-babel": "^0.3.0"
-  }
+  },
+  "proxy": "https://app.globalsystemsmanagement.org",
+  "homepage": "https://web.globalsystemsmanagement.org"
 }
