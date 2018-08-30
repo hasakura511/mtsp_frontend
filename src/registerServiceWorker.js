@@ -21,7 +21,6 @@ const isLocalhost = Boolean(
 export default function register() {
   if (window.location.hostname === 'web.globalsystemsmanagement.org' && 'serviceWorker' in navigator) {
     // The URL constructor is available in all browsers that support SW.
-    /*
     const publicUrl = new URL(process.env.PUBLIC_URL, window.location);
     if (publicUrl.origin !== window.location.origin) {
       // Our service worker won't work if PUBLIC_URL is on a different origin
@@ -42,7 +41,6 @@ export default function register() {
         //registerValidSW(swUrl);
       }
     });
-    */
   }
 }
 
