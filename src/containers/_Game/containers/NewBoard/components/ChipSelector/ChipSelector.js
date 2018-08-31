@@ -67,7 +67,7 @@ export default class ChipSelector extends React.Component {
                 itemSelected='All';
           }
           items.push({ value:account.chip_id, 
-                    chip: account
+                    chip: Object.assign({}, account)
                     
                   });
         })
