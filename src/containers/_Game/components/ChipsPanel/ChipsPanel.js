@@ -53,6 +53,7 @@ const chipsPanel = props => {
             <Chip
               key={"panel-chip-" + chip.accountId}
               chip={chip}
+              isDraggable={true}
               //Allow only 5k chip to be draggable in tier 0
               // canDrag={chip.accountValue === 5000}
               canDrag={true}

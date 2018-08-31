@@ -57,7 +57,9 @@ const chipSource = {
   },
   canDrag(props) {
     const { chip } = props;
-    if (chip.status == undefined || chip.status == 'locked')
+    if (props.canDrag || props.isDraggable)
+      return true;
+    if (chip.status == undefined || chip.status == 'locked' || props.isAccount || chip.isReadOnly)
       return false;
     
     return true;
@@ -109,7 +111,8 @@ export default class Chip extends PureComponent {
     isReadOnly:PropTypes.bool,
     dragNotice:PropTypes.func,
     isNewBoard:PropTypes.bool,
-    isAccount:PropTypes.bool
+    isAccount:PropTypes.bool,
+    isDraggable:PropTypes.bool
     //heatmap_selection:PropTypes.string
   };
 
