@@ -598,6 +598,7 @@ export default class LeaderBoardCopiedChips extends Component {
                     chip.status = 'unlocked';
                     chip.chip_tier_text=chip.filter;
                     chip.isReadOnly=true;
+                    chip.isLeaderboard=true;
                     return (
                       <span className='number'><center>
                         

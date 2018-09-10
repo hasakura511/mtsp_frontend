@@ -342,6 +342,7 @@ export default class Chip extends PureComponent {
             <p style={{fontWeight:800, fontSize:"12px", marginTop: 
             chip.isAccountChip || 
             this.props.isNewBoard || 
+            chip.isLeaderboard ||
             this.props.isAccount ? "-10px":"0px" }}><b>{chip.display}
             
             </b></p>

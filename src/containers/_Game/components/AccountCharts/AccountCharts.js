@@ -64,7 +64,8 @@ export default class AccountCharts extends Component {
     stratParams:PropTypes.object,
     isAnti:PropTypes.bool,
     isEdit:PropTypes.bool,
-    isPortfolio:PropTypes.bool
+    isPortfolio:PropTypes.bool,
+    isLeaderboard:PropTypes.bool
   };
   constructor(props) {
     super(props);
@@ -178,7 +179,7 @@ export default class AccountCharts extends Component {
                 
                 </div>
 
-              {!chip.isReadOnly || this.props.isPerformance ? 
+              {(!chip.isReadOnly || this.props.isPerformance) && !this.props.isLeaderboard ? 
                 <div
                   style={ isOpenPositions ? {borderColor:self.props.themes.live.dialog.lines, borderTop:"1px solid " + self.props.themes.live.dialog.lines, background:self.props.themes.live.dialog.tab_color_active, minWidth:'180px'} 
                   : {borderTop:"1px solid " + self.props.themes.live.dialog.lines,  borderColor:self.props.themes.live.dialog.lines, background:self.props.themes.live.dialog.tab_color_inactive, minWidth:'180px'} }
@@ -191,13 +192,13 @@ export default class AccountCharts extends Component {
                   Current PnL
                 </div>
               : null}
-              {!chip.isReadOnly  || this.props.isPerformance ? 
+              {(!chip.isReadOnly  || this.props.isPerformance) && !this.props.isLeaderboard? 
 
                 <div style={{width:"1px", margin:"0px", paddingLeft:"1px", paddingRight:"0px", paddingTop:"20px", paddingBottom:"20px",color: self.props.themes.live.dialog.lines, background:self.props.themes.live.dialog.lines}}>
                 
                 </div>
               :null}
-              {!chip.isReadOnly || this.props.isPerformance ? 
+              {(!chip.isReadOnly || this.props.isPerformance) && !this.props.isLeaderboard ? 
 
                 <div
                   style={ isPreviousPnL ? {borderColor:self.props.themes.live.dialog.lines, borderTop:"1px solid " + self.props.themes.live.dialog.lines, background:self.props.themes.live.dialog.tab_color_active, minWidth:'180px'} 
@@ -211,12 +212,12 @@ export default class AccountCharts extends Component {
                   Previous PnL
                 </div>
               :null}
-              {!chip.isReadOnly  || this.props.isPerformance ? 
+              {(!chip.isReadOnly  || this.props.isPerformance) && !this.props.isLeaderboard ? 
                 <div style={{width:"1px", margin:"0px", paddingLeft:"1px", paddingRight:"0px", paddingTop:"20px", paddingBottom:"20px",color: self.props.themes.live.dialog.lines, background:self.props.themes.live.dialog.lines}}>
                 
                 </div>
               :null}
-              {!chip.isReadOnly  || this.props.isPerformance ? 
+              {(!chip.isReadOnly  || this.props.isPerformance) && !this.props.isLeaderboard ? 
                 <div
                   style={ isTradingCosts ? {borderColor:self.props.themes.live.dialog.lines, borderTop:"1px solid " + self.props.themes.live.dialog.lines, background:self.props.themes.live.dialog.tab_color_active, minWidth:'180px'} 
                   : {borderTop:"1px solid " + self.props.themes.live.dialog.lines,  borderColor:self.props.themes.live.dialog.lines, background:self.props.themes.live.dialog.tab_color_inactive, minWidth:'180px'} }

@@ -348,11 +348,15 @@ const reducer = (state = initialState, action) => {
     }
     case actionTypes.SHOW_PERFORMANCE:
     {
-      
+      var isLeaderboard=action.chip ? action.chip.isLeaderboard ? true : false : false;
+      var player=action.chip ? action.chip.player ? action.chip.player : '' : '';
+
       return {
         ...state,
         performance_account_id:action.account_id,
-        performance_chip:action.chip
+        performance_chip:action.chip,
+        performance_isLeaderboard:isLeaderboard,
+        performance_player:player
       };
     }
     case actionTypes.SHOW_LOCKDOWN_DIALOG:

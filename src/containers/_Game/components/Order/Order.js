@@ -29,6 +29,9 @@ const stateToProps = state => {
     mute:state.betting.mute,
     themes:state.betting.themes,
     accounts:state.betting.accounts,
+    performance_isLeaderboard:state.betting.performance_isLeaderboard,
+    performance_player:state.betting.performance_player,
+    performance_chip:state.betting.performance_chip
 
   };
 };
@@ -109,7 +112,10 @@ export default class Order extends React.Component {
       silenceHtmlDialog:PropTypes.func,
       showHtmlDialog2:PropTypes.func,
       silenceHtmlDialog2:PropTypes.func,
-      stratParams:PropTypes.object
+      stratParams:PropTypes.object,
+      performance_isLeaderboard:PropTypes.bool,
+      performance_player:PropTypes.string,
+      performance_chip:PropTypes.object
     };
     
     
@@ -127,11 +133,19 @@ export default class Order extends React.Component {
    
     if (this.props.performance_account_id && this.props.isPerformance) {
       if (newProps.accounts) {
-          var orderChip='';
+          var orderChip={};
           var updated=false;
           newProps.accounts.map(account => {
               if (account.account_id == this.props.performance_account_id) {
-                orderChip=account;
+                orderChip=Object.assign({}, account);
+                if (newProps.performance_isLeaderboard) {
+                  if (newProps.performance_chip)
+                    orderChip=Object.assign({}, newProps.performance_chip);
+                  orderChip.isLeaderboard=true;
+                  orderChip.player=newProps.performance_player;
+
+                } 
+
                 self.setState({orderChip:orderChip});
                 console.log("new state for chip " + account.account_id);
                 console.log(orderChip);
@@ -164,231 +178,129 @@ export default class Order extends React.Component {
       if (!isPerformance) {
         isNumbered = !isNaN(Number(slot.position));
       }
-      return (
-        <div className={classes.Order} style={isLive ? {background: themes.live.dialog.background} : {}}>
-          {!isPerformance ? isLive ? isEdit ?(
+
+      var topHtml=<div></div>
+      if (!isPerformance && isLive && isEdit)  {
             
 
 
-          <div className={classes.TitleRow} style={{background: themes.live.dialog.background}}>
-            <div className={classes.Left}>
-              <div
-                className={classes.ElementContainer}
-                style={{ paddingTop: "15px", width: !isNumbered ? "160px" : "auto", background: themes.live.dialog.background_inner }}
-              >
-                <StrategyButton strategy={this.props.strategy} />
-              </div>
-              <div
-                className={classes.Systems}
-                style={isNumbered ? {} : { visibility: "hidden" }}
-              >
-                <ul>
-                  {getSystems(slot).map(system => (
-                    <li key={`${system.id}${Math.random().toFixed(3)}`}>
-                      <p>{system.display}</p>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div
-                className={classes.ElementContainer}
-                style={{ paddingTop: "15px",background: themes.live.dialog.background_inner }}
-              >
-                <Chip chip={chip} isNewBoard={true} />
-              </div>
-            </div>
-            <div className={classes.Right} style={{background: themes.live.dialog.background_inner}}>
-              <div className={classes.ElementContainer} style={{background: themes.live.dialog.background_inner}}>
-                <div style={{ display: "flex", width: "100%" }}>
-                  <input
-                    type="radio"
-                    id="system-radio"
-                    checked={!this.state.isAnti}
-                    onChange={(e) => {
-
-                      setNotAnti(e);
-                      self.props.setStrat(toSystem(slot.position));
-                      self.setState({isAnti:false, strat:toSystem(slot.position)})
-                    }}
-                    title={"Orders will be placed for the strategy selected here."}
-                  />
-                  {isLive ? (
-
-                      <label id="system-label" htmlFor="system-radio" style={{ color: "#8884d8" }}>
-                        {toSystem(slot.position)}
-                      </label>
-
-                      ) : (
-                      <label htmlFor="system-radio" style={{ color: "#8884d8" }}>
-                        {toSystem(slot.position)}
-                      </label>
-                      )}
-                </div>
-                <div style={{ display: "flex", width: "100%" }}>
-                  <input
-                    type="radio"
-                    id="anti-system-radio"
-                    checked={this.state.isAnti}
-                    onChange={(e) => {
-                      setAnti(e)
-                      self.props.setStrat(toAntiSystem(slot.position));
-                      self.setState({isAnti:true, strat:toAntiSystem(slot.position)})
-                      
-
-                    }}
-                    title={"Orders will be placed for the strategy selected here."}
-                  />
-                  {isLive ? (
-                    <label id="anti-system-label" htmlFor="anti-system-radio" style={{ color: "#63a57c" }}>
-                      {toAntiSystem(slot.position)}
-                    </label>
-                  ) : (
-                    <label htmlFor="anti-system-radio" style={{ color: "#63a57c" }}>
-                      {toAntiSystem(slot.position)}
-                    </label>
-                  )}
-                </div>
-              </div>
-              <div className={classes.ActionBar} style={{background: themes.live.dialog.background_inner}}>
-                <button className={classes.Submit} onClick={() => {
-                  var orderStrat=this.props.stratParams.strat;
-                  if (this.state.strat) {
-                    orderStrat.strategy=this.state.strat;
-                    orderStrat.display=this.state.strat;
-                    orderStrat.id=this.state.strat;
-                  }
-                  self.props.moveStratToSlot(orderStrat, 
-                            this.props.stratParams.position, 
-                            this.props.stratParams.isAnti, 
-                            this.props.stratParams.swapStrat)
-                  self.props.silenceHtmlDialog2();
-                }} title={"This Strategy will be Placed in the Slot"}>
-                  Place Strategy
-                </button>
-                <button onClick={close}>Cancel</button>
-              </div>
-            </div>
-
-            {/* <div className={classes.Right}>
-              <p style={{ color: "#8884d8" }}>System</p>
-              <Switch toggle={toggleSystem} />
-              <p style={{ color: "#63a57c" }}>Anti-System</p>
-            </div> */}
-          </div>
-          ) : (
-            
-
-
-          <div className={classes.TitleRow} style={{background: themes.live.dialog.background}}>
-            <div className={classes.Left}>
-              <div
-                className={classes.ElementContainer}
-                style={{ padding: "0px", width: !isNumbered ? "160px" : "auto", background: themes.live.dialog.background_inner }}
-              >
-                <Slot
-                  {...slot}
-                  dictionary_strategy={ dictionary_strategy}
-                  heldChips={[]}
-                  width={!isNumbered ? "160px" : "60px"}
-                  fontSize={!isNumbered ? "1.5em" : "2.2em"}
-                />
-              </div>
-              <div
-                className={classes.Systems}
-                style={isNumbered ? {} : { visibility: "hidden" }}
-              >
-                <ul>
-                  {getSystems(slot).map(system => (
-                    <li key={`${system.id}${Math.random().toFixed(3)}`}>
-                      <p>{system.display}</p>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div
-                className={classes.ElementContainer}
-                style={{ paddingTop: "15px",background: themes.live.dialog.background_inner }}
-              >
-                <Chip chip={chip} isAccount={true}  />
-              </div>
-            </div>
-            <div className={classes.Right} style={{background: themes.live.dialog.background_inner}}>
-              <div className={classes.ElementContainer} style={{background: themes.live.dialog.background_inner}}>
-                <div style={{ display: "flex", width: "100%" }}>
-                  <input
-                    type="radio"
-                    id="system-radio"
-                    checked={!isAnti}
-                    onChange={(e) => {
-
-                      setNotAnti(e);
-                      if (isLive)
-                        self.props.setStrat(toSystem(slot.position));
-                    }}
-                    title={"Orders will be placed for the strategy selected here."}
-                  />
-                  {isLive ? (
-
-                      <label id="system-label" htmlFor="system-radio" style={{ color: "#8884d8" }}>
-                        {toSystem(slot.position)}
-                      </label>
-
-                      ) : (
-                      <label htmlFor="system-radio" style={{ color: "#8884d8" }}>
-                        {toSystem(slot.position)}
-                      </label>
-                      )}
-                </div>
-                <div style={{ display: "flex", width: "100%" }}>
-                  <input
-                    type="radio"
-                    id="anti-system-radio"
-                    checked={isAnti}
-                    onChange={(e) => {
-                      setAnti(e)
-                      if (isLive)
-                        self.props.setStrat(toAntiSystem(slot.position));
-                    }}
-                    title={"Orders will be placed for the strategy selected here."}
-                  />
-                  {isLive ? (
-                    <label id="anti-system-label" htmlFor="anti-system-radio" style={{ color: "#63a57c" }}>
-                      {toAntiSystem(slot.position)}
-                    </label>
-                  ) : (
-                    <label htmlFor="anti-system-radio" style={{ color: "#63a57c" }}>
-                      {toAntiSystem(slot.position)}
-                    </label>
-                  )}
-                </div>
-              </div>
-              <div className={classes.ActionBar} style={{background: themes.live.dialog.background_inner}}>
-                <button className={classes.Submit} onClick={submitBetHandler} title={"This order will be placed as a Market-on-Close (MOC) order."}>
-                  Place MOC Order
-                </button>
-                <button onClick={close}>Cancel</button>
-              </div>
-            </div>
-
-            {/* <div className={classes.Right}>
-              <p style={{ color: "#8884d8" }}>System</p>
-              <Switch toggle={toggleSystem} />
-              <p style={{ color: "#63a57c" }}>Anti-System</p>
-            </div> */}
-          </div>
-          ) : (
-            
-
-
-          <div className={classes.TitleRow}>
+        topHtml=<div className={classes.TitleRow} style={{background: themes.live.dialog.background}}>
           <div className={classes.Left}>
             <div
               className={classes.ElementContainer}
-              style={{ padding: "0px", width: !isNumbered ? "160px" : "auto" }}
+              style={{ paddingTop: "15px", width: !isNumbered ? "160px" : "auto", background: themes.live.dialog.background_inner }}
+            >
+              <StrategyButton strategy={this.props.strategy} />
+            </div>
+            <div
+              className={classes.Systems}
+              style={isNumbered ? {} : { visibility: "hidden" }}
+            >
+              <ul>
+                {getSystems(slot).map(system => (
+                  <li key={`${system.id}${Math.random().toFixed(3)}`}>
+                    <p>{system.display}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div
+              className={classes.ElementContainer}
+              style={{ paddingTop: "15px",background: themes.live.dialog.background_inner }}
+            >
+              <Chip chip={chip} isNewBoard={true} />
+            </div>
+          </div>
+          <div className={classes.Right} style={{background: themes.live.dialog.background_inner}}>
+            <div className={classes.ElementContainer} style={{background: themes.live.dialog.background_inner}}>
+              <div style={{ display: "flex", width: "100%" }}>
+                <input
+                  type="radio"
+                  id="system-radio"
+                  checked={!this.state.isAnti}
+                  onChange={(e) => {
+
+                    setNotAnti(e);
+                    self.props.setStrat(toSystem(slot.position));
+                    self.setState({isAnti:false, strat:toSystem(slot.position)})
+                  }}
+                  title={"Orders will be placed for the strategy selected here."}
+                />
+                {isLive ? (
+
+                    <label id="system-label" htmlFor="system-radio" style={{ color: "#8884d8" }}>
+                      {toSystem(slot.position)}
+                    </label>
+
+                    ) : (
+                    <label htmlFor="system-radio" style={{ color: "#8884d8" }}>
+                      {toSystem(slot.position)}
+                    </label>
+                    )}
+              </div>
+              <div style={{ display: "flex", width: "100%" }}>
+                <input
+                  type="radio"
+                  id="anti-system-radio"
+                  checked={this.state.isAnti}
+                  onChange={(e) => {
+                    setAnti(e)
+                    self.props.setStrat(toAntiSystem(slot.position));
+                    self.setState({isAnti:true, strat:toAntiSystem(slot.position)})
+                    
+
+                  }}
+                  title={"Orders will be placed for the strategy selected here."}
+                />
+                {isLive ? (
+                  <label id="anti-system-label" htmlFor="anti-system-radio" style={{ color: "#63a57c" }}>
+                    {toAntiSystem(slot.position)}
+                  </label>
+                ) : (
+                  <label htmlFor="anti-system-radio" style={{ color: "#63a57c" }}>
+                    {toAntiSystem(slot.position)}
+                  </label>
+                )}
+              </div>
+            </div>
+            <div className={classes.ActionBar} style={{background: themes.live.dialog.background_inner}}>
+              <button className={classes.Submit} onClick={() => {
+                var orderStrat=this.props.stratParams.strat;
+                if (this.state.strat) {
+                  orderStrat.strategy=this.state.strat;
+                  orderStrat.display=this.state.strat;
+                  orderStrat.id=this.state.strat;
+                }
+                self.props.moveStratToSlot(orderStrat, 
+                          this.props.stratParams.position, 
+                          this.props.stratParams.isAnti, 
+                          this.props.stratParams.swapStrat)
+                self.props.silenceHtmlDialog2();
+              }} title={"This Strategy will be Placed in the Slot"}>
+                Place Strategy
+              </button>
+              <button onClick={close}>Cancel</button>
+            </div>
+          </div>
+
+          {/* <div className={classes.Right}>
+            <p style={{ color: "#8884d8" }}>System</p>
+            <Switch toggle={toggleSystem} />
+            <p style={{ color: "#63a57c" }}>Anti-System</p>
+          </div> */}
+        </div>
+  }
+  
+  if (!isPerformance && isLive &&  !isEdit) {
+        topHtml=<div className={classes.TitleRow} style={{background: themes.live.dialog.background}}>
+          <div className={classes.Left}>
+            <div
+              className={classes.ElementContainer}
+              style={{ padding: "0px", width: !isNumbered ? "160px" : "auto", background: themes.live.dialog.background_inner }}
             >
               <Slot
                 {...slot}
-                dictionary_strategy={ dictionary_strategy }
+                dictionary_strategy={ dictionary_strategy}
                 heldChips={[]}
                 width={!isNumbered ? "160px" : "60px"}
                 fontSize={!isNumbered ? "1.5em" : "2.2em"}
@@ -408,26 +320,29 @@ export default class Order extends React.Component {
             </div>
             <div
               className={classes.ElementContainer}
-              style={{ paddingTop: "15px" }}
+              style={{ paddingTop: "15px",background: themes.live.dialog.background_inner }}
             >
-              
-              <Chip chip={chip}  />
-
+              <Chip chip={chip} isAccount={true}  />
             </div>
           </div>
-          <div className={classes.Right}>
-            <div className={classes.ElementContainer}>
+          <div className={classes.Right} style={{background: themes.live.dialog.background_inner}}>
+            <div className={classes.ElementContainer} style={{background: themes.live.dialog.background_inner}}>
               <div style={{ display: "flex", width: "100%" }}>
                 <input
                   type="radio"
                   id="system-radio"
                   checked={!isAnti}
-                  onChange={setNotAnti}
+                  onChange={(e) => {
+
+                    setNotAnti(e);
+                    if (isLive)
+                      self.props.setStrat(toSystem(slot.position));
+                  }}
                   title={"Orders will be placed for the strategy selected here."}
                 />
                 {isLive ? (
 
-                    <label htmlFor="system-radio" style={{ color: "#8884d8" }}>
+                    <label id="system-label" htmlFor="system-radio" style={{ color: "#8884d8" }}>
                       {toSystem(slot.position)}
                     </label>
 
@@ -442,11 +357,15 @@ export default class Order extends React.Component {
                   type="radio"
                   id="anti-system-radio"
                   checked={isAnti}
-                  onChange={setAnti}
+                  onChange={(e) => {
+                    setAnti(e)
+                    if (isLive)
+                      self.props.setStrat(toAntiSystem(slot.position));
+                  }}
                   title={"Orders will be placed for the strategy selected here."}
                 />
                 {isLive ? (
-                  <label htmlFor="anti-system-radio" style={{ color: "#63a57c" }}>
+                  <label id="anti-system-label" htmlFor="anti-system-radio" style={{ color: "#63a57c" }}>
                     {toAntiSystem(slot.position)}
                   </label>
                 ) : (
@@ -456,7 +375,7 @@ export default class Order extends React.Component {
                 )}
               </div>
             </div>
-            <div className={classes.ActionBar}>
+            <div className={classes.ActionBar} style={{background: themes.live.dialog.background_inner}}>
               <button className={classes.Submit} onClick={submitBetHandler} title={"This order will be placed as a Market-on-Close (MOC) order."}>
                 Place MOC Order
               </button>
@@ -470,410 +389,513 @@ export default class Order extends React.Component {
             <p style={{ color: "#63a57c" }}>Anti-System</p>
           </div> */}
         </div>
+  }
+  if (!isPerformance && !isLive && !isEdit) {          
+
+
+        topHtml=<div className={classes.TitleRow}>
+        <div className={classes.Left}>
+          <div
+            className={classes.ElementContainer}
+            style={{ padding: "0px", width: !isNumbered ? "160px" : "auto" }}
+          >
+            <Slot
+              {...slot}
+              dictionary_strategy={ dictionary_strategy }
+              heldChips={[]}
+              width={!isNumbered ? "160px" : "60px"}
+              fontSize={!isNumbered ? "1.5em" : "2.2em"}
+            />
+          </div>
+          <div
+            className={classes.Systems}
+            style={isNumbered ? {} : { visibility: "hidden" }}
+          >
+            <ul>
+              {getSystems(slot).map(system => (
+                <li key={`${system.id}${Math.random().toFixed(3)}`}>
+                  <p>{system.display}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div
+            className={classes.ElementContainer}
+            style={{ paddingTop: "15px" }}
+          >
+            
+            <Chip chip={chip}  />
+
+          </div>
+        </div>
+        <div className={classes.Right}>
+          <div className={classes.ElementContainer}>
+            <div style={{ display: "flex", width: "100%" }}>
+              <input
+                type="radio"
+                id="system-radio"
+                checked={!isAnti}
+                onChange={setNotAnti}
+                title={"Orders will be placed for the strategy selected here."}
+              />
+              {isLive ? (
+
+                  <label htmlFor="system-radio" style={{ color: "#8884d8" }}>
+                    {toSystem(slot.position)}
+                  </label>
+
+                  ) : (
+                  <label htmlFor="system-radio" style={{ color: "#8884d8" }}>
+                    {toSystem(slot.position)}
+                  </label>
+                  )}
+            </div>
+            <div style={{ display: "flex", width: "100%" }}>
+              <input
+                type="radio"
+                id="anti-system-radio"
+                checked={isAnti}
+                onChange={setAnti}
+                title={"Orders will be placed for the strategy selected here."}
+              />
+              {isLive ? (
+                <label htmlFor="anti-system-radio" style={{ color: "#63a57c" }}>
+                  {toAntiSystem(slot.position)}
+                </label>
+              ) : (
+                <label htmlFor="anti-system-radio" style={{ color: "#63a57c" }}>
+                  {toAntiSystem(slot.position)}
+                </label>
+              )}
+            </div>
+          </div>
+          <div className={classes.ActionBar}>
+            <button className={classes.Submit} onClick={submitBetHandler} title={"This order will be placed as a Market-on-Close (MOC) order."}>
+              Place MOC Order
+            </button>
+            <button onClick={close}>Cancel</button>
+          </div>
+        </div>
+
+        {/* <div className={classes.Right}>
+          <p style={{ color: "#8884d8" }}>System</p>
+          <Switch toggle={toggleSystem} />
+          <p style={{ color: "#63a57c" }}>Anti-System</p>
+        </div> */}
+      </div>
+        
+  }
+  if (!isPerformance && chip.isReadOnly && chip.isAccountView) {
+    
+        topHtml=<div className={classes.TitleRow} style={{background:self.props.themes.live.dialog.background,
+          color:self.props.themes.live.dialog.text, fontSize:"12px", fontWeight:400}}
+          >
           
-        ) : !isPerformance && chip.isReadOnly ? chip.isAccountView ? (
-          <div className={classes.TitleRow} style={{background:self.props.themes.live.dialog.background,
-            color:self.props.themes.live.dialog.text, fontSize:"12px", fontWeight:400}}
-            >
-            
-            <div
-              className={classes.ElementContainer}
-              style={{ paddingTop: "15px",background:self.props.themes.live.dialog.background_inner,
-              color:self.props.themes.live.dialog.text }}
-            >
-            
-              <Chip chip={chip} isAccount={self.props.isAccount} />
-            </div>
-            <div           style={{ minWidth:"100px", padding: "15px" }}
-    >
-              {toTitleCase(chip.tier)}<br/>
-                Tier {chip.chip_tier}<br/>
-                {chip.chip_tier_text}<br/>
-                Rank: {chip.rank}<br/>
-            </div>
-            
-          <table style={{border:"none", borderCollapse: "collapse",
-        background:self.props.themes.live.dialog.background_inner,
-        color:self.props.themes.live.dialog.text }}>
-          <thead  style={{border:"none"}}>
-            <tr style={{border:"none"}}>
-            <th  style={{border:"none"}}>
-              <center> 
-                Account Value
-                </center>
-                </th>
-                <th  style={{border:"none"}}>
-                <center>
-                Cumulative %Chg
-                </center>
-                </th>
-                <th  style={{border:"none"}}>
-                <center>
-                Previous %Chg
-                </center>
-                </th>
-                <th  style={{border:"none"}}>
-                <center>
-                  Age
-                </center>
-                </th>
-                <th  style={{border:"none"}}>
-                <center>
-                Markets in Portfolio
-                </center>
-                </th>
-                
-                </tr>
-              </thead>
-              <tbody>
-                <tr style={{border:"1px", "padding":"1px"}}>
-               
-                <td style={{borderLeft:"1px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
-                <center>
-                          
-                        {parseFloat(chip.account_value) ? (
-                          <span style={parseFloat(chip.account_value) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
-                        <b>
-                        $ {parseFloat(chip.account_value).toLocaleString("en")} 
-                        </b>
-                        </span>
-                        ) : (
-                          <span style={{color:self.props.themes.live.dialog.text_color}}>
-                        <b>
-                        $ {parseFloat(chip.account_value).toLocaleString("en")} 
-                        </b>
-                        </span>
-                        )}
-                      
-                      </center>
-                </td>            
-                <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
-                <center>
-                          
-                        {parseFloat(chip.pnl_cumpct) ? (
-                          <span style={parseFloat(chip.pnl_cumpct) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
-                        <b>
-                        {parseFloat(chip.pnl_cumpct).toLocaleString("en")} %
-                        </b>
-                        </span>
-                        ) : (
-                          <span style={{color:self.props.themes.live.dialog.text_color}}>
-                        <b>
-                        {parseFloat(chip.pnl_cumpct).toLocaleString("en")} % 
-                        </b>
-                        </span>
-                        )}
-                      
-                      </center>
-
-                </td>            
-                <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
-                <center>
-                          
-                          {parseFloat(chip.pnl_pct) ? (
-                          <span style={parseFloat(chip.pnl_pct) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
-                        <b>
-                        {parseFloat(chip.pnl_pct).toLocaleString("en")} %
-                        </b>
-                        </span>
-                        ) : (
-                          <span style={{color:self.props.themes.live.dialog.text_color}}>
-                        <b>
-                        {parseFloat(chip.pnl_pct).toLocaleString("en")} % 
-                        </b>
-                        </span>
-                        )}
-              </center>
-                </td>            
-                <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black", borderRight:"0px solid black"}}>
-                <center>
-                  {chip.age}
-                </center>
-                </td>
-                <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
-                <center>
-                {chip.num_markets}
-                </center>
-                </td>            
-               
-                <td style={{width:"1px", margin:"0px", padding:"0px", borderLeft:"1px solid black",borderTop:"1px solid black",borderBottom:"1px solid black", borderRight:"1px solid black"}}>
-                </td></tr>
-                </tbody>
-                </table>
-                <div style={{"float": "right", "padding":"9px","textAlign": "right", background:self.props.themes.live.dialog.background,
-            color:self.props.themes.live.dialog.text, fontSize:"12px", fontWeight:400}}>
-                      <button onClick={() => {self.props.toggle(); } } >
-                      <font style={{fontSize:"22px"}}>Close</font>
-                      </button>
-              </div>
-
+          <div
+            className={classes.ElementContainer}
+            style={{ paddingTop: "15px",background:self.props.themes.live.dialog.background_inner,
+            color:self.props.themes.live.dialog.text }}
+          >
+          
+            <Chip chip={chip} isAccount={self.props.isAccount} />
           </div>
-
-        ) :
-        (
-          <div className={classes.TitleRow} style={{background:self.props.themes.live.dialog.background,
-            color:self.props.themes.live.dialog.text, fontSize:"12px", fontWeight:400}}
-            >
-            
-            <div
-              className={classes.ElementContainer}
-              style={{ paddingTop: "15px",background:self.props.themes.live.dialog.background_inner,
-              color:self.props.themes.live.dialog.text }}
-            >
-              <Chip chip={chip} />
-            </div>
-            <div           style={{ minWidth:"100px", padding: "15px" }}
-    >
-              {toTitleCase(chip.tier)}<br/>
-                Tier {chip.chip_tier}<br/>
-                {chip.chip_tier_text}<br/>
-                Rank: {chip.rank}<br/>
-            </div>
-            
-          <table style={{border:"none", borderCollapse: "collapse",
-        background:self.props.themes.live.dialog.background_inner,
-        color:self.props.themes.live.dialog.text }}>
-          <thead  style={{border:"none"}}>
-            <tr style={{border:"none"}}>
-            <th  style={{border:"none"}}>
-              <center> 
-                Player 
-                </center>
-                </th>
-                <th  style={{border:"none"}}>
-                <center>
-                Cumulative %Chg
-                </center>
-                </th>
-                <th  style={{border:"none"}}>
-                <center>
-                Previous %Chg
-                </center>
-                </th>
-                <th  style={{border:"none"}}>
-                <center>
-                  Age
-                </center>
-                </th>
-                <th  style={{border:"none"}}>
-                <center>
-                Markets in Portfolio
-                </center>
-                </th>
-                
-                </tr>
-              </thead>
-              <tbody>
-                <tr style={{border:"1px", "padding":"1px"}}>
-               
-                <td style={{borderLeft:"1px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
-                <center>
-                {chip.player}
-                </center>
-                </td>            
-                <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
-                <center>
-                          
-                        {parseFloat(chip.pnl_cumpct) ? (
-                          <span style={parseFloat(chip.pnl_cumpct) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
-                        <b>
-                        {parseFloat(chip.pnl_cumpct).toLocaleString("en")} %
-                        </b>
-                        </span>
-                        ) : (
-                          <span style={{color:self.props.themes.live.dialog.text_color}}>
-                        <b>
-                        {parseFloat(chip.pnl_cumpct).toLocaleString("en")} % 
-                        </b>
-                        </span>
-                        )}
-                      
-                      </center>
-
-                </td>            
-                <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
-                <center>
-                          
-                          {parseFloat(chip.pnl_pct) ? (
-                          <span style={parseFloat(chip.pnl_pct) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
-                        <b>
-                        {parseFloat(chip.pnl_pct).toLocaleString("en")} %
-                        </b>
-                        </span>
-                        ) : (
-                          <span style={{color:self.props.themes.live.dialog.text_color}}>
-                        <b>
-                        {parseFloat(chip.pnl_pct).toLocaleString("en")} % 
-                        </b>
-                        </span>
-                        )}
-              </center>
-                </td>            
-                <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black", borderRight:"0px solid black"}}>
-                <center>
-                  {chip.age}
-                </center>
-                </td>
-                <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
-                <center>
-                {chip.num_markets}
-                </center>
-                </td>            
-               
-                <td style={{width:"1px", margin:"0px", padding:"0px", borderLeft:"1px solid black",borderTop:"1px solid black",borderBottom:"1px solid black", borderRight:"1px solid black"}}>
-                </td></tr>
-                </tbody>
-                </table>
-                <div style={{"float": "right", "padding":"9px","textAlign": "right", background:self.props.themes.live.dialog.background,
-            color:self.props.themes.live.dialog.text, fontSize:"12px", fontWeight:400}}>
-                      <button onClick={() => {self.props.toggle(); } } >
-                      <font style={{fontSize:"22px"}}>Close</font>
-                      </button>
-              </div>
-
+          <div           style={{ minWidth:"100px", padding: "15px" }}
+  >
+            {toTitleCase(chip.tier)}<br/>
+              Tier {chip.chip_tier}<br/>
+              {chip.chip_tier_text}<br/>
+              Rank: {chip.rank}<br/>
           </div>
-        ) : (
-          <div className={classes.TitleRow} style={{background:self.props.themes.live.dialog.background,
-            color:self.props.themes.live.dialog.text, fontSize:"12px", fontWeight:400}}
-            >
-            
-            <div
-              className={classes.ElementContainer}
-              style={{ paddingTop: "15px",background:self.props.themes.live.dialog.background_inner,
-              color:self.props.themes.live.dialog.text }}
-            >
-              <Chip chip={chip} isAccount={true} />
-            </div>
-            <div           style={{ minWidth:"100px", padding: "15px" }}
-    >
-              {toTitleCase(chip.tier)}<br/>
-                Tier {chip.chip_tier}<br/>
-                {chip.chip_tier_text}<br/>
-                Rank: {chip.rank}<br/>
-            </div>
-            
-          <table style={{border:"none", borderCollapse: "collapse",
-        background:self.props.themes.live.dialog.background_inner,
-        color:self.props.themes.live.dialog.text }}>
-          <thead  style={{border:"none"}}>
-            <tr style={{border:"none"}}>
-            <th  style={{border:"none"}}>
+          
+        <table style={{border:"none", borderCollapse: "collapse",
+      background:self.props.themes.live.dialog.background_inner,
+      color:self.props.themes.live.dialog.text }}>
+        <thead  style={{border:"none"}}>
+          <tr style={{border:"none"}}>
+          <th  style={{border:"none"}}>
+            <center> 
+              Account Value
+              </center>
+              </th>
+              <th  style={{border:"none"}}>
               <center>
-                Starting Value
-                </center>
-                </th>
-                <th  style={{border:"none"}}>
-                <center>
-                Account Value
-                </center>
-                </th>
-                <th  style={{border:"none"}}>
-                <center>
-                Total Margin
-                </center>
-                </th>
-                <th  style={{border:"none"}}>
-                <center>
-                Cumulative %Chg
-                </center>
-                </th>
-                <th  style={{border:"none"}}>
-                <center>
-                Previous %Chg
-                </center>
-                </th>
-                <th  style={{border:"none"}}>
-                <center>
-                Markets in Portfolio
-                </center>
-                </th>
-                <th  style={{border:"none"}}>
-                <center>
-                  Age
-                </center>
-                </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr style={{border:"1px", "padding":"1px"}}>
-                <td style={{borderLeft:"1px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
-                <center>
-                $ {numberWithCommas(chip.starting_value.toString())}
-                </center>
-                </td>            
-                <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
-                <center>
-
-                $ {numberWithCommas(chip.account_value.toString())}
-                </center>
-                </td>            
-                <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
-                <center>
-                $ {numberWithCommas(chip.total_margin.toString())}
-                </center>
-                </td>            
-                <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
-                <center>
-                          
-                        {parseFloat(chip.pnl_cumpct) ? (
-                          <span style={parseFloat(chip.pnl_cumpct) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
-                        <b>
-                        {parseFloat(chip.pnl_cumpct).toLocaleString("en")} %
-                        </b>
-                        </span>
-                        ) : (
-                          <span style={{color:self.props.themes.live.dialog.text_color}}>
-                        <b>
-                        {parseFloat(chip.pnl_cumpct).toLocaleString("en")} % 
-                        </b>
-                        </span>
-                        )}
-                      
-                      </center>
-
-                </td>            
-                <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
-                <center>
-                          
-                          {parseFloat(chip.pnl_pct) ? (
-                          <span style={parseFloat(chip.pnl_pct) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
-                        <b>
-                        {parseFloat(chip.pnl_pct).toLocaleString("en")} %
-                        </b>
-                        </span>
-                        ) : (
-                          <span style={{color:self.props.themes.live.dialog.text_color}}>
-                        <b>
-                        {parseFloat(chip.pnl_pct).toLocaleString("en")} % 
-                        </b>
-                        </span>
-                        )}
+              Cumulative %Chg
               </center>
-                </td>            
-                <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
-                <center>
-                {chip.num_markets}
-                </center>
-                </td>            
-                <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black", borderRight:"1px solid black"}}>
-                <center>
-                  {chip.age}
-                </center>
-                </td>
-                <td style={{width:"1px", margin:"0px", padding:"0px", borderLeft:"1px solid black",borderTop:"1px solid black",borderBottom:"1px solid black", borderRight:"1px solid black"}}>
-                </td></tr>
-                </tbody>
-                </table>
-                <div style={{"float": "right", "padding":"9px","textAlign": "right", background:self.props.themes.live.dialog.background,
-            color:self.props.themes.live.dialog.text, fontSize:"12px", fontWeight:400}}>
-                      <button onClick={() => {self.props.toggle(); } } >
-                      <font style={{fontSize:"22px"}}>Close</font>
-                      </button>
-              </div>
+              </th>
+              <th  style={{border:"none"}}>
+              <center>
+              Previous %Chg
+              </center>
+              </th>
+              <th  style={{border:"none"}}>
+              <center>
+                Age
+              </center>
+              </th>
+              <th  style={{border:"none"}}>
+              <center>
+              Markets in Portfolio
+              </center>
+              </th>
+              
+              </tr>
+            </thead>
+            <tbody>
+              <tr style={{border:"1px", "padding":"1px"}}>
+             
+              <td style={{borderLeft:"1px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
+              <center>
+                        
+                      {parseFloat(chip.account_value) ? (
+                        <span style={parseFloat(chip.account_value) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
+                      <b>
+                      $ {parseFloat(chip.account_value).toLocaleString("en")} 
+                      </b>
+                      </span>
+                      ) : (
+                        <span style={{color:self.props.themes.live.dialog.text_color}}>
+                      <b>
+                      $ {parseFloat(chip.account_value).toLocaleString("en")} 
+                      </b>
+                      </span>
+                      )}
+                    
+                    </center>
+              </td>            
+              <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
+              <center>
+                        
+                      {parseFloat(chip.pnl_cumpct) ? (
+                        <span style={parseFloat(chip.pnl_cumpct) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
+                      <b>
+                      {parseFloat(chip.pnl_cumpct).toLocaleString("en")} %
+                      </b>
+                      </span>
+                      ) : (
+                        <span style={{color:self.props.themes.live.dialog.text_color}}>
+                      <b>
+                      {parseFloat(chip.pnl_cumpct).toLocaleString("en")} % 
+                      </b>
+                      </span>
+                      )}
+                    
+                    </center>
 
-          </div>
-        )}
+              </td>            
+              <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
+              <center>
+                        
+                        {parseFloat(chip.pnl_pct) ? (
+                        <span style={parseFloat(chip.pnl_pct) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
+                      <b>
+                      {parseFloat(chip.pnl_pct).toLocaleString("en")} %
+                      </b>
+                      </span>
+                      ) : (
+                        <span style={{color:self.props.themes.live.dialog.text_color}}>
+                      <b>
+                      {parseFloat(chip.pnl_pct).toLocaleString("en")} % 
+                      </b>
+                      </span>
+                      )}
+            </center>
+              </td>            
+              <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black", borderRight:"0px solid black"}}>
+              <center>
+                {chip.age}
+              </center>
+              </td>
+              <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
+              <center>
+              {chip.num_markets}
+              </center>
+              </td>            
+             
+              <td style={{width:"1px", margin:"0px", padding:"0px", borderLeft:"1px solid black",borderTop:"1px solid black",borderBottom:"1px solid black", borderRight:"1px solid black"}}>
+              </td></tr>
+              </tbody>
+              </table>
+              <div style={{"float": "right", "padding":"9px","textAlign": "right", background:self.props.themes.live.dialog.background,
+          color:self.props.themes.live.dialog.text, fontSize:"12px", fontWeight:400}}>
+                    <button onClick={() => {self.props.toggle(); } } >
+                    <font style={{fontSize:"22px"}}>Close</font>
+                    </button>
+            </div>
+
+        </div>
+
+   }
+   
+    if (isPerformance) {
+      
+        topHtml=<div className={classes.TitleRow} style={{background:self.props.themes.live.dialog.background,
+          color:self.props.themes.live.dialog.text, fontSize:"12px", fontWeight:400}}
+          >
           
+          <div
+            className={classes.ElementContainer}
+            style={{ paddingTop: "15px",background:self.props.themes.live.dialog.background_inner,
+            color:self.props.themes.live.dialog.text }}
+          >
+            <Chip chip={chip} isAccount={true} />
+          </div>
+          <div           style={{ minWidth:"100px", padding: "15px" }}
+  >
+            {toTitleCase(chip.tier)}<br/>
+              Tier {chip.chip_tier}<br/>
+              {chip.chip_tier_text}<br/>
+              Rank: {chip.rank}<br/>
+          </div>
+          
+        <table style={{border:"none", borderCollapse: "collapse",
+      background:self.props.themes.live.dialog.background_inner,
+      color:self.props.themes.live.dialog.text }}>
+        <thead  style={{border:"none"}}>
+          <tr style={{border:"none"}}>
+          <th  style={{border:"none"}}>
+            <center>
+              Starting Value
+              </center>
+              </th>
+              <th  style={{border:"none"}}>
+              <center>
+              Account Value
+              </center>
+              </th>
+              <th  style={{border:"none"}}>
+              <center>
+              Total Margin
+              </center>
+              </th>
+              <th  style={{border:"none"}}>
+              <center>
+              Cumulative %Chg
+              </center>
+              </th>
+              <th  style={{border:"none"}}>
+              <center>
+              Previous %Chg
+              </center>
+              </th>
+              <th  style={{border:"none"}}>
+              <center>
+              Markets in Portfolio
+              </center>
+              </th>
+              <th  style={{border:"none"}}>
+              <center>
+                Age
+              </center>
+              </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style={{border:"1px", "padding":"1px"}}>
+              <td style={{borderLeft:"1px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
+              <center>
+              $ {numberWithCommas(chip.starting_value.toString())}
+              </center>
+              </td>            
+              <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
+              <center>
+
+              $ {numberWithCommas(chip.account_value.toString())}
+              </center>
+              </td>            
+              <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
+              <center>
+              $ {numberWithCommas(chip.total_margin.toString())}
+              </center>
+              </td>            
+              <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
+              <center>
+                        
+                      {parseFloat(chip.pnl_cumpct) ? (
+                        <span style={parseFloat(chip.pnl_cumpct) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
+                      <b>
+                      {parseFloat(chip.pnl_cumpct).toLocaleString("en")} %
+                      </b>
+                      </span>
+                      ) : (
+                        <span style={{color:self.props.themes.live.dialog.text_color}}>
+                      <b>
+                      {parseFloat(chip.pnl_cumpct).toLocaleString("en")} % 
+                      </b>
+                      </span>
+                      )}
+                    
+                    </center>
+
+              </td>            
+              <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
+              <center>
+                        
+                        {parseFloat(chip.pnl_pct) ? (
+                        <span style={parseFloat(chip.pnl_pct) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
+                      <b>
+                      {parseFloat(chip.pnl_pct).toLocaleString("en")} %
+                      </b>
+                      </span>
+                      ) : (
+                        <span style={{color:self.props.themes.live.dialog.text_color}}>
+                      <b>
+                      {parseFloat(chip.pnl_pct).toLocaleString("en")} % 
+                      </b>
+                      </span>
+                      )}
+            </center>
+              </td>            
+              <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
+              <center>
+              {chip.num_markets}
+              </center>
+              </td>            
+              <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black", borderRight:"1px solid black"}}>
+              <center>
+                {chip.age}
+              </center>
+              </td>
+              <td style={{width:"1px", margin:"0px", padding:"0px", borderLeft:"1px solid black",borderTop:"1px solid black",borderBottom:"1px solid black", borderRight:"1px solid black"}}>
+              </td></tr>
+              </tbody>
+              </table>
+              <div style={{"float": "right", "padding":"9px","textAlign": "right", background:self.props.themes.live.dialog.background,
+          color:self.props.themes.live.dialog.text, fontSize:"12px", fontWeight:400}}>
+                    <button onClick={() => {self.props.toggle(); } } >
+                    <font style={{fontSize:"22px"}}>Close</font>
+                    </button>
+            </div>
+
+        </div>
+    }
+
+    if (chip.isLeaderboard) {
+      topHtml=<div className={classes.TitleRow} style={{background:self.props.themes.live.dialog.background,
+        color:self.props.themes.live.dialog.text, fontSize:"12px", fontWeight:400}}
+        >
+        
+        <div
+          className={classes.ElementContainer}
+          style={{ paddingTop: "15px",background:self.props.themes.live.dialog.background_inner,
+          color:self.props.themes.live.dialog.text }}
+        >
+          <Chip chip={chip} />
+        </div>
+        <div           style={{ minWidth:"100px", padding: "15px" }}
+>
+          {toTitleCase(chip.tier)}<br/>
+            Tier {chip.chip_tier}<br/>
+            {chip.chip_tier_text}<br/>
+            Rank: {chip.rank}<br/>
+        </div>
+        
+      <table style={{border:"none", borderCollapse: "collapse",
+    background:self.props.themes.live.dialog.background_inner,
+    color:self.props.themes.live.dialog.text }}>
+      <thead  style={{border:"none"}}>
+        <tr style={{border:"none"}}>
+        <th  style={{border:"none"}}>
+          <center> 
+            Player 
+            </center>
+            </th>
+            <th  style={{border:"none"}}>
+            <center>
+            Cumulative %Chg
+            </center>
+            </th>
+            <th  style={{border:"none"}}>
+            <center>
+            Previous %Chg
+            </center>
+            </th>
+            <th  style={{border:"none"}}>
+            <center>
+              Age
+            </center>
+            </th>
+            <th  style={{border:"none"}}>
+            <center>
+            Markets in Portfolio
+            </center>
+            </th>
+            
+            </tr>
+          </thead>
+          <tbody>
+            <tr style={{border:"1px", "padding":"1px"}}>
+           
+            <td style={{borderLeft:"1px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
+            <center>
+            {chip.player}
+            </center>
+            </td>            
+            <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
+            <center>
+                      
+                    {parseFloat(chip.pnl_cumpct) ? (
+                      <span style={parseFloat(chip.pnl_cumpct) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
+                    <b>
+                    {parseFloat(chip.pnl_cumpct).toLocaleString("en")} %
+                    </b>
+                    </span>
+                    ) : (
+                      <span style={{color:self.props.themes.live.dialog.text_color}}>
+                    <b>
+                    {parseFloat(chip.pnl_cumpct).toLocaleString("en")} % 
+                    </b>
+                    </span>
+                    )}
+                  
+                  </center>
+
+            </td>            
+            <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
+            <center>
+                      
+                      {parseFloat(chip.pnl_pct) ? (
+                      <span style={parseFloat(chip.pnl_pct) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
+                    <b>
+                    {parseFloat(chip.pnl_pct).toLocaleString("en")} %
+                    </b>
+                    </span>
+                    ) : (
+                      <span style={{color:self.props.themes.live.dialog.text_color}}>
+                    <b>
+                    {parseFloat(chip.pnl_pct).toLocaleString("en")} % 
+                    </b>
+                    </span>
+                    )}
+          </center>
+            </td>            
+            <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black", borderRight:"0px solid black"}}>
+            <center>
+              {chip.age}
+            </center>
+            </td>
+            <td style={{borderLeft:"0px solid black",borderTop:"1px solid black",borderBottom:"1px solid black",borderRight:"none"}}>
+            <center>
+            {chip.num_markets}
+            </center>
+            </td>            
+           
+            <td style={{width:"1px", margin:"0px", padding:"0px", borderLeft:"1px solid black",borderTop:"1px solid black",borderBottom:"1px solid black", borderRight:"1px solid black"}}>
+            </td></tr>
+            </tbody>
+            </table>
+            <div style={{"float": "right", "padding":"9px","textAlign": "right", background:self.props.themes.live.dialog.background,
+        color:self.props.themes.live.dialog.text, fontSize:"12px", fontWeight:400}}>
+                  <button onClick={() => {self.props.toggle(); } } >
+                  <font style={{fontSize:"22px"}}>Close</font>
+                  </button>
+          </div>
+
+      </div>
+  }
+        
+      return (
+        <div className={classes.Order} style={isLive ? {background: themes.live.dialog.background} : {}}>
+          {topHtml}
           {isLive ? isEdit ? (
 
             <div className={classes.Content}  style={{background:self.props.themes.live.dialog.background,
@@ -897,7 +919,10 @@ export default class Order extends React.Component {
 
             <div className={classes.Content}  style={{background:self.props.themes.live.dialog.background,
               color:self.props.themes.live.dialog.text, borderColor:self.props.themes.live.dialog.lines}}>
-              <AccountCharts isOrder={!isPerformance} chip={chip} slot={slot} isAnti={isAnti} {...this.props} />
+              <AccountCharts isOrder={!isPerformance} chip={chip} slot={slot} isAnti={isAnti} 
+                             isLeaderboard={chip ? chip.isLeaderboard ? true : false : false}
+
+              {...this.props} />
             </div>
 
 
