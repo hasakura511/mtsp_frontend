@@ -312,6 +312,7 @@ export default class SignalHistory extends Component {
           if (self.props.slot[key].id)
             parents.push(self.props.slot[key].id);
         });
+        console.log(self.props.strat, self.props.slot.position);
         if (self.props.strat)
           self.signalHistory(self.props.chip.chip_id, self.props.strat, parents);
         else
