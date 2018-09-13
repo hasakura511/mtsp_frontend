@@ -79,6 +79,8 @@ export default class OrderDialog extends Component {
     accounts:PropTypes.array.isRequired,
     moveChipToSlot:PropTypes.func,
     orderAnti:PropTypes.bool,
+    setAnti:PropTypes.func,
+    setNotAnti:PropTypes.func
   };
 
   constructor(props) {
@@ -294,6 +296,7 @@ export default class OrderDialog extends Component {
     console.log(event.target.id);
     if (event.target.id == 'system-radio') {
       this.setState({ isAnti: false});
+      this.props.setNotAnti(event);
     }
   };
 
@@ -301,6 +304,7 @@ export default class OrderDialog extends Component {
     console.log(event.target.id);
     if (event.target.id == 'anti-system-radio') {
         this.setState({ isAnti: true});
+        this.props.setAnti(event);
     }
   };
 

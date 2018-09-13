@@ -226,7 +226,6 @@ export default class Order extends React.Component {
                   id="system-radio"
                   checked={!this.state.isAnti}
                   onChange={(e) => {
-
                     setNotAnti(e);
                     self.props.setStrat(toSystem(slot.position));
                     self.setState({isAnti:false, strat:toSystem(slot.position)})
@@ -340,6 +339,7 @@ export default class Order extends React.Component {
                   id="system-radio"
                   checked={!isAnti}
                   onChange={(e) => {
+                    //alert(toSystem(slot.position));
 
                     setNotAnti(e);
                     if (isLive)
@@ -365,6 +365,8 @@ export default class Order extends React.Component {
                   id="anti-system-radio"
                   checked={isAnti}
                   onChange={(e) => {
+                    //alert(toAntiSystem(slot.position));
+
                     setAnti(e)
                     if (isLive)
                       self.props.setStrat(toAntiSystem(slot.position));

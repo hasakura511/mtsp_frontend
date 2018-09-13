@@ -292,7 +292,7 @@ export default class SignalHistory extends Component {
   
   componentWillReceiveProps(newProps) {
     var self=this;
-    if (newProps.strat) {
+    if (newProps.strat && this.props.strat != newProps.strat) {
       var parents=[];
       Object.keys(self.props.slot).map(key => {
         if (self.props.slot[key].id)

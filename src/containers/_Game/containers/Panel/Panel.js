@@ -1029,16 +1029,16 @@ export default class Panel extends Component {
   
   setNotAnti = event=> {
     //console.log(event.target.id);
-    if (event.target.id == 'system-radio') {
-      this.setState({ isAnti: false});
-    }
+    //if (event.target.id == 'system-radio') {
+      this.setState({ isAnti: false, orderAnti:false});
+    //}
   };
 
   setAnti = event => {
     //console.log(event.target.id);
-    if (event.target.id == 'anti-system-radio') {
-        this.setState({ isAnti: true});
-    }
+    //if (event.target.id == 'anti-system-radio') {
+        this.setState({ isAnti: true, orderAnti:true});
+    //}
   };
 
   toAntiSystem = pos => {
@@ -1310,9 +1310,16 @@ export default class Panel extends Component {
     chip.orig_last_selection=chip.last_selection;
 
     if (isAnti) {
-      //var strat=this.toAntiSystem(position);
+      var strat=this.toAntiSystem(position);
       //alert(strat)
-      self.props.setStrat(position);
+      self.props.setStrat(strat);
+      this.setState({isAnti:true, orderAnti:true})
+    } else {
+      var strat2=toSystem(position);
+      //alert(strat2)
+      self.props.setStrat(strat2);
+      this.setState({isAnti:false, orderAnti:false})
+      
     }
 
 
@@ -1763,6 +1770,9 @@ export default class Panel extends Component {
             performance_account_id={this.state.performance_account_id}
             moveChipToSlot={this.moveChipToSlot}
             orderAnti={this.state.orderAnti}
+            setAnti={this.setAnti}
+            setNotAnti={this.setNotAnti}
+
           />
           </div>
         ) : null}

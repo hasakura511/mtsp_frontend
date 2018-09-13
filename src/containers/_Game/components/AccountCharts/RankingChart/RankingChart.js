@@ -40,7 +40,9 @@ const dispatchToProps = dispatch => {
     showPerformance:(action_id) => {
       dispatch(actions.showPerformance(action_id))
     },
-    
+    setStrat(strat) {
+      dispatch(actions.setStrat(strat));
+    },
   };
 };
 
@@ -722,7 +724,7 @@ export default class RankingChart extends Component {
     stratParams:PropTypes.object,
     isPractice:PropTypes.bool,
     isAnti:PropTypes.bool,
-    isEdit:PropTypes.bool
-
+    isEdit:PropTypes.bool,
+    setStrat:PropTypes.func
   };
 }
