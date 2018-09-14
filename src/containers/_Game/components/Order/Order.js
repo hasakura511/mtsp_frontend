@@ -212,7 +212,7 @@ export default class Order extends React.Component {
               className={classes.ElementContainer}
               style={{ paddingTop: "15px", width: !isNumbered ? "160px" : "auto", background: themes.live.dialog.background_inner }}
             >
-              <StrategyButton strategy={this.props.stratList[this.props.strategy.id]} />
+              <StrategyButton strategy={this.props.stratList[this.props.strat ? this.props.strat : this.props.strategy.id]} />
             </div>
             <div
               className={classes.Systems}
@@ -286,8 +286,9 @@ export default class Order extends React.Component {
             </div>
             <div className={classes.ActionBar} style={{background: themes.live.dialog.background_inner}}>
               <button className={classes.Submit} onClick={() => {
-                var orderStrat=this.props.stratParams.strat;
+                var orderStrat=this.props.stratList[this.props.stratParams.strat.id];
                 if (this.state.strat) {
+                  orderStrat=this.props.stratList[this.state.strat];
                   orderStrat.strategy=this.state.strat;
                   orderStrat.display=this.state.strat;
                   orderStrat.id=this.state.strat;
@@ -322,8 +323,8 @@ export default class Order extends React.Component {
             >
               <Slot
                 {...slot}
-                strat = {this.props.strat}
-                dictionary_strategy={ dictionary_strategy}
+                strat = { this.props.strat }
+                dictionary_strategy={ dictionary_strategy }
                 heldChips={[]}
                 width={!isNumbered ? "160px" : "60px"}
                 fontSize={!isNumbered ? "1.5em" : "2.2em"}

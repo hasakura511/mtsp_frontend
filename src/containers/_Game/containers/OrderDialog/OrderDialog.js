@@ -258,8 +258,9 @@ export default class OrderDialog extends Component {
     if (newProps.slot && this.props.slot) {
       //if (newProps.slot.position != this.props.slot.position) {
       //  this.setState({ isAnti: false});
-     // }
+      // }
     }
+    
     if (newProps.orderAnti && (!this.props.orderAnti || !this.state.isAnti)) {
       this.setState({isAnti:true});
     } else if (!newProps.orderAnti && (this.props.orderAnti || this.state.isAnti)) {
@@ -267,6 +268,7 @@ export default class OrderDialog extends Component {
         this.setState({isAnti:false});
       }
     }
+
     if (this.state.performance_account_id && this.state.isPerformance) {
       if (newProps.accounts) {
           var orderChip='';

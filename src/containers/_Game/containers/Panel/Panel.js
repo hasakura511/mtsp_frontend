@@ -1255,20 +1255,7 @@ export default class Panel extends Component {
     chip.orig_position=chip.position;
     chip.orig_last_selection=chip.last_selection;
 
-    if (isAnti) {
-      var strat=this.toAntiSystem(position);
-      //alert(strat)
-      self.props.setStrat(strat);
-      this.setState({isAnti:true, orderAnti:true})
-    } else {
-      var strat2=toSystem(position);
-      //alert(strat2)
-      self.props.setStrat(strat2);
-      this.setState({isAnti:false, orderAnti:false})
-      
-    }
-
-
+  
     const system = [
       ...topSystems,
       ...bottomSystems,
@@ -1276,6 +1263,23 @@ export default class Panel extends Component {
       ...rightSystems
     ].find(sys => sys.column === position);
     const slot = this.state.slots.find(slot => slot.position === position);
+    
+    if (slot || system) {
+      if (isAnti) {
+        var strat=this.toAntiSystem(position);
+        //alert(strat)
+        self.props.setStrat(strat);
+        this.setState({isAnti:true, orderAnti:true})
+      } else {
+        var strat2=toSystem(position);
+        //alert(strat2)
+        self.props.setStrat(strat2);
+        this.setState({isAnti:false, orderAnti:false})
+        
+      }
+      
+    }
+
 
     // __TEMPERORY_CODE__
     // disallow multiple chip on same position
