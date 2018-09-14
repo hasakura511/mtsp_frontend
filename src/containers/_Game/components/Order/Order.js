@@ -31,7 +31,8 @@ const stateToProps = state => {
     accounts:state.betting.accounts,
     performance_isLeaderboard:state.betting.performance_isLeaderboard,
     performance_player:state.betting.performance_player,
-    performance_chip:state.betting.performance_chip
+    performance_chip:state.betting.performance_chip,
+    strat:state.betting.strat
 
   };
 };
@@ -83,6 +84,7 @@ export default class Order extends React.Component {
 
   static propTypes = {
       slot: PropTypes.object,
+      strat:PropTypes.string,
       chip: PropTypes.object.isRequired,
       isEdit: PropTypes.bool,
       strategy:PropTypes.object,
@@ -166,7 +168,7 @@ export default class Order extends React.Component {
           if (self.props.slot)
             self.props.setStrat(toSystem(self.props.slot.position));
 
-  }
+  } 
   render() {
       var self=this;
       
@@ -299,6 +301,7 @@ export default class Order extends React.Component {
   }
   
   if (!isPerformance && isLive &&  !isEdit) {
+        
         topHtml=<div className={classes.TitleRow} style={{background: themes.live.dialog.background}}>
           <div className={classes.Left}>
             <div
@@ -307,6 +310,7 @@ export default class Order extends React.Component {
             >
               <Slot
                 {...slot}
+                strat = {this.props.strat}
                 dictionary_strategy={ dictionary_strategy}
                 heldChips={[]}
                 width={!isNumbered ? "160px" : "60px"}

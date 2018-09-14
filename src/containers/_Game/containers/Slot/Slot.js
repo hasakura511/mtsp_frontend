@@ -111,7 +111,8 @@ export default class Slot extends Component {
     textColor:PropTypes.string,
     heatmap_selection:PropTypes.string,
     isLive:PropTypes.bool,
-    showOrderDialog:PropTypes.bool
+    showOrderDialog:PropTypes.bool,
+    strat:PropTypes.string
   }
   constructor(props) {
     super(props);
@@ -242,7 +243,7 @@ export default class Slot extends Component {
             textAlign: "center"
 
               }}>
-            {LongShortMap[position] || position}
+            {this.props.strat || LongShortMap[position] || position}
             {children}
           </span>
         </Square>

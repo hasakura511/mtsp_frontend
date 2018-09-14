@@ -287,7 +287,7 @@ export default class RankingChart extends Component {
     axios
     .post(url, {
       chip_id:self.props.chip.chip_id,
-      strategy: self.props.strat ? self.props.strat : self.props.slot.position.toString(),
+      strategy: self.props.slot.position.toString(),
       username: self.props.email,
       last_date:self.props.liveDateText,
       board_config: JSON.stringify(self.props.chip.board_config_fe),
