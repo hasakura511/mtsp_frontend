@@ -380,7 +380,7 @@ export default class RankingChart extends Component {
           s.display=key
           //console.log(self.props.stratParams);
           //console.log(s)
-          this.props.moveStratToSlot(s, self.props.stratParams.position, self.props.stratParams.isAnti, self.props.stratParams.swapStrat, true, self.props.stratParams.slot);
+          this.props.moveStratToSlot(s, self.props.stratParams.position, false, self.props.stratParams.swapStrat, true, self.props.stratParams.slot);
           //, slot=null)
     }
   }
