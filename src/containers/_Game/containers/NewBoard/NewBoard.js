@@ -541,8 +541,29 @@ export default class NewBoard extends Component {
         self.sendNotice(data.heatmap_load_failed_message);
       }
 
+      var strat_dict=data.strat_dict;
+      var strats={}
+      Object.keys(strat_dict).map(key => {
+                                    var items=strat_dict[key];
+                                    //console.log(items);
+                                    var idx=0;
+                                    Object.keys(items).map(key2 => {
+                                        var itemList=items[key2];
+                                        if (itemList) {
+                                          //console.log(itemList);
+                                          itemList.map(item => {
+                                            item.id=item.strategy;
+                                            
+                                            strats[item.id]=Object.assign({}, item);
+                                          })
+                                        }
+                                    })
+      });
+
+      console.log(strats);
       self.setState({
         editData:data,
+        stratList:strats,
         itemSelected:itemSelected,
         optimize:false,
         loading:false,
@@ -1109,6 +1130,7 @@ export default class NewBoard extends Component {
               optimizeData={this.optimizeData}
               updateStrats={this.updateStrats}
               itemSelected={this.state.itemSelected}
+              stratList={this.state.stratList}
               showLoading={(show) => {
                 self.setState({loadingBoard:show})
 

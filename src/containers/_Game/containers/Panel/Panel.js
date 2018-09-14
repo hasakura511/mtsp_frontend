@@ -163,7 +163,8 @@ export default class Panel extends Component {
     silenceHtmlDialog2:PropTypes.func,
     itemSelected:PropTypes.string,
     showLoading:PropTypes.func,
-    setStrat:PropTypes.func
+    setStrat:PropTypes.func,
+    stratList:PropTypes.object
   };
 
   /**
@@ -200,63 +201,7 @@ export default class Panel extends Component {
       rightStrats:[],
       leftStrats:[],
       bottomStrats:[],
-      /**
-       * Related to Order Dialogue
-       */
-      // showOrderDialog: true,
-      // orderChip: {
-      //   accountId: "5K_0_1516105730",
-      //   display: "5K",
-      //   accountValue: 5000,
-      //   portfolio: ["TU", "BO"],
-      //   qty: "{'TU': 2, 'BO': 1}",
-      //   target: 250,
-      //   totalMargin: 1925,
-      //   maxCommissions: 8.100000000000001,
-      //   created: 1516105728,
-      //   updated: 1516105730,
-      //   count: 1
-      // },
-      // orderSlot: {
-      //   position: 7,
-      //   topSystem: {
-      //     id: "RISK_OFF",
-      //     color: "black",
-      //     position: "top",
-      //     display: "Risk Off",
-      //     description:
-      //       "Opposite of RiskOn signals. (Fixed Signals consisting of Long precious metals and bonds, Short all other risky assets)",
-      //     column: "riskOff"
-      //   },
-      //   bottomSystem: {
-      //     id: "HIGHEST_EQ",
-      //     color: "#0049c1",
-      //     position: "bottom",
-      //     display: "Highest Eq.",
-      //     description:
-      //       "Machine learning system prioritizing signals from best performing systems.",
-      //     column: "highEq"
-      //   },
-      //   leftSystem: {
-      //     id: "PREVIOUS_1_DAY",
-      //     color: "pink",
-      //     position: "left",
-      //     display: "Previous (1 day)",
-      //     description:
-      //       "Previous trading days signals. For example if gold went up the previous day, the signal would be LONG.",
-      //     column: "prev1"
-      //   },
-      //   rightSystem: {
-      //     id: "PREVIOUS_5_DAYS",
-      //     color: "yellow",
-      //     position: "right",
-      //     display: "Previous (5 days)",
-      //     description:
-      //       "Previous trading days signals. For example if gold went up the previous day, the signal would be LONG.",
-      //     column: "prev5"
-      //   },
-      //   heldChips: []
-      // }
+     
       showOrderDialog: false,
       showClearDialog:false,
       orderChip: null,
@@ -1141,6 +1086,7 @@ export default class Panel extends Component {
             moveStratToSlot={this.moveStratToSlot}
             stratParams={params}
             strategy={strat}
+            stratList={this.props.stratList}
           />)
         return;
     }

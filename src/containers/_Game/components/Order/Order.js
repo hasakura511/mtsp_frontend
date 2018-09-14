@@ -117,7 +117,8 @@ export default class Order extends React.Component {
       stratParams:PropTypes.object,
       performance_isLeaderboard:PropTypes.bool,
       performance_player:PropTypes.string,
-      performance_chip:PropTypes.object
+      performance_chip:PropTypes.object,
+      stratList:PropTypes.object
     };
     
     
@@ -133,6 +134,15 @@ export default class Order extends React.Component {
     console.log(newProps);
     var self=this;
    
+
+    if ((this.props.chip && this.props.chip.display == 'ALL')) {
+        this.setState({orderChip:this.props.chip, isAll:true});
+
+        return;
+    }        
+
+    //console.log(this.props.chip);
+
     if (this.props.performance_account_id && this.props.isPerformance) {
       if (newProps.accounts) {
           var orderChip={};
@@ -149,8 +159,8 @@ export default class Order extends React.Component {
                 } 
 
                 self.setState({orderChip:orderChip});
-                console.log("new state for chip " + account.account_id);
-                console.log(orderChip);
+                //console.log("new state for chip " + account.account_id);
+                //console.log(orderChip);
                 updated=true;
               }
           });
@@ -182,6 +192,9 @@ export default class Order extends React.Component {
         console.log('Order Rendering Chip')
         console.log(chip)
       }
+      if (this.state.isAll) {
+        chip.isAll=true;
+      }
 
       console.log(slot);
       var isNumbered;
@@ -189,18 +202,17 @@ export default class Order extends React.Component {
         isNumbered = !isNaN(Number(slot.position));
       }
 
+      console.log(this.props.stratList)
       var topHtml=<div></div>
       if (!isPerformance && isLive && isEdit)  {
             
-
-
         topHtml=<div className={classes.TitleRow} style={{background: themes.live.dialog.background}}>
           <div className={classes.Left}>
             <div
               className={classes.ElementContainer}
               style={{ paddingTop: "15px", width: !isNumbered ? "160px" : "auto", background: themes.live.dialog.background_inner }}
             >
-              <StrategyButton strategy={this.props.strategy} />
+              <StrategyButton strategy={this.props.stratList[this.props.strategy.id]} />
             </div>
             <div
               className={classes.Systems}
