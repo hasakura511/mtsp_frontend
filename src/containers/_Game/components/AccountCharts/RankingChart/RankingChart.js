@@ -373,9 +373,13 @@ export default class RankingChart extends Component {
         }
     } else {
           var s=Object.assign({}, this.props.stratParams.strat);
-          s.id=order;
-          s.strategy=order;
-          s.display=order;
+          //alert(order);
+          //alert(key);
+          s.id=key;
+          s.strategy=key;
+          s.display=key
+          //console.log(self.props.stratParams);
+          //console.log(s)
           this.props.moveStratToSlot(s, self.props.stratParams.position, self.props.stratParams.isAnti, self.props.stratParams.swapStrat, true, self.props.stratParams.slot);
           //, slot=null)
     }
