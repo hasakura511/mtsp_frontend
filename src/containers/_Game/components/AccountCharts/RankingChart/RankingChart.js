@@ -371,6 +371,7 @@ export default class RankingChart extends Component {
         } else {
           self.props.moveChipToSlot(self.props.chip, order, false);
         }
+        //self.props.moveChipToSlot(self.props.chip, key, false);
     } else {
           var s=Object.assign({}, this.props.stratParams.strat);
           //alert(order);

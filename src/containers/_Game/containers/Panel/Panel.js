@@ -1255,14 +1255,32 @@ export default class Panel extends Component {
     chip.orig_position=chip.position;
     chip.orig_last_selection=chip.last_selection;
 
-  
+    /*
+    var position=column;
+
+   if (isAnti) {
+        position=this.toAntiSystem(column);
+        //alert(strat)
+        isAnti=false;
+        //self.props.setStrat(strat);
+        //this.setState({isAnti:true, orderAnti:true})
+    } else {
+        position=toSystem(column);
+         //alert(strat2)
+        //self.props.setStrat(strat2);
+         //this.setState({isAnti:false, orderAnti:false})
+      
+    }
+    var strat=position;
+    */
     const system = [
       ...topSystems,
       ...bottomSystems,
       ...leftSystems,
       ...rightSystems
-    ].find(sys => sys.column === position);
-    const slot = this.state.slots.find(slot => slot.position === position);
+    ].find(sys => sys.column === position); /// || (isAnti && sys.column == this.toAntiSystem(position)));
+    const slot = this.state.slots.find(slot => (slot.position === position)); // || (isAnti && slot.position == this.toAntiSystem(position))));
+
     
     if (slot || system) {
       if (isAnti) {
