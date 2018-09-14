@@ -27,7 +27,8 @@ const stateToProps = state => ({
   themes:state.betting.themes,
   liveDateText:state.betting.liveDateText,
   email: state.auth.email,
-  dictionary_strategy:state.betting.dictionary_strategy
+  dictionary_strategy:state.betting.dictionary_strategy,
+  strat:state.betting.strat
 
 });
 
@@ -370,7 +371,7 @@ export default class PerformanceOrderChart extends Component {
     axios
     .post(url, {
       chip_id:self.props.chip.chip_id,
-      strategy: self.props.slot.position.toString(),
+      strategy: self.props.strat ? self.props.strat : self.props.slot.position.toString(),
       username: self.props.email,
       last_date:self.props.liveDateText,
       board_config: JSON.stringify(self.props.chip.board_config_fe),
@@ -591,6 +592,7 @@ export default class PerformanceOrderChart extends Component {
     slot:PropTypes.object,
     dictionary_strategy:PropTypes.object.isRequired,
     isAnti:PropTypes.bool,
-    isPractice:PropTypes.bool
+    isPractice:PropTypes.bool,
+    strat:PropTypes.string
   };
 }
