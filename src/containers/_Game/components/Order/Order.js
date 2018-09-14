@@ -163,7 +163,8 @@ export default class Order extends React.Component {
   componentDidMount() {
           var self=this;
           //setNotAnti(e);
-          self.props.setStrat(toSystem(self.props.slot.position));
+          if (self.props.slot)
+            self.props.setStrat(toSystem(self.props.slot.position));
 
   }
   render() {

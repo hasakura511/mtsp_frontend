@@ -360,12 +360,13 @@ export default class RankingChart extends Component {
     order=order.replace(/\ \(.*\)/,'');
     if (order.match(/^[\d]+$/)) {
       order=parseInt(order);
+    } else {
+      order=key.replace(/A-|Anti/i,'');
     }
     if (!self.props.isEdit) {
         //alert(self.props.chip.chip_location)
         //alert(key)
-        //alert(order)
-        if (order != key) {
+        if (key.match(/A-|Anti-/i)) {
           self.props.moveChipToSlot(self.props.chip, order, true);
         } else {
           self.props.moveChipToSlot(self.props.chip, order, false);
