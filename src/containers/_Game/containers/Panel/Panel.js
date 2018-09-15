@@ -1278,20 +1278,21 @@ export default class Panel extends Component {
       ...bottomSystems,
       ...leftSystems,
       ...rightSystems
-    ].find(sys => sys.column === position); /// || (isAnti && sys.column == this.toAntiSystem(position)));
-    const slot = this.state.slots.find(slot => (slot.position === position)); // || (isAnti && slot.position == this.toAntiSystem(position))));
+    ].find(sys => sys.column === position || (sys.column == this.toAntiSystem(position)));
+    const slot = this.state.slots.find(slot => (slot.position === position) 
+        || (slot.position == this.toAntiSystem(position)));
 
-    
+    var strat='';
     if (slot || system) {
       if (isAnti) {
-        var strat=this.toAntiSystem(position);
+        strat=this.toAntiSystem(position);
         //alert(strat)
         self.props.setStrat(strat);
         this.setState({isAnti:true, orderAnti:true})
       } else {
-        var strat2=toSystem(position);
+        strat=toSystem(position);
         //alert(strat2)
-        self.props.setStrat(strat2);
+        self.props.setStrat(strat);
         this.setState({isAnti:false, orderAnti:false})
         
       }
@@ -1311,6 +1312,10 @@ export default class Panel extends Component {
       return undefined;
     }
     if (slot) {
+      if (strat == slot.position)
+        isAnti=false;
+      else
+        isAnti=true;
       this.setState({
         performance_account_id:chip.account_id,
         showOrderDialog: true,
@@ -1328,6 +1333,10 @@ export default class Panel extends Component {
         rightSystem: blankSystem
       };
       systemToSlot[`${system.position}System`] = system;
+      if (strat == systemToSlot.position)
+        isAnti=false;
+      else
+        isAnti=true;
       this.setState({
         performance_account_id:chip.account_id,
         showOrderDialog: true,
