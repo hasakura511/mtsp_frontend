@@ -571,7 +571,7 @@ export default class SignalHistory extends Component {
               },
               columns: [
                 {
-                  Header: "Quantity",
+                  Header: "Volatility",
                   accessor: "Quantity",
                   headerStyle: {
                     background:self.props.themes.live.dialog.table_left_background
