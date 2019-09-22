@@ -581,13 +581,13 @@ export default class SignalHistory extends Component {
                     {parseFloat(props.value) ? (
                       <span style={parseFloat(props.value) > 0 ? {color:self.props.themes.live.dialog.text_gain} : {color:self.props.themes.live.dialog.text_loss}} >
                     <b>
-                    {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} 
+                    $ {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} 
                     </b>
                     </span>
                     ) : (
                       <span style={{color:self.props.themes.live.dialog.text}}>
                     <b>
-                    {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} 
+                    $ {parseFloat(props.value).toLocaleString('en-US', { maximumFractionDigits: 12 })} 
                     </b>
                     </span>
                     )}
