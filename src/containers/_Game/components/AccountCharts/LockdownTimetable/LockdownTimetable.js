@@ -254,7 +254,7 @@ export default class LockdownTimetable extends Component {
                 </div>
         ) : performanceError ? (
           <div style={{
-            height: innerHeight - 172 ,  
+            height: window.innerHeight - 172 ,  
             background: self.props.isdialog ? self.props.themes.live.dialog.background : self.props.themes.live.dialog.tab_color_active
           }}>
 
@@ -433,7 +433,7 @@ export default class LockdownTimetable extends Component {
 
           style={{
             width:"100%",
-            height: innerHeight + adjHeight,
+            height: window.innerHeight + adjHeight,
             maxHeight: "100%",
             overflow: performance.length > 13 ? "auto" : "hidden",
             fontSize:"12px",

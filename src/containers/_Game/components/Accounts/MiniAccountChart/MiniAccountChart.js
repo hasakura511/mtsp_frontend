@@ -373,7 +373,7 @@ static propTypes = {
                     <Spinner />
                 </div>
         ) : performanceError ? (
-          <div style={{height: innerHeight - 172,  background: self.props.themes.live.dialog.tab_color_active} }>
+          <div style={{height: window.innerHeight - 172,  background: self.props.themes.live.dialog.tab_color_active} }>
 
           <center >  
           <br/> 

@@ -10,6 +10,7 @@ import Sound from 'react-sound';
 import { toTitleCase, numberWithCommas } from "../../../../../../util";
 import { Dropdown } from 'react-toolbox/lib/dropdown';
 import StrategyButton from '../StrategyButton/StrategyButton';
+import $ from 'jquery'
 
 const stateToProps = state => {
   return {

@@ -692,10 +692,10 @@ export default class AccountsNew extends Component {
     if (this.state.refreshing) {
       return ( 
 
-        <div style={{ height: outerHeight + 100,
+        <div style={{ height: window.outerHeight + 100,
                       top: 0, left:0, 
                       position: 'absolute', 
-                      width: innerWidth + 2000,
+                      width: window.innerWidth + 2000,
                       marginLeft: "-1000px",
                       marginTop: "-100px",
                       overflow: "hide",
@@ -834,7 +834,7 @@ export default class AccountsNew extends Component {
                     <Spinner />
                 </div>
         ) : performanceError ? (
-          <div style={{height: innerHeight - 172,  background: themes.table_background} }>
+          <div style={{height: window.innerHeight - 172,  background: themes.table_background} }>
 
           <center >  
           <br/>

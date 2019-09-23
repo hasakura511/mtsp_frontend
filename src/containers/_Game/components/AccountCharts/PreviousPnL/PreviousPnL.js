@@ -271,7 +271,7 @@ export default class PreviousPnL extends Component {
                     <Spinner />
                 </div>
         ) : performanceError ? (
-          <div style={{height: innerHeight - 172,  background: self.props.themes.live.dialog.tab_color_active} }>
+          <div style={{height: window.innerHeight - 172,  background: self.props.themes.live.dialog.tab_color_active} }>
 
           <center >  
           <br/>
@@ -506,7 +506,7 @@ export default class PreviousPnL extends Component {
           minRows={13}
           style={{
             width:"100%",
-            height:innerHeight - 260,
+            height:window.innerHeight - 260,
             maxHeight:"100%",
             overflow:"auto",
             fontSize:"12px",

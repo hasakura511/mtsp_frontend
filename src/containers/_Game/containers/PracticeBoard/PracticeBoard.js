@@ -29,6 +29,7 @@ import NewBoard from "../NewBoard/NewBoard"
 import { Link } from "react-router-dom";
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
+import $ from 'jquery'
 // Inserts or removes chip into system
 const insertChip = (systems, column, chip) => {
   return systems.map(system => {

@@ -78,9 +78,9 @@ const HomeData = {
     map: (() => {
       let wImg = 1920,
         hImg = 785;
-      if (innerWidth <= 1920) {
-        (wImg = (innerWidth - 2) / 1.07),
-          (hImg = 785 * (innerWidth - 2) / (1920 * 1.07));
+      if (window.innerWidth <= 1920) {
+        (wImg = (window.innerWidth - 2) / 1.07),
+          (hImg = 785 * (window.innerWidth - 2) / (1920 * 1.07));
       }
       return {
         start: {

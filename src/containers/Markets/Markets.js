@@ -13,6 +13,7 @@ import * as actions from "../../store/actions";
 import initialControls from "./InitialControls";
 import { toUnderScore, andify, toSlashDate, toTitleCase, numberWithCommas } from "../../util";
 import moment from 'moment-timezone';
+import $ from 'jquery'
 
 const Aux = props => props.children;
 
@@ -586,7 +587,7 @@ export default class Markets extends Component {
         selected_period:period});
 
         var color;
-        var chart = AmCharts.makeChart( "chartdiv" + self.state.marketId, {
+        var chart = window.AmCharts.makeChart( "chartdiv" + self.state.marketId, {
           "type": "stock",
           "theme": "light",
         
@@ -1016,7 +1017,7 @@ export default class Markets extends Component {
     this.setState({symbol:symbol, selected_period:period, date:date})
 
     var color;
-    var chart = AmCharts.makeChart( "chartdiv" + self.state.marketId, {
+    var chart = window.AmCharts.makeChart( "chartdiv" + self.state.marketId, {
       "type": "stock",
       "theme": "light",
     

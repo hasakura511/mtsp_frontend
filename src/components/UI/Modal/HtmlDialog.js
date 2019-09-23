@@ -61,7 +61,7 @@ export default class HtmlDialog extends Component {
         type={'large'}
       >
       <div style={{
-                    height:(innerHeight-30)+"px",
+                    height:(window.innerHeight-30)+"px",
                     padding:"0px",
                     margin:"-20px",
           

@@ -252,6 +252,7 @@ export default class OrderDialog extends Component {
   }
 
   componentWillReceiveProps(newProps) {
+    var self=this
     console.log("OrderDialog Received New Props")
     console.log(newProps);
 

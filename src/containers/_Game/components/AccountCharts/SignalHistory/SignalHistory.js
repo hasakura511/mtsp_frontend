@@ -342,11 +342,11 @@ export default class SignalHistory extends Component {
         <div className={classes.SignalHistory}>
         
         {performanceLoading || this.state.refreshing ? (
-                <div style={{height: innerHeight - 172,  background: self.props.themes.live.dialog.tab_color_active} }>
+                <div style={{height: window.innerHeight - 172,  background: self.props.themes.live.dialog.tab_color_active} }>
                   <Spinner />
                 </div>
         ) : performanceError ? (
-          <div style={{height: innerHeight - 172,  background: self.props.themes.live.dialog.tab_color_active} }>
+          <div style={{height: window.innerHeight - 172,  background: self.props.themes.live.dialog.tab_color_active} }>
 
           <center >  
           <br/>
@@ -360,7 +360,7 @@ export default class SignalHistory extends Component {
 
         ) : !self.state.date_picked ? (
           <div style={{  background: self.props.themes.live.dialog.tab_color_active,
-            height: innerHeight - 172
+            height: window.innerHeight - 172
           } }
           id={'custom_datepick'}    
           onClick={(e) => {
@@ -765,7 +765,7 @@ export default class SignalHistory extends Component {
           minRows={13}
           style={{
             width:"100%",
-            height:innerHeight - 260,
+            height:window.innerHeight - 260,
             maxHeight:"100%",
             overflow:"auto",
             fontSize:"12px",

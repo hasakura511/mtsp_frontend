@@ -224,7 +224,7 @@ export default class Profile extends Component {
 
   profileRecoverHandler = event => {
     event.preventDefault();
-    if (confirm("Would you like to reactivate your account?")) {
+    if (window.confirm("Would you like to reactivate your account?")) {
       axios
         .post("/utility/auth/reactivate/", {})
         .then(() => {

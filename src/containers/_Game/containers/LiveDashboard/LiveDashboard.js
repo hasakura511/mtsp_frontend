@@ -13,7 +13,7 @@ import ClockLoader from "../../../../components/UI/ClockLoader/ClockLoader";
 import MicroAccountChart from "../../components/Accounts/MiniAccountChart/MicroAccountChart";
 import Moment from 'react-moment';
 import moment from 'moment-timezone';
-
+import $ from 'jquery'
 
 const stateToProps = state => {
   return {

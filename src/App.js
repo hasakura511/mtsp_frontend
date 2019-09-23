@@ -70,7 +70,7 @@ class App extends Component<PropType, { showSideDrawer: boolean }> {
      * And sends a PageView event when App mounted for the first time.
      */
     if (window.ga) {
-      window.ga("set", "page", location.pathname + location.search);
+      window.ga("set", "page", window.location.pathname + window.location.search);
       window.ga("send", "pageview");
     } else {
       // console.log("GA not defined yet");
@@ -93,7 +93,7 @@ class App extends Component<PropType, { showSideDrawer: boolean }> {
      * And sends a PageView event when a location is changed.
      */
     if (window.ga) {
-      window.ga("set", "page", location.pathname + location.search);
+      window.ga("set", "page", window.location.pathname + window.location.search);
       window.ga("send", "pageview");
     }
   }

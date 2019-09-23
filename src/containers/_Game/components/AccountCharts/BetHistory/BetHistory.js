@@ -341,7 +341,7 @@ export default class BetHistory extends Component {
                   <Spinner />
                 </div>
         ) : performanceError ? (
-          <div style={{height: innerHeight - 172,  background: self.props.themes.live.dialog.tab_color_active} }>
+          <div style={{height: window.innerHeight - 172,  background: self.props.themes.live.dialog.tab_color_active} }>
 
           <center >  
           <br/>
@@ -537,7 +537,7 @@ export default class BetHistory extends Component {
                           onHide={self.handleClose.bind(this)} 
                           hideWithOutsideClick={true}
                           containerStyle={{ 
-                              marginTop: -innerHeight + 200 + "px",
+                              marginTop: -window.innerHeight + 200 + "px",
                               background:self.props.themes.live.dialog.background,
                               width: "99.9%",
                               height: "99%",
@@ -874,7 +874,7 @@ export default class BetHistory extends Component {
           minRows={13}
           style={{
             width:"100%",
-            height:innerHeight - 260,
+            height:window.innerHeight - 260,
             maxHeight:"100%",
             overflow:"auto",
             fontSize:"12px",

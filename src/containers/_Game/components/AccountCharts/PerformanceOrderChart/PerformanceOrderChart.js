@@ -6,6 +6,7 @@ import Spinner from "../../../../../components/UI/Spinner/Spinner";
 import axios from "../../../../../axios-gsm";
 import * as actions from "../../../../../store/actions";
 import { toSystem, toAntiSystem } from "../../../Config";
+import $ from 'jquery'
 
 import {
   LineChart,
@@ -474,7 +475,7 @@ export default class PerformanceOrderChart extends Component {
                     <Spinner />
                 </div>
         ) : performanceError ? (
-          <div style={{height: innerHeight - 172,  background: self.props.themes.live.dialog.tab_color_active} }>
+          <div style={{height: window.innerHeight - 172,  background: self.props.themes.live.dialog.tab_color_active} }>
 
           <center >  
           <br/> 
@@ -502,7 +503,7 @@ export default class PerformanceOrderChart extends Component {
         <div className={classes.ChartContainer}>
           <ResponsiveContainer
             width="100%"
-            height={innerHeight - 190}
+            height={window.innerHeight - 190}
             maxHeight="100%"
           >
             <LineChart

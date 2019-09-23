@@ -8,7 +8,7 @@ const spinner = () => {
     style={{
       background: "white",
       opacity: "1",
-      height: innerHeight-200,
+      height: window.innerHeight-200,
       width: "98%",
       position: "relative",
       zIndex: "100",

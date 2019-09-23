@@ -64,7 +64,7 @@ export default class HtmlDialog3 extends Component {
           padding:"0px",
           margin:"-20px",
           
-          height:(innerHeight-50)+"px",
+          height:(window.innerHeight-50)+"px",
           overflow:"auto",
           
         }}

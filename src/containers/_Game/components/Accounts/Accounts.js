@@ -285,10 +285,10 @@ export default class Accounts extends Component {
     if (this.state.loading || this.state.refreshing || !this.state.editData || !this.state.editData.themes) {
         return ( 
 
-          <div style={{ height: outerHeight + 1000,
+          <div style={{ height: window.outerHeight + 1000,
             top: 0, left:0, 
             position: 'absolute', 
-            width: innerWidth + 2000,
+            width: window.innerWidth + 2000,
             marginLeft: "-1000px",
             marginTop: "0px",
             overflow: "hide",

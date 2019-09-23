@@ -195,7 +195,7 @@ class RankingChart extends Component {
       <div className={"Ranking " + classes.RankingChart}>
         <ResponsiveContainer
           width="100%"
-          height={innerHeight - 190}
+          height={window.innerHeight - 190}
           maxHeight="100%"
         >
           <BarChart

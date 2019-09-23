@@ -23,6 +23,7 @@ import ChipsPanel from "../../components/ChipsPanel/ChipsPanel";
 import RemoveContainer from "../../components/Sections/RemoveContainer"
 import Bounce from 'bounce.js'
 import { toSystem } from "../../Config";
+import $ from 'jquery'
 /**
  * returns state to `Props` mapping object with keys that would later become props.
  * @function stateToProps
@@ -1663,7 +1664,7 @@ export default class Panel extends Component {
           
           {this.props.isEdit ? (
               <div style={{
-                  width:(innerWidth -157) + "px",
+                  width:(window.innerWidth -157) + "px",
                   position:'absolute',marginTop: (71 + (60*this.state.maxHeight))+ "px", marginLeft: '-121px'}}>
                 <div style={{float:'left', width: "161px"}}>
                 <img src={"/images/clear_board.png"} height={30} width={161} />

@@ -36,15 +36,15 @@ export default class Home extends Component {
 
   handleScroll = (key, top) => {
     const stateObj = {};
-    if (this.state[key] && scrollY + innerHeight < top) {
+    if (this.state[key] && window.scrollY + window.innerHeight < top) {
       stateObj[key] = false;
     } else if (
       !this.state[key] &&
-      scrollY + innerHeight > top &&
-      scrollY < top
+      window.scrollY + window.innerHeight > top &&
+      window.scrollY < top
     ) {
       stateObj[key] = true;
-    } else if (this.state[key] && scrollY > top) {
+    } else if (this.state[key] && window.scrollY > top) {
       stateObj[key] = false;
     }
     if (this.state[key] !== stateObj[key]) {
@@ -53,14 +53,14 @@ export default class Home extends Component {
   };
 
   handleSecondScroll = () => {
-    this.handleScroll("showSectionTwoCards", 489 + 0.6 * innerHeight);
+    this.handleScroll("showSectionTwoCards", 489 + 0.6 * window.innerHeight);
   };
 
   handleThirdScroll = () => {
-    this.handleScroll("showSectionThreePoints", 622 + 1.4 * innerHeight);
+    this.handleScroll("showSectionThreePoints", 622 + 1.4 * window.innerHeight);
   };
   handleFourthScroll = () => {
-    this.handleScroll("showSectionFourCards", 1300 + 1.6 * innerHeight);
+    this.handleScroll("showSectionFourCards", 1300 + 1.6 * window.innerHeight);
   };
 
   render() {

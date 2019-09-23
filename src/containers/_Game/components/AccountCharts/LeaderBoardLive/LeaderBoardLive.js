@@ -349,10 +349,10 @@ export default class LeaderBoardLive extends Component {
     if (this.state.refreshing) {
       return ( 
 
-        <div style={{ height: outerHeight + 100,
+        <div style={{ height: window.outerHeight + 100,
                       top: 0, left:0, 
                       position: 'absolute', 
-                      width: innerWidth + 2000,
+                      width: window.innerWidth + 2000,
                       marginLeft: "-1000px",
                       marginTop: "-100px",
                       overflow: "hide",
@@ -379,7 +379,7 @@ export default class LeaderBoardLive extends Component {
                     <Spinner />
                 </div>
         ) : performanceError ? (
-          <div style={{height: innerHeight - 172,  background: self.props.themes.live.dialog.tab_color_active} }>
+          <div style={{height: window.innerHeight - 172,  background: self.props.themes.live.dialog.tab_color_active} }>
 
           <center >  
           <br/>
@@ -849,7 +849,7 @@ export default class LeaderBoardLive extends Component {
                         onHide={self.handleClose.bind(this)} 
                         hideWithOutsideClick={true}
                         containerStyle={{ 
-                            marginTop: -self.props.gap + -innerHeight + 107 + "px",
+                            marginTop: -self.props.gap + -window.innerHeight + 107 + "px",
                             background:self.props.themes.live.dialog.background,
                             width: "99.9%",
                             height: "99%",
@@ -1199,7 +1199,7 @@ export default class LeaderBoardLive extends Component {
           minRows={10}
           style={{
             width:"100%",
-            height:innerHeight - 170 + parseInt(self.props.gap),
+            height:window.innerHeight - 170 + parseInt(self.props.gap),
             maxHeight:"100%",
             overflow:"auto",
             fontSize:"12px",

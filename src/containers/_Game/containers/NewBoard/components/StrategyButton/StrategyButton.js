@@ -10,6 +10,7 @@ import Sound from 'react-sound';
 import { toTitleCase, numberWithCommas } from "../../../../../../util";
 import StrategyPreview from './StrategyPreview'
 import { DropTarget } from "react-dnd";
+import $ from 'jquery'
 
 const stateToProps = state => {
   return {

@@ -9,6 +9,7 @@ import classes from "./Clock.css";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import * as actions from "../../../../store/actions";
+import $ from 'jquery'
 
 export const DAYS = [
   "Sunday",
