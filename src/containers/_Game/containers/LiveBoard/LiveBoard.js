@@ -31,16 +31,16 @@ const insertChip = (systems, column, chip) => {
     const { heldChips } = system;
     return system.column === column
       ? {
-          ...system,
-          heldChips: [
-            ...heldChips.filter(c => c.accountId !== chip.accountId),
-            chip
-          ]
-        }
+        ...system,
+        heldChips: [
+          ...heldChips.filter(c => c.accountId !== chip.accountId),
+          chip
+        ]
+      }
       : {
-          ...system,
-          heldChips: heldChips.filter(c => c.accountId !== chip.accountId)
-        };
+        ...system,
+        heldChips: heldChips.filter(c => c.accountId !== chip.accountId)
+      };
   });
 };
 
@@ -51,23 +51,23 @@ const stateToProps = state => {
     firstName: state.auth.firstName,
     lastName: state.auth.lastName,
     isAuth: state.auth.token !== null,
-    inGameChips:state.betting.inGameChips,
+    inGameChips: state.betting.inGameChips,
     tosAccepted: state.auth.tosAccepted,
     rdAccepted: state.auth.rdAccepted,
     currentBets: state.betting.currentBets,
     simulatedDate: state.betting.simulatedDate,
     last3DaysProfits: state.betting.last3DaysProfits,
-    accounts:state.betting.accounts,
-    dashboard_totals:state.betting.dashboard_totals,
-    initializeData:state.betting.initializeData,
-    leftSystems:state.betting.leftSystems,
-    topSystems:state.betting.topSystems,
-    rightSystems:state.betting.rightSystems,
-    bottomSystems:state.betting.bottomSystems,
-    themes:state.betting.themes,
-    mute:state.betting.mute,
-    liveDateText:state.betting.liveDateText
-    
+    accounts: state.betting.accounts,
+    dashboard_totals: state.betting.dashboard_totals,
+    initializeData: state.betting.initializeData,
+    leftSystems: state.betting.leftSystems,
+    topSystems: state.betting.topSystems,
+    rightSystems: state.betting.rightSystems,
+    bottomSystems: state.betting.bottomSystems,
+    themes: state.betting.themes,
+    mute: state.betting.mute,
+    liveDateText: state.betting.liveDateText
+
   };
 };
 
@@ -95,7 +95,7 @@ const dispatchToProps = dispatch => {
     },
     initializeData: (data) => {
       dispatch(actions.initializeData(data));
-      
+
     },
     authSuccess: (user, token) => {
       dispatch(actions.authSuccess(user, token));
@@ -104,18 +104,18 @@ const dispatchToProps = dispatch => {
       dispatch(actions.setMute(isMute));
     },
     addTimedToaster: toaster => {
-        dispatch(actions.addTimedToaster(toaster, 5000))
+      dispatch(actions.addTimedToaster(toaster, 5000))
     },
     showLeaderDialog: (show) => {
       dispatch(actions.showLeaderDialog(show));
     },
     showHtmlDialog: (htmlContent) => {
       dispatch(actions.showHtmlDialog(htmlContent));
-      
+
     },
     silenceHtmlDialog: () => {
       dispatch(actions.silenceHtmlDialog());
-      
+
     },
 
     updateBet: (topSystems,
@@ -124,13 +124,13 @@ const dispatchToProps = dispatch => {
       rightSystems,
       inGameChips,
       accounts) => {
-        dispatch(actions.updateBet(topSystems,
-          bottomSystems,
-          leftSystems,
-          rightSystems,
-          inGameChips,
-          accounts));
-      },
+      dispatch(actions.updateBet(topSystems,
+        bottomSystems,
+        leftSystems,
+        rightSystems,
+        inGameChips,
+        accounts));
+    },
 
   };
 };
@@ -150,12 +150,12 @@ export default class LiveBoard extends Component {
     firstName: PropTypes.string,
     lastName: PropTypes.string,
     authSuccess: PropTypes.func.isRequired,
-    accounts:PropTypes.array.isRequired,
-    dashboard_totals:PropTypes.object.isRequired,
+    accounts: PropTypes.array.isRequired,
+    dashboard_totals: PropTypes.object.isRequired,
     nextDay: PropTypes.func.isRequired,
     updateBet: PropTypes.func.isRequired,
     updateDate: PropTypes.func.isRequired,
-    addTimedToaster:PropTypes.func.isRequired,
+    addTimedToaster: PropTypes.func.isRequired,
     initializeData: PropTypes.func.isRequired,
     toggleMode: PropTypes.func.isRequired,
     isAuth: PropTypes.bool.isRequired,
@@ -166,17 +166,17 @@ export default class LiveBoard extends Component {
     currentBets: PropTypes.object.isRequired,
     simulatedDate: PropTypes.string.isRequired,
     last3DaysProfits: PropTypes.object.isRequired,
-    inGameChips:PropTypes.object.isRequired,
-    leftSystems:PropTypes.array.isRequired,
-    topSystems:PropTypes.array.isRequired,
-    rightSystems:PropTypes.array.isRequired,
-    bottomSystems:PropTypes.array.isRequired,
-    themes:PropTypes.object.isRequired,
-    mute:PropTypes.bool.isRequired,
-    setMute:PropTypes.func.isRequired,
-    liveDateText:PropTypes.string,
-    showHtmlDialog:PropTypes.func.isRequired,
-    silenceHtmlDialog:PropTypes.func.isRequired
+    inGameChips: PropTypes.object.isRequired,
+    leftSystems: PropTypes.array.isRequired,
+    topSystems: PropTypes.array.isRequired,
+    rightSystems: PropTypes.array.isRequired,
+    bottomSystems: PropTypes.array.isRequired,
+    themes: PropTypes.object.isRequired,
+    mute: PropTypes.bool.isRequired,
+    setMute: PropTypes.func.isRequired,
+    liveDateText: PropTypes.string,
+    showHtmlDialog: PropTypes.func.isRequired,
+    silenceHtmlDialog: PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -199,12 +199,12 @@ export default class LiveBoard extends Component {
       animateSimulateButton: false,
       loading: true,
       boardMode: 'live',
-      toggleActive:true,
-      initializeData:{},
-      refreshing:false,
-      heatmapData:{},
+      toggleActive: true,
+      initializeData: {},
+      refreshing: false,
+      heatmapData: {},
     };
-  
+
   }
 
   componentWillReceiveProps(newProps) {
@@ -229,11 +229,11 @@ export default class LiveBoard extends Component {
     /**
      * set initial state
      */
-    
+
   }
 
-  
-  initializeHeatmap=(account_id) => {
+
+  initializeHeatmap = (account_id) => {
     /*
     if (this.state.refreshing)
       return;
@@ -242,145 +242,145 @@ export default class LiveBoard extends Component {
     */
     //console.log(this.props);
     axios
-    .post("/utility/market_heatmap/", {
-      "username":this.props.email, 
-      "account_id":account_id, 
-      "link":"current",
-      "date":this.props.liveDateText,
+      .post("/utility/market_heatmap/", {
+        "username": this.props.email,
+        "account_id": account_id,
+        "link": "current",
+        "date": this.props.liveDateText,
 
-      // accounts: [{ portfolio, target, accountValue }],
-    },{timeout: 600000})
-    .then(({ data }) => {
-      console.log('received initialize_live data')
-      console.log(data);
-      /*
-      this.props.initialize(data);
+        // accounts: [{ portfolio, target, accountValue }],
+      }, { timeout: 600000 })
+      .then(({ data }) => {
+        console.log('received initialize_live data')
+        console.log(data);
+        /*
+        this.props.initialize(data);
+  
+        if (!this.state.loading)
+          this.sendNotice("Board Refreshed with New Data");
+  
+  
+        this.setState({
+          loading:false,
+          rankingLoading: false,
+          rankingData: data.rankingData,
+          refreshing:false
+        });*/
 
-      if (!this.state.loading)
-        this.sendNotice("Board Refreshed with New Data");
+      })
+      .catch(error => {
+        this.sendNotice('Heatmap Data not received: ' + JSON.stringify(error));
+        console.log('error initializing')
+        console.log(error)
+        // eslint-disable-next-line react/no-is-mounted
+        /*
+          this.setState({
+            rankingLoading: false,
+            rankingError: error,
+            loading:false,
+            refreshing:false
+          });
+              */
 
-
-      this.setState({
-        loading:false,
-        rankingLoading: false,
-        rankingData: data.rankingData,
-        refreshing:false
-      });*/
-
-    })
-    .catch(error => {
-      this.sendNotice('Heatmap Data not received: ' + JSON.stringify(error));
-      console.log('error initializing')
-      console.log(error)
-    // eslint-disable-next-line react/no-is-mounted
-    /*
-      this.setState({
-        rankingLoading: false,
-        rankingError: error,
-        loading:false,
-        refreshing:false
       });
-          */
-
-    });
 
   }
 
-  initializeLive=(reinitialize=false, callback=undefined, update_bets="" ) => {
-    var self=this;
+  initializeLive = (reinitialize = false, callback = undefined, update_bets = "") => {
+    var self = this;
     if (this.state.refreshing)
       return;
     else
-      this.setState({refreshing:true})
+      this.setState({ refreshing: true })
     this.forceUpdate();
-    
+
     //console.log(this.props);
-    var reinit='false';
+    var reinit = 'false';
     if (reinitialize) {
-      reinit='true';
-      this.setState({loading:true})
+      reinit = 'true';
+      this.setState({ loading: true })
 
     }
-    var initQueue=localStorage.getItem("initQueue");
+    var initQueue = localStorage.getItem("initQueue");
     if (initQueue) {
-      var queue=JSON.parse(initQueue);
+      var queue = JSON.parse(initQueue);
       if (queue) {
-        var update_param=queue.update_bets;
-        var reinit_param=queue.reinitialize;
+        var update_param = queue.update_bets;
+        var reinit_param = queue.reinitialize;
         if (update_param && !update_bets) {
-          update_bets=JSON.parse(update_param);
+          update_bets = JSON.parse(update_param);
           if (reinit_param) {
-            reinit='true';
+            reinit = 'true';
           }
         }
       }
     }
     axios
-    .post("/utility/initialize_live/", {
-    // accounts: [{ portfolio, target, accountValue }],
-    'username':  this.props.email,
-    'reinitialize': reinit,
-    'update_bets':update_bets
-    },{timeout: 600000})
-    .then(({ data }) => {
-      localStorage.setItem("initQueue", null);
-      console.log('received initialize_live data')
-      console.log(data);
-      self.props.initializeData(data);
+      .post("/utility/initialize_live/", {
+        // accounts: [{ portfolio, target, accountValue }],
+        'username': this.props.email,
+        'reinitialize': reinit,
+        'update_bets': update_bets
+      }, { timeout: 600000 })
+      .then(({ data }) => {
+        localStorage.setItem("initQueue", null);
+        console.log('received initialize_live data')
+        console.log(data);
+        self.props.initializeData(data);
 
-      if (!this.state.loading)
-        this.sendNotice("Board Refreshed with New Data");
+        if (!this.state.loading)
+          this.sendNotice("Board Refreshed with New Data");
 
 
-      this.setState({
-        loading:false,
-        rankingLoading: false,
-        //rankingData: data.rankingData,
-        refreshing:false
-      });
-
-      if (data.update_bets) {
-        Object.keys(data.update_bets).map(key => {
-          var item=data.update_bets[key];
-          var chip_id=key;
-
-          axios
-          .post("/utility/update_bet_live/", {
-          // accounts: [{ portfolio, target, accountValue }],
-          'account_id':  item[1],
-          'strategy':    item[0],
-          'chip_id':     chip_id
-          },{timeout: 600000})
-          .then(({ data }) => {
-            console.log(data);
-          });
-
+        this.setState({
+          loading: false,
+          rankingLoading: false,
+          //rankingData: data.rankingData,
+          refreshing: false
         });
-      } 
 
-      if (callback)
-        callback();
-     
-    })
-    .catch(error => {
-      this.sendNotice('Account Data not received: ' + JSON.stringify(error));
-      window.location='/board';
-      console.log('error initializing')
-      console.log(error)
-    // eslint-disable-next-line react/no-is-mounted
-      this.setState({
-        rankingLoading: false,
-        rankingError: error,
-        loading:false,
-        refreshing:false
+        if (data.update_bets) {
+          Object.keys(data.update_bets).map(key => {
+            var item = data.update_bets[key];
+            var chip_id = key;
+
+            axios
+              .post("/utility/update_bet_live/", {
+                // accounts: [{ portfolio, target, accountValue }],
+                'account_id': item[1],
+                'strategy': item[0],
+                'chip_id': chip_id
+              }, { timeout: 600000 })
+              .then(({ data }) => {
+                console.log(data);
+              });
+
+          });
+        }
+
+        if (callback)
+          callback();
+
+      })
+      .catch(error => {
+        this.sendNotice('Account Data not received: ' + JSON.stringify(error));
+        window.location = '/board';
+        console.log('error initializing')
+        console.log(error)
+        // eslint-disable-next-line react/no-is-mounted
+        this.setState({
+          rankingLoading: false,
+          rankingError: error,
+          loading: false,
+          refreshing: false
+        });
       });
-    });
 
   }
 
   componentDidMount() {
 
-      this.initializeLive();
+    this.initializeLive();
 
   }
 
@@ -398,91 +398,94 @@ export default class LiveBoard extends Component {
       bottomSystems,
       leftSystems,
       rightSystems,
-      inGameChips, 
+      inGameChips,
       accounts
     } = this.props;
 
 
-    console.log("moving with params");  
+    console.log("moving with params");
     console.log("inGameChips")
     console.log(inGameChips);
     console.log(strat);
     console.log(position);
 
-    chip.last_selection=strat.toLowerCase();    
-    chip.position=position;
-    chip.chip_location=strat.toLowerCase();
+    chip.last_selection = strat.toLowerCase();
+    chip.position = position;
+    chip.chip_location = strat.toLowerCase();
 
-    var balanceChips=inGameChips.balanceChips;
-    var bettingChips=inGameChips.bettingChips;
-    
+    var balanceChips = inGameChips.balanceChips;
+    var bettingChips = inGameChips.bettingChips;
+
     if (!chip.position || chip.position.toString().toLowerCase() == 'off') {
-      
-        balanceChips = inGameChips.balanceChips.map(c => {
-          
-          return c.accountId === chip.accountId
-            ? { ...c, 
-              count: c.count + 1 ,
-              position: position,
-              last_selection:strat }
-              : c;
+
+      balanceChips = inGameChips.balanceChips.map(c => {
+
+        return c.accountId === chip.accountId
+          ? {
+            ...c,
+            count: c.count + 1,
+            position: position,
+            last_selection: strat
           }
+          : c;
+      }
 
-        );
+      );
 
-        
-        bettingChips = inGameChips.bettingChips.filter(
-          c => c.accountId !== chip.accountId
-        );
+
+      bettingChips = inGameChips.bettingChips.filter(
+        c => c.accountId !== chip.accountId
+      );
 
     } else {
 
-        balanceChips = inGameChips.balanceChips.map(c => {
+      balanceChips = inGameChips.balanceChips.map(c => {
         return c.accountId === chip.accountId
           ? {
-              ...c,
-              count: c.count - 1,
-              position: position,
-              last_selection: strat
-            }
+            ...c,
+            count: c.count - 1,
+            position: position,
+            last_selection: strat
+          }
           : c;
-        });
-        
-        var found=false;
-        bettingChips = bettingChips.map(c => {
-          if (c.accountId === chip.accountId)
-            found=true;
-          return c.accountId === chip.accountId
-            ? {
-                ...c,
-                position: position,
-                last_selection: strat
-              }
-            : c;
-        });
+      });
 
-        if (!found) {
+      var found = false;
+      bettingChips = bettingChips.map(c => {
+        if (c.accountId === chip.accountId)
+          found = true;
+        return c.accountId === chip.accountId
+          ? {
+            ...c,
+            position: position,
+            last_selection: strat
+          }
+          : c;
+      });
 
-          bettingChips = [
-            ...inGameChips.bettingChips,
-            { ...chip, 
-              position:position,
-              last_selection: strat
-            }
-          ];
-        }
+      if (!found) {
+
+        bettingChips = [
+          ...inGameChips.bettingChips,
+          {
+            ...chip,
+            position: position,
+            last_selection: strat
+          }
+        ];
+      }
     }
 
     var rev_accounts = accounts.map(account => {
       return account.accountId === chip.accountId
         ? {
-            ...account,
-            position: position,
-            last_selection: strat
-          }
+          ...account,
+          position: position,
+          last_selection: strat
+        }
         : account;
     });
-    accounts=rev_accounts;
+    accounts = rev_accounts;
     this.props.updateBet(
       insertChip(topSystems, position, {
         ...chip,
@@ -502,7 +505,7 @@ export default class LiveBoard extends Component {
       }),
       { balanceChips, bettingChips },
       accounts
-      
+
     );
     console.log(inGameChips);
 
@@ -510,57 +513,57 @@ export default class LiveBoard extends Component {
   }
 
   addBettingChip = (chip, position, isAnti, strat) => {
-        var {
-          topSystems,
-          bottomSystems,
-          leftSystems,
-          rightSystems,
-          inGameChips, 
-          accounts
-        } = this.props;
+    var {
+      topSystems,
+      bottomSystems,
+      leftSystems,
+      rightSystems,
+      inGameChips,
+      accounts
+    } = this.props;
 
-        var origPosition=chip.orig_position;
-        var origChip=chip;
-        var origStrat=chip.orig_last_selection;
+    var origPosition = chip.orig_position;
+    var origChip = chip;
+    var origStrat = chip.orig_last_selection;
 
-        
-        this.moveOnBoard(chip,position,strat);
 
-        axios
-          .post("/utility/update_bet_live/", {
-          // accounts: [{ portfolio, target, accountValue }],
-          'account_id': chip.accountId,
-          'chip_id':chip.chip_id,
-          'strategy':strat,
-          },{timeout: 600000})
-          .then(({ data }) => {
-            //this.sendNotice(strat + ' Bet Placed' + JSON.stringify(data));
-            if (data.message && data.message.match(/ERROR/)) {
-              origChip.position=origPosition;
-              origChip.last_selection=origStrat;
-              console.log("error");
-              console.log(origPosition);
-              console.log(origStrat);
-              this.moveOnBoard(origChip, origPosition, origStrat);  
-            }
-          })
-          .catch(error => {
-            this.sendNotice('Error Placing Bet' + JSON.stringify(error));
-            origChip.position=origPosition;
-            origChip.last_selection=origStrat;
-            this.moveOnBoard(origChip, origPosition, origStrat);
-            //chip.position=origPosition;
-            //this.moveToBalance(chip);
-            console.log('error initializing')
-            console.log(error)
-          // eslint-disable-next-line react/no-is-mounted
-            this.setState({
-              rankingLoading: false,
-              rankingError: error
-            });
-          });
-      
-  
+    this.moveOnBoard(chip, position, strat);
+
+    axios
+      .post("/utility/update_bet_live/", {
+        // accounts: [{ portfolio, target, accountValue }],
+        'account_id': chip.accountId,
+        'chip_id': chip.chip_id,
+        'strategy': strat,
+      }, { timeout: 600000 })
+      .then(({ data }) => {
+        //this.sendNotice(strat + ' Bet Placed' + JSON.stringify(data));
+        if (data.message && data.message.match(/ERROR/)) {
+          origChip.position = origPosition;
+          origChip.last_selection = origStrat;
+          console.log("error");
+          console.log(origPosition);
+          console.log(origStrat);
+          this.moveOnBoard(origChip, origPosition, origStrat);
+        }
+      })
+      .catch(error => {
+        this.sendNotice('Error Placing Bet' + JSON.stringify(error));
+        origChip.position = origPosition;
+        origChip.last_selection = origStrat;
+        this.moveOnBoard(origChip, origPosition, origStrat);
+        //chip.position=origPosition;
+        //this.moveToBalance(chip);
+        console.log('error initializing')
+        console.log(error)
+        // eslint-disable-next-line react/no-is-mounted
+        this.setState({
+          rankingLoading: false,
+          rankingError: error
+        });
+      });
+
+
   };
 
   /**
@@ -570,96 +573,96 @@ export default class LiveBoard extends Component {
    * @param {any} chip
    */
   moveToBalance = chip => {
+
+    var {
+      topSystems,
+      bottomSystems,
+      leftSystems,
+      rightSystems,
+      inGameChips,
+      accounts
+    } = this.props;
+    /**
+     * When chip is moved to off location from some betting position.
+     */
+
+
+    var origPosition = chip.orig_position;
+    var origChip = chip;
+    var origStrat = chip.orig_last_selection;
+
+    this.moveOnBoard(chip, chip.position, chip.last_selection);
+
+    /*
+
+    const balanceChips = inGameChips.balanceChips.map(c => {
+      return c.accountId === chip.accountId
+        ? { ...c, count: c.count + 1 }
+        : c;
+    });
+    const bettingChips = inGameChips.bettingChips.filter(
+      c => c.accountId !== chip.accountId
+    );
     
-      var {
-        topSystems,
-        bottomSystems,
-        leftSystems,
-        rightSystems,
-        inGameChips, 
-        accounts
-      } = this.props;
-        /**
-         * When chip is moved to off location from some betting position.
-         */
+    var strat=chip.position;
+    var rev_accounts2 = accounts.map(account => {
+      return account.accountId === chip.accountId
+        ? {
+            ...account,
+            last_selection: strat,
+          }
+        : account;
+    });
+    accounts=rev_accounts2;
 
-         
-        var origPosition=chip.orig_position;
-        var origChip=chip;
-        var origStrat=chip.orig_last_selection;
+    this.props.updateBet(
+      insertChip(topSystems, "off", chip),
+      insertChip(bottomSystems, "off", chip),
+      insertChip(leftSystems, "off", chip),
+      insertChip(rightSystems, "off", chip),
+      { bettingChips, balanceChips },
+      accounts
+    );
 
-        this.moveOnBoard(chip, chip.position, chip.last_selection);
-        
-        /*
+    if (strat == 'off') 
+      strat="Off";
 
-        const balanceChips = inGameChips.balanceChips.map(c => {
-          return c.accountId === chip.accountId
-            ? { ...c, count: c.count + 1 }
-            : c;
+      */
+    axios
+      .post("/utility/update_bet_live/", {
+        // .get("https://api.myjson.com/bins/11pqxf", {
+        //only 5k chip for tier 0
+        // accounts: [{ portfolio, target, accountValue }],
+        'account_id': chip.accountId,
+        'chip_id': chip.chip_id,
+        'strategy': chip.last_selection == 'off' ? 'Off' : chip.last_selection,
+      }, { timeout: 600000 })
+      .then(({ data }) => {
+        this.sendNotice(chip.last_selection + ' Bet Placed' + JSON.stringify(data));
+
+        if (data.message && data.message.match(/ERROR/)) {
+          origChip.position = origPosition;
+          origChip.last_selection = origStrat;
+          this.moveOnBoard(origChip, origPosition, origStrat);
+
+        }
+
+      })
+      .catch(error => {
+        this.sendNotice('Error Placing Bet' + JSON.stringify(error));
+        console.log('error initializing')
+        console.log(error)
+        // eslint-disable-next-line react/no-is-mounted
+        origChip.position = origPosition;
+        origChip.last_selection = origStrat;
+
+        this.moveOnBoard(origChip, origPosition, origStrat);
+
+        this.setState({
+          rankingLoading: false,
+          rankingError: error
         });
-        const bettingChips = inGameChips.bettingChips.filter(
-          c => c.accountId !== chip.accountId
-        );
-        
-        var strat=chip.position;
-        var rev_accounts2 = accounts.map(account => {
-          return account.accountId === chip.accountId
-            ? {
-                ...account,
-                last_selection: strat,
-              }
-            : account;
-        });
-        accounts=rev_accounts2;
-
-        this.props.updateBet(
-          insertChip(topSystems, "off", chip),
-          insertChip(bottomSystems, "off", chip),
-          insertChip(leftSystems, "off", chip),
-          insertChip(rightSystems, "off", chip),
-          { bettingChips, balanceChips },
-          accounts
-        );
-
-        if (strat == 'off') 
-          strat="Off";
-
-          */
-        axios
-          .post("/utility/update_bet_live/", {
-          // .get("https://api.myjson.com/bins/11pqxf", {
-          //only 5k chip for tier 0
-          // accounts: [{ portfolio, target, accountValue }],
-          'account_id': chip.accountId,
-          'chip_id':chip.chip_id,
-          'strategy':chip.last_selection == 'off' ? 'Off' :chip.last_selection,
-          },{timeout: 600000})
-          .then(({ data }) => {
-            this.sendNotice(chip.last_selection + ' Bet Placed' + JSON.stringify(data));
-
-            if (data.message && data.message.match(/ERROR/)) {
-              origChip.position=origPosition;
-              origChip.last_selection=origStrat;
-              this.moveOnBoard(origChip, origPosition, origStrat);
-  
-            }
-
-          })
-          .catch(error => {
-            this.sendNotice('Error Placing Bet' + JSON.stringify(error));
-            console.log('error initializing')
-            console.log(error)
-            // eslint-disable-next-line react/no-is-mounted
-            origChip.position=origPosition;
-            origChip.last_selection=origStrat;
-
-            this.moveOnBoard(origChip, origPosition, origStrat);
-
-            this.setState({
-              rankingLoading: false,
-              rankingError: error
-            });
-          });
+      });
   };
 
   reset = () => {
@@ -683,29 +686,29 @@ export default class LiveBoard extends Component {
     }, 1000);
   };
 
-  toggleMode= () => {
+  toggleMode = () => {
     if (this.state.boardMode == 'live') {
-      window.location.href='/practice_board';
+      window.location.href = '/practice_board';
       this.toggleSim();
-      
+
     } else {
       this.toggleLive();
 
     }
   };
   toggleSim = () => {
-      //$('.isLive').hide();
-      //$('.isSim').show();
-      this.setState({toggleActive:false, boardMode:'practice'});
+    //$('.isLive').hide();
+    //$('.isSim').show();
+    this.setState({ toggleActive: false, boardMode: 'practice' });
 
   }
   toggleLive = () => {
     //$('.isLive').show();
     //$('.isSim').hide();
-    this.setState({toggleActive:true,boardMode:'live'});
+    this.setState({ toggleActive: true, boardMode: 'live' });
 
   }
-  
+
   sendNotice = msg => {
     this.props.addTimedToaster(
       {
@@ -716,52 +719,52 @@ export default class LiveBoard extends Component {
     );
 
   }
-  
-  
-  checkLock=() => {
+
+
+  checkLock = () => {
     console.log("Lock Check")
-    var self=this;
-    
+    var self = this;
+
     //console.log(this.props);
     axios
-    .post("/utility/lock_check/", {
-    // accounts: [{ portfolio, target, accountValue }],
-    'username':  this.props.email,
-    'chip_id': 'ALL'
-    },{timeout: 600000})
-    .then(({ data }) => {
-      console.log('received lock check')
-      console.log(data);
-      if (data.message != "OK") {
-        this.sendNotice(data.message);
-        
-       
-      } else {
-        self.props.showHtmlDialog(<NewBoard />);
-        //window.location='/new_board'
-      }
-    })
-    .catch(error => {
-      this.sendNotice('Check Lock Failed: ' + JSON.stringify(error));
-      console.log('error initializing')
-      console.log(error)
-    // eslint-disable-next-line react/no-is-mounted
-      this.setState({
-        rankingLoading: false,
-        rankingError: error,
-        loading:false,
-        refreshing:false
-      });
+      .post("/utility/lock_check/", {
+        // accounts: [{ portfolio, target, accountValue }],
+        'username': this.props.email,
+        'chip_id': 'ALL'
+      }, { timeout: 600000 })
+      .then(({ data }) => {
+        console.log('received lock check')
+        console.log(data);
+        if (data.message != "OK") {
+          this.sendNotice(data.message);
 
-    });
+
+        } else {
+          self.props.showHtmlDialog(<NewBoard />);
+          //window.location='/new_board'
+        }
+      })
+      .catch(error => {
+        this.sendNotice('Check Lock Failed: ' + JSON.stringify(error));
+        console.log('error initializing')
+        console.log(error)
+        // eslint-disable-next-line react/no-is-mounted
+        this.setState({
+          rankingLoading: false,
+          rankingError: error,
+          loading: false,
+          refreshing: false
+        });
+
+      });
 
   }
 
 
   render() {
-    var self=this;
+    var self = this;
     const {
-      
+
       isAuth,
       rdAccepted,
       tosAccepted,
@@ -801,111 +804,114 @@ export default class LiveBoard extends Component {
     } = this.state;
 
     if (this.state.loading) {
-        return ( 
+      return (
 
-          <Aux>
-            
-            <center>
-             <ClockLoader show={true} />
-             <br/>
-             <b>Please wait while we load your board. This could take a couple of minutes.</b>
-            </center>
-          </Aux>
+        <Aux>
 
-        );
-      } else {
-      var themes_bg="linear-gradient(90deg," + this.props.themes.live.heatmap.heatmap_cold + ", " + this.props.themes.live.heatmap.heatmap_hot + ")";
-      var board_bg="linear-gradient(180deg," + this.props.themes.live.background.top + ", " + this.props.themes.live.background.middle + ", " + this.props.themes.live.background.bottom + ")";
+          <center>
+            <ClockLoader show={true} />
+            <br />
+            <b>Please wait while we load your board. This could take a couple of minutes.</b>
+          </center>
+        </Aux>
+
+      );
+    } else {
+      var themes_bg = "linear-gradient(90deg," + this.props.themes.live.heatmap.heatmap_cold + ", " + this.props.themes.live.heatmap.heatmap_hot + ")";
+      var board_bg = "linear-gradient(180deg," + this.props.themes.live.background.top + ", " + this.props.themes.live.background.middle + ", " + this.props.themes.live.background.bottom + ")";
       //console.log(themes_bg);
-      var actionBg="white";
-      var heatmapTxt="black";
-      var switchBg="purple";
-      var switchTxt="white";
+      var actionBg = "white";
+      var heatmapTxt = "black";
+      var switchBg = "purple";
+      var switchTxt = "white";
       if (this.props.themes.live.action_row != undefined) {
-        actionBg=this.props.themes.live.action_row.background;
-        heatmapTxt=this.props.themes.live.heatmap.text;
-        switchBg=this.props.themes.live.action_row.switch_fill;
-        switchTxt=this.props.themes.live.action_row.switch_text;
+        actionBg = this.props.themes.live.action_row.background;
+        heatmapTxt = this.props.themes.live.heatmap.text;
+        switchBg = this.props.themes.live.action_row.switch_fill;
+        switchTxt = this.props.themes.live.action_row.switch_text;
 
       }
-      
+
       return (
 
         <Aux id={'liveboard'}>
-          
+
           <LiveDashboard sendNotice={this.sendNotice} initializeLive={this.initializeLive}
-            />
+          />
 
 
-          <div className={classes.ActionRow} style={{background:actionBg, backgroundRepeat: "no-repeat",
-                backgroundSize: "62px 62px",color:heatmapTxt}}>
-              <span style={{color:switchTxt, "float": "left", "width": "30%", "height":"75px", "textAlign": "left", "verticalAlign":"middle", zIndex:1}}>
+          <div className={classes.ActionRow} style={{
+            background: actionBg, backgroundRepeat: "no-repeat",
+            backgroundSize: "62px 62px", color: heatmapTxt
+          }}>
+            <span style={{ color: switchTxt, "float": "left", "width": "30%", "height": "75px", "textAlign": "left", "verticalAlign": "middle", zIndex: 1 }}>
 
               <div style={{
-                  cursor:'pointer',
-                  background:switchBg, 
-                  color:switchTxt, 
-                  marginTop:"-20px",
-                  height:"60px", 
-                  lineHeight:"10px", 
-                  verticalAlign:"middle",
-                  borderRadius: "200px",
-                  width:"200px",
-                  zIndex:2,
-                 
-                }}
+                cursor: 'pointer',
+                background: switchBg,
+                color: switchTxt,
+                marginTop: "-20px",
+                height: "60px",
+                lineHeight: "10px",
+                verticalAlign: "middle",
+                borderRadius: "200px",
+                width: "200px",
+                zIndex: 2,
+
+              }}
                 title="Switch to Practice Mode"
                 onClick={() => {
                   self.props.showHtmlDialog(<PracticeBoard />);
-                    
-              
+
+
                 }}
 
-                >
-              <span style={{marginTop:"0px",  color:switchTxt, zIndex:3,}}>
-              <h2 style={{marginLeft:"70px", paddingTop:"12px"}} > 
-              Live
+              >
+                <span style={{ marginTop: "0px", color: switchTxt, zIndex: 3, }}>
+                  <h2 style={{ marginLeft: "70px", paddingTop: "12px" }} >
+                    Live
+      
+                <span style={{ marginLeft: "70px", marginTop: "-47px" }} className={classes.dot}></span>
+                  </h2>
 
-                <span style={{marginLeft:"70px",marginTop:"-47px"}} className={classes.dot}></span>
-                </h2>
+                </span>
+              </div>
 
-              </span>
+              <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            </span>
+            <span style={{ "float": "left", "width": "40%", "minWidth": "600px", "height": "75px", "whiteSpace": "nowrap", "textAlign": "left", "verticalAlign": "top" }}>
+
+              <Clock loading={this.state.refreshing} sendNotice={this.sendNotice} initializeLive={this.initializeLive} />
+            </span>
+            <span style={{ "float": "left", "width": "30%", "height": "90px", "textAlign": "right", "verticalAlign": "middle" }}>
+              <span style={{ "float": "left", "width": "80%", "height": "90px", "textAlign": "left", "verticalAlign": "middle" }}>
+                <div className="isLive">
+                  <center><b style={{ color: heatmapTxt }} >{this.props.themes.live.heatmap.top_text}</b></center>
+                  <div style={{
+                    "border": "1px solid",
+                    "background": themes_bg,
+                    "width": "100%",
+                    "height": "45px",
+                  }}>
+                    &nbsp;
+                                    <br />
+                  </div>
+                  <div>
+                    <span style={{ "float": "left", "width": "50%", "textAlign": "left", color: heatmapTxt }}>
+                      {this.props.themes.live.heatmap.bottom_left}
+                    </span>
+                    <span style={{ "float": "left", "width": "50%", "textAlign": "right", color: heatmapTxt }}>
+                      {this.props.themes.live.heatmap.bottom_right}
+                    </span>
+                  </div>
                 </div>
-
-                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
               </span>
-              <span  style={{"float": "left", "width": "40%",  "minWidth":"600px", "height":"75px","whiteSpace": "nowrap","textAlign": "left", "verticalAlign":"top"}}>
-                
-                <Clock  loading={this.state.refreshing} sendNotice={this.sendNotice} initializeLive={this.initializeLive} />
+              <span style={{ "float": "left", "width": "20%", "height": "90px", "textAlign": "right", "verticalAlign": "top" }}>
+                <img src="/images/infotext_button.png" width="22" />
               </span>
-              <span style={{"float": "left", "width": "30%", "height":"90px", "textAlign": "right", "verticalAlign":"middle"}}>
-                  <span style={{"float": "left", "width": "80%", "height":"90px", "textAlign": "left", "verticalAlign":"middle"}}> 
-                    <div className="isLive">
-                      <center><b style={{color:heatmapTxt}} >{this.props.themes.live.heatmap.top_text}</b></center>
-                      <div style={{  "border": "1px solid",
-                                      "background": themes_bg,
-                                      "width":"100%",
-                                      "height":"45px",  
-                                    }}>
-                                    &nbsp;
-                                    <br/>
-                      </div>
-                      <div>
-                        <span style={{"float": "left", "width": "50%", "textAlign": "left", color:heatmapTxt}}>
-                        {this.props.themes.live.heatmap.bottom_left}
-                        </span>
-                        <span style={{"float": "left", "width": "50%", "textAlign": "right", color:heatmapTxt}}>
-                        {this.props.themes.live.heatmap.bottom_right}
-                        </span>
-                      </div>
-                    </div>
-                </span>
-                <span style={{"float": "left", "width": "20%", "height":"90px", "textAlign": "right", "verticalAlign":"top"}}>
-                    <img src="/images/infotext_button.png" width="22"/>
-                </span>
-          </span>
-        </div>
-        <div
+            </span>
+          </div>
+          <div
             className={classes.Board}
             style={
               {
@@ -916,15 +922,15 @@ export default class LiveBoard extends Component {
                 paddingTop: "50px",
                 paddingBottom: "100px",
                 //paddingRight: "150px",
-                            } // marginTop: "5%",
+              } // marginTop: "5%",
             }
           >
             <div>
-              <span style={{"marginTop":"-50px","float": "left", "width": "50%", "textAlign": "left", "display": "inline-block","verticalAlign": "top"}}>
-              <a href='#leaderboard' onClick={() => { self.props.showLeaderDialog(true); }} title="Show Global Leaderboards."><img src="/images/leaderboard_button.png" width="120"/></a><br/>
+              <span style={{ "marginTop": "-50px", "float": "left", "width": "50%", "textAlign": "left", "display": "inline-block", "verticalAlign": "top" }}>
+                <a href='#leaderboard' onClick={() => { self.props.showLeaderDialog(true); }} title="Show Global Leaderboards."><img src="/images/leaderboard_button.png" width="120" /></a><br />
               </span>
-              <span style={{"marginTop":"-50px", "float": "right", "width": "50%",  "textAlign": "right",  "display": "inline-block", "verticalAlign":"top"}}>
-                <img src="/images/infotext_button.png" width="22" style={{"margin":"10px"}} />
+              <span style={{ "marginTop": "-50px", "float": "right", "width": "50%", "textAlign": "right", "display": "inline-block", "verticalAlign": "top" }}>
+                <img src="/images/infotext_button.png" width="22" style={{ "margin": "10px" }} />
               </span>
             </div>
             <Panel
@@ -940,32 +946,32 @@ export default class LiveBoard extends Component {
               moveToBalance={this.moveToBalance}
               initializeLive={this.initializeLive}
             />
-              <span style={{"marginTop":"30px","float": "left", "width": "50%", "textAlign": "left", "display": "inline-block","verticalAlign": "top"}}>
-                <a href='#accounts' 
+            <span style={{ "marginTop": "30px", "float": "left", "width": "50%", "textAlign": "left", "display": "inline-block", "verticalAlign": "top" }}>
+              <a href='#accounts'
                 title="Create or configure your accounts."
                 onClick={() => {
                   //window.location='/accounts'
                   self.props.showHtmlDialog(<Accounts isPopup={true} initializeLive={self.initializeLive} />)
                 }}
-                ><img src="/images/accounts_button.png" width="120"/></a><br/>
-                <a href={"#new_board"} 
-                   onClick={() => {
-                    //self.props.showHtmlDialog(<NewBoard />);
+              ><img src="/images/accounts_button.png" width="120" /></a><br />
+              <a href={"#new_board"}
+                onClick={() => {
+                  //self.props.showHtmlDialog(<NewBoard />);
 
-                    self.checkLock();
-                   }
-                   } title="Edit your board."
-                ><img src="/images/edit_board_button.png" width="120"/></a><br/>  
+                  self.checkLock();
+                }
+                } title="Edit your board."
+              ><img src="/images/edit_board_button.png" width="120" /></a><br />
+            </span>
+            {self.props.mute ? (
+              <span style={{ "marginTop": "60px", "paddingRight": "5px", "float": "right", "width": "50%", "textAlign": "right", "display": "inline-block", "verticalAlign": "top" }}>
+                <a title="Turn sounds on" href='#soundbutton' onClick={() => { self.props.setMute(false); }}><img src="/images/sound_off_button.png" width="30" /></a><br />
               </span>
-              {self.props.mute ? (
-              <span style={{"marginTop":"60px", "paddingRight":"5px", "float": "right", "width": "50%", "textAlign": "right", "display": "inline-block","verticalAlign": "top"}}>
-                <a title="Turn sounds on" href='#soundbutton' onClick={() => { self.props.setMute(false);  } }><img src="/images/sound_off_button.png" width="30"/></a><br/>
-              </span>
-              ) :
+            ) :
               (
-              <span style={{"marginTop":"60px","paddingRight":"5px","float": "right", "width": "50%", "textAlign": "right", "display": "inline-block","verticalAlign": "top"}}>
-                <a title="Turn sounds off" href='#soundbutton' onClick={() => { self.props.setMute(true); } }><img src="/images/sound_on_button.png" width="30"/></a><br/>
-              </span>
+                <span style={{ "marginTop": "60px", "paddingRight": "5px", "float": "right", "width": "50%", "textAlign": "right", "display": "inline-block", "verticalAlign": "top" }}>
+                  <a title="Turn sounds off" href='#soundbutton' onClick={() => { self.props.setMute(true); }}><img src="/images/sound_on_button.png" width="30" /></a><br />
+                </span>
 
               )}
 

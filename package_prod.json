@@ -59,7 +59,7 @@
     "react-scroll-table": "^1.0.8",
     "react-simple-popover": "^0.2.4",
     "react-sound": "^1.2.0",
-    "react-table": "6.11.4",
+    "react-table": "^6.8.6",
     "react-test-renderer": "^16.2.0",
     "react-tiny-popover": "^3.4.0",
     "react-toolbox": "^2.0.0-beta.13",
