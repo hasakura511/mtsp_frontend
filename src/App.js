@@ -13,7 +13,7 @@ import HtmlDialog3 from "./components/UI/Modal/HtmlDialog3"
 // import GameBoard from "./containers/GameBoard/GameBoard";
 
 import Auth, {
-  
+
   AccountVerification,
   ForgotPassword,
   ChangePassword,
@@ -28,9 +28,6 @@ import Contact from "./containers/Home/Contact/Contact";
 import Markets from "./containers/Markets/Markets";
 import NewBoard from "./containers/_Game/containers/NewBoard/NewBoard"
 import Accounts from "./containers/_Game/components/Accounts/Accounts";
-import { DragDropContext } from "react-dnd";
-import { default as TouchBackend } from 'react-dnd-touch-backend';
-//import HTML5Backend from "react-dnd-html5-backend";
 
 type PropType = {
   checkAuth: Function,
@@ -109,7 +106,7 @@ class App extends Component<PropType, { showSideDrawer: boolean }> {
     this.setState(prev => ({ showSideDrawer: !prev.showSideDrawer }));
   };
 
-  
+
   /**
    * Render of App component
    * @function render
@@ -118,6 +115,7 @@ class App extends Component<PropType, { showSideDrawer: boolean }> {
    */
   render(): React$Element<any> {
     return (
+
       <Layout
         showSideDrawer={this.state.showSideDrawer}
         toggleSideDrawer={this.toggleSideDrawer}
@@ -150,8 +148,9 @@ class App extends Component<PropType, { showSideDrawer: boolean }> {
           <Route exact path="/" component={Home} />
           <Redirect from="*" to="/" />
         </Switch>
-       
+
       </Layout>
+
     );
   }
 }
@@ -172,5 +171,4 @@ export default withRouter(
         dispatch(actions.checkAuth());
       }
     })
-  )(DragDropContext(TouchBackend({ enableMouseEvents: true }))(App))
-);
+  )(App))

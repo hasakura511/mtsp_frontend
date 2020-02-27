@@ -11,6 +11,10 @@ import * as reducers from "./store/reducers";
 // import { actionTypes } from "./store/actions";
 import thunk from "redux-thunk";
 import ScrollTop from "./hoc/ScrollTop/ScrollTop";
+import { DndProvider } from "react-dnd";
+import { default as TouchBackend } from 'react-dnd-touch-backend';
+import MultiBackend from 'react-dnd-multi-backend';
+import HTML5toTouch from 'react-dnd-multi-backend/dist/esm/HTML5toTouch';
 
 const rootReducer = combineReducers(reducers);
 
@@ -31,11 +35,14 @@ ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
       <ScrollTop>
-        <App />
-        
+        <DndProvider backend={TouchBackend} options={{ enableMouseEvents: true }}>
+          <App />
+        </DndProvider>
       </ScrollTop>
     </BrowserRouter>
-  </Provider>,
+  </Provider>
+
+  ,
   document.getElementById("root")
 );
 registerServiceWorker();
